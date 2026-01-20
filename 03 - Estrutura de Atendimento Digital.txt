@@ -1,0 +1,29 @@
+Site:
+	WordPress
+    Página inicial (quem somos + serviços)
+    Serviços de Home Care
+    Para quem precisa do serviço (clientes)
+    Para quem quer trabalhar (cuidadores)
+    Cadastro de interessados (clientes)
+    Cadastro de prestadores de serviço
+    Página de Contato / WhatsApp
+    Política de Privacidade e LGPD
+    Termos de Uso
+
+WhatsApp
+    Integração com WhatsApp
+        Criar número exclusivo no WhatsApp Business
+		    Para reduzir esforço humano e improviso:
+				Mensagens automáticas:
+					Fora do horário
+					Primeira resposta
+				Fluxo de atendimento padrão:
+					Recepção
+					Entendimento da necessidade
+					Proposta
+					Encaminhamento do cuidador
+
+			Histórico de conversa centralizado
+			Etiquetas ou classificação de atendimentos
+			
+

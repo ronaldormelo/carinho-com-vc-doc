@@ -1,0 +1,13 @@
+E-mail profissional
+WhatsApp Business
+Banco de dados único (clientes e cuidadores)
+CRM simples (ou Notion/Airtable)
+Ferramenta simples de controle financeiro
+Agendamento/agenda compartilhada
+Armazenamento de documentos na nuvem
+
+Automatizações desejáveis
+	WhatsApp → CRM
+	Lead → WhatsApp automático
+	Cadastro → e-mail de boas-vindas
+	Feedback automático após serviço

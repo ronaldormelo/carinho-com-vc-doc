@@ -1,0 +1,8 @@
+Cadastro único e estruturado de cliente
+Registro de condições especiais
+Histórico de atendimentos e serviços realizados
+Tipo de necessidade (idoso, PCD, autismo etc...)
+Preferências de horário e profissional
+Canal único de comunicação (WhatsApp oficial)
+Processo padrão de feedback pós-atendimento
+Termo de prestação de serviço aceito digitalmente

@@ -1,0 +1,145 @@
+1. Proposta de Valor Central
+
+ Definição
+
+A Carinho com Você entrega cuidado domiciliar confiável, rápido e sem burocracia, conectando famílias a cuidadores qualificados por meio de um processo 100% digital, simples e transparente.
+
+ O que a empresa resolve melhor que outras
+
+   Reduz drasticamente o tempo e o esforço para contratar um cuidador.
+   Elimina processos manuais, ligações infinitas e visitas presenciais desnecessárias.
+   Oferece previsibilidade, continuidade e facilidade de reposição de cuidadores.
+   Centraliza toda a operação em um único canal digital (site + WhatsApp).
+
+ Proposta de valor resumida (frase operacional)
+
+“Contratação rápida e sem complicação de cuidadores qualificados, com atendimento humanizado e gestão digital.”
+
+Definir tipos de serviço oferecidos
+		Horista
+		Diário
+		Mensal
+
+ Por que essa proposta gera lucro
+
+   Foco em urgência acelera fechamento.
+   Foco em recorrência dilui custo de aquisição.
+   Operação digital reduz custo fixo.
+   Curadoria simples de cuidadores evita retrabalho.
+
+2. Perfil de Cliente Ideal (ICP – Ideal Customer Profile)
+
+ Definição
+
+	Famílias que precisam de cuidado domiciliar contínuo ou recorrente e valorizam comodidade, rapidez e segurança, mais do que preço baixo.
+
+ Características principais
+
+   Renda familiar: acima de R$ 10.000/mês
+   Situação:
+       Idoso com necessidade de acompanhamento
+       Pessoa com limitação de mobilidade
+       Paciente em recuperação
+       Pessoa com TEA ou necessidades especiais
+   Urgência:
+       Demanda imediata ou em curto prazo
+   Recorrência:
+       Turnos frequentes ou continuidade semanal/mensal
+
+ Comportamento
+
+   Prefere pagar mais para evitar dor de cabeça
+   Usa WhatsApp como principal canal
+   Valoriza confiança e indicação
+   Não quer lidar com burocracia nem seleção manual
+
+ Critério de exclusão (importante para lucro)
+
+   Famílias extremamente sensíveis a preço
+   Demandas esporádicas sem recorrência
+   Clientes que exigem negociação excessiva
+
+ Por que esse perfil é estratégico
+
+   Ticket médio maior
+   Menor churn
+   Menos esforço por real faturado
+   Justifica processos mais simples e automação
+
+
+
+ 3. Perfil de Cuidador Ideal
+
+ Definição
+
+Profissionais que buscam continuidade de trabalho, aceitam operar dentro de um modelo digital e seguem padrões definidos de conduta e disponibilidade.
+
+ Requisitos mínimos
+
+   Experiência: mínimo de 1 ano comprovado
+   Formação:
+       Curso de cuidador de idosos ou equivalente
+       Caso não possua, disponibilização de curso pela própria plataforma
+   Postura:
+       Profissional
+       Pontual
+       Comunicação clara
+   Disponibilidade:
+       Informada pelo próprio cuidador no cadastro
+       Pode ser fixa ou flexível
+       Atualizável a qualquer momento
+
+ Diferencial estratégico
+
+   Plataforma não depende apenas de cuidadores “prontos”
+   Formação interna cria:
+       Padronização
+       Fidelização
+       Oferta constante de profissionais
+
+ Classificação automática
+
+Cuidadores devem ser categorizados por:
+
+   Tipo de cuidado
+   Disponibilidade (dias/horários)
+   Região
+   Avaliação pós-serviço
+
+ Por que esse perfil reduz custo e esforço
+
+   Menos retrabalho de substituição
+   Melhor aderência aos clientes
+   Base organizada e escalável
+   Possibilidade de cobrança de taxa, retenção ou comissão
+
+
+
+ Resumo Operacional (para tomada de decisão)
+
+Cliente ideal  
+Entrega previsibilidade, recorrência e menor esforço comercial.
+
+Cuidador ideal  
+Entrega padronização, disponibilidade e escala.
+
+Proposta de valor  
+Conecta os dois com o mínimo possível de intervenção humana.
+
+
+
+ Próximo passo lógico
+
+Se você quiser, o próximo nível seria:
+
+   Traduzir essas definições em:
+       Texto de site
+       Script de atendimento no WhatsApp
+       Critérios automáticos de aceite ou recusa
+   Definir:
+       Modelo de precificação
+       Percentual de margem
+       Regra de comissionamento
+   Criar um fluxo end-to-end:
+    Lead → contratação → alocação → pagamento → feedback
+

@@ -1,0 +1,18 @@
+Esse é um ponto crítico que muita gente esquece
+
+    Processo padrão de cadastro de cuidadores
+    Coleta de documentos (online)
+    Classificação por:
+		Tipo de cuidado
+		Disponibilidade
+		Região/bairro
+	
+	Termo de responsabilidade / contrato digital
+	Processo mínimo de curadoria / validação
+	Processo simples de ativação/desativação do cuidador
+	Banco de cuidadores pesquisável
+	Processo simples de feedback (nota/avaliação)
+	Processo de triagem digital
+	Registro mínimo de experiência
+	Canal de comunicação exclusivo para cuidadores
+	Registro de ocorrências ou intercorrências

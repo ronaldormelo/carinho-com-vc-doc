@@ -1,0 +1,12 @@
+Conta bancária PJ
+Registro simples de entradas e saídas
+Controle de pagamentos de cuidadores
+Definição do modelo de cobrança:
+	Hora
+	Pacote
+	Mensalidade
+Separação financeira PF x PJ
+Nada de ERP gigante no início.
+Controle de pagamentos de cuidadores
+Definição de preço mínimo viável
+Processo de emissão de nota fiscal

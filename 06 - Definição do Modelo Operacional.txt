@@ -1,0 +1,21 @@
+Modelo Operacional
+
+Fluxo Macro:
+	Lead - atendimento - cuidador - execução - feedback
+	
+Fluxo Cuidador:
+	Checklist de início de atendimento Cuidador
+	Checklist de finalização do atendimento
+	Registro simples do serviço realizado
+	Canal de emergência ou suporte
+
+Fluxo Cliente:
+	Notificação de nício de atendimento
+	Notificação de finalização do atendimento
+	Canal de emergência ou suporte
+
+	Definir política de cancelamento
+	Definir prazos de pagamento
+	Definir comissão ou percentual do cuidador
+	Definir responsável por substituição em caso de ausência
+	Definir política de emergências
