@@ -1,21 +1,43 @@
-Modelo Operacional
+Definicao do Modelo Operacional
 
-Fluxo Macro:
-	Lead - atendimento - cuidador - execução - feedback
-	
-Fluxo Cuidador:
-	Checklist de início de atendimento Cuidador
-	Checklist de finalização do atendimento
-	Registro simples do serviço realizado
-	Canal de emergência ou suporte
+Fluxo macro (ponta a ponta)
+Lead -> atendimento -> triagem -> proposta -> contrato -> alocacao ->
+execucao -> feedback -> renovacao.
 
-Fluxo Cliente:
-	Notificação de nício de atendimento
-	Notificação de finalização do atendimento
-	Canal de emergência ou suporte
+Papéis e responsabilidades
+- Atendimento: capta lead, faz triagem e envia proposta.
+- Operacao: faz o match cliente x cuidador e confirma agenda.
+- Financeiro: controla pagamento e repasse.
+- Suporte: resolve emergencias e substituicoes.
 
-	Definir política de cancelamento
-	Definir prazos de pagamento
-	Definir comissão ou percentual do cuidador
-	Definir responsável por substituição em caso de ausência
-	Definir política de emergências
+Fluxo do cuidador
+- Checklist de inicio de atendimento (confirmacao e chegada).
+- Checklist de finalizacao (registro de atividades e ocorrencias).
+- Registro simples do servico realizado.
+- Canal de emergencia ou suporte.
+
+Fluxo do cliente
+- Notificacao de inicio do atendimento.
+- Notificacao de finalizacao do atendimento.
+- Canal de emergencia ou suporte.
+- Feedback pos-servico com nota e comentarios.
+
+Politicas essenciais
+- Cancelamento: prazos e regras de reembolso.
+- Pagamento: prazos, formas e confirmacoes.
+- Comissao/percentual do cuidador.
+- Substituicao em caso de ausencia.
+- Escalonamento para emergencias.
+
+Rotinas operacionais
+- Confirmacao diaria da agenda.
+- Monitoramento de atrasos e faltas.
+- Ajustes de escala e reposicao.
+- Comunicacao padrao com cliente e cuidador.
+
+Indicadores essenciais
+- SLA de atendimento.
+- Taxa de conversao.
+- Taxa de substituicao.
+- Ocupacao de cuidadores.
+- NPS do cliente.

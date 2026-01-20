@@ -1,13 +1,42 @@
-E-mail profissional
-WhatsApp Business
-Banco de dados único (clientes e cuidadores)
-CRM simples (ou Notion/Airtable)
-Ferramenta simples de controle financeiro
-Agendamento/agenda compartilhada
-Armazenamento de documentos na nuvem
+Ferramentas Digitais
 
-Automatizações desejáveis
-	WhatsApp → CRM
-	Lead → WhatsApp automático
-	Cadastro → e-mail de boas-vindas
-	Feedback automático após serviço
+Objetivo
+- Garantir operacao digital simples, rapida e com dados centralizados.
+
+Comunicacao e atendimento
+- E-mail profissional com dominio.
+- WhatsApp Business com numero exclusivo.
+- Inbox com historico e etiquetas.
+
+Site e captacao
+- Site institucional (WordPress) com landing pages.
+- Formularios integrados ao CRM.
+- CTA direto para WhatsApp.
+
+CRM e base unica
+- Banco de dados unico (clientes e cuidadores).
+- CRM simples (Notion/Airtable) com pipeline e historico.
+- Registro de origem do lead e status.
+
+Agenda e operacao
+- Agenda compartilhada (Google Calendar ou similar).
+- Agendamento por cliente e cuidador.
+- Notificacoes de inicio/fim do atendimento.
+
+Financeiro
+- Ferramenta simples de controle financeiro.
+- Registro de entradas/saidas e repasses.
+
+Documentos e LGPD
+- Armazenamento em nuvem com pastas por cliente e cuidador.
+- Contratos e termos assinados digitalmente.
+
+Automacoes desejaveis
+- WhatsApp -> CRM (captura e registro).
+- Lead -> WhatsApp automatico.
+- Cadastro -> e-mail de boas-vindas.
+- Feedback automatico apos servico.
+
+Analytics e tracking
+- Google Analytics e tags.
+- UTM nas campanhas.

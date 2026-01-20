@@ -1,10 +1,30 @@
-Essencial para não ter dor de cabeça:
+Juridico Essencial
 
-CNPJ + CNAE corretos
-Contrato com cuidadores
-Contrato com clientes
-Adequação básica à LGPD
-Política de privacidade no site
-Contrato de prestação de serviços digitais - Aceite digital dos termos
-Registro de consentimento para uso de dados
-Seguro (avaliar futuramente)
+Objetivo
+- Reduzir riscos legais e garantir conformidade minima para operar.
+
+Formalizacao da empresa
+- CNPJ e CNAE corretos.
+- Contratos padronizados e revisados.
+
+Contratos e termos
+- Contrato com cuidadores (responsabilidades e conduta).
+- Contrato com clientes (escopo, pagamento e cancelamento).
+- Termos de uso do site e do atendimento digital.
+- Aceite digital com registro de data e hora.
+
+LGPD e privacidade
+- Politica de privacidade no site.
+- Registro de consentimento para uso de dados.
+- Base legal para tratamento.
+- Procedimento para solicitacoes de exclusao/alteracao de dados.
+- Controle de acesso aos dados e logs.
+
+Riscos e cobertura
+- Termos sobre substituicao e ausencia.
+- Limites de responsabilidade operacional.
+- Seguro (avaliar futuramente).
+
+Registros essenciais
+- Logs de atendimento e aceite digital.
+- Contratos assinados armazenados com seguranca.
