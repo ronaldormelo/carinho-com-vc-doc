@@ -1,0 +1,30 @@
+{
+  "name": "carinho/carinho-site",
+  "type": "project",
+  "description": "Carinho Site system",
+  "require": {
+    "php": "^8.2",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-redis": "*",
+    "laravel/framework": "^11.0",
+    "laravel/sanctum": "^4.0",
+    "laravel/tinker": "^2.9",
+    "league/flysystem-aws-s3-v3": "^3.0",
+    "spatie/laravel-medialibrary": "^11.0",
+    "spatie/laravel-sitemap": "^7.0",
+    "spatie/laravel-sluggable": "^3.0"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.23",
+    "laravel/pint": "^1.13",
+    "laravel/sail": "^1.29",
+    "mockery/mockery": "^1.6",
+    "nunomaduro/collision": "^8.1",
+    "phpunit/phpunit": "^11.0"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
