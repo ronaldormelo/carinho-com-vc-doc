@@ -4,6 +4,38 @@
 Armazena cadastro, documentos, disponibilidade e desempenho dos
 cuidadores, garantindo base confiavel e pesquisavel.
 
+## Tabelas de dominio
+
+### domain_caregiver_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_document_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_document_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_care_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_skill_level
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_contract_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
 ## Tabelas principais
 
 ### caregivers
@@ -12,7 +44,7 @@ cuidadores, garantindo base confiavel e pesquisavel.
 - phone (varchar)
 - email (varchar, nullable)
 - city (varchar)
-- status (enum: pending, active, inactive, blocked)
+- status_id (tinyint, fk -> domain_caregiver_status.id)
 - experience_years (int)
 - profile_summary (text, nullable)
 - created_at, updated_at
@@ -20,16 +52,16 @@ cuidadores, garantindo base confiavel e pesquisavel.
 ### caregiver_documents
 - id (bigint, pk)
 - caregiver_id (bigint, fk -> caregivers.id)
-- doc_type (enum: id, cpf, address, certificate, other)
+- doc_type_id (tinyint, fk -> domain_document_type.id)
 - file_url (varchar)
-- status (enum: pending, verified, rejected)
+- status_id (tinyint, fk -> domain_document_status.id)
 - verified_at (datetime, nullable)
 
 ### caregiver_skills
 - id (bigint, pk)
 - caregiver_id (bigint, fk -> caregivers.id)
-- care_type (enum: idoso, pcd, tea, pos_operatorio)
-- level (enum: basico, intermediario, avancado)
+- care_type_id (tinyint, fk -> domain_care_type.id)
+- level_id (tinyint, fk -> domain_skill_level.id)
 
 ### caregiver_availability
 - id (bigint, pk)
@@ -48,7 +80,7 @@ cuidadores, garantindo base confiavel e pesquisavel.
 - id (bigint, pk)
 - caregiver_id (bigint, fk -> caregivers.id)
 - contract_id (bigint)
-- status (enum: draft, signed, active, closed)
+- status_id (tinyint, fk -> domain_contract_status.id)
 - signed_at (datetime, nullable)
 
 ### caregiver_ratings
@@ -76,11 +108,11 @@ cuidadores, garantindo base confiavel e pesquisavel.
 ### caregiver_status_history
 - id (bigint, pk)
 - caregiver_id (bigint, fk -> caregivers.id)
-- status (enum: pending, active, inactive, blocked)
+- status_id (tinyint, fk -> domain_caregiver_status.id)
 - changed_at (datetime)
 
 ## Indices recomendados
-- caregivers.phone, caregivers.status
+- caregivers.phone, caregivers.status_id
 - caregiver_regions.city
 - caregiver_availability.caregiver_id, caregiver_availability.day_of_week
 

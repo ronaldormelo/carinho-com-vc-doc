@@ -4,6 +4,48 @@
 Base unica de leads e clientes com pipeline comercial, contratos e
 historico de interacoes.
 
+## Tabelas de dominio
+
+### domain_urgency_level
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_service_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_lead_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_deal_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_contract_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_interaction_channel
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_patient_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_task_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
 ## Tabelas principais
 
 ### leads
@@ -12,10 +54,10 @@ historico de interacoes.
 - phone (varchar)
 - email (varchar, nullable)
 - city (varchar)
-- urgency (enum: hoje, semana, sem_data)
-- service_type (enum: horista, diario, mensal)
+- urgency_id (tinyint, fk -> domain_urgency_level.id)
+- service_type_id (tinyint, fk -> domain_service_type.id)
 - source (varchar)
-- status (enum: new, triage, proposal, active, lost)
+- status_id (tinyint, fk -> domain_lead_status.id)
 - utm_id (bigint, nullable)
 - created_at, updated_at
 
@@ -32,7 +74,7 @@ historico de interacoes.
 ### care_needs
 - id (bigint, pk)
 - client_id (bigint, fk -> clients.id)
-- patient_type (enum: idoso, pcd, tea, pos_operatorio)
+- patient_type_id (tinyint, fk -> domain_patient_type.id)
 - conditions_json (json)
 - notes (text, nullable)
 
@@ -47,13 +89,13 @@ historico de interacoes.
 - lead_id (bigint, fk -> leads.id)
 - stage_id (bigint, fk -> pipeline_stages.id)
 - value_estimated (decimal)
-- status (enum: open, won, lost)
+- status_id (tinyint, fk -> domain_deal_status.id)
 - created_at, updated_at
 
 ### proposals
 - id (bigint, pk)
 - deal_id (bigint, fk -> deals.id)
-- service_type (enum: horista, diario, mensal)
+- service_type_id (tinyint, fk -> domain_service_type.id)
 - price (decimal)
 - notes (text, nullable)
 - expires_at (datetime, nullable)
@@ -62,7 +104,7 @@ historico de interacoes.
 - id (bigint, pk)
 - client_id (bigint, fk -> clients.id)
 - proposal_id (bigint, fk -> proposals.id)
-- status (enum: draft, signed, active, closed)
+- status_id (tinyint, fk -> domain_contract_status.id)
 - signed_at (datetime, nullable)
 - start_date, end_date
 
@@ -78,13 +120,13 @@ historico de interacoes.
 - lead_id (bigint, fk -> leads.id)
 - assigned_to (bigint, nullable)
 - due_at (datetime, nullable)
-- status (enum: open, done, canceled)
+- status_id (tinyint, fk -> domain_task_status.id)
 - notes (text, nullable)
 
 ### interactions
 - id (bigint, pk)
 - lead_id (bigint, fk -> leads.id)
-- channel (enum: whatsapp, email, phone)
+- channel_id (tinyint, fk -> domain_interaction_channel.id)
 - summary (text)
 - occurred_at (datetime)
 
@@ -95,8 +137,8 @@ historico de interacoes.
 - details (text, nullable)
 
 ## Indices recomendados
-- leads.phone, leads.status, leads.city
-- deals.stage_id, deals.status
+- leads.phone, leads.status_id, leads.city
+- deals.stage_id, deals.status_id
 - interactions.lead_id, interactions.occurred_at
 
 ## Observacoes de seguranca e desempenho

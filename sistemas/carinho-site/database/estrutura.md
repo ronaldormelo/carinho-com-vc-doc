@@ -4,13 +4,40 @@
 Armazena conteudo do site, midias, formularios e registros de lead,
 com foco em captacao e rastreio de origem.
 
+## Tabelas de dominio
+
+### domain_page_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_form_target
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_urgency_level
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_service_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_legal_doc_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
 ## Tabelas principais
 
 ### site_pages
 - id (bigint, pk)
 - slug (varchar, unique)
 - title (varchar)
-- status (enum: draft, published, archived)
+- status_id (tinyint, fk -> domain_page_status.id)
 - seo_title (varchar)
 - seo_description (varchar)
 - content_json (json)
@@ -37,7 +64,7 @@ com foco em captacao e rastreio de origem.
 ### lead_forms
 - id (bigint, pk)
 - name (varchar)
-- target_type (enum: cliente, cuidador)
+- target_type_id (tinyint, fk -> domain_form_target.id)
 - fields_json (json)
 - active (bool)
 - created_at, updated_at
@@ -50,8 +77,8 @@ com foco em captacao e rastreio de origem.
 - phone (varchar)
 - email (varchar, nullable)
 - city (varchar)
-- urgency (enum: hoje, semana, sem_data)
-- service_type (enum: horista, diario, mensal)
+- urgency_id (tinyint, fk -> domain_urgency_level.id)
+- service_type_id (tinyint, fk -> domain_service_type.id)
 - consent_at (datetime)
 - payload_json (json)
 - created_at
@@ -67,7 +94,7 @@ com foco em captacao e rastreio de origem.
 
 ### legal_documents
 - id (bigint, pk)
-- doc_type (enum: privacy, terms)
+- doc_type_id (tinyint, fk -> domain_legal_doc_type.id)
 - version (varchar)
 - content (text)
 - published_at (datetime)

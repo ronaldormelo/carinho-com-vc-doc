@@ -4,6 +4,48 @@
 Centraliza conversas, mensagens, status de atendimento e indicadores de SLA,
 integrando WhatsApp e CRM.
 
+## Tabelas de dominio
+
+### domain_channel
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_conversation_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_priority
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_message_direction
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_message_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_agent_role
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_incident_severity
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_webhook_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
 ## Tabelas principais
 
 ### contacts
@@ -17,9 +59,9 @@ integrando WhatsApp e CRM.
 ### conversations
 - id (bigint, pk)
 - contact_id (bigint, fk -> contacts.id)
-- channel (enum: whatsapp, email)
-- status (enum: new, triage, proposal, waiting, active, lost, closed)
-- priority (enum: low, normal, high, urgent)
+- channel_id (tinyint, fk -> domain_channel.id)
+- status_id (tinyint, fk -> domain_conversation_status.id)
+- priority_id (tinyint, fk -> domain_priority.id)
 - assigned_to (bigint, nullable)
 - started_at, closed_at
 - created_at, updated_at
@@ -27,11 +69,11 @@ integrando WhatsApp e CRM.
 ### messages
 - id (bigint, pk)
 - conversation_id (bigint, fk -> conversations.id)
-- direction (enum: inbound, outbound)
+- direction_id (tinyint, fk -> domain_message_direction.id)
 - body (text)
 - media_url (varchar, nullable)
 - sent_at (datetime)
-- status (enum: queued, sent, delivered, failed)
+- status_id (tinyint, fk -> domain_message_status.id)
 
 ### tags
 - id (bigint, pk)
@@ -45,7 +87,7 @@ integrando WhatsApp e CRM.
 - id (bigint, pk)
 - name (varchar)
 - email (varchar, unique)
-- role (enum: agent, supervisor, admin)
+- role_id (tinyint, fk -> domain_agent_role.id)
 - active (bool)
 - created_at, updated_at
 
@@ -73,7 +115,7 @@ integrando WhatsApp e CRM.
 ### incidents
 - id (bigint, pk)
 - conversation_id (bigint, fk -> conversations.id)
-- severity (enum: low, medium, high, critical)
+- severity_id (tinyint, fk -> domain_incident_severity.id)
 - notes (text)
 - created_at, updated_at
 
@@ -84,11 +126,11 @@ integrando WhatsApp e CRM.
 - payload_json (json)
 - received_at (datetime)
 - processed_at (datetime, nullable)
-- status (enum: pending, processed, failed)
+- status_id (tinyint, fk -> domain_webhook_status.id)
 
 ## Indices recomendados
 - messages.conversation_id, messages.sent_at
-- conversations.status, conversations.priority
+- conversations.status_id, conversations.priority_id
 - contacts.phone (unique)
 
 ## Observacoes de seguranca e desempenho

@@ -4,13 +4,55 @@
 Controla cobranca, repasses, precificacao e documentos fiscais com
 rastreabilidade e auditoria.
 
+## Tabelas de dominio
+
+### domain_payment_method
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_account_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_invoice_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_payment_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_payout_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_service_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_owner_type
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_reconciliation_status
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
 ## Tabelas principais
 
 ### billing_accounts
 - id (bigint, pk)
 - client_id (bigint)
-- payment_method (enum: pix, boleto, card)
-- status (enum: active, inactive)
+- payment_method_id (tinyint, fk -> domain_payment_method.id)
+- status_id (tinyint, fk -> domain_account_status.id)
 - created_at, updated_at
 
 ### invoices
@@ -18,7 +60,7 @@ rastreabilidade e auditoria.
 - client_id (bigint)
 - contract_id (bigint)
 - period_start, period_end
-- status (enum: open, paid, overdue, canceled)
+- status_id (tinyint, fk -> domain_invoice_status.id)
 - total_amount (decimal)
 - created_at, updated_at
 
@@ -34,9 +76,9 @@ rastreabilidade e auditoria.
 ### payments
 - id (bigint, pk)
 - invoice_id (bigint, fk -> invoices.id)
-- method (enum: pix, boleto, card)
+- method_id (tinyint, fk -> domain_payment_method.id)
 - amount (decimal)
-- status (enum: pending, paid, failed, refunded)
+- status_id (tinyint, fk -> domain_payment_status.id)
 - paid_at (datetime, nullable)
 - external_id (varchar, nullable)
 
@@ -44,7 +86,7 @@ rastreabilidade e auditoria.
 - id (bigint, pk)
 - caregiver_id (bigint)
 - period_start, period_end
-- status (enum: open, paid, canceled)
+- status_id (tinyint, fk -> domain_payout_status.id)
 - total_amount (decimal)
 - created_at, updated_at
 
@@ -58,7 +100,7 @@ rastreabilidade e auditoria.
 ### price_plans
 - id (bigint, pk)
 - name (varchar)
-- service_type (enum: horista, diario, mensal)
+- service_type_id (tinyint, fk -> domain_service_type.id)
 - base_price (decimal)
 - active (bool)
 
@@ -71,7 +113,7 @@ rastreabilidade e auditoria.
 
 ### bank_accounts
 - id (bigint, pk)
-- owner_type (enum: client, caregiver, company)
+- owner_type_id (tinyint, fk -> domain_owner_type.id)
 - owner_id (bigint)
 - bank_name (varchar)
 - account_hash (varchar)
@@ -80,7 +122,7 @@ rastreabilidade e auditoria.
 ### reconciliations
 - id (bigint, pk)
 - period (varchar)
-- status (enum: open, closed)
+- status_id (tinyint, fk -> domain_reconciliation_status.id)
 - notes (text, nullable)
 
 ### fiscal_documents
@@ -91,9 +133,9 @@ rastreabilidade e auditoria.
 - file_url (varchar)
 
 ## Indices recomendados
-- invoices.client_id, invoices.status
-- payments.status, payments.paid_at
-- payouts.caregiver_id, payouts.status
+- invoices.client_id, invoices.status_id
+- payments.status_id, payments.paid_at
+- payouts.caregiver_id, payouts.status_id
 
 ## Observacoes de seguranca e desempenho
 - Dados financeiros sensiveis devem ser criptografados.
