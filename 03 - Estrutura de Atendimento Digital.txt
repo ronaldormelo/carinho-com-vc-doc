@@ -1,29 +1,59 @@
-Site:
-	WordPress
-    Página inicial (quem somos + serviços)
-    Serviços de Home Care
-    Para quem precisa do serviço (clientes)
-    Para quem quer trabalhar (cuidadores)
-    Cadastro de interessados (clientes)
-    Cadastro de prestadores de serviço
-    Página de Contato / WhatsApp
-    Política de Privacidade e LGPD
-    Termos de Uso
+Estrutura de Atendimento Digital
 
-WhatsApp
-    Integração com WhatsApp
-        Criar número exclusivo no WhatsApp Business
-		    Para reduzir esforço humano e improviso:
-				Mensagens automáticas:
-					Fora do horário
-					Primeira resposta
-				Fluxo de atendimento padrão:
-					Recepção
-					Entendimento da necessidade
-					Proposta
-					Encaminhamento do cuidador
+Objetivo
+- Padronizar o atendimento digital para reduzir improviso e acelerar o fechamento.
+- Centralizar o contato em um canal unico e registrar tudo no CRM.
 
-			Histórico de conversa centralizado
-			Etiquetas ou classificação de atendimentos
-			
+Canais
+- WhatsApp Business (principal).
+- E-mail profissional para propostas e contratos.
+- Site com CTA para WhatsApp e formularios.
 
+Fluxo padrao de atendimento
+1) Recepcao: saudacao e confirmacao de urgencia.
+2) Entendimento da necessidade: perguntas chave.
+3) Qualificacao: tipo de servico, horario, perfil do paciente.
+4) Proposta: envio de valores e formato (hora, diaria, mensal).
+5) Encaminhamento do cuidador: match e confirmacao.
+6) Contrato digital: aceite e agenda confirmada.
+7) Pos-servico: feedback e continuidade.
+
+Dados minimos a coletar
+- Nome do responsavel e telefone.
+- Cidade, bairro e endereco aproximado.
+- Tipo de servico (horista, diario, mensal).
+- Horarios e dias desejados.
+- Perfil do paciente e condicoes especiais.
+- Preferencias de cuidador (sexo, experiencia, especialidade).
+- Urgencia (iniciar hoje, esta semana, sem data).
+
+Mensagens automaticas essenciais
+- Fora do horario.
+- Primeira resposta.
+- Confirmação de recebimento do pedido.
+- Lembrete de atendimento agendado.
+- Solicitação de feedback pos-servico.
+
+Etiquetas e status no atendimento
+- Novo lead
+- Em triagem
+- Proposta enviada
+- Aguardando resposta
+- Contrato assinado
+- Ativo
+- Perdido
+
+Padroes de comunicacao
+- Respostas claras e objetivas.
+- Linguagem humana e acolhedora.
+- Evitar jargoes medicos.
+
+SLA e prioridades
+- Resposta humana em ate 5 minutos no horario comercial.
+- Casos urgentes com prioridade maxima.
+- Escalonar emergencias para canal de suporte.
+
+Qualidade e melhoria
+- Revisao semanal de atendimentos.
+- Motivos de perda registrados.
+- Scripts ajustados com base no feedback.
