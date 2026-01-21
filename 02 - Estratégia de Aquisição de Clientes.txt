@@ -1,32 +1,62 @@
-Redes Sociais
-	Instagram
-	Facebook
-	LinkedIn
-	Google Meu Negócio
+Estrategia de Aquisicao de Clientes
 
-	Descartar ou deixar em segundo plano:
-	X, Threads, etc. (não geram lead para home care no início)
+Objetivo
+- Gerar leads qualificados e recorrentes com foco em urgencia e confiança.
+- Centralizar entrada pelo WhatsApp e registrar origem no CRM.
 
-Itens adicionais importantes
+Canais prioritarios
+- Google Meu Negocio (SEO local).
+- Google Ads para "home care + cidade".
+- Meta Ads (Facebook/Instagram) com segmentacao local.
+- Redes sociais: Instagram e Facebook (LinkedIn como apoio institucional).
+- Indicacoes e parcerias locais (clinicas, hospitais, condominios, cuidadores).
+- Conteudo local e depoimentos para prova social.
 
-	Criar usuário único (ex.: carinho.com.vc) em todas as plataformas
-	Configurar bio padrão com:
-		O que faz
-		WhatsApp
-		Link do site ou Linktree
+Canais em segundo plano
+- X, Threads e demais redes com baixo potencial de lead no inicio.
 
-	Ferramenta de agendamento de posts
-		Postar 2x por semana já é suficiente no início
-		Cadastro no Google Meu Negócio
-		Estrutura mínima de SEO local
+Infraestrutura de captacao
+- Site com paginas de servico e landing pages por demanda.
+- Formularios simples (nome, cidade, urgencia, tipo de servico).
+- CTA direto para WhatsApp em todas as paginas.
+- Link unico de campanha com UTM para rastreio.
 
-		“Home care + cidade”
+Padrao de perfil nas redes
+- Usuario unico (ex.: carinho.com.vc).
+- Bio padrao: o que faz + WhatsApp + link do site.
+- Destaques com depoimentos, perguntas frequentes e como funciona.
 
-		Criação de página específica para captação de leads
-		Definir canal principal de entrada
-			WhatsApp
+Plano de conteudo
+- 2 posts por semana no inicio.
+- Temas: casos reais (anonimizados), beneficios do cuidado, sinais de urgencia,
+  dicas para familias, explicacao dos tipos de servico.
+- Prova social: depoimentos, avaliacao e tempo de resposta.
 
-Ad
-    Captura automática dos leads
-		Resposta automática inicial para novos leads
-		Registro de origem do lead (rede social, Google, indicação)
+Midia paga (inicial)
+- Campanhas de busca com palavras-chave locais.
+- Campanhas de conversao para WhatsApp.
+- Separar campanhas por tipo de servico (horista, diario, mensal).
+
+Funil de aquisicao
+1) Atracao: SEO local, anuncios e conteudo.
+2) Conversao: landing page + WhatsApp.
+3) Qualificacao: triagem no atendimento digital.
+4) Fechamento: proposta e contrato digital.
+5) Retencao e indicacao: feedback e plano recorrente.
+
+Atendimento do lead
+- Resposta automatica imediata.
+- SLA humano em ate 5 minutos no horario comercial.
+- Registro de origem do lead no CRM.
+
+Tracking e dados
+- UTM em todas as campanhas.
+- Tagueamento por origem (rede social, Google, indicacao).
+- Painel semanal com leads, CPL e taxa de conversao.
+
+KPIs essenciais
+- Leads por canal.
+- Custo por lead (CPL) e CAC.
+- Taxa de conversao lead -> contrato.
+- Tempo medio de resposta.
+- Ticket medio e recorrencia.

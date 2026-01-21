@@ -1,12 +1,39 @@
-Conta bancária PJ
-Registro simples de entradas e saídas
-Controle de pagamentos de cuidadores
-Definição do modelo de cobrança:
-	Hora
-	Pacote
-	Mensalidade
-Separação financeira PF x PJ
-Nada de ERP gigante no início.
-Controle de pagamentos de cuidadores
-Definição de preço mínimo viável
-Processo de emissão de nota fiscal
+Financeiro Essencial
+
+Objetivo
+- Garantir controle de caixa, precificacao correta e repasses em dia.
+
+Estrutura basica
+- Conta bancaria PJ.
+- Separacao financeira PF x PJ.
+- Registro simples de entradas e saidas.
+- Nada de ERP gigante no inicio.
+
+Modelo de cobranca
+- Hora.
+- Pacote (ex.: X horas/mes).
+- Mensalidade (escala fixa).
+
+Precificacao
+- Definicao de preco minimo viavel.
+- Margem alvo por tipo de servico.
+- Comissao ou percentual do cuidador.
+
+Pagamentos e repasses
+- Controle de pagamentos de cuidadores.
+- Controle de recebimentos de clientes.
+- Prazos e regras de repasse.
+
+Meios de pagamento
+- Pix, boleto e cartao (quando disponivel).
+- Registro de comprovantes.
+
+Fiscal e notas
+- Processo de emissao de nota fiscal.
+- Conciliação bancaria e fechamento mensal.
+
+Relatorios e indicadores
+- Fluxo de caixa mensal.
+- Ticket medio e margem.
+- Inadimplencia.
+- Receita recorrente.

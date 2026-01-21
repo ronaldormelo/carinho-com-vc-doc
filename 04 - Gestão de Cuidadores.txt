@@ -1,18 +1,48 @@
-Esse é um ponto crítico que muita gente esquece
+Gestao de Cuidadores
 
-    Processo padrão de cadastro de cuidadores
-    Coleta de documentos (online)
-    Classificação por:
-		Tipo de cuidado
-		Disponibilidade
-		Região/bairro
-	
-	Termo de responsabilidade / contrato digital
-	Processo mínimo de curadoria / validação
-	Processo simples de ativação/desativação do cuidador
-	Banco de cuidadores pesquisável
-	Processo simples de feedback (nota/avaliação)
-	Processo de triagem digital
-	Registro mínimo de experiência
-	Canal de comunicação exclusivo para cuidadores
-	Registro de ocorrências ou intercorrências
+Objetivo
+- Formar e manter uma base confiavel, padronizada e escalavel de cuidadores.
+
+Pipeline do cuidador
+1) Captacao: redes, indicacoes e parcerias.
+2) Cadastro digital: dados pessoais, experiencia e disponibilidade.
+3) Coleta de documentos (online).
+4) Triagem e curadoria: validacao minima e avaliacao de perfil.
+5) Contrato digital e termo de responsabilidade.
+6) Ativacao e disponibilidade no banco.
+7) Alocacao e acompanhamento.
+8) Feedback e melhoria continua.
+
+Documentos basicos
+- Documento de identidade e CPF.
+- Comprovante de endereco.
+- Certificado de curso de cuidador (quando aplicavel).
+- Registro de experiencia anterior.
+
+Classificacao e segmentacao
+- Tipo de cuidado (idoso, PCD, TEA, pos-operatorio).
+- Disponibilidade (dias/horarios).
+- Regiao/bairro.
+- Nivel de experiencia e avaliacao pos-servico.
+
+Banco de cuidadores
+- Pesquisavel por filtros.
+- Atualizacao de disponibilidade em tempo real.
+- Historico de alocacoes e notas.
+
+Qualidade e compliance
+- Processo minimo de validacao.
+- Padrao de conduta, pontualidade e postura.
+- Registro de ocorrencias e intercorrencias.
+- Processo simples de ativacao/desativacao.
+
+Comunicacao e suporte
+- Canal exclusivo para cuidadores.
+- Comunicados operacionais e padroes de atendimento.
+- Orientacoes de inicio/fim de servico (check-in/out).
+
+Indicadores essenciais
+- Taxa de ativacao.
+- Taxa de ocupacao.
+- Tempo medio de reposicao.
+- Nota media pos-servico.

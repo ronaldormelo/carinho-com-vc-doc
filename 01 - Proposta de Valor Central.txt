@@ -1,145 +1,128 @@
-1. Proposta de Valor Central
+Proposta de Valor Central
 
- Definição
+Definicao
+A Carinho com Voce entrega cuidado domiciliar confiavel, rapido e sem burocracia,
+conectando familias a cuidadores qualificados por meio de um processo 100% digital,
+simples e transparente.
 
-A Carinho com Você entrega cuidado domiciliar confiável, rápido e sem burocracia, conectando famílias a cuidadores qualificados por meio de um processo 100% digital, simples e transparente.
+O que a empresa resolve melhor que outras
+- Reduz drasticamente o tempo e o esforco para contratar um cuidador.
+- Elimina processos manuais, ligacoes infinitas e visitas presenciais desnecessarias.
+- Oferece previsibilidade, continuidade e facilidade de reposicao de cuidadores.
+- Centraliza a operacao em canal digital (site + WhatsApp + CRM).
+- Mantem base unica de clientes e cuidadores com historico de atendimento.
 
- O que a empresa resolve melhor que outras
+Proposta de valor resumida (frase operacional)
+"Contratacao rapida e sem complicacao de cuidadores qualificados, com atendimento
+humanizado e gestao digital."
 
-   Reduz drasticamente o tempo e o esforço para contratar um cuidador.
-   Elimina processos manuais, ligações infinitas e visitas presenciais desnecessárias.
-   Oferece previsibilidade, continuidade e facilidade de reposição de cuidadores.
-   Centraliza toda a operação em um único canal digital (site + WhatsApp).
+Tipos de servico oferecidos
+- Horista: demandas pontuais, visitas curtas e acompanhamento eventual.
+- Diario: turnos diurnos ou noturnos recorrentes por semana.
+- Mensal: continuidade com escala definida e previsibilidade de custo.
 
- Proposta de valor resumida (frase operacional)
+Dores principais do cliente
+- Urgencia para iniciar o cuidado.
+- Inseguranca sobre confianca e qualidade do cuidador.
+- Falta de continuidade e dificuldade de substituicao.
+- Burocracia e falta de transparencia.
 
-“Contratação rápida e sem complicação de cuidadores qualificados, com atendimento humanizado e gestão digital.”
+Beneficios para o cliente
+- Resposta rapida e canal unico (WhatsApp).
+- Curadoria de cuidadores e validacao basica.
+- Substituicao em caso de ausencia.
+- Contrato digital e historico de atendimento.
 
-Definir tipos de serviço oferecidos
-		Horista
-		Diário
-		Mensal
+Beneficios para o cuidador
+- Mais oportunidades com recorrencia.
+- Processo claro de cadastro e criterios de avaliacao.
+- Canal de suporte e regras padronizadas.
 
- Por que essa proposta gera lucro
+Garantias operacionais
+- SLA de primeira resposta no WhatsApp.
+- Confirmacao de agenda e check-in/out.
+- Feedback pos-servico e melhoria continua.
 
-   Foco em urgência acelera fechamento.
-   Foco em recorrência dilui custo de aquisição.
-   Operação digital reduz custo fixo.
-   Curadoria simples de cuidadores evita retrabalho.
+Modelo de receita
+- Margem sobre horas, diarias ou mensalidades.
+- Possibilidade de taxa de ativacao/onboarding.
+- Comissao percentual sobre cada atendimento.
 
-2. Perfil de Cliente Ideal (ICP – Ideal Customer Profile)
+Perfil de Cliente Ideal (ICP - Ideal Customer Profile)
+Definicao
+- Familias que precisam de cuidado domiciliar continuo ou recorrente e valorizam
+  comodidade, rapidez e seguranca, mais do que preco baixo.
 
- Definição
+Caracteristicas principais
+- Renda familiar: acima de R$ 10.000/mes
+- Situacao:
+  - Idoso com necessidade de acompanhamento
+  - Pessoa com limitacao de mobilidade
+  - Paciente em recuperacao
+  - Pessoa com TEA ou necessidades especiais
+- Urgencia:
+  - Demanda imediata ou em curto prazo
+- Recorrencia:
+  - Turnos frequentes ou continuidade semanal/mensal
 
-	Famílias que precisam de cuidado domiciliar contínuo ou recorrente e valorizam comodidade, rapidez e segurança, mais do que preço baixo.
+Comportamento
+- Prefere pagar mais para evitar dor de cabeca.
+- Usa WhatsApp como principal canal.
+- Valoriza confianca e indicacao.
+- Nao quer lidar com burocracia nem selecao manual.
 
- Características principais
+Criterios de exclusao (importante para lucro)
+- Familias extremamente sensiveis a preco.
+- Demandas esporadicas sem recorrencia.
+- Clientes que exigem negociacao excessiva.
 
-   Renda familiar: acima de R$ 10.000/mês
-   Situação:
-       Idoso com necessidade de acompanhamento
-       Pessoa com limitação de mobilidade
-       Paciente em recuperação
-       Pessoa com TEA ou necessidades especiais
-   Urgência:
-       Demanda imediata ou em curto prazo
-   Recorrência:
-       Turnos frequentes ou continuidade semanal/mensal
+Por que esse perfil e estrategico
+- Ticket medio maior.
+- Menor churn.
+- Menos esforco por real faturado.
+- Justifica processos mais simples e automacao.
 
- Comportamento
+Perfil de Cuidador Ideal
+Definicao
+- Profissionais que buscam continuidade de trabalho, aceitam operar dentro de um
+  modelo digital e seguem padroes definidos de conduta e disponibilidade.
 
-   Prefere pagar mais para evitar dor de cabeça
-   Usa WhatsApp como principal canal
-   Valoriza confiança e indicação
-   Não quer lidar com burocracia nem seleção manual
+Requisitos minimos
+- Experiencia: minimo de 1 ano comprovado.
+- Formacao: curso de cuidador de idosos ou equivalente.
+- Postura: profissional, pontual e comunicacao clara.
+- Disponibilidade: informada no cadastro, atualizavel a qualquer momento.
 
- Critério de exclusão (importante para lucro)
+Diferencial estrategico
+- Plataforma nao depende apenas de cuidadores "prontos".
+- Formacao interna cria padronizacao, fidelizacao e oferta constante.
 
-   Famílias extremamente sensíveis a preço
-   Demandas esporádicas sem recorrência
-   Clientes que exigem negociação excessiva
+Classificacao automatica
+- Tipo de cuidado.
+- Disponibilidade (dias/horarios).
+- Regiao.
+- Avaliacao pos-servico.
+- Nivel de experiencia.
 
- Por que esse perfil é estratégico
+Por que esse perfil reduz custo e esforco
+- Menos retrabalho de substituicao.
+- Melhor aderencia aos clientes.
+- Base organizada e escalavel.
+- Possibilidade de cobranca de taxa, retencao ou comissao.
 
-   Ticket médio maior
-   Menor churn
-   Menos esforço por real faturado
-   Justifica processos mais simples e automação
+Resumo operacional (para tomada de decisao)
+Cliente ideal: entrega previsibilidade, recorrencia e menor esforco comercial.
+Cuidador ideal: entrega padronizacao, disponibilidade e escala.
+Proposta de valor: conecta os dois com o minimo de intervencao humana.
 
+Fluxo ponta a ponta
+Lead -> triagem -> proposta -> contrato -> alocacao -> execucao -> feedback -> renovacao.
 
-
- 3. Perfil de Cuidador Ideal
-
- Definição
-
-Profissionais que buscam continuidade de trabalho, aceitam operar dentro de um modelo digital e seguem padrões definidos de conduta e disponibilidade.
-
- Requisitos mínimos
-
-   Experiência: mínimo de 1 ano comprovado
-   Formação:
-       Curso de cuidador de idosos ou equivalente
-       Caso não possua, disponibilização de curso pela própria plataforma
-   Postura:
-       Profissional
-       Pontual
-       Comunicação clara
-   Disponibilidade:
-       Informada pelo próprio cuidador no cadastro
-       Pode ser fixa ou flexível
-       Atualizável a qualquer momento
-
- Diferencial estratégico
-
-   Plataforma não depende apenas de cuidadores “prontos”
-   Formação interna cria:
-       Padronização
-       Fidelização
-       Oferta constante de profissionais
-
- Classificação automática
-
-Cuidadores devem ser categorizados por:
-
-   Tipo de cuidado
-   Disponibilidade (dias/horários)
-   Região
-   Avaliação pós-serviço
-
- Por que esse perfil reduz custo e esforço
-
-   Menos retrabalho de substituição
-   Melhor aderência aos clientes
-   Base organizada e escalável
-   Possibilidade de cobrança de taxa, retenção ou comissão
-
-
-
- Resumo Operacional (para tomada de decisão)
-
-Cliente ideal  
-Entrega previsibilidade, recorrência e menor esforço comercial.
-
-Cuidador ideal  
-Entrega padronização, disponibilidade e escala.
-
-Proposta de valor  
-Conecta os dois com o mínimo possível de intervenção humana.
-
-
-
- Próximo passo lógico
-
-Se você quiser, o próximo nível seria:
-
-   Traduzir essas definições em:
-       Texto de site
-       Script de atendimento no WhatsApp
-       Critérios automáticos de aceite ou recusa
-   Definir:
-       Modelo de precificação
-       Percentual de margem
-       Regra de comissionamento
-   Criar um fluxo end-to-end:
-    Lead → contratação → alocação → pagamento → feedback
+KPIs essenciais
+- Tempo medio de resposta.
+- Taxa de conversao lead -> contrato.
+- Ticket medio e margem.
+- Taxa de ocupacao de cuidadores.
+- NPS e satisfacao do cliente.
+- Taxa de reposicao/substituicao.
 

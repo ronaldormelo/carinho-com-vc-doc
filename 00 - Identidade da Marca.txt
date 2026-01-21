@@ -1,14 +1,46 @@
 Identidade da Marca
-Você já mapeou bem, só vale estruturar melhor:
 
-Criar logomarca
-Criar slogan
-Definir tom de voz da marca
-    Humano, acolhedor, profissional, simples
+Nome da marca: Carinho com Você
+Dominio: carinho.com.vc
 
-Definir paleta de cores e tipografia
-Criar kit de marca simples
-    Logo
-    Paleta
-    Tipografia
-    Versões para redes sociais
+Proposito
+- Tornar o cuidado domiciliar simples, humano e confiavel.
+- Reduzir o esforco da familia para encontrar cuidadores qualificados.
+
+Promessa central
+- Atendimento rapido, transparente e com continuidade.
+
+Personalidade da marca
+- Humana e acolhedora
+- Profissional e segura
+- Simples e direta
+- Confiavel e responsavel
+
+Tom de voz
+- Empatico, respeitoso e objetivo.
+- Linguagem simples, sem jargoes tecnicos.
+- Evitar termos que infantilizem o idoso ou o cuidador.
+
+Mensagens-chave
+- Contratacao rapida e sem complicacao.
+- Cuidadores qualificados e avaliados.
+- Atendimento digital com suporte humano.
+- Substituicao facilitada quando necessario.
+
+Elementos visuais
+- Logomarca: legivel em tamanhos pequenos e aplicada em digital.
+- Paleta: tons suaves que transmitam confianca e calma.
+- Tipografia: fonte sans-serif, alta legibilidade.
+
+Kit de marca (entregaveis)
+- Logo principal e versoes reduzidas.
+- Paleta de cores com codigos.
+- Tipografia primaria e secundaria.
+- Icones e padroes visuais.
+- Template para posts e stories.
+- Assinatura de e-mail e cartao digital.
+
+Aplicacoes prioritarias
+- Site e WhatsApp.
+- Redes sociais e Google Meu Negocio.
+- Propostas comerciais, contratos e formularios.

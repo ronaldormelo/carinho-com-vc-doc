@@ -1,8 +1,39 @@
-Cadastro único e estruturado de cliente
-Registro de condições especiais
-Histórico de atendimentos e serviços realizados
-Tipo de necessidade (idoso, PCD, autismo etc...)
-Preferências de horário e profissional
-Canal único de comunicação (WhatsApp oficial)
-Processo padrão de feedback pós-atendimento
-Termo de prestação de serviço aceito digitalmente
+Gestao de Clientes
+
+Objetivo
+- Garantir cadastro estruturado, acompanhamento do cuidado e alto nivel de satisfacao.
+
+Cadastro e onboarding
+- Cadastro unico e estruturado do cliente.
+- Registro de condicoes especiais e necessidades.
+- Dados do responsavel financeiro e contato de emergencia.
+- Preferencias de horario e profissional.
+- Consentimento LGPD e aceite digital do contrato.
+
+Plano de cuidado
+- Tipo de servico (horista, diario, mensal).
+- Rotina desejada e principais tarefas.
+- Restricoes medicas e observacoes relevantes.
+- Preferencias de comunicacao e contato.
+
+Comunicacao
+- Canal unico (WhatsApp oficial).
+- Notificacoes de inicio e fim do atendimento.
+- Atualizacoes sobre substituicoes e ajustes de escala.
+
+Historico e qualidade
+- Historico de atendimentos e servicos realizados.
+- Registro de feedback pos-servico.
+- Registro de ocorrencias ou intercorrencias.
+- Plano de melhoria quando houver avaliacao baixa.
+
+Retencao e renovacao
+- Revisao periodica do plano.
+- Oferta de continuidade e pacote recorrente.
+- Programa de indicacao com beneficio.
+
+Indicadores essenciais
+- NPS e satisfacao.
+- Taxa de renovacao.
+- Tempo medio de resposta.
+- Numero de ocorrencias por periodo.
