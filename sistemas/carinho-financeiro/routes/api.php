@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ReconciliationController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,5 +124,38 @@ Route::middleware(['verify.internal.token'])->group(function () {
         Route::post('/{bankAccount}/set-default', [BankAccountController::class, 'setDefault']);
         Route::post('/{bankAccount}/verify', [BankAccountController::class, 'verify']);
         Route::delete('/{bankAccount}', [BankAccountController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configurações (Settings)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('settings')->group(function () {
+        // Listagem
+        Route::get('/', [SettingController::class, 'index']);
+        Route::get('/categories', [SettingController::class, 'categories']);
+        Route::get('/category/{categoryCode}', [SettingController::class, 'byCategory']);
+        Route::get('/public', [SettingController::class, 'publicSettings']);
+        Route::get('/history', [SettingController::class, 'allHistory']);
+        
+        // Configurações específicas por área
+        Route::get('/config/payment', [SettingController::class, 'paymentConfig']);
+        Route::get('/config/cancellation', [SettingController::class, 'cancellationConfig']);
+        Route::get('/config/commission', [SettingController::class, 'commissionConfig']);
+        Route::get('/config/pricing', [SettingController::class, 'pricingConfig']);
+        Route::get('/config/margin', [SettingController::class, 'marginConfig']);
+        Route::get('/config/payout', [SettingController::class, 'payoutConfig']);
+        
+        // Operações de uma configuração
+        Route::get('/{key}', [SettingController::class, 'show']);
+        Route::put('/{key}', [SettingController::class, 'update']);
+        Route::post('/{key}/restore', [SettingController::class, 'restoreDefault']);
+        Route::get('/{key}/history', [SettingController::class, 'history']);
+        
+        // Operações em lote
+        Route::put('/', [SettingController::class, 'updateMany']);
+        Route::post('/category/{categoryCode}/restore', [SettingController::class, 'restoreCategoryDefaults']);
+        Route::post('/cache/clear', [SettingController::class, 'clearCache']);
     });
 });

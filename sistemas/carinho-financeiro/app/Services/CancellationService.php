@@ -3,21 +3,27 @@
 namespace App\Services;
 
 use App\Models\Invoice;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 /**
  * Serviço de Políticas de Cancelamento.
  *
- * Implementa as regras de cancelamento definidas em config/financeiro.php:
+ * Implementa as regras de cancelamento configuradas no banco de dados:
  * - Cancelamento sem custo: até 24h antes do serviço
  * - Reembolso parcial (50%): entre 12h e 24h antes
  * - Sem reembolso: menos de 6h antes
  * - Taxa administrativa: 5% para todos os cancelamentos com reembolso
  * - Cancelamento pelo cuidador: reembolso total ao cliente
+ *
+ * As configurações são obtidas do banco de dados via SettingService.
  */
 class CancellationService
 {
+    public function __construct(
+        protected SettingService $settingService
+    ) {}
     /**
      * Processa cancelamento de fatura e calcula reembolso.
      */
@@ -53,10 +59,15 @@ class CancellationService
      */
     public function determineRefundPolicy(float $hoursUntilService): array
     {
-        $config = config('financeiro.cancellation');
+        // Busca configurações do banco de dados
+        $freeHours = $this->settingService->get(Setting::KEY_CANCEL_FREE_HOURS, 24);
+        $partialHours = $this->settingService->get(Setting::KEY_CANCEL_PARTIAL_HOURS, 12);
+        $partialPercent = $this->settingService->get(Setting::KEY_CANCEL_PARTIAL_PERCENT, 50);
+        $noRefundHours = $this->settingService->get(Setting::KEY_CANCEL_NO_REFUND_HOURS, 6);
+        $adminFee = $this->settingService->get(Setting::KEY_CANCEL_ADMIN_FEE, 5);
 
         // Cancelamento com antecedência suficiente: reembolso total
-        if ($hoursUntilService >= $config['free_cancellation_hours']) {
+        if ($hoursUntilService >= $freeHours) {
             return [
                 'type' => 'full_refund',
                 'refund_percent' => 100,
@@ -66,18 +77,17 @@ class CancellationService
         }
 
         // Reembolso parcial
-        if ($hoursUntilService >= $config['no_refund_hours'] 
-            && $hoursUntilService < $config['partial_refund']['hours_before']) {
+        if ($hoursUntilService >= $noRefundHours && $hoursUntilService < $partialHours) {
             return [
                 'type' => 'partial_refund',
-                'refund_percent' => $config['partial_refund']['refund_percent'],
-                'admin_fee_percent' => $config['admin_fee_percent'],
+                'refund_percent' => $partialPercent,
+                'admin_fee_percent' => $adminFee,
                 'message' => 'Cancelamento com antecedência reduzida. Reembolso parcial aplicado.',
             ];
         }
 
         // Sem reembolso (muito próximo do serviço)
-        if ($hoursUntilService < $config['no_refund_hours']) {
+        if ($hoursUntilService < $noRefundHours) {
             return [
                 'type' => 'no_refund',
                 'refund_percent' => 0,
@@ -89,8 +99,8 @@ class CancellationService
         // Entre o período de reembolso parcial e cancelamento grátis
         return [
             'type' => 'partial_refund',
-            'refund_percent' => $config['partial_refund']['refund_percent'],
-            'admin_fee_percent' => $config['admin_fee_percent'],
+            'refund_percent' => $partialPercent,
+            'admin_fee_percent' => $adminFee,
             'message' => 'Reembolso parcial aplicado conforme política de cancelamento.',
         ];
     }
@@ -224,26 +234,30 @@ class CancellationService
      */
     public function getPolicyExplanation(): array
     {
-        $config = config('financeiro.cancellation');
+        $freeHours = $this->settingService->get(Setting::KEY_CANCEL_FREE_HOURS, 24);
+        $partialHours = $this->settingService->get(Setting::KEY_CANCEL_PARTIAL_HOURS, 12);
+        $partialPercent = $this->settingService->get(Setting::KEY_CANCEL_PARTIAL_PERCENT, 50);
+        $noRefundHours = $this->settingService->get(Setting::KEY_CANCEL_NO_REFUND_HOURS, 6);
+        $adminFee = $this->settingService->get(Setting::KEY_CANCEL_ADMIN_FEE, 5);
 
         return [
             'title' => 'Política de Cancelamento',
             'rules' => [
                 [
-                    'period' => "Mais de {$config['free_cancellation_hours']}h antes",
+                    'period' => "Mais de {$freeHours}h antes",
                     'refund' => 'Reembolso total (100%)',
                 ],
                 [
-                    'period' => "Entre {$config['no_refund_hours']}h e {$config['partial_refund']['hours_before']}h antes",
-                    'refund' => "Reembolso parcial ({$config['partial_refund']['refund_percent']}%)",
+                    'period' => "Entre {$noRefundHours}h e {$partialHours}h antes",
+                    'refund' => "Reembolso parcial ({$partialPercent}%)",
                 ],
                 [
-                    'period' => "Menos de {$config['no_refund_hours']}h antes",
+                    'period' => "Menos de {$noRefundHours}h antes",
                     'refund' => 'Sem direito a reembolso',
                 ],
             ],
             'notes' => [
-                "Taxa administrativa de {$config['admin_fee_percent']}% aplica-se aos reembolsos parciais.",
+                "Taxa administrativa de {$adminFee}% aplica-se aos reembolsos parciais.",
                 'Cancelamentos por parte do cuidador garantem reembolso total ao cliente.',
             ],
         ];

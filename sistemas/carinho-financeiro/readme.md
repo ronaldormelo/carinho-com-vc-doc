@@ -66,6 +66,13 @@ Sistema de controle financeiro completo para a plataforma Carinho com Você. Res
 - Indicadores financeiros (ticket médio, inadimplência, margem)
 - Alertas de discrepância
 
+### 9. Gestão de Configurações
+- Todas as configurações de valores e percentuais armazenadas no banco de dados
+- Alteração dinâmica sem necessidade de deploy
+- Histórico de todas as alterações com auditoria
+- Cache para performance
+- Categorias organizadas: Pagamento, Cancelamento, Comissões, Precificação, etc.
+
 ## Políticas Financeiras
 
 ### Política de Pagamento
@@ -179,6 +186,18 @@ carinho-financeiro/
 - `GET /api/reconciliation/cash-flow` - Fluxo de caixa
 - `GET /api/reconciliation/indicators` - Indicadores financeiros
 
+### Configurações
+- `GET /api/settings` - Lista todas configurações
+- `GET /api/settings/categories` - Lista categorias
+- `GET /api/settings/category/{code}` - Configurações de uma categoria
+- `GET /api/settings/{key}` - Detalhes de uma configuração
+- `PUT /api/settings/{key}` - Atualiza configuração
+- `POST /api/settings/{key}/restore` - Restaura valor padrão
+- `GET /api/settings/{key}/history` - Histórico de alterações
+- `GET /api/settings/config/commission` - Configurações de comissão
+- `GET /api/settings/config/pricing` - Configurações de preço
+- `GET /api/settings/config/cancellation` - Política de cancelamento
+
 ## Jobs Agendados
 
 | Job | Frequência | Descrição |
@@ -195,7 +214,38 @@ carinho-financeiro/
 3. Configure as variáveis de ambiente (Stripe, Z-API, banco)
 4. Execute `composer install`
 5. Execute `php artisan migrate`
-6. Configure as filas com `php artisan horizon`
+6. Execute `php artisan db:seed --class=SettingsSeeder` para criar configurações padrão
+7. Configure as filas com `php artisan horizon`
+
+## Gestão de Configurações
+
+As configurações de valores e percentuais são armazenadas no banco de dados, permitindo alterações dinâmicas sem deploy:
+
+### Categorias de Configuração
+
+| Categoria | Descrição |
+|-----------|-----------|
+| `payment` | Prazos e encargos de pagamento |
+| `cancellation` | Políticas de cancelamento e reembolso |
+| `commission` | Percentuais de comissão por tipo de serviço |
+| `pricing` | Valores base e adicionais |
+| `margin` | Margens mínima e alvo |
+| `payout` | Configurações de repasse |
+| `fiscal` | Configurações fiscais |
+| `limits` | Limites de crédito e inadimplência |
+| `bonus` | Bônus por avaliação e tempo de casa |
+
+### Exemplo de Alteração via API
+
+```bash
+# Alterar comissão do cuidador horista para 72%
+curl -X PUT https://financeiro.carinho.com.vc/api/settings/commission_horista \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{"value": 72, "reason": "Ajuste de mercado"}'
+
+# Consultar histórico de alterações
+curl https://financeiro.carinho.com.vc/api/settings/commission_horista/history
+```
 
 ## Segurança
 

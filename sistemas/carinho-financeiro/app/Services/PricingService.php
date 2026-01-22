@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\DomainServiceType;
 use App\Models\PricePlan;
 use App\Models\PriceRule;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,9 +17,14 @@ use Illuminate\Support\Facades\Cache;
  * - Quantidade de horas/dias
  * - Adicionais (noturno, fim de semana, feriados)
  * - Descontos (pacotes, fidelidade)
+ *
+ * As configurações são obtidas do banco de dados via SettingService.
  */
 class PricingService
 {
+    public function __construct(
+        protected SettingService $settingService
+    ) {}
     /**
      * Calcula o preço total de um serviço.
      */
@@ -49,7 +55,7 @@ class PricingService
 
         // Adicional noturno (22h às 6h)
         if ($startTime && $this->hasNightHours($startTime, $endTime)) {
-            $nightSurcharge = config('financeiro.pricing.night_surcharge', 20);
+            $nightSurcharge = $this->settingService->get(Setting::KEY_PRICING_NIGHT_SURCHARGE, 20);
             $nightAmount = $subtotal * ($nightSurcharge / 100);
             $adjustments[] = [
                 'type' => 'night_surcharge',
@@ -62,7 +68,7 @@ class PricingService
 
         // Adicional fim de semana
         if ($isWeekend) {
-            $weekendSurcharge = config('financeiro.pricing.weekend_surcharge', 30);
+            $weekendSurcharge = $this->settingService->get(Setting::KEY_PRICING_WEEKEND_SURCHARGE, 30);
             $weekendAmount = ($basePrice * $qty) * ($weekendSurcharge / 100);
             $adjustments[] = [
                 'type' => 'weekend_surcharge',
@@ -75,7 +81,7 @@ class PricingService
 
         // Adicional feriado
         if ($isHoliday) {
-            $holidaySurcharge = config('financeiro.pricing.holiday_surcharge', 50);
+            $holidaySurcharge = $this->settingService->get(Setting::KEY_PRICING_HOLIDAY_SURCHARGE, 50);
             $holidayAmount = ($basePrice * $qty) * ($holidaySurcharge / 100);
             $adjustments[] = [
                 'type' => 'holiday_surcharge',
@@ -88,7 +94,7 @@ class PricingService
 
         // Desconto pacote mensal
         if ($isMonthlyPackage) {
-            $monthlyDiscount = config('financeiro.pricing.monthly_discount', 10);
+            $monthlyDiscount = $this->settingService->get(Setting::KEY_PRICING_MONTHLY_DISCOUNT, 10);
             $discountAmount = $subtotal * ($monthlyDiscount / 100);
             $adjustments[] = [
                 'type' => 'monthly_discount',
@@ -100,14 +106,13 @@ class PricingService
         }
 
         // Garante preço mínimo
-        $minHourly = config('financeiro.pricing.minimum_hourly', 35);
+        $minHourly = $this->settingService->get(Setting::KEY_PRICING_MIN_HOURLY, 35);
         $minTotal = $minHourly * $qty;
         $total = max($subtotal, $minTotal);
 
         // Calcula comissões
         $serviceType = DomainServiceType::find($serviceTypeId);
-        $caregiverPercent = $serviceType?->getCaregiverCommissionPercent() 
-            ?? config('financeiro.commission.caregiver_percent', 70);
+        $caregiverPercent = $this->getCaregiverCommissionPercent($serviceType);
         
         $caregiverAmount = round($total * ($caregiverPercent / 100), 2);
         $companyAmount = round($total - $caregiverAmount, 2);
@@ -176,39 +181,49 @@ class PricingService
     }
 
     /**
-     * Obtém preço base da configuração.
+     * Obtém preço base da configuração (banco de dados).
      */
     protected function getConfigBasePrice(int $serviceTypeId): float
     {
         $serviceType = DomainServiceType::find($serviceTypeId);
         
         if (!$serviceType) {
-            return config('financeiro.pricing.minimum_hourly', 35);
+            return $this->settingService->get(Setting::KEY_PRICING_MIN_HOURLY, 35);
         }
 
-        $pricing = config('financeiro.pricing.base');
-        
         return match ($serviceType->code) {
-            'horista' => $pricing['horista']['price_per_hour'] ?? 50,
-            'diario' => ($pricing['diario']['price_per_day'] ?? 300) / ($pricing['diario']['hours_per_day'] ?? 12),
-            'mensal' => $this->calculateMonthlyHourlyRate($pricing['mensal'] ?? []),
-            default => config('financeiro.pricing.minimum_hourly', 35),
+            'horista' => $this->settingService->get(Setting::KEY_PRICING_HORISTA_HOUR, 50),
+            'diario' => $this->settingService->get(Setting::KEY_PRICING_DIARIO_DAY, 300) / 12,
+            'mensal' => $this->calculateMonthlyHourlyRate(),
+            default => $this->settingService->get(Setting::KEY_PRICING_MIN_HOURLY, 35),
         };
     }
 
     /**
      * Calcula taxa horária para plano mensal.
      */
-    protected function calculateMonthlyHourlyRate(array $mensalConfig): float
+    protected function calculateMonthlyHourlyRate(): float
     {
-        $monthlyPrice = $mensalConfig['price_per_month'] ?? 6000;
-        $daysPerWeek = $mensalConfig['days_per_week'] ?? 5;
-        $hoursPerDay = $mensalConfig['hours_per_day'] ?? 8;
+        $monthlyPrice = $this->settingService->get(Setting::KEY_PRICING_MENSAL_MONTH, 6000);
+        $daysPerWeek = 5;
+        $hoursPerDay = 8;
         
         $weeksPerMonth = 4.33; // Média
         $hoursPerMonth = $daysPerWeek * $hoursPerDay * $weeksPerMonth;
 
         return $monthlyPrice / $hoursPerMonth;
+    }
+
+    /**
+     * Obtém percentual de comissão do cuidador.
+     */
+    protected function getCaregiverCommissionPercent(?DomainServiceType $serviceType): float
+    {
+        if (!$serviceType) {
+            return $this->settingService->get(Setting::KEY_COMMISSION_DEFAULT, 70);
+        }
+
+        return $this->settingService->getCaregiverCommission($serviceType->code);
     }
 
     /**
@@ -249,8 +264,8 @@ class PricingService
     {
         $margin = $price - $cost;
         $marginPercent = $price > 0 ? ($margin / $price) * 100 : 0;
-        $minMargin = config('financeiro.margin.minimum', 25);
-        $targetMargin = config('financeiro.margin.target', 30);
+        $minMargin = $this->settingService->get(Setting::KEY_MARGIN_MINIMUM, 25);
+        $targetMargin = $this->settingService->get(Setting::KEY_MARGIN_TARGET, 30);
 
         return [
             'price' => $price,
@@ -269,13 +284,13 @@ class PricingService
      */
     public function calculateMinimumViablePrice(float $caregiverCost): float
     {
-        $targetMargin = config('financeiro.margin.target', 30) / 100;
+        $targetMargin = $this->settingService->get(Setting::KEY_MARGIN_TARGET, 30) / 100;
         
         // Preço = Custo / (1 - Margem)
         $minPrice = $caregiverCost / (1 - $targetMargin);
 
         // Garante preço mínimo absoluto
-        $absoluteMin = config('financeiro.pricing.minimum_hourly', 35);
+        $absoluteMin = $this->settingService->get(Setting::KEY_PRICING_MIN_HOURLY, 35);
         
         return max(round($minPrice, 2), $absoluteMin);
     }

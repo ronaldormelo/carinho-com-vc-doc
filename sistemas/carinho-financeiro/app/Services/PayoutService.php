@@ -13,6 +13,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Payout;
 use App\Models\PayoutItem;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -25,11 +26,14 @@ use Illuminate\Support\Facades\Log;
  * - Aplicar comissões por tipo de serviço
  * - Processar transferências via Stripe Connect
  * - Gerenciar ciclo de repasses
+ *
+ * As configurações são obtidas do banco de dados via SettingService.
  */
 class PayoutService
 {
     public function __construct(
-        protected StripeClient $stripeClient
+        protected StripeClient $stripeClient,
+        protected SettingService $settingService
     ) {}
 
     /**
@@ -80,10 +84,11 @@ class PayoutService
      */
     protected function addPayoutItem(Payout $payout, InvoiceItem $invoiceItem): PayoutItem
     {
-        // Obtém percentual de comissão do cuidador
+        // Obtém percentual de comissão do cuidador do banco de dados
         $serviceType = $invoiceItem->serviceType;
-        $commissionPercent = $serviceType?->getCaregiverCommissionPercent()
-            ?? config('financeiro.commission.caregiver_percent', 70);
+        $commissionPercent = $serviceType 
+            ? $this->settingService->getCaregiverCommission($serviceType->code)
+            : $this->settingService->get(Setting::KEY_COMMISSION_DEFAULT, 70);
 
         // Aplica bonus por avaliação (se aplicável)
         $commissionPercent = $this->applyRatingBonus($payout->caregiver_id, $commissionPercent);
@@ -276,17 +281,18 @@ class PayoutService
      */
     protected function applyRatingBonus(int $caregiverId, float $basePercent): float
     {
-        $ratingConfig = config('financeiro.commission.rating_bonus');
+        $minRating = $this->settingService->get(Setting::KEY_BONUS_RATING_MIN, 4.5);
+        $bonusPercent = $this->settingService->get(Setting::KEY_BONUS_RATING_PERCENT, 2.0);
         
-        if (!$ratingConfig) {
+        if (!$minRating || !$bonusPercent) {
             return $basePercent;
         }
 
         // Aqui seria integrado com o sistema de cuidadores para obter a avaliação
         // Por enquanto, retorna a base
         // $rating = $this->cuidadoresClient->getCaregiverRating($caregiverId);
-        // if ($rating >= $ratingConfig['min_rating']) {
-        //     return $basePercent + $ratingConfig['bonus_percent'];
+        // if ($rating >= $minRating) {
+        //     return $basePercent + $bonusPercent;
         // }
 
         return $basePercent;
@@ -297,21 +303,16 @@ class PayoutService
      */
     protected function applyTenureBonus(int $caregiverId, float $basePercent): float
     {
-        $tenureConfig = config('financeiro.commission.tenure_bonus');
+        $bonus6m = $this->settingService->get(Setting::KEY_BONUS_TENURE_6M, 1.0);
+        $bonus12m = $this->settingService->get(Setting::KEY_BONUS_TENURE_12M, 2.0);
+        $bonus24m = $this->settingService->get(Setting::KEY_BONUS_TENURE_24M, 3.0);
         
-        if (!$tenureConfig) {
-            return $basePercent;
-        }
-
         // Aqui seria integrado com o sistema de cuidadores para obter tempo de casa
         // Por enquanto, retorna a base
         // $months = $this->cuidadoresClient->getCaregiverTenure($caregiverId);
-        // foreach ($tenureConfig as $period => $bonus) {
-        //     $requiredMonths = (int) str_replace('_months', '', $period);
-        //     if ($months >= $requiredMonths) {
-        //         return $basePercent + $bonus;
-        //     }
-        // }
+        // if ($months >= 24) return $basePercent + $bonus24m;
+        // if ($months >= 12) return $basePercent + $bonus12m;
+        // if ($months >= 6) return $basePercent + $bonus6m;
 
         return $basePercent;
     }
@@ -324,22 +325,30 @@ class PayoutService
         $serviceType = DomainServiceType::find($serviceTypeId);
         
         if (!$serviceType) {
+            $defaultPercent = $this->settingService->get(Setting::KEY_COMMISSION_DEFAULT, 70);
             return [
                 'service_type' => 'Não encontrado',
-                'caregiver_percent' => config('financeiro.commission.caregiver_percent', 70),
-                'company_percent' => config('financeiro.commission.company_percent', 30),
+                'caregiver_percent' => $defaultPercent,
+                'company_percent' => 100 - $defaultPercent,
             ];
         }
 
-        $caregiverPercent = $serviceType->getCaregiverCommissionPercent();
+        $caregiverPercent = $this->settingService->getCaregiverCommission($serviceType->code);
         
         return [
             'service_type' => $serviceType->label,
             'service_type_code' => $serviceType->code,
             'caregiver_percent' => $caregiverPercent,
             'company_percent' => 100 - $caregiverPercent,
-            'rating_bonus' => config('financeiro.commission.rating_bonus'),
-            'tenure_bonus' => config('financeiro.commission.tenure_bonus'),
+            'rating_bonus' => [
+                'min_rating' => $this->settingService->get(Setting::KEY_BONUS_RATING_MIN, 4.5),
+                'bonus_percent' => $this->settingService->get(Setting::KEY_BONUS_RATING_PERCENT, 2.0),
+            ],
+            'tenure_bonus' => [
+                '6_months' => $this->settingService->get(Setting::KEY_BONUS_TENURE_6M, 1.0),
+                '12_months' => $this->settingService->get(Setting::KEY_BONUS_TENURE_12M, 2.0),
+                '24_months' => $this->settingService->get(Setting::KEY_BONUS_TENURE_24M, 3.0),
+            ],
         ];
     }
 }

@@ -169,6 +169,7 @@ class Invoice extends Model
 
     /**
      * Calcula o total com juros e multas.
+     * Busca configurações do banco de dados via SettingService.
      */
     public function getTotalWithFeesAttribute(): float
     {
@@ -182,8 +183,11 @@ class Invoice extends Model
         }
 
         $daysOverdue = abs($daysOverdue);
-        $lateFeeDaily = config('financeiro.payment.late_fee_daily', 0.033);
-        $latePenalty = config('financeiro.payment.late_penalty', 2.0);
+        
+        // Busca configurações do banco de dados
+        $settingService = app(\App\Services\SettingService::class);
+        $lateFeeDaily = $settingService->get(\App\Models\Setting::KEY_PAYMENT_LATE_FEE_DAILY, 0.033);
+        $latePenalty = $settingService->get(\App\Models\Setting::KEY_PAYMENT_LATE_PENALTY, 2.0);
 
         $interest = $this->total_amount * ($lateFeeDaily / 100) * $daysOverdue;
         $penalty = $this->total_amount * ($latePenalty / 100);

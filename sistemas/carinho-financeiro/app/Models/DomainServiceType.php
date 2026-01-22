@@ -36,12 +36,11 @@ class DomainServiceType extends Model
 
     /**
      * Retorna o percentual de comissão do cuidador para este tipo de serviço.
+     * Busca do banco de dados via SettingService.
      */
     public function getCaregiverCommissionPercent(): float
     {
-        $commissions = config('financeiro.commission.by_service_type');
-        
-        return $commissions[$this->code]['caregiver_percent'] 
-            ?? config('financeiro.commission.caregiver_percent', 70);
+        $settingService = app(\App\Services\SettingService::class);
+        return $settingService->getCaregiverCommission($this->code);
     }
 }

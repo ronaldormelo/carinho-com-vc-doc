@@ -9,6 +9,7 @@ use App\Events\InvoicePaid;
 use App\Models\DomainInvoiceStatus;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,12 +22,15 @@ use Illuminate\Support\Facades\Log;
  * - Calcular valores e taxas
  * - Aplicar políticas de cancelamento
  * - Gerenciar ciclo de vida da fatura
+ *
+ * As configurações são obtidas do banco de dados via SettingService.
  */
 class InvoiceService
 {
     public function __construct(
         protected PricingService $pricingService,
-        protected CancellationService $cancellationService
+        protected CancellationService $cancellationService,
+        protected SettingService $settingService
     ) {}
 
     /**
@@ -35,8 +39,8 @@ class InvoiceService
     public function createInvoice(array $data): Invoice
     {
         return DB::transaction(function () use ($data) {
-            // Calcula data de vencimento (sempre adiantado)
-            $advanceHours = config('financeiro.payment.advance_hours', 24);
+            // Calcula data de vencimento (sempre adiantado) - busca do banco de dados
+            $advanceHours = $this->settingService->get(Setting::KEY_PAYMENT_ADVANCE_HOURS, 24);
             $serviceDate = isset($data['service_date']) 
                 ? Carbon::parse($data['service_date']) 
                 : now()->addDays(3);
