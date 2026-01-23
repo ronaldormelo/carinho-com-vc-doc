@@ -1,10 +1,11 @@
 # Carinho Financeiro
 
-**Subdomínio:** financeiro.carinho.com.vc
+**Subdomínio:** financeiro.carinho.com.vc  
+**Versão:** 2.0
 
 ## Descrição
 
-Sistema de controle financeiro completo para a plataforma Carinho com Você. Responsável por gerenciar todo o ciclo financeiro: cobrança de clientes, processamento de pagamentos, repasses aos cuidadores, precificação e conciliação bancária.
+Sistema de controle financeiro completo para a plataforma Carinho com Você. Responsável por gerenciar todo o ciclo financeiro: cobrança de clientes, processamento de pagamentos, repasses aos cuidadores, precificação, conciliação bancária, controle de fluxo de caixa, gestão de contas a pagar, relatórios gerenciais e workflow de aprovações.
 
 ## Stack Tecnológica
 
@@ -72,6 +73,38 @@ Sistema de controle financeiro completo para a plataforma Carinho com Você. Res
 - Histórico de todas as alterações com auditoria
 - Cache para performance
 - Categorias organizadas: Pagamento, Cancelamento, Comissões, Precificação, etc.
+
+### 10. Fluxo de Caixa Detalhado (v2.0)
+- Registro de todas as movimentações financeiras
+- Categorização por tipo (Receita, Despesa) e categoria
+- Fluxo diário com saldo acumulado
+- Previsão de caixa baseada em faturas a vencer
+- Análise por categoria financeira
+
+### 11. Contas a Pagar (v2.0)
+- Gestão de obrigações da empresa
+- Controle de vencimentos e pagamentos
+- Categorização de despesas
+- Integração com fluxo de caixa
+
+### 12. Relatórios Gerenciais (v2.0)
+- DRE (Demonstrativo de Resultado do Exercício) simplificado
+- Aging de recebíveis com análise de risco
+- Análise de margem por tipo de serviço
+- KPIs financeiros (ticket médio, inadimplência, etc.)
+
+### 13. Provisões - PCLD (v2.0)
+- Cálculo automático de Provisão para Créditos de Liquidação Duvidosa
+- Percentuais por faixa de aging (consolidados de mercado)
+- Baixa e reversão de provisões
+- Análise de efetividade da provisão vs perdas reais
+
+### 14. Workflow de Aprovações (v2.0)
+- Controle de operações sensíveis por alçada
+- Aprovação automática dentro dos limites
+- Aprovação manual para valores acima do threshold
+- Expiração automática de solicitações pendentes
+- Métricas de aprovação
 
 ## Políticas Financeiras
 
@@ -197,6 +230,36 @@ carinho-financeiro/
 - `GET /api/settings/config/commission` - Configurações de comissão
 - `GET /api/settings/config/pricing` - Configurações de preço
 - `GET /api/settings/config/cancellation` - Política de cancelamento
+
+### Fluxo de Caixa (v2.0)
+- `GET /api/cash-flow/recent` - Transações recentes
+- `GET /api/cash-flow/balance` - Saldo do período
+- `GET /api/cash-flow/daily` - Fluxo diário
+- `GET /api/cash-flow/by-category` - Fluxo por categoria
+- `GET /api/cash-flow/forecast` - Previsão de caixa
+- `POST /api/cash-flow` - Registra transação manual
+
+### Relatórios (v2.0)
+- `GET /api/reports/dre` - Demonstrativo de Resultado
+- `GET /api/reports/aging` - Aging de recebíveis
+- `GET /api/reports/margin-by-service` - Margem por tipo de serviço
+- `GET /api/reports/kpis` - Indicadores financeiros
+
+### Provisões (v2.0)
+- `POST /api/provisions/pcld/calculate` - Calcula PCLD
+- `POST /api/provisions/pcld/recalculate` - Recalcula PCLD
+- `POST /api/provisions/pcld/write-off` - Baixa contra provisão
+- `GET /api/provisions/summary` - Resumo de provisões
+- `GET /api/provisions/effectiveness` - Análise de efetividade
+
+### Aprovações (v2.0)
+- `GET /api/approvals/pending` - Lista pendentes
+- `GET /api/approvals/check` - Verifica se requer aprovação
+- `GET /api/approvals/status` - Status de aprovação
+- `GET /api/approvals/metrics` - Métricas de aprovação
+- `POST /api/approvals/request` - Cria solicitação
+- `POST /api/approvals/{id}/approve` - Aprova solicitação
+- `POST /api/approvals/{id}/reject` - Rejeita solicitação
 
 ## Jobs Agendados
 

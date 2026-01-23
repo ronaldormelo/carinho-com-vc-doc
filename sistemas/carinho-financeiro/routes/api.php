@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\CashFlowController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\ProvisionController;
 use App\Http\Controllers\ReconciliationController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -157,5 +161,59 @@ Route::middleware(['verify.internal.token'])->group(function () {
         Route::put('/', [SettingController::class, 'updateMany']);
         Route::post('/category/{categoryCode}/restore', [SettingController::class, 'restoreCategoryDefaults']);
         Route::post('/cache/clear', [SettingController::class, 'clearCache']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fluxo de Caixa (Cash Flow)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('cash-flow')->group(function () {
+        Route::get('/recent', [CashFlowController::class, 'recent']);
+        Route::get('/balance', [CashFlowController::class, 'balance']);
+        Route::get('/daily', [CashFlowController::class, 'daily']);
+        Route::get('/by-category', [CashFlowController::class, 'byCategory']);
+        Route::get('/forecast', [CashFlowController::class, 'forecast']);
+        Route::post('/', [CashFlowController::class, 'store']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relatórios Financeiros (Reports)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('reports')->group(function () {
+        Route::get('/dre', [ReportController::class, 'dre']);
+        Route::get('/aging', [ReportController::class, 'aging']);
+        Route::get('/margin-by-service', [ReportController::class, 'marginByServiceType']);
+        Route::get('/kpis', [ReportController::class, 'kpis']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Provisões (Provisions)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('provisions')->group(function () {
+        Route::post('/pcld/calculate', [ProvisionController::class, 'calculatePCLD']);
+        Route::post('/pcld/recalculate', [ProvisionController::class, 'recalculatePCLD']);
+        Route::post('/pcld/write-off', [ProvisionController::class, 'writeOff']);
+        Route::get('/summary', [ProvisionController::class, 'summary']);
+        Route::get('/effectiveness', [ProvisionController::class, 'effectiveness']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Aprovações (Approvals)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('approvals')->group(function () {
+        Route::get('/pending', [ApprovalController::class, 'pending']);
+        Route::get('/check', [ApprovalController::class, 'check']);
+        Route::get('/status', [ApprovalController::class, 'status']);
+        Route::get('/metrics', [ApprovalController::class, 'metrics']);
+        Route::post('/request', [ApprovalController::class, 'request']);
+        Route::post('/{id}/approve', [ApprovalController::class, 'approve']);
+        Route::post('/{id}/reject', [ApprovalController::class, 'reject']);
     });
 });
