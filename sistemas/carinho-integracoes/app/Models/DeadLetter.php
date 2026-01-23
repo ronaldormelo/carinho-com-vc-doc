@@ -110,13 +110,43 @@ class DeadLetter extends Model
             'total' => self::count(),
             'last_24h' => self::where('created_at', '>=', now()->subDay())->count(),
             'last_7d' => self::recent(7)->count(),
-            'by_type' => self::selectRaw('
-                (SELECT event_type FROM integration_events WHERE id = dead_letter.event_id) as event_type,
-                COUNT(*) as count
-            ')
-                ->groupBy('event_type')
-                ->pluck('count', 'event_type')
-                ->toArray(),
+            'by_type' => self::getStatsByEventType(),
         ];
+    }
+
+    /**
+     * Estatísticas agrupadas por tipo de evento.
+     */
+    public static function getStatsByEventType(): array
+    {
+        return self::join('integration_events', 'dead_letter.event_id', '=', 'integration_events.id')
+            ->selectRaw('integration_events.event_type, COUNT(*) as count')
+            ->groupBy('integration_events.event_type')
+            ->pluck('count', 'event_type')
+            ->toArray();
+    }
+
+    /**
+     * Verifica se item está arquivado.
+     */
+    public function isArchived(): bool
+    {
+        return str_contains($this->reason, '[ARCHIVED:');
+    }
+
+    /**
+     * Escopo para itens não arquivados.
+     */
+    public function scopeNotArchived($query)
+    {
+        return $query->where('reason', 'NOT LIKE', '%[ARCHIVED:%');
+    }
+
+    /**
+     * Escopo para itens arquivados.
+     */
+    public function scopeArchived($query)
+    {
+        return $query->where('reason', 'LIKE', '%[ARCHIVED:%');
     }
 }
