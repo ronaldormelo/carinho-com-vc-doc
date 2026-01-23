@@ -159,10 +159,17 @@ CREATE TABLE consents (
   consent_type VARCHAR(64) NOT NULL,
   granted_at DATETIME NOT NULL,
   source VARCHAR(64) NOT NULL,
+  ip_address VARCHAR(64) NULL COMMENT 'Endereco IP no momento do registro',
+  user_agent VARCHAR(512) NULL COMMENT 'User agent do navegador/app',
   revoked_at DATETIME NULL,
+  revocation_reason VARCHAR(64) NULL COMMENT 'Motivo formal da revogacao',
+  revocation_source VARCHAR(64) NULL COMMENT 'Canal/sistema de origem da revogacao',
   CONSTRAINT fk_consents_subject
     FOREIGN KEY (subject_type_id) REFERENCES domain_consent_subject_type(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_consents_revocation
+  ON consents (revoked_at, revocation_reason);
 
 CREATE TABLE access_logs (
   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,

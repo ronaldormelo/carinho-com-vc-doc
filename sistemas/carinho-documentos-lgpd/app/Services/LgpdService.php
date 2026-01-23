@@ -165,8 +165,13 @@ class LgpdService
                     $document->delete();
                 }
 
-                // Revoga todos os consentimentos
-                $this->consentService->revokeAll($request->subject_type_id, $request->subject_id);
+                // Revoga todos os consentimentos com motivo LGPD
+                $this->consentService->revokeAll(
+                    $request->subject_type_id,
+                    $request->subject_id,
+                    \App\Models\Consent::REVOCATION_LGPD_DELETION,
+                    \App\Models\Consent::SOURCE_LGPD_REQUEST
+                );
 
                 $request->markAsDone();
 
