@@ -119,6 +119,16 @@ class AtendimentoRepository
         return DB::table('incidents')->insertGetId($data);
     }
 
+    public function updateIncident(int $incidentId, array $data): void
+    {
+        DB::table('incidents')->where('id', $incidentId)->update($data);
+    }
+
+    public function findIncidentById(int $incidentId): ?object
+    {
+        return DB::table('incidents')->where('id', $incidentId)->first();
+    }
+
     public function createWebhookEvent(array $data): int
     {
         return DB::table('webhook_events')->insertGetId($data);
@@ -127,5 +137,74 @@ class AtendimentoRepository
     public function updateWebhookEvent(int $webhookEventId, array $data): void
     {
         DB::table('webhook_events')->where('id', $webhookEventId)->update($data);
+    }
+
+    public function createConversationHistory(array $data): int
+    {
+        return DB::table('conversation_history')->insertGetId($data);
+    }
+
+    public function getConversationHistory(int $conversationId): array
+    {
+        return DB::table('conversation_history')
+            ->where('conversation_id', $conversationId)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->toArray();
+    }
+
+    public function createSatisfactionSurvey(array $data): int
+    {
+        return DB::table('satisfaction_surveys')->insertGetId($data);
+    }
+
+    public function updateSatisfactionSurvey(int $surveyId, array $data): void
+    {
+        DB::table('satisfaction_surveys')->where('id', $surveyId)->update($data);
+    }
+
+    public function findSatisfactionSurveyByConversation(int $conversationId): ?object
+    {
+        return DB::table('satisfaction_surveys')
+            ->where('conversation_id', $conversationId)
+            ->first();
+    }
+
+    public function getTriageChecklist(): array
+    {
+        return DB::table('triage_checklist')
+            ->where('active', 1)
+            ->orderBy('item_order')
+            ->get()
+            ->toArray();
+    }
+
+    public function saveTriageResponse(int $conversationId, int $checklistId, array $data): int
+    {
+        $existing = DB::table('conversation_triage')
+            ->where('conversation_id', $conversationId)
+            ->where('checklist_id', $checklistId)
+            ->first();
+
+        if ($existing) {
+            DB::table('conversation_triage')
+                ->where('id', $existing->id)
+                ->update($data);
+            return (int) $existing->id;
+        }
+
+        return DB::table('conversation_triage')->insertGetId(array_merge([
+            'conversation_id' => $conversationId,
+            'checklist_id' => $checklistId,
+        ], $data));
+    }
+
+    public function getTriageResponses(int $conversationId): array
+    {
+        return DB::table('conversation_triage')
+            ->where('conversation_id', $conversationId)
+            ->get()
+            ->keyBy('checklist_id')
+            ->toArray();
     }
 }
