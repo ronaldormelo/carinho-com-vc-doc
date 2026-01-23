@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessLogController;
+use App\Http\Controllers\ComplianceController;
 use App\Http\Controllers\ConsentController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DataRequestController;
@@ -190,6 +191,34 @@ Route::middleware('internal.token')->group(function () {
         // Executar politica
         Route::post('/execute', [RetentionPolicyController::class, 'execute']);
         Route::get('/pending', [RetentionPolicyController::class, 'pending']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Conformidade e Relatorios LGPD
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('compliance')->group(function () {
+        // Dashboard de conformidade
+        Route::get('/dashboard', [ComplianceController::class, 'dashboard']);
+
+        // Relatorio completo de compliance
+        Route::get('/report', [ComplianceController::class, 'report']);
+
+        // Score de conformidade
+        Route::get('/score', [ComplianceController::class, 'score']);
+
+        // Indicadores de risco
+        Route::get('/risks', [ComplianceController::class, 'risks']);
+
+        // Metricas LGPD
+        Route::get('/lgpd-metrics', [ComplianceController::class, 'lgpdMetrics']);
+
+        // Status de retencao
+        Route::get('/retention-status', [ComplianceController::class, 'retentionStatus']);
+
+        // Resumo de auditoria
+        Route::get('/audit-summary', [ComplianceController::class, 'auditSummary']);
     });
 });
 

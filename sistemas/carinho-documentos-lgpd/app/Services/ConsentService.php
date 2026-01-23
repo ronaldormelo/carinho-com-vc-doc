@@ -122,8 +122,11 @@ class ConsentService
     /**
      * Revoga consentimento.
      */
-    public function revoke(int $consentId): bool
-    {
+    public function revoke(
+        int $consentId,
+        string $reason = null,
+        string $source = null
+    ): bool {
         try {
             $consent = Consent::findOrFail($consentId);
 
@@ -131,7 +134,10 @@ class ConsentService
                 return true; // Ja revogado
             }
 
-            $consent->revoke();
+            $consent->revoke(
+                $reason ?? Consent::REVOCATION_USER_REQUEST,
+                $source ?? Consent::SOURCE_ADMIN
+            );
 
             // Limpa cache
             $this->clearCache($consent->subject_type_id, $consent->subject_id);
@@ -141,6 +147,8 @@ class ConsentService
                 'subject_type' => $consent->subject_type_id,
                 'subject_id' => $consent->subject_id,
                 'consent_type' => $consent->consent_type,
+                'reason' => $reason,
+                'source' => $source,
             ]);
 
             return true;
@@ -186,13 +194,21 @@ class ConsentService
     /**
      * Revoga todos os consentimentos de um titular.
      */
-    public function revokeAll(int $subjectTypeId, int $subjectId): int
-    {
+    public function revokeAll(
+        int $subjectTypeId,
+        int $subjectId,
+        string $reason = null,
+        string $source = null
+    ): int {
         try {
             $count = Consent::where('subject_type_id', $subjectTypeId)
                 ->where('subject_id', $subjectId)
                 ->whereNull('revoked_at')
-                ->update(['revoked_at' => now()]);
+                ->update([
+                    'revoked_at' => now(),
+                    'revocation_reason' => $reason ?? Consent::REVOCATION_LGPD_DELETION,
+                    'revocation_source' => $source ?? Consent::SOURCE_LGPD_REQUEST,
+                ]);
 
             // Limpa cache
             $this->clearCache($subjectTypeId, $subjectId);
@@ -201,6 +217,7 @@ class ConsentService
                 'subject_type' => $subjectTypeId,
                 'subject_id' => $subjectId,
                 'count' => $count,
+                'reason' => $reason ?? Consent::REVOCATION_LGPD_DELETION,
             ]);
 
             return $count;

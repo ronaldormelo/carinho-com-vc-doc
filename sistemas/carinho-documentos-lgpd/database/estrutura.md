@@ -92,7 +92,11 @@ auditoria completa.
 - consent_type (varchar)
 - granted_at (datetime)
 - source (varchar)
+- ip_address (varchar, nullable) - IP no momento do registro
+- user_agent (varchar, nullable) - User agent do navegador/app
 - revoked_at (datetime, nullable)
+- revocation_reason (varchar, nullable) - Motivo formal da revogacao
+- revocation_source (varchar, nullable) - Canal de origem da revogacao
 
 ### access_logs
 - id (bigint, pk)
@@ -119,6 +123,7 @@ auditoria completa.
 - documents.owner_type_id, documents.owner_id
 - signatures.document_id, signatures.signed_at
 - access_logs.document_id, access_logs.created_at
+- consents.revoked_at, consents.revocation_reason (auditoria)
 
 ## Observacoes de seguranca e desempenho
 - Criptografia de documentos e URLs assinadas com expiracao.

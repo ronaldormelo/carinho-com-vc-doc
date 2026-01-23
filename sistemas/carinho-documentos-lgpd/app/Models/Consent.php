@@ -30,6 +30,10 @@ class Consent extends Model
         'granted_at',
         'source',
         'revoked_at',
+        'revocation_reason',
+        'revocation_source',
+        'ip_address',
+        'user_agent',
     ];
 
     protected $casts = [
@@ -57,6 +61,23 @@ class Consent extends Model
     public const SOURCE_APP = 'app';
     public const SOURCE_WHATSAPP = 'whatsapp';
     public const SOURCE_CONTRACT = 'contract';
+    public const SOURCE_LGPD_REQUEST = 'lgpd_request';
+    public const SOURCE_ADMIN = 'admin';
+
+    // Motivos de revogacao
+    public const REVOCATION_USER_REQUEST = 'user_request';
+    public const REVOCATION_LGPD_DELETION = 'lgpd_deletion';
+    public const REVOCATION_CONTRACT_END = 'contract_end';
+    public const REVOCATION_ADMIN = 'admin_action';
+    public const REVOCATION_LEGAL_REQUIREMENT = 'legal_requirement';
+
+    public const REVOCATION_REASONS = [
+        self::REVOCATION_USER_REQUEST => 'Solicitacao do titular',
+        self::REVOCATION_LGPD_DELETION => 'Exercicio de direito LGPD',
+        self::REVOCATION_CONTRACT_END => 'Encerramento de contrato',
+        self::REVOCATION_ADMIN => 'Acao administrativa',
+        self::REVOCATION_LEGAL_REQUIREMENT => 'Exigencia legal',
+    ];
 
     public function subjectType(): BelongsTo
     {
@@ -74,11 +95,25 @@ class Consent extends Model
     /**
      * Revoga o consentimento.
      */
-    public function revoke(): bool
+    public function revoke(string $reason = null, string $source = null): bool
     {
         $this->revoked_at = now();
+        $this->revocation_reason = $reason ?? self::REVOCATION_USER_REQUEST;
+        $this->revocation_source = $source ?? self::SOURCE_ADMIN;
 
         return $this->save();
+    }
+
+    /**
+     * Obtem descricao do motivo de revogacao.
+     */
+    public function getRevocationReasonLabel(): ?string
+    {
+        if (!$this->revocation_reason) {
+            return null;
+        }
+
+        return self::REVOCATION_REASONS[$this->revocation_reason] ?? $this->revocation_reason;
     }
 
     /**
