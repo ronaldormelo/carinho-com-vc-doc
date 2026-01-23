@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\BrandLibraryController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ContentCalendarController;
 use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\PartnershipController;
+use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\RoiReportController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\UtmController;
 use App\Http\Controllers\WebhookController;
@@ -173,5 +177,81 @@ Route::middleware(['internal.token'])->group(function () {
         Route::put('/assets/{id}', [BrandLibraryController::class, 'update']);
         Route::post('/assets/{id}/activate', [BrandLibraryController::class, 'activate']);
         Route::post('/assets/{id}/deactivate', [BrandLibraryController::class, 'deactivate']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Controle de Orçamento e Aprovações
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('budget')->group(function () {
+        Route::get('/summary', [BudgetController::class, 'summary']);
+        Route::get('/global-limit', [BudgetController::class, 'getGlobalLimit']);
+        Route::put('/global-limit', [BudgetController::class, 'setGlobalLimit']);
+        Route::get('/alerts', [BudgetController::class, 'alerts']);
+        Route::post('/alerts/check', [BudgetController::class, 'checkAlerts']);
+        Route::post('/alerts/{alertId}/acknowledge', [BudgetController::class, 'acknowledgeAlert']);
+        Route::get('/campaigns/{campaignId}/limit', [BudgetController::class, 'getLimit']);
+        Route::put('/campaigns/{campaignId}/limit', [BudgetController::class, 'setLimit']);
+        Route::get('/campaigns/{campaignId}/can-activate', [BudgetController::class, 'canActivate']);
+    });
+
+    Route::prefix('approvals')->group(function () {
+        Route::get('/pending', [BudgetController::class, 'pendingApprovals']);
+        Route::post('/request', [BudgetController::class, 'requestApproval']);
+        Route::post('/{approvalId}/approve', [BudgetController::class, 'approve']);
+        Route::post('/{approvalId}/reject', [BudgetController::class, 'reject']);
+        Route::get('/campaigns/{campaignId}/history', [BudgetController::class, 'approvalHistory']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Parcerias Locais
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('partnerships')->group(function () {
+        Route::get('/', [PartnershipController::class, 'index']);
+        Route::post('/', [PartnershipController::class, 'store']);
+        Route::get('/stats', [PartnershipController::class, 'stats']);
+        Route::get('/commissions/pending', [PartnershipController::class, 'pendingCommissions']);
+        Route::get('/{id}', [PartnershipController::class, 'show']);
+        Route::put('/{id}', [PartnershipController::class, 'update']);
+        Route::post('/{id}/activate', [PartnershipController::class, 'activate']);
+        Route::post('/{id}/deactivate', [PartnershipController::class, 'deactivate']);
+        Route::get('/{partnershipId}/referrals', [PartnershipController::class, 'listReferrals']);
+        Route::post('/referrals', [PartnershipController::class, 'registerReferral']);
+        Route::post('/referrals/{referralId}/convert', [PartnershipController::class, 'convertReferral']);
+        Route::post('/referrals/{referralId}/pay-commission', [PartnershipController::class, 'payCommission']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Indicações de Clientes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('referrals')->group(function () {
+        Route::get('/program', [ReferralController::class, 'programConfig']);
+        Route::put('/program', [ReferralController::class, 'updateProgramConfig']);
+        Route::get('/stats', [ReferralController::class, 'stats']);
+        Route::get('/benefits/pending', [ReferralController::class, 'pendingBenefits']);
+        Route::post('/code', [ReferralController::class, 'createCode']);
+        Route::post('/register', [ReferralController::class, 'registerReferred']);
+        Route::post('/{referralId}/convert', [ReferralController::class, 'convert']);
+        Route::post('/{referralId}/apply-benefit', [ReferralController::class, 'applyBenefit']);
+        Route::get('/customer/{customerId}', [ReferralController::class, 'customerInfo']);
+        Route::get('/customer/{customerId}/list', [ReferralController::class, 'customerReferrals']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relatórios de ROI
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('reports/roi')->group(function () {
+        Route::get('/consolidated', [RoiReportController::class, 'consolidated']);
+        Route::get('/comparison', [RoiReportController::class, 'comparison']);
+        Route::get('/current-month', [RoiReportController::class, 'currentMonth']);
+        Route::get('/monthly', [RoiReportController::class, 'monthly']);
+        Route::get('/quarterly', [RoiReportController::class, 'quarterly']);
     });
 });
