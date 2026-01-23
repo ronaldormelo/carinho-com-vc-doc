@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\CaregiverController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\MetricsController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SkillController;
@@ -101,12 +105,33 @@ Route::middleware(['internal.token'])->group(function () {
         Route::post('/{caregiverId}/incidents', [IncidentController::class, 'store']);
         Route::get('/{caregiverId}/incidents/{incidentId}', [IncidentController::class, 'show']);
         Route::put('/{caregiverId}/incidents/{incidentId}', [IncidentController::class, 'update']);
+        Route::post('/{caregiverId}/incidents/{incidentId}/resolve', [IncidentController::class, 'resolve']);
 
         // Treinamentos
         Route::get('/{caregiverId}/trainings', [TrainingController::class, 'index']);
         Route::post('/{caregiverId}/trainings', [TrainingController::class, 'store']);
         Route::post('/{caregiverId}/trainings/{trainingId}/complete', [TrainingController::class, 'complete']);
         Route::delete('/{caregiverId}/trainings/{trainingId}', [TrainingController::class, 'destroy']);
+
+        // Afastamentos (atestados, férias, licenças)
+        Route::get('/{caregiverId}/leaves', [LeaveController::class, 'index']);
+        Route::post('/{caregiverId}/leaves', [LeaveController::class, 'store']);
+        Route::get('/{caregiverId}/leaves/{leaveId}', [LeaveController::class, 'show']);
+        Route::put('/{caregiverId}/leaves/{leaveId}', [LeaveController::class, 'update']);
+        Route::post('/{caregiverId}/leaves/{leaveId}/approve', [LeaveController::class, 'approve']);
+        Route::post('/{caregiverId}/leaves/{leaveId}/reject', [LeaveController::class, 'reject']);
+        Route::delete('/{caregiverId}/leaves/{leaveId}', [LeaveController::class, 'destroy']);
+
+        // Alocações/Serviços
+        Route::get('/{caregiverId}/assignments', [AssignmentController::class, 'index']);
+        Route::post('/{caregiverId}/assignments', [AssignmentController::class, 'store']);
+        Route::get('/{caregiverId}/assignments/{assignmentId}', [AssignmentController::class, 'show']);
+        Route::put('/{caregiverId}/assignments/{assignmentId}', [AssignmentController::class, 'update']);
+        Route::post('/{caregiverId}/assignments/{assignmentId}/complete', [AssignmentController::class, 'complete']);
+        Route::post('/{caregiverId}/assignments/{assignmentId}/cancel', [AssignmentController::class, 'cancel']);
+
+        // Carga de trabalho
+        Route::get('/{caregiverId}/workload', [MetricsController::class, 'workloadSummary']);
     });
 
     /*
@@ -164,5 +189,44 @@ Route::middleware(['internal.token'])->group(function () {
 
     Route::prefix('trainings')->group(function () {
         Route::get('/available-courses', [TrainingController::class, 'availableCourses']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Métricas e Indicadores Operacionais
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('metrics')->group(function () {
+        Route::get('/dashboard', [MetricsController::class, 'dashboard']);
+        Route::get('/overview', [MetricsController::class, 'overview']);
+        Route::get('/activation', [MetricsController::class, 'activation']);
+        Route::get('/occupancy', [MetricsController::class, 'occupancy']);
+        Route::get('/quality', [MetricsController::class, 'quality']);
+        Route::get('/alerts', [MetricsController::class, 'alerts']);
+        Route::get('/by-city', [MetricsController::class, 'byCity']);
+        Route::get('/by-care-type', [MetricsController::class, 'byCareType']);
+        Route::get('/overloaded', [MetricsController::class, 'overloaded']);
+        Route::get('/available', [MetricsController::class, 'available']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Afastamentos (admin)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('leaves')->group(function () {
+        Route::get('/types', [LeaveController::class, 'types']);
+        Route::get('/pending', [LeaveController::class, 'pending']);
+        Route::get('/current', [LeaveController::class, 'current']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Alocações (admin)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('assignments')->group(function () {
+        Route::get('/statuses', [AssignmentController::class, 'statuses']);
+        Route::get('/history', [AssignmentController::class, 'history']);
     });
 });

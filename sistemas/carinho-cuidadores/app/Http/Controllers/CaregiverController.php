@@ -101,10 +101,22 @@ class CaregiverController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:32',
+            'cpf' => 'nullable|string|max:14',
+            'birth_date' => 'nullable|date|before:today',
             'email' => 'nullable|email|max:255',
             'city' => 'required|string|max:128',
+            'address_street' => 'nullable|string|max:255',
+            'address_number' => 'nullable|string|max:20',
+            'address_complement' => 'nullable|string|max:100',
+            'address_neighborhood' => 'nullable|string|max:128',
+            'address_zipcode' => 'nullable|string|max:10',
+            'address_state' => 'nullable|string|max:2',
             'experience_years' => 'nullable|integer|min:0',
             'profile_summary' => 'nullable|string|max:2000',
+            'emergency_contact_name' => 'nullable|string|max:255',
+            'emergency_contact_phone' => 'nullable|string|max:32',
+            'recruitment_source' => 'nullable|string|max:64',
+            'referred_by_caregiver_id' => 'nullable|integer|exists:caregivers,id',
             'skills' => 'nullable|array',
             'skills.*.care_type_code' => 'required_with:skills|string',
             'skills.*.level_code' => 'required_with:skills|string',
@@ -119,6 +131,33 @@ class CaregiverController extends Controller
 
         if ($validator->fails()) {
             return $this->error('Dados invalidos', 422, $validator->errors()->toArray());
+        }
+
+        // Valida CPF se informado
+        if ($request->filled('cpf')) {
+            $cpf = Caregiver::normalizeCpf($request->get('cpf'));
+            
+            if (!Caregiver::validateCpf($cpf)) {
+                return $this->error('CPF inválido', 422, ['cpf' => ['O CPF informado é inválido']]);
+            }
+
+            // Verifica duplicidade
+            if (Caregiver::where('cpf', $cpf)->exists()) {
+                return $this->error('CPF já cadastrado', 422, ['cpf' => ['Este CPF já está cadastrado no sistema']]);
+            }
+        }
+
+        // Valida idade mínima se data de nascimento informada
+        if ($request->filled('birth_date')) {
+            $birthDate = new \DateTime($request->get('birth_date'));
+            $age = $birthDate->diff(new \DateTime())->y;
+            $minAge = config('cuidadores.operacional.min_age_years', 18);
+            
+            if ($age < $minAge) {
+                return $this->error('Idade insuficiente', 422, [
+                    'birth_date' => ["O cuidador deve ter no mínimo {$minAge} anos"]
+                ]);
+            }
         }
 
         $caregiver = $this->caregiverService->create($validator->validated());
