@@ -7,13 +7,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Queue;
 use App\Services\Integrations\WhatsApp\ZApiClient;
+use App\Services\IntegrationMonitor;
+use App\Services\CircuitBreaker;
 use App\Models\IntegrationEvent;
 use App\Models\RetryQueue;
 use App\Models\DeadLetter;
 use App\Models\SyncJob;
 
 /**
- * Controller para health checks e status do sistema.
+ * Controller para health checks, status e monitoramento do sistema.
+ *
+ * Práticas consolidadas:
+ * - Health checks em camadas (básico, detalhado, completo)
+ * - Dashboard operacional consolidado
+ * - Alertas e métricas acionáveis
  */
 class HealthController extends Controller
 {
@@ -21,6 +28,8 @@ class HealthController extends Controller
      * Health check basico.
      *
      * GET /health
+     *
+     * Retorno rápido para load balancers e monitoramento simples.
      */
     public function check(): JsonResponse
     {
@@ -31,9 +40,11 @@ class HealthController extends Controller
     }
 
     /**
-     * Health check detalhado.
+     * Health check detalhado com dependências.
      *
      * GET /health/detailed
+     *
+     * Verifica banco de dados, Redis e filas.
      */
     public function detailed(): JsonResponse
     {
@@ -42,31 +53,61 @@ class HealthController extends Controller
 
         // Database
         try {
+            $start = microtime(true);
             DB::connection()->getPdo();
-            $checks['database'] = ['status' => 'ok'];
+            DB::select('SELECT 1');
+            $latency = (microtime(true) - $start) * 1000;
+
+            $checks['database'] = [
+                'status' => 'ok',
+                'latency_ms' => round($latency, 2),
+            ];
         } catch (\Throwable $e) {
-            $checks['database'] = ['status' => 'error', 'message' => $e->getMessage()];
+            $checks['database'] = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
             $healthy = false;
         }
 
         // Redis
         try {
+            $start = microtime(true);
             Redis::ping();
-            $checks['redis'] = ['status' => 'ok'];
+            $latency = (microtime(true) - $start) * 1000;
+
+            $checks['redis'] = [
+                'status' => 'ok',
+                'latency_ms' => round($latency, 2),
+            ];
         } catch (\Throwable $e) {
-            $checks['redis'] = ['status' => 'error', 'message' => $e->getMessage()];
+            $checks['redis'] = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
             $healthy = false;
         }
 
         // Queue
         try {
-            $queueSize = Queue::size('integrations');
-            $checks['queue'] = [
+            $queueSizes = [
+                'integrations-high' => Queue::size('integrations-high'),
+                'integrations' => Queue::size('integrations'),
+                'notifications' => Queue::size('notifications'),
+                'integrations-low' => Queue::size('integrations-low'),
+                'integrations-retry' => Queue::size('integrations-retry'),
+            ];
+
+            $checks['queues'] = [
                 'status' => 'ok',
-                'size' => $queueSize,
+                'sizes' => $queueSizes,
+                'total' => array_sum($queueSizes),
             ];
         } catch (\Throwable $e) {
-            $checks['queue'] = ['status' => 'error', 'message' => $e->getMessage()];
+            $checks['queues'] = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
             $healthy = false;
         }
 
@@ -81,8 +122,10 @@ class HealthController extends Controller
      * Status completo do sistema.
      *
      * GET /status
+     *
+     * Métricas detalhadas de eventos, filas, sync e WhatsApp.
      */
-    public function status(ZApiClient $zapi): JsonResponse
+    public function status(ZApiClient $zapi, CircuitBreaker $circuitBreaker): JsonResponse
     {
         // Metricas de eventos
         $eventStats = [
@@ -124,6 +167,9 @@ class HealthController extends Controller
             }
         }
 
+        // Circuit breakers
+        $circuitBreakers = $circuitBreaker->getAllStatus();
+
         return response()->json([
             'app' => [
                 'name' => config('app.name'),
@@ -136,6 +182,88 @@ class HealthController extends Controller
             'dead_letter' => $dlqStats,
             'sync_jobs' => $syncStats,
             'whatsapp' => $whatsappStatus,
+            'circuit_breakers' => $circuitBreakers,
+        ]);
+    }
+
+    /**
+     * Dashboard operacional consolidado.
+     *
+     * GET /dashboard
+     *
+     * Visão completa para operação: saúde, métricas, alertas.
+     */
+    public function dashboard(IntegrationMonitor $monitor): JsonResponse
+    {
+        return response()->json($monitor->getDashboard());
+    }
+
+    /**
+     * Alertas ativos do sistema.
+     *
+     * GET /alerts
+     *
+     * Lista alertas que requerem atenção.
+     */
+    public function alerts(IntegrationMonitor $monitor): JsonResponse
+    {
+        $alerts = $monitor->checkAlerts();
+
+        return response()->json([
+            'timestamp' => now()->toIso8601String(),
+            'total' => count($alerts),
+            'critical' => count(array_filter($alerts, fn($a) => $a['level'] === 'critical')),
+            'warning' => count(array_filter($alerts, fn($a) => $a['level'] === 'warning')),
+            'alerts' => $alerts,
+        ]);
+    }
+
+    /**
+     * Relatório diário.
+     *
+     * GET /report/daily
+     *
+     * Resumo das operações do dia anterior.
+     */
+    public function dailyReport(IntegrationMonitor $monitor): JsonResponse
+    {
+        return response()->json($monitor->getDailyReport());
+    }
+
+    /**
+     * Status dos circuit breakers.
+     *
+     * GET /circuit-breakers
+     */
+    public function circuitBreakers(CircuitBreaker $circuitBreaker): JsonResponse
+    {
+        return response()->json([
+            'timestamp' => now()->toIso8601String(),
+            'services' => $circuitBreaker->getAllStatus(),
+        ]);
+    }
+
+    /**
+     * Reset manual de circuit breaker.
+     *
+     * POST /circuit-breakers/{service}/reset
+     */
+    public function resetCircuitBreaker(string $service, CircuitBreaker $circuitBreaker): JsonResponse
+    {
+        $allowedServices = ['crm', 'operacao', 'financeiro', 'cuidadores', 'atendimento', 'marketing', 'site', 'documentos', 'whatsapp'];
+
+        if (!in_array($service, $allowedServices)) {
+            return response()->json([
+                'error' => 'Invalid service',
+                'allowed' => $allowedServices,
+            ], 400);
+        }
+
+        $circuitBreaker->reset($service);
+
+        return response()->json([
+            'message' => "Circuit breaker for {$service} has been reset",
+            'status' => $circuitBreaker->getStatus($service),
         ]);
     }
 }
