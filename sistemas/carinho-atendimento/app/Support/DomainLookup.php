@@ -48,6 +48,49 @@ class DomainLookup
         return $this->lookupId('domain_webhook_status', $code);
     }
 
+    public function supportLevelId(string $code): int
+    {
+        return $this->lookupId('domain_support_level', $code);
+    }
+
+    public function lossReasonId(string $code): int
+    {
+        return $this->lookupId('domain_loss_reason', $code);
+    }
+
+    public function scriptCategoryId(string $code): int
+    {
+        return $this->lookupId('domain_script_category', $code);
+    }
+
+    public function actionTypeId(string $code): int
+    {
+        return $this->lookupId('domain_action_type', $code);
+    }
+
+    public function supportLevelByCode(string $code): ?object
+    {
+        return $this->lookupRecord('domain_support_level', $code);
+    }
+
+    public function lossReasonByCode(string $code): ?object
+    {
+        return $this->lookupRecord('domain_loss_reason', $code);
+    }
+
+    public function getSlaConfiguration(int $priorityId, int $supportLevelId): ?object
+    {
+        $cacheKey = "sla_config:{$priorityId}:{$supportLevelId}";
+
+        return Cache::remember($cacheKey, now()->addHours(12), function () use ($priorityId, $supportLevelId) {
+            return DB::table('sla_configurations')
+                ->where('priority_id', $priorityId)
+                ->where('support_level_id', $supportLevelId)
+                ->where('active', 1)
+                ->first();
+        });
+    }
+
     private function lookupId(string $table, string $code): int
     {
         $cacheKey = "domain:{$table}:{$code}";
@@ -61,5 +104,14 @@ class DomainLookup
         }
 
         return (int) $id;
+    }
+
+    private function lookupRecord(string $table, string $code): ?object
+    {
+        $cacheKey = "domain_record:{$table}:{$code}";
+
+        return Cache::remember($cacheKey, now()->addHours(12), function () use ($table, $code) {
+            return DB::table($table)->where('code', $code)->first();
+        });
     }
 }

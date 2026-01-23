@@ -42,6 +42,11 @@ class AtendimentoRepository
 
     public function createConversation(array $data): int
     {
+        // Garantir que support_level_id tenha valor padrão
+        if (!isset($data['support_level_id'])) {
+            $data['support_level_id'] = 1; // N1 - Atendimento
+        }
+        
         return DB::table('conversations')->insertGetId($data);
     }
 
@@ -127,5 +132,70 @@ class AtendimentoRepository
     public function updateWebhookEvent(int $webhookEventId, array $data): void
     {
         DB::table('webhook_events')->where('id', $webhookEventId)->update($data);
+    }
+
+    /**
+     * Retorna agentes disponíveis por nível de suporte
+     */
+    public function getAvailableAgentsByLevel(int $supportLevelId): array
+    {
+        return DB::table('agents')
+            ->leftJoin('conversations', function ($join) {
+                $join->on('agents.id', '=', 'conversations.assigned_to')
+                     ->whereNull('conversations.closed_at');
+            })
+            ->where('agents.support_level_id', $supportLevelId)
+            ->where('agents.active', 1)
+            ->groupBy('agents.id', 'agents.name', 'agents.email', 'agents.max_concurrent_conversations')
+            ->havingRaw('COUNT(conversations.id) < agents.max_concurrent_conversations')
+            ->select([
+                'agents.id',
+                'agents.name',
+                'agents.email',
+                DB::raw('COUNT(conversations.id) as current_conversations'),
+                'agents.max_concurrent_conversations',
+            ])
+            ->orderBy(DB::raw('COUNT(conversations.id)'))
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * Conta conversas ativas de um agente
+     */
+    public function countActiveConversations(int $agentId): int
+    {
+        return DB::table('conversations')
+            ->where('assigned_to', $agentId)
+            ->whereNull('closed_at')
+            ->count();
+    }
+
+    /**
+     * Retorna conversas sem agente atribuído
+     */
+    public function getUnassignedConversations(?int $supportLevelId = null): array
+    {
+        $query = DB::table('conversations')
+            ->join('contacts', 'contacts.id', '=', 'conversations.contact_id')
+            ->whereNull('conversations.assigned_to')
+            ->whereNull('conversations.closed_at');
+
+        if ($supportLevelId) {
+            $query->where('conversations.support_level_id', $supportLevelId);
+        }
+
+        return $query->select([
+                'conversations.id',
+                'conversations.support_level_id',
+                'conversations.priority_id',
+                'conversations.started_at',
+                'contacts.name as contact_name',
+                'contacts.phone as contact_phone',
+            ])
+            ->orderBy('conversations.priority_id', 'desc')
+            ->orderBy('conversations.started_at')
+            ->get()
+            ->toArray();
     }
 }

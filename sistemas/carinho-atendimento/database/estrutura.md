@@ -1,10 +1,10 @@
 # Estrutura de Dados
 
-## Visao geral
-Centraliza conversas, mensagens, status de atendimento e indicadores de SLA,
-integrando WhatsApp e CRM.
+## Visão Geral
+Centraliza conversas, mensagens, status de atendimento, indicadores de SLA,
+níveis de suporte, triagem, scripts e auditoria, integrando WhatsApp e CRM.
 
-## Tabelas de dominio
+## Tabelas de Domínio
 
 ### domain_channel
 - id (tinyint, pk)
@@ -46,7 +46,31 @@ integrando WhatsApp e CRM.
 - code (varchar, unique)
 - label (varchar)
 
-## Tabelas principais
+### domain_support_level (NOVO)
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+- description (varchar, nullable)
+- max_response_minutes (int)
+- max_resolution_minutes (int)
+
+### domain_loss_reason (NOVO)
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+- requires_notes (bool)
+
+### domain_script_category (NOVO)
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+### domain_action_type (NOVO)
+- id (tinyint, pk)
+- code (varchar, unique)
+- label (varchar)
+
+## Tabelas Principais
 
 ### contacts
 - id (bigint, pk)
@@ -56,13 +80,26 @@ integrando WhatsApp e CRM.
 - city (varchar, nullable)
 - created_at, updated_at
 
+### agents
+- id (bigint, pk)
+- name (varchar)
+- email (varchar, unique)
+- role_id (tinyint, fk -> domain_agent_role.id)
+- support_level_id (tinyint, fk -> domain_support_level.id) (NOVO)
+- max_concurrent_conversations (int, default 5) (NOVO)
+- active (bool)
+- created_at, updated_at
+
 ### conversations
 - id (bigint, pk)
 - contact_id (bigint, fk -> contacts.id)
 - channel_id (tinyint, fk -> domain_channel.id)
 - status_id (tinyint, fk -> domain_conversation_status.id)
 - priority_id (tinyint, fk -> domain_priority.id)
-- assigned_to (bigint, nullable)
+- support_level_id (tinyint, fk -> domain_support_level.id, default 1) (NOVO)
+- assigned_to (bigint, fk -> agents.id, nullable)
+- loss_reason_id (tinyint, fk -> domain_loss_reason.id, nullable) (NOVO)
+- loss_notes (text, nullable) (NOVO)
 - started_at, closed_at
 - created_at, updated_at
 
@@ -82,14 +119,6 @@ integrando WhatsApp e CRM.
 ### conversation_tags
 - conversation_id (bigint, fk -> conversations.id)
 - tag_id (bigint, fk -> tags.id)
-
-### agents
-- id (bigint, pk)
-- name (varchar)
-- email (varchar, unique)
-- role_id (tinyint, fk -> domain_agent_role.id)
-- active (bool)
-- created_at, updated_at
 
 ### message_templates
 - id (bigint, pk)
@@ -128,12 +157,102 @@ integrando WhatsApp e CRM.
 - processed_at (datetime, nullable)
 - status_id (tinyint, fk -> domain_webhook_status.id)
 
-## Indices recomendados
-- messages.conversation_id, messages.sent_at
-- conversations.status_id, conversations.priority_id
-- contacts.phone (unique)
+## Tabelas Novas - Gestão Operacional
 
-## Observacoes de seguranca e desempenho
-- Assinatura e validacao de webhooks do WhatsApp.
-- Mascarar PII em logs e limitar acesso por perfil.
-- Fila para envio de mensagens e retry com DLQ.
+### conversation_actions (Auditoria)
+- id (bigint, pk)
+- conversation_id (bigint, fk -> conversations.id)
+- action_type_id (tinyint, fk -> domain_action_type.id)
+- agent_id (bigint, fk -> agents.id, nullable)
+- old_value (varchar, nullable)
+- new_value (varchar, nullable)
+- notes (text, nullable)
+- created_at
+
+### triage_checklist_items (Checklist de Triagem)
+- id (bigint, pk)
+- code (varchar, unique)
+- question (text)
+- field_type (varchar)
+- options_json (json, nullable)
+- is_required (bool)
+- display_order (int)
+- active (bool)
+- created_at, updated_at
+
+### conversation_triage (Respostas da Triagem)
+- id (bigint, pk)
+- conversation_id (bigint, fk -> conversations.id)
+- checklist_item_id (bigint, fk -> triage_checklist_items.id)
+- answer (text, nullable)
+- answered_by (bigint, fk -> agents.id, nullable)
+- created_at
+
+### communication_scripts (Scripts Padronizados)
+- id (bigint, pk)
+- code (varchar, unique)
+- title (varchar)
+- category_id (tinyint, fk -> domain_script_category.id)
+- support_level_id (tinyint, fk -> domain_support_level.id, nullable)
+- body (text)
+- variables_json (json, nullable)
+- usage_hint (text, nullable)
+- display_order (int)
+- active (bool)
+- created_at, updated_at
+
+### sla_configurations (Configurações de SLA)
+- id (bigint, pk)
+- priority_id (tinyint, fk -> domain_priority.id)
+- support_level_id (tinyint, fk -> domain_support_level.id)
+- max_first_response_minutes (int)
+- max_resolution_minutes (int)
+- warning_threshold_percent (int, default 80)
+- active (bool)
+- created_at, updated_at
+- unique(priority_id, support_level_id)
+
+### sla_alerts (Alertas de SLA)
+- id (bigint, pk)
+- conversation_id (bigint, fk -> conversations.id)
+- alert_type (varchar)
+- threshold_minutes (int)
+- actual_minutes (int)
+- notified_at (datetime, nullable)
+- acknowledged_by (bigint, fk -> agents.id, nullable)
+- acknowledged_at (datetime, nullable)
+- created_at
+
+### conversation_notes (Notas Internas)
+- id (bigint, pk)
+- conversation_id (bigint, fk -> conversations.id)
+- agent_id (bigint, fk -> agents.id)
+- content (text)
+- is_private (bool, default true)
+- created_at
+
+### escalation_history (Histórico de Escalonamentos)
+- id (bigint, pk)
+- conversation_id (bigint, fk -> conversations.id)
+- from_level_id (tinyint, fk -> domain_support_level.id)
+- to_level_id (tinyint, fk -> domain_support_level.id)
+- from_agent_id (bigint, fk -> agents.id, nullable)
+- to_agent_id (bigint, fk -> agents.id, nullable)
+- reason (text, nullable)
+- escalated_at (datetime)
+
+## Índices Recomendados
+- messages(conversation_id, sent_at)
+- conversations(status_id, priority_id)
+- conversations(support_level_id)
+- contacts(phone) - unique
+- conversation_actions(conversation_id, created_at)
+- sla_alerts(conversation_id, created_at)
+- escalation_history(conversation_id, escalated_at)
+
+## Observações de Segurança e Desempenho
+- Assinatura e validação de webhooks do WhatsApp
+- Mascarar PII em logs e limitar acesso por perfil
+- Fila para envio de mensagens e retry com DLQ
+- Cache de configurações de SLA e domínios
+- Alertas automáticos para violações de SLA
