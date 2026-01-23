@@ -21,6 +21,52 @@ services:
       DB_PASSWORD: carinho
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      QUEUE_CONNECTION: redis
+    depends_on:
+      - db
+      - redis
+
+  # Worker usando Horizon (alternativa ao supervisor direto)
+  horizon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: php artisan horizon
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: carinho_integracoes
+      DB_USERNAME: carinho
+      DB_PASSWORD: carinho
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      QUEUE_CONNECTION: redis
+    depends_on:
+      - db
+      - redis
+
+  # Scheduler para tarefas agendadas
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "while true; do php /var/www/html/artisan schedule:run --verbose --no-interaction; sleep 60; done"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: carinho_integracoes
+      DB_USERNAME: carinho
+      DB_PASSWORD: carinho
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       - db
       - redis
@@ -41,6 +87,9 @@ services:
     image: redis:7-alpine
     ports:
       - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
 
 volumes:
   db_data:
+  redis_data:
