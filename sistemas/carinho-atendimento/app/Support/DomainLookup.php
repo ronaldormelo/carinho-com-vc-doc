@@ -48,6 +48,40 @@ class DomainLookup
         return $this->lookupId('domain_webhook_status', $code);
     }
 
+    public function supportLevelId(string $code): int
+    {
+        return $this->lookupId('domain_support_level', $code);
+    }
+
+    public function lossReasonId(string $code): int
+    {
+        return $this->lookupId('domain_loss_reason', $code);
+    }
+
+    public function incidentCategoryId(string $code): int
+    {
+        return $this->lookupId('domain_incident_category', $code);
+    }
+
+    public function actionTypeId(string $code): int
+    {
+        return $this->lookupId('domain_action_type', $code);
+    }
+
+    public function getSupportLevel(string $code): ?object
+    {
+        return $this->lookupRow('domain_support_level', $code);
+    }
+
+    public function getSlaTaret(int $priorityId): ?object
+    {
+        $cacheKey = "sla_target:{$priorityId}";
+
+        return Cache::remember($cacheKey, now()->addHours(12), function () use ($priorityId) {
+            return DB::table('sla_targets')->where('priority_id', $priorityId)->first();
+        });
+    }
+
     private function lookupId(string $table, string $code): int
     {
         $cacheKey = "domain:{$table}:{$code}";
@@ -61,5 +95,14 @@ class DomainLookup
         }
 
         return (int) $id;
+    }
+
+    private function lookupRow(string $table, string $code): ?object
+    {
+        $cacheKey = "domain_row:{$table}:{$code}";
+
+        return Cache::remember($cacheKey, now()->addHours(12), function () use ($table, $code) {
+            return DB::table($table)->where('code', $code)->first();
+        });
     }
 }

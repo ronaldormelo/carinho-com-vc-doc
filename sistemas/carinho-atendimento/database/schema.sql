@@ -46,9 +46,35 @@ CREATE TABLE domain_webhook_status (
   label VARCHAR(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE domain_support_level (
+  id TINYINT UNSIGNED PRIMARY KEY,
+  code VARCHAR(32) NOT NULL UNIQUE,
+  label VARCHAR(64) NOT NULL,
+  escalation_minutes INT UNSIGNED NOT NULL DEFAULT 30
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE domain_loss_reason (
+  id TINYINT UNSIGNED PRIMARY KEY,
+  code VARCHAR(64) NOT NULL UNIQUE,
+  label VARCHAR(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE domain_incident_category (
+  id TINYINT UNSIGNED PRIMARY KEY,
+  code VARCHAR(64) NOT NULL UNIQUE,
+  label VARCHAR(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE domain_action_type (
+  id TINYINT UNSIGNED PRIMARY KEY,
+  code VARCHAR(64) NOT NULL UNIQUE,
+  label VARCHAR(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT INTO domain_channel (id, code, label) VALUES
   (1, 'whatsapp', 'WhatsApp'),
-  (2, 'email', 'Email');
+  (2, 'email', 'Email'),
+  (3, 'phone', 'Telefone');
 
 INSERT INTO domain_conversation_status (id, code, label) VALUES
   (1, 'new', 'New'),
@@ -91,6 +117,42 @@ INSERT INTO domain_webhook_status (id, code, label) VALUES
   (2, 'processed', 'Processed'),
   (3, 'failed', 'Failed');
 
+INSERT INTO domain_support_level (id, code, label, escalation_minutes) VALUES
+  (1, 'n1', 'Nivel 1 - Atendimento', 15),
+  (2, 'n2', 'Nivel 2 - Supervisao', 30),
+  (3, 'n3', 'Nivel 3 - Gestao', 60);
+
+INSERT INTO domain_loss_reason (id, code, label) VALUES
+  (1, 'price', 'Preco acima do orcamento'),
+  (2, 'competitor', 'Escolheu concorrente'),
+  (3, 'no_response', 'Sem retorno do cliente'),
+  (4, 'no_availability', 'Sem disponibilidade de cuidador'),
+  (5, 'region', 'Regiao nao atendida'),
+  (6, 'requirements', 'Requisitos nao atendidos'),
+  (7, 'postponed', 'Cliente adiou a decisao'),
+  (8, 'other', 'Outro motivo');
+
+INSERT INTO domain_incident_category (id, code, label) VALUES
+  (1, 'complaint', 'Reclamacao'),
+  (2, 'delay', 'Atraso no atendimento'),
+  (3, 'quality', 'Qualidade do servico'),
+  (4, 'communication', 'Falha de comunicacao'),
+  (5, 'billing', 'Problema de cobranca'),
+  (6, 'caregiver', 'Problema com cuidador'),
+  (7, 'emergency', 'Emergencia'),
+  (8, 'suggestion', 'Sugestao'),
+  (9, 'other', 'Outros');
+
+INSERT INTO domain_action_type (id, code, label) VALUES
+  (1, 'status_change', 'Mudanca de status'),
+  (2, 'priority_change', 'Mudanca de prioridade'),
+  (3, 'assignment', 'Atribuicao de atendente'),
+  (4, 'escalation', 'Escalonamento'),
+  (5, 'note', 'Anotacao interna'),
+  (6, 'tag', 'Adicao de etiqueta'),
+  (7, 'incident', 'Registro de incidente'),
+  (8, 'closure', 'Encerramento');
+
 CREATE TABLE contacts (
   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
@@ -119,7 +181,10 @@ CREATE TABLE conversations (
   channel_id TINYINT UNSIGNED NOT NULL,
   status_id TINYINT UNSIGNED NOT NULL,
   priority_id TINYINT UNSIGNED NOT NULL,
+  support_level_id TINYINT UNSIGNED NOT NULL DEFAULT 1,
   assigned_to BIGINT UNSIGNED NULL,
+  loss_reason_id TINYINT UNSIGNED NULL,
+  loss_notes TEXT NULL,
   started_at DATETIME NULL,
   closed_at DATETIME NULL,
   created_at DATETIME NOT NULL,
@@ -132,6 +197,10 @@ CREATE TABLE conversations (
     FOREIGN KEY (status_id) REFERENCES domain_conversation_status(id),
   CONSTRAINT fk_conversations_priority
     FOREIGN KEY (priority_id) REFERENCES domain_priority(id),
+  CONSTRAINT fk_conversations_support_level
+    FOREIGN KEY (support_level_id) REFERENCES domain_support_level(id),
+  CONSTRAINT fk_conversations_loss_reason
+    FOREIGN KEY (loss_reason_id) REFERENCES domain_loss_reason(id),
   CONSTRAINT fk_conversations_agent
     FOREIGN KEY (assigned_to) REFERENCES agents(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -201,13 +270,21 @@ CREATE TABLE incidents (
   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   conversation_id BIGINT UNSIGNED NOT NULL,
   severity_id TINYINT UNSIGNED NOT NULL,
+  category_id TINYINT UNSIGNED NOT NULL DEFAULT 9,
   notes TEXT NULL,
+  resolution TEXT NULL,
+  resolved_at DATETIME NULL,
+  resolved_by BIGINT UNSIGNED NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NULL,
   CONSTRAINT fk_incidents_conversation
     FOREIGN KEY (conversation_id) REFERENCES conversations(id),
   CONSTRAINT fk_incidents_severity
-    FOREIGN KEY (severity_id) REFERENCES domain_incident_severity(id)
+    FOREIGN KEY (severity_id) REFERENCES domain_incident_severity(id),
+  CONSTRAINT fk_incidents_category
+    FOREIGN KEY (category_id) REFERENCES domain_incident_category(id),
+  CONSTRAINT fk_incidents_resolved_by
+    FOREIGN KEY (resolved_by) REFERENCES agents(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE webhook_events (
@@ -222,8 +299,116 @@ CREATE TABLE webhook_events (
     FOREIGN KEY (status_id) REFERENCES domain_webhook_status(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE conversation_history (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  conversation_id BIGINT UNSIGNED NOT NULL,
+  action_type_id TINYINT UNSIGNED NOT NULL,
+  agent_id BIGINT UNSIGNED NULL,
+  old_value VARCHAR(255) NULL,
+  new_value VARCHAR(255) NULL,
+  notes TEXT NULL,
+  created_at DATETIME NOT NULL,
+  CONSTRAINT fk_conversation_history_conversation
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id),
+  CONSTRAINT fk_conversation_history_action
+    FOREIGN KEY (action_type_id) REFERENCES domain_action_type(id),
+  CONSTRAINT fk_conversation_history_agent
+    FOREIGN KEY (agent_id) REFERENCES agents(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE sla_targets (
+  id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  priority_id TINYINT UNSIGNED NOT NULL,
+  first_response_minutes INT UNSIGNED NOT NULL,
+  resolution_minutes INT UNSIGNED NOT NULL,
+  CONSTRAINT fk_sla_targets_priority
+    FOREIGN KEY (priority_id) REFERENCES domain_priority(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO sla_targets (priority_id, first_response_minutes, resolution_minutes) VALUES
+  (1, 60, 480),
+  (2, 30, 240),
+  (3, 15, 120),
+  (4, 5, 60);
+
+CREATE TABLE triage_checklist (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  item_key VARCHAR(64) NOT NULL,
+  item_label VARCHAR(255) NOT NULL,
+  item_order TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  required TINYINT(1) NOT NULL DEFAULT 1,
+  active TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO triage_checklist (item_key, item_label, item_order, required, active) VALUES
+  ('patient_name', 'Nome do paciente', 1, 1, 1),
+  ('patient_age', 'Idade do paciente', 2, 1, 1),
+  ('care_type', 'Tipo de cuidado necessario', 3, 1, 1),
+  ('location', 'Cidade/bairro do atendimento', 4, 1, 1),
+  ('schedule', 'Horario/turno desejado', 5, 1, 1),
+  ('start_date', 'Data de inicio pretendida', 6, 1, 1),
+  ('special_needs', 'Necessidades especiais', 7, 0, 1),
+  ('budget', 'Expectativa de valor', 8, 0, 1),
+  ('decision_maker', 'Quem decide a contratacao', 9, 0, 1),
+  ('how_found_us', 'Como conheceu a Carinho', 10, 0, 1);
+
+CREATE TABLE conversation_triage (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  conversation_id BIGINT UNSIGNED NOT NULL,
+  checklist_id BIGINT UNSIGNED NOT NULL,
+  response TEXT NULL,
+  completed_at DATETIME NULL,
+  completed_by BIGINT UNSIGNED NULL,
+  CONSTRAINT fk_conversation_triage_conversation
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id),
+  CONSTRAINT fk_conversation_triage_checklist
+    FOREIGN KEY (checklist_id) REFERENCES triage_checklist(id),
+  CONSTRAINT fk_conversation_triage_agent
+    FOREIGN KEY (completed_by) REFERENCES agents(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE holidays (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  date DATE NOT NULL UNIQUE,
+  description VARCHAR(128) NOT NULL,
+  year_recurring TINYINT(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO holidays (date, description, year_recurring) VALUES
+  ('2026-01-01', 'Confraternizacao Universal', 1),
+  ('2026-04-21', 'Tiradentes', 1),
+  ('2026-05-01', 'Dia do Trabalho', 1),
+  ('2026-09-07', 'Independencia do Brasil', 1),
+  ('2026-10-12', 'Nossa Senhora Aparecida', 1),
+  ('2026-11-02', 'Finados', 1),
+  ('2026-11-15', 'Proclamacao da Republica', 1),
+  ('2026-12-25', 'Natal', 1);
+
+CREATE TABLE satisfaction_surveys (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  conversation_id BIGINT UNSIGNED NOT NULL,
+  score TINYINT UNSIGNED NULL,
+  feedback TEXT NULL,
+  sent_at DATETIME NOT NULL,
+  responded_at DATETIME NULL,
+  CONSTRAINT fk_satisfaction_conversation
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE INDEX idx_messages_conversation_sent
   ON messages (conversation_id, sent_at);
 
 CREATE INDEX idx_conversations_status_priority
   ON conversations (status_id, priority_id);
+
+CREATE INDEX idx_conversation_history_conversation
+  ON conversation_history (conversation_id, created_at);
+
+CREATE INDEX idx_conversation_triage_conversation
+  ON conversation_triage (conversation_id);
+
+CREATE INDEX idx_holidays_date
+  ON holidays (date);
+
+CREATE INDEX idx_incidents_category
+  ON incidents (category_id, severity_id);
