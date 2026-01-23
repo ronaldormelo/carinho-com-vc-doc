@@ -123,12 +123,57 @@ Lista de atividades implementadas no sistema Carinho Cuidadores.
 | Contrato pronto | Sim | Sim |
 | Avaliacao recebida | Sim | Nao |
 
+## Controles Operacionais (Implementados)
+
+### Cadastro Completo
+- [x] CPF com validação e unicidade
+- [x] Data de nascimento com validação de idade mínima
+- [x] Endereço completo estruturado
+- [x] Contato de emergência
+- [x] Origem do cadastro (fonte de recrutamento)
+- [x] Campo de indicação (cuidador que indicou)
+
+### Controle de Carga de Trabalho
+- [x] Registro de alocações/serviços
+- [x] Controle de horas trabalhadas por semana
+- [x] Limite máximo de horas semanais (configurável)
+- [x] Alertas de sobrecarga
+- [x] Histórico de workload semanal
+- Endpoints: `/caregivers/{id}/assignments`, `/caregivers/{id}/workload`
+
+### Controle de Documentos
+- [x] Data de emissão e vencimento de documentos
+- [x] Alertas de documentos vencendo (30 dias)
+- [x] Alertas de documentos vencidos
+- [x] Escopo para buscar documentos expirados/expirando
+
+### Gestão de Afastamentos
+- [x] Tipos: Atestado, Férias, Licença Pessoal, Maternidade
+- [x] Fluxo de aprovação
+- [x] Verificação de conflitos
+- [x] Integração com disponibilidade
+- Endpoints: `/caregivers/{id}/leaves`, `/leaves/pending`
+
+### Ocorrências com Severidade
+- [x] Níveis: Leve, Moderada, Grave, Crítica
+- [x] Sugestão automática de severidade por tipo
+- [x] Registro de resolução
+- [x] Escopo para ocorrências graves não resolvidas
+
+### Indicadores Operacionais
+- [x] Dashboard completo de métricas
+- [x] Taxa de ativação
+- [x] Taxa de ocupação
+- [x] Alertas operacionais centralizados
+- [x] Métricas por cidade e tipo de cuidado
+- Endpoints: `/metrics/dashboard`, `/metrics/alerts`
+
 ## Proximas Melhorias (Sugestoes)
 
 ### Curto Prazo
-- [ ] Dashboard de metricas para admin
 - [ ] Formulario web responsivo para cadastro
 - [ ] Pagina de assinatura de contrato
+- [ ] Relatórios exportáveis (CSV/PDF)
 
 ### Medio Prazo
 - [ ] App mobile para cuidadores

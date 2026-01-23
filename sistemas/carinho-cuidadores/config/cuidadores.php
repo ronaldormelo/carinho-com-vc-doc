@@ -52,6 +52,28 @@ return [
         'nota_minima' => 1,
         'nota_maxima' => 5,
         'nota_alerta' => 3, // Alerta para notas abaixo disso
+        'nota_minima_ativo' => 2.5, // Nota minima para manter cuidador ativo
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Controles Operacionais
+    |--------------------------------------------------------------------------
+    */
+    'operacional' => [
+        // Controle de carga de trabalho
+        'max_weekly_hours' => env('CUIDADORES_MAX_WEEKLY_HOURS', 44),
+        'overtime_alert_hours' => env('CUIDADORES_OVERTIME_ALERT', 40),
+        
+        // Controle de documentos
+        'document_expiry_alert_days' => env('CUIDADORES_DOC_EXPIRY_ALERT', 30),
+        
+        // Controle de ocorrencias
+        'max_incidents_for_review' => env('CUIDADORES_MAX_INCIDENTS', 3),
+        'incident_review_period_days' => 90,
+        
+        // Idade minima
+        'min_age_years' => 18,
     ],
 
     /*
@@ -84,5 +106,21 @@ return [
         'documentos_dias' => 365 * 5, // 5 anos
         'logs_acesso_dias' => 365,
         'historico_status_dias' => 365 * 2,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Indicadores e Metricas
+    |--------------------------------------------------------------------------
+    */
+    'indicadores' => [
+        // Taxa de ocupacao considerada ideal (%)
+        'target_occupancy_rate' => 80,
+        
+        // Tempo maximo aceitavel para reposicao (dias)
+        'max_replacement_days' => 3,
+        
+        // Periodo para calculos de indicadores (dias)
+        'metrics_period_days' => 30,
     ],
 ];

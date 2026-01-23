@@ -29,14 +29,29 @@ class CaregiverService
         return DB::transaction(function () use ($data) {
             $pendingStatus = DomainCaregiverStatus::pending();
 
+            // Normaliza CPF se informado
+            $cpf = isset($data['cpf']) ? Caregiver::normalizeCpf($data['cpf']) : null;
+
             $caregiver = Caregiver::create([
                 'name' => $data['name'],
                 'phone' => $this->normalizePhone($data['phone']),
+                'cpf' => $cpf,
+                'birth_date' => $data['birth_date'] ?? null,
                 'email' => $data['email'] ?? null,
                 'city' => $data['city'],
+                'address_street' => $data['address_street'] ?? null,
+                'address_number' => $data['address_number'] ?? null,
+                'address_complement' => $data['address_complement'] ?? null,
+                'address_neighborhood' => $data['address_neighborhood'] ?? null,
+                'address_zipcode' => $data['address_zipcode'] ?? null,
+                'address_state' => $data['address_state'] ?? null,
                 'status_id' => $pendingStatus->id,
                 'experience_years' => $data['experience_years'] ?? 0,
                 'profile_summary' => $data['profile_summary'] ?? null,
+                'emergency_contact_name' => $data['emergency_contact_name'] ?? null,
+                'emergency_contact_phone' => $data['emergency_contact_phone'] ?? null,
+                'recruitment_source' => $data['recruitment_source'] ?? null,
+                'referred_by_caregiver_id' => $data['referred_by_caregiver_id'] ?? null,
                 'created_at' => now(),
             ]);
 

@@ -45,6 +45,7 @@ class IncidentController extends Controller
         $validator = Validator::make($request->all(), [
             'service_id' => 'required|integer',
             'incident_type' => 'required|string|max:128',
+            'severity_id' => 'nullable|integer|exists:domain_incident_severity,id',
             'notes' => 'required|string|max:2000',
             'occurred_at' => 'nullable|date',
         ]);
@@ -53,10 +54,15 @@ class IncidentController extends Controller
             return $this->error('Dados invalidos', 422, $validator->errors()->toArray());
         }
 
+        // Se severidade não informada, usa a sugerida para o tipo
+        $severityId = $request->get('severity_id') 
+            ?? CaregiverIncident::getSuggestedSeverity($request->get('incident_type'));
+
         $incident = CaregiverIncident::create([
             'caregiver_id' => $caregiver->id,
             'service_id' => $request->get('service_id'),
             'incident_type' => $request->get('incident_type'),
+            'severity_id' => $severityId,
             'notes' => $request->get('notes'),
             'occurred_at' => $request->get('occurred_at', now()),
         ]);
@@ -64,7 +70,32 @@ class IncidentController extends Controller
         // Sincroniza com CRM
         SyncIncidentWithCrm::dispatch($incident);
 
-        return $this->success($incident, 'Ocorrencia registrada com sucesso', 201);
+        return $this->success($incident->load('severity'), 'Ocorrencia registrada com sucesso', 201);
+    }
+
+    /**
+     * Resolve uma ocorrência.
+     */
+    public function resolve(Request $request, int $caregiverId, int $incidentId): JsonResponse
+    {
+        $incident = CaregiverIncident::where('caregiver_id', $caregiverId)
+            ->where('id', $incidentId)
+            ->first();
+
+        if (!$incident) {
+            return $this->error('Ocorrencia nao encontrada', 404);
+        }
+
+        if ($incident->is_resolved) {
+            return $this->error('Ocorrencia ja esta resolvida', 400);
+        }
+
+        $resolvedBy = $request->get('resolved_by', 'Sistema');
+        $notes = $request->get('resolution_notes');
+
+        $incident->resolve($resolvedBy, $notes);
+
+        return $this->success($incident->fresh('severity'), 'Ocorrencia resolvida');
     }
 
     /**
