@@ -76,6 +76,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('clients')->group(function () {
         Route::get('/', [ClientController::class, 'index'])->name('clients.index');
         Route::post('/', [ClientController::class, 'store'])->name('clients.store');
+        Route::get('needs-review', [ClientController::class, 'needsReview'])->name('clients.needs-review');
+        Route::get('high-priority', [ClientController::class, 'highPriority'])->name('clients.high-priority');
+        Route::get('churn-risk', [ClientController::class, 'churnRisk'])->name('clients.churn-risk');
+        Route::get('promoters', [ClientController::class, 'promoters'])->name('clients.promoters');
         Route::get('{client}', [ClientController::class, 'show'])->name('clients.show');
         Route::put('{client}', [ClientController::class, 'update'])->name('clients.update');
         Route::delete('{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
@@ -83,6 +87,49 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('{client}/consents', [ClientController::class, 'addConsent'])->name('clients.consents.store');
         Route::get('{client}/consents', [ClientController::class, 'consents'])->name('clients.consents.index');
         Route::get('{client}/history', [ClientController::class, 'history'])->name('clients.history');
+        // Classificação ABC
+        Route::put('{client}/classification', [ClientController::class, 'setClassification'])->name('clients.classification');
+        // Contatos (financeiro e emergência)
+        Route::put('{client}/financial-contact', [ClientController::class, 'setFinancialContact'])->name('clients.financial-contact');
+        Route::put('{client}/emergency-contact', [ClientController::class, 'setEmergencyContact'])->name('clients.emergency-contact');
+        // Revisões periódicas
+        Route::get('{client}/reviews', [ClientController::class, 'reviews'])->name('clients.reviews.index');
+        Route::post('{client}/reviews', [ClientController::class, 'createReview'])->name('clients.reviews.store');
+        // Timeline de eventos
+        Route::get('{client}/events', [ClientController::class, 'events'])->name('clients.events');
+        Route::post('{client}/events', [ClientController::class, 'logEvent'])->name('clients.events.store');
+        // Indicações
+        Route::get('{client}/referrals', [ClientController::class, 'referrals'])->name('clients.referrals.index');
+        Route::post('{client}/referrals', [ClientController::class, 'createReferral'])->name('clients.referrals.store');
+        // Completude do cadastro
+        Route::get('{client}/completeness', [ClientController::class, 'completeness'])->name('clients.completeness');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Revisões de Clientes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('reviews')->group(function () {
+        Route::get('pending', [ClientController::class, 'pendingReviews'])->name('reviews.pending');
+        Route::get('upcoming', [ClientController::class, 'upcomingReviews'])->name('reviews.upcoming');
+        Route::get('statistics', [ClientController::class, 'reviewStatistics'])->name('reviews.statistics');
+        Route::get('nps', [ClientController::class, 'nps'])->name('reviews.nps');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Indicações (Programa de Referral)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('referrals')->group(function () {
+        Route::get('/', [ClientController::class, 'allReferrals'])->name('referrals.index');
+        Route::get('pending', [ClientController::class, 'pendingReferrals'])->name('referrals.pending');
+        Route::get('top-referrers', [ClientController::class, 'topReferrers'])->name('referrals.top-referrers');
+        Route::get('statistics', [ClientController::class, 'referralStatistics'])->name('referrals.statistics');
+        Route::put('{referral}/contacted', [ClientController::class, 'markReferralContacted'])->name('referrals.contacted');
+        Route::put('{referral}/converted', [ClientController::class, 'markReferralConverted'])->name('referrals.converted');
+        Route::put('{referral}/lost', [ClientController::class, 'markReferralLost'])->name('referrals.lost');
     });
 
     /*

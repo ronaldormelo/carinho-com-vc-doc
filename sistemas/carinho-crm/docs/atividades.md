@@ -86,6 +86,61 @@ Lista de atividades realizadas e pendentes para o sistema Carinho CRM.
 - ✅ Documentação de arquitetura
 - ✅ Lista de atividades atualizada
 
+## Status: ✅ Concluído (Janeiro/2026) - Práticas Tradicionais
+
+### Classificação ABC de Clientes
+- ✅ Tabela de domínio domain_client_classification (A, B, C)
+- ✅ Campo classification_id em clients
+- ✅ Scopes para filtrar por classificação
+- ✅ Frequência de revisão recomendada por classificação
+
+### Responsável Financeiro e Contato de Emergência
+- ✅ Campos de responsável financeiro (nome, telefone, email, CPF/CNPJ)
+- ✅ Campos de contato de emergência (nome, telefone, parentesco)
+- ✅ Criptografia de dados sensíveis (LGPD)
+- ✅ Verificação de completude do cadastro
+
+### Probabilidade de Fechamento em Deals
+- ✅ Campo probability (10%, 25%, 50%, 75%, 90%)
+- ✅ Campo weighted_value (valor ponderado para forecast)
+- ✅ Campo expected_close_date (data prevista de fechamento)
+- ✅ Campos next_action e next_action_date
+- ✅ Métodos de forecast mensal e trimestral
+
+### Revisões Periódicas de Clientes
+- ✅ Tabela domain_review_frequency (mensal, trimestral, etc)
+- ✅ Tabela client_reviews
+- ✅ ClientReviewService completo
+- ✅ Identificação de risco de churn
+- ✅ Identificação de clientes promotores
+- ✅ Cálculo de NPS
+
+### Alertas de Renovação Configuráveis
+- ✅ Campo renewal_alert_days em contracts
+- ✅ Campo last_renewal_alert_at
+- ✅ Controle de renovação automática
+- ✅ Histórico de renovações (original_contract_id)
+- ✅ Método createRenewal para renovar contratos
+
+### Histórico de Eventos Padronizado (Timeline)
+- ✅ Tabela domain_event_type com categorias
+- ✅ Tabela client_events
+- ✅ ClientEventService completo
+- ✅ Eventos comerciais, operacionais, financeiros e comunicação
+- ✅ Análise de sentimento (eventos positivos vs negativos)
+
+### Programa de Indicações (Referral)
+- ✅ Tabela client_referrals
+- ✅ ClientReferralService completo
+- ✅ Fluxo: pendente → contatado → convertido/perdido
+- ✅ Estatísticas de indicações por cliente
+- ✅ Top indicadores
+
+### Documentação
+- ✅ Documento de análise de práticas tradicionais
+- ✅ Atualização da estrutura de dados
+- ✅ Novas rotas da API documentadas
+
 ## Status: 📋 Pendente (Próximos Passos)
 
 ### Testes Automatizados
@@ -102,6 +157,8 @@ Lista de atividades realizadas e pendentes para o sistema Carinho CRM.
 - 📋 Página de contratos
 - 📋 Página de tarefas
 - 📋 Página de relatórios com gráficos
+- 📋 Página de revisões de clientes
+- 📋 Página de indicações
 
 ### Funcionalidades Avançadas
 - 📋 Importação de leads em massa (CSV/Excel)
