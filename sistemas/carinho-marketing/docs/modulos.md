@@ -214,6 +214,129 @@ POST /api/brand/assets/{id}/deactivate - Desativa
 - `color` - Cores
 - `pattern` - Padroes
 
+## 7. Controle de Orcamento e Aprovacoes
+
+### Funcionalidades
+- Aprovacao de orcamento para campanhas acima do limite
+- Limites de gastos diarios, mensais e totais
+- Alertas automaticos em 70%, 90% e 100% do limite
+- Pausa automatica de campanhas ao atingir limite
+- Historico de aprovacoes
+
+### Endpoints (Orcamento)
+```
+GET  /api/budget/summary - Resumo de orcamento
+GET  /api/budget/global-limit - Limite global
+PUT  /api/budget/global-limit - Define limite global
+GET  /api/budget/alerts - Lista alertas nao reconhecidos
+POST /api/budget/alerts/check - Verifica e dispara alertas
+POST /api/budget/alerts/{id}/acknowledge - Reconhece alerta
+GET  /api/budget/campaigns/{id}/limit - Limite da campanha
+PUT  /api/budget/campaigns/{id}/limit - Define limite da campanha
+GET  /api/budget/campaigns/{id}/can-activate - Verifica se pode ativar
+```
+
+### Endpoints (Aprovacoes)
+```
+GET  /api/approvals/pending - Aprovacoes pendentes
+POST /api/approvals/request - Solicita aprovacao
+POST /api/approvals/{id}/approve - Aprova solicitacao
+POST /api/approvals/{id}/reject - Rejeita solicitacao
+GET  /api/approvals/campaigns/{id}/history - Historico
+```
+
+### Regras de Aprovacao
+- Campanhas ate R$ 500: aprovacao automatica
+- Campanhas acima de R$ 500: requer aprovacao gerencial
+
+## 8. Parcerias Locais
+
+### Funcionalidades
+- Cadastro de parceiros (clinicas, hospitais, cuidadores, condominios)
+- Codigo de indicacao unico por parceiro
+- Rastreamento de indicacoes
+- Calculo de comissao
+- Relatorio de performance por parceria
+
+### Endpoints
+```
+GET  /api/partnerships - Lista parcerias
+POST /api/partnerships - Cria parceria
+GET  /api/partnerships/stats - Estatisticas
+GET  /api/partnerships/commissions/pending - Comissoes pendentes
+GET  /api/partnerships/{id} - Detalhes
+PUT  /api/partnerships/{id} - Atualiza
+POST /api/partnerships/{id}/activate - Ativa
+POST /api/partnerships/{id}/deactivate - Desativa
+GET  /api/partnerships/{id}/referrals - Lista indicacoes
+POST /api/partnerships/referrals - Registra indicacao
+POST /api/partnerships/referrals/{id}/convert - Marca convertido
+POST /api/partnerships/referrals/{id}/pay-commission - Paga comissao
+```
+
+### Tipos de Parceria
+1. `clinic` - Clinicas
+2. `hospital` - Hospitais
+3. `caregiver` - Cuidadores
+4. `condominium` - Condominios
+5. `pharmacy` - Farmacias
+6. `other` - Outros
+
+## 9. Indicacoes de Clientes
+
+### Funcionalidades
+- Programa de indicacao para clientes satisfeitos
+- Codigo de indicacao unico por cliente
+- Beneficios configuraveis (desconto, bonus)
+- Limite de indicacoes por mes
+- Rastreamento de conversoes
+
+### Endpoints
+```
+GET  /api/referrals/program - Configuracao do programa
+PUT  /api/referrals/program - Atualiza configuracao
+GET  /api/referrals/stats - Estatisticas
+GET  /api/referrals/benefits/pending - Beneficios pendentes
+POST /api/referrals/code - Cria codigo para cliente
+POST /api/referrals/register - Registra lead indicado
+POST /api/referrals/{id}/convert - Marca convertido
+POST /api/referrals/{id}/apply-benefit - Aplica beneficio
+GET  /api/referrals/customer/{id} - Info do cliente
+GET  /api/referrals/customer/{id}/list - Lista indicacoes
+```
+
+### Configuracao do Programa
+- Tipo de beneficio: discount, bonus, gift
+- Valor do beneficio para quem indica
+- Valor minimo do contrato
+- Maximo de indicacoes por mes
+
+## 10. Relatorios de ROI
+
+### Funcionalidades
+- ROI consolidado por periodo
+- ROI por canal de marketing
+- ROI por fonte UTM
+- Performance de campanhas
+- Comparativo entre periodos
+- Tendencias mensais
+
+### Endpoints
+```
+GET  /api/reports/roi/consolidated - Relatorio consolidado
+GET  /api/reports/roi/comparison - Comparativo
+GET  /api/reports/roi/current-month - Mes atual
+GET  /api/reports/roi/monthly - Relatorio mensal
+GET  /api/reports/roi/quarterly - Relatorio trimestral
+```
+
+### Metricas Calculadas
+- CPL (Custo por Lead) - pago e total
+- CAC (Custo de Aquisicao de Cliente)
+- ROI (Retorno sobre Investimento)
+- Payback (dias para recuperar investimento)
+- LTV (Valor do tempo de vida do cliente)
+
 ## Autenticacao
 
 Todas as rotas protegidas requerem o header:
