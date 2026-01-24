@@ -9,6 +9,8 @@ use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BackupCaregiverController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,6 +121,51 @@ Route::middleware('internal.token')->group(function () {
         Route::get('/client/{clientId}/history', [NotificationController::class, 'clientHistory']);
         Route::get('/{id}', [NotificationController::class, 'show']);
         Route::post('/{id}/retry', [NotificationController::class, 'retry']);
+    });
+
+    // Relatórios Operacionais
+    Route::prefix('reports')->group(function () {
+        Route::get('/daily', [ReportController::class, 'daily']);
+        Route::get('/weekly', [ReportController::class, 'weekly']);
+        Route::get('/monthly', [ReportController::class, 'monthly']);
+        Route::get('/exceptions', [ReportController::class, 'exceptions']);
+    });
+
+    // SLA e Métricas
+    Route::prefix('sla')->group(function () {
+        Route::get('/dashboard', [ReportController::class, 'slaDashboard']);
+        Route::get('/alerts', [ReportController::class, 'slaAlerts']);
+        Route::get('/alerts/critical', [ReportController::class, 'slaCriticalAlerts']);
+        Route::get('/realtime', [ReportController::class, 'slaRealtime']);
+        Route::post('/alerts/{alertId}/acknowledge', [ReportController::class, 'acknowledgeSlaAlert']);
+    });
+
+    // Auditoria
+    Route::prefix('audit')->group(function () {
+        Route::get('/stats', [ReportController::class, 'auditStats']);
+        Route::get('/history', [ReportController::class, 'auditHistory']);
+    });
+
+    // Exceções Operacionais
+    Route::prefix('exceptions')->group(function () {
+        Route::get('/pending', [ReportController::class, 'pendingExceptions']);
+        Route::post('/{exceptionId}/approve', [ReportController::class, 'approveException']);
+        Route::post('/{exceptionId}/reject', [ReportController::class, 'rejectException']);
+    });
+
+    // Banco de Cuidadores Backup
+    Route::prefix('backup-caregivers')->group(function () {
+        Route::get('/', [BackupCaregiverController::class, 'index']);
+        Route::post('/', [BackupCaregiverController::class, 'store']);
+        Route::delete('/{caregiverId}', [BackupCaregiverController::class, 'destroy']);
+        Route::patch('/{caregiverId}/availability', [BackupCaregiverController::class, 'updateAvailability']);
+        Route::patch('/{caregiverId}/priority', [BackupCaregiverController::class, 'updatePriority']);
+        Route::get('/available', [BackupCaregiverController::class, 'findAvailable']);
+        Route::get('/find-best', [BackupCaregiverController::class, 'findBestWithExpansion']);
+        Route::get('/stats', [BackupCaregiverController::class, 'stats']);
+        Route::get('/regions', [BackupCaregiverController::class, 'regions']);
+        Route::get('/usage-history', [BackupCaregiverController::class, 'usageHistory']);
+        Route::post('/sync', [BackupCaregiverController::class, 'sync']);
     });
 
 });

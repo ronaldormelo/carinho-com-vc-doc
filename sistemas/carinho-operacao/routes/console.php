@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schedule;
 use App\Jobs\CheckScheduleDelays;
 use App\Jobs\SendScheduleReminders;
 use App\Jobs\CheckEmergencyEscalation;
+use App\Jobs\CalculateSlaMetrics;
+use App\Jobs\CheckSlaRealtime;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,26 +24,48 @@ Artisan::command('inspire', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Scheduled Tasks
+| Scheduled Tasks - Monitoramento Operacional
 |--------------------------------------------------------------------------
 */
 
 // Verifica atrasos a cada 5 minutos
 Schedule::job(new CheckScheduleDelays())
     ->everyFiveMinutes()
-    ->withoutOverlapping();
+    ->withoutOverlapping()
+    ->name('check-schedule-delays');
 
 // Envia lembretes 24h antes
 Schedule::job(new SendScheduleReminders(24))
     ->dailyAt('08:00')
-    ->withoutOverlapping();
+    ->withoutOverlapping()
+    ->name('send-reminders-24h');
 
 // Envia lembretes 2h antes
 Schedule::job(new SendScheduleReminders(2))
     ->hourly()
-    ->withoutOverlapping();
+    ->withoutOverlapping()
+    ->name('send-reminders-2h');
 
 // Verifica escalonamento de emergencias a cada 10 minutos
 Schedule::job(new CheckEmergencyEscalation())
     ->everyTenMinutes()
-    ->withoutOverlapping();
+    ->withoutOverlapping()
+    ->name('check-emergency-escalation');
+
+/*
+|--------------------------------------------------------------------------
+| Scheduled Tasks - SLA e Métricas
+|--------------------------------------------------------------------------
+*/
+
+// Verifica SLA em tempo real a cada 5 minutos
+Schedule::job(new CheckSlaRealtime())
+    ->everyFiveMinutes()
+    ->withoutOverlapping()
+    ->name('check-sla-realtime');
+
+// Calcula métricas de SLA diariamente às 01:00
+Schedule::job(new CalculateSlaMetrics())
+    ->dailyAt('01:00')
+    ->withoutOverlapping()
+    ->name('calculate-sla-metrics');
