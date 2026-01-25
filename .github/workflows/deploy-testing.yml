@@ -1,0 +1,213 @@
+name: Build e Deploy para KingHost
+
+on:
+  push:
+    branches:
+      - testing
+
+env:
+  PHP_VERSION: '8.2'
+
+jobs:
+  # ===========================================
+  # STAGE 1: BUILD - Composer Install
+  # ===========================================
+  build:
+    name: Build - ${{ matrix.sistema }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        sistema:
+          - carinho-atendimento
+          - carinho-crm
+          - carinho-cuidadores
+          - carinho-documentos-lgpd
+          - carinho-financeiro
+          - carinho-integracoes
+          - carinho-marketing
+          - carinho-operacao
+          - carinho-site
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP ${{ env.PHP_VERSION }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, pdo, pdo_mysql, redis, json, xml, curl, zip
+          coverage: none
+
+      - name: Obter diretório de cache do Composer
+        id: composer-cache
+        working-directory: sistemas/${{ matrix.sistema }}
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache de dependências do Composer
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.sistema }}-${{ hashFiles(format('sistemas/{0}/composer.lock', matrix.sistema)) }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.sistema }}-
+            ${{ runner.os }}-composer-
+
+      - name: Instalar dependências do Composer
+        working-directory: sistemas/${{ matrix.sistema }}
+        run: |
+          composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Criar arquivo de versão
+        working-directory: sistemas/${{ matrix.sistema }}
+        run: |
+          echo "BUILD_DATE=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" > .build-info
+          echo "COMMIT_SHA=${{ github.sha }}" >> .build-info
+          echo "COMMIT_REF=${{ github.ref }}" >> .build-info
+          echo "BUILD_NUMBER=${{ github.run_number }}" >> .build-info
+
+      - name: Upload artefato do build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.sistema }}
+          path: sistemas/${{ matrix.sistema }}
+          retention-days: 1
+          if-no-files-found: error
+
+  # ===========================================
+  # STAGE 2: DEPLOY - Upload SFTP para KingHost
+  # ===========================================
+  deploy:
+    name: Deploy - ${{ matrix.sistema }}
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - sistema: carinho-atendimento
+            remote_path_secret: SFTP_PATH_ATENDIMENTO
+          - sistema: carinho-crm
+            remote_path_secret: SFTP_PATH_CRM
+          - sistema: carinho-cuidadores
+            remote_path_secret: SFTP_PATH_CUIDADORES
+          - sistema: carinho-documentos-lgpd
+            remote_path_secret: SFTP_PATH_DOCUMENTOS_LGPD
+          - sistema: carinho-financeiro
+            remote_path_secret: SFTP_PATH_FINANCEIRO
+          - sistema: carinho-integracoes
+            remote_path_secret: SFTP_PATH_INTEGRACOES
+          - sistema: carinho-marketing
+            remote_path_secret: SFTP_PATH_MARKETING
+          - sistema: carinho-operacao
+            remote_path_secret: SFTP_PATH_OPERACAO
+          - sistema: carinho-site
+            remote_path_secret: SFTP_PATH_SITE
+
+    steps:
+      - name: Download artefato do build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.sistema }}
+          path: deploy/${{ matrix.sistema }}
+
+      - name: Instalar lftp para SFTP
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Definir caminho remoto
+        id: remote-path
+        env:
+          SFTP_PATH_ATENDIMENTO: ${{ secrets.SFTP_PATH_ATENDIMENTO }}
+          SFTP_PATH_CRM: ${{ secrets.SFTP_PATH_CRM }}
+          SFTP_PATH_CUIDADORES: ${{ secrets.SFTP_PATH_CUIDADORES }}
+          SFTP_PATH_DOCUMENTOS_LGPD: ${{ secrets.SFTP_PATH_DOCUMENTOS_LGPD }}
+          SFTP_PATH_FINANCEIRO: ${{ secrets.SFTP_PATH_FINANCEIRO }}
+          SFTP_PATH_INTEGRACOES: ${{ secrets.SFTP_PATH_INTEGRACOES }}
+          SFTP_PATH_MARKETING: ${{ secrets.SFTP_PATH_MARKETING }}
+          SFTP_PATH_OPERACAO: ${{ secrets.SFTP_PATH_OPERACAO }}
+          SFTP_PATH_SITE: ${{ secrets.SFTP_PATH_SITE }}
+          SECRET_NAME: ${{ matrix.remote_path_secret }}
+        run: |
+          REMOTE_PATH="${!SECRET_NAME}"
+          if [ -z "$REMOTE_PATH" ]; then
+            echo "::error::Variável de ambiente $SECRET_NAME não está configurada"
+            exit 1
+          fi
+          echo "path=$REMOTE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Deploy via SFTP para KingHost
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_PORT: ${{ secrets.SFTP_PORT }}
+          REMOTE_PATH: ${{ steps.remote-path.outputs.path }}
+        run: |
+          # Usar porta padrão 22 se não especificada
+          PORT="${SFTP_PORT:-22}"
+          
+          echo "🚀 Iniciando deploy de ${{ matrix.sistema }} para $REMOTE_PATH"
+          
+          # Configurar lftp para SFTP
+          lftp -c "
+            set sftp:auto-confirm yes;
+            set ssl:verify-certificate no;
+            set net:timeout 60;
+            set net:max-retries 3;
+            set net:reconnect-interval-base 5;
+            open -u $SFTP_USERNAME,$SFTP_PASSWORD sftp://$SFTP_HOST:$PORT;
+            mirror --reverse --delete --verbose --parallel=5 \
+              --exclude-glob .git/ \
+              --exclude-glob .github/ \
+              --exclude-glob .env \
+              --exclude-glob .env.* \
+              --exclude-glob storage/logs/* \
+              --exclude-glob storage/framework/cache/* \
+              --exclude-glob storage/framework/sessions/* \
+              --exclude-glob storage/framework/views/* \
+              deploy/${{ matrix.sistema }}/ $REMOTE_PATH/;
+            bye;
+          "
+          
+          echo "✅ Deploy de ${{ matrix.sistema }} concluído com sucesso!"
+
+      - name: Verificar deploy
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_PORT: ${{ secrets.SFTP_PORT }}
+          REMOTE_PATH: ${{ steps.remote-path.outputs.path }}
+        run: |
+          PORT="${SFTP_PORT:-22}"
+          
+          echo "📋 Verificando arquivos no servidor..."
+          
+          lftp -c "
+            set sftp:auto-confirm yes;
+            set ssl:verify-certificate no;
+            open -u $SFTP_USERNAME,$SFTP_PASSWORD sftp://$SFTP_HOST:$PORT;
+            ls $REMOTE_PATH/.build-info;
+            cat $REMOTE_PATH/.build-info;
+            bye;
+          " || echo "⚠️ Não foi possível verificar .build-info"
+
+  # ===========================================
+  # NOTIFICAÇÃO DE CONCLUSÃO
+  # ===========================================
+  notify:
+    name: Notificação de Deploy
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: Status do Deploy
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "✅ Deploy concluído com sucesso para todos os sistemas!"
+          else
+            echo "❌ Deploy falhou para um ou mais sistemas"
+            exit 1
+          fi
