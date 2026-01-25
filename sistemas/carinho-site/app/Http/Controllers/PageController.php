@@ -139,4 +139,17 @@ class PageController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Pagina para Investidores.
+     */
+    public function investors(): View
+    {
+        return view('pages.investors', [
+            'seo' => [
+                'title' => 'Investidores - Plano de Negócios' . config('branding.seo.title_suffix'),
+                'description' => 'Conheça o plano de negócios da Carinho com Você. Plataforma digital de cuidadores domiciliares com modelo escalável e mercado em expansão.',
+            ],
+        ]);
+    }
 }

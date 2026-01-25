@@ -25,6 +25,7 @@ Route::get('/servicos', [PageController::class, 'services'])->name('services');
 Route::get('/como-funciona', [PageController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/contato', [PageController::class, 'contact'])->name('contact');
+Route::get('/investidores', [PageController::class, 'investors'])->name('investors');
 
 // ==========================================================================
 // Paginas por Publico
@@ -43,6 +44,9 @@ Route::middleware('throttle:5,1')->group(function () {
 
     Route::post('/lead/cuidador', [LeadFormController::class, 'submitCaregiverLead'])
         ->name('lead.caregiver.submit');
+
+    Route::post('/lead/investidor', [LeadFormController::class, 'submitInvestorLead'])
+        ->name('lead.investor.submit');
 });
 
 // ==========================================================================
