@@ -26,6 +26,7 @@
                     <li><a href="{{ route('services') }}">Nossos Serviços</a></li>
                     <li><a href="{{ route('how-it-works') }}">Como Funciona</a></li>
                     <li><a href="{{ route('faq') }}">Perguntas Frequentes</a></li>
+                    <li><a href="{{ route('investors') }}">Investidores</a></li>
                     <li><a href="{{ route('contact') }}">Contato</a></li>
                 </ul>
             </div>

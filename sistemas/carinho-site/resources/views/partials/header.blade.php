@@ -14,7 +14,7 @@
                     <li><a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'active' : '' }}">Serviços</a></li>
                     <li><a href="{{ route('clients') }}" class="nav-link {{ request()->routeIs('clients') ? 'active' : '' }}">Clientes</a></li>
                     <li><a href="{{ route('caregivers') }}" class="nav-link {{ request()->routeIs('caregivers') ? 'active' : '' }}">Cuidadores</a></li>
-                    <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contato</a></li>
+                    <li><a href="{{ route('investors') }}" class="nav-link {{ request()->routeIs('investors') ? 'active' : '' }}">Investidores</a></li>
                 </ul>
             </nav>
 
@@ -43,6 +43,7 @@
             <li><a href="{{ route('services') }}">Serviços</a></li>
             <li><a href="{{ route('clients') }}">Para Clientes</a></li>
             <li><a href="{{ route('caregivers') }}">Para Cuidadores</a></li>
+            <li><a href="{{ route('investors') }}">Investidores</a></li>
             <li><a href="{{ route('contact') }}">Contato</a></li>
             <li><a href="{{ route('faq') }}">FAQ</a></li>
         </ul>
