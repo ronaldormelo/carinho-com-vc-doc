@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politica de Privacidade - Carinho com Voce</title>
+    <title>Politica de Privacidade - {{ config('branding.name') }}</title>
     <link rel="stylesheet" href="/css/brand.css">
     <style>
         .page-header {
@@ -69,7 +69,7 @@
     <header class="page-header">
         <div class="container">
             <h1>Politica de Privacidade</h1>
-            <p>Carinho com Voce</p>
+            <p>{{ config('branding.name') }}</p>
         </div>
     </header>
 
@@ -80,7 +80,7 @@
 
                 <h2>1. INTRODUCAO</h2>
                 <p>
-                    A Carinho com Voce esta comprometida em proteger sua privacidade. Esta politica
+                    A {{ config('branding.name') }} esta comprometida em proteger sua privacidade. Esta politica
                     descreve como coletamos, usamos e protegemos seus dados pessoais em conformidade
                     com a Lei Geral de Protecao de Dados (LGPD - Lei no 13.709/2018).
                 </p>
@@ -149,7 +149,7 @@
                     Para exercer seus direitos ou esclarecer duvidas sobre privacidade:
                 </p>
                 <p>
-                    <strong>E-mail:</strong> <a href="mailto:privacidade@carinho.com.vc">privacidade@carinho.com.vc</a>
+                    <strong>E-mail:</strong> <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
 
                 <h2>10. ALTERACOES</h2>
@@ -164,9 +164,9 @@
         <div class="container">
             <p>
                 <a href="/termos">Termos de Uso</a> |
-                <a href="https://carinho.com.vc">carinho.com.vc</a>
+                <a href="https://{{ config('branding.domain') }}">{{ config('branding.domain') }}</a>
             </p>
-            <p class="text-muted">&copy; {{ date('Y') }} Carinho com Voce. Todos os direitos reservados.</p>
+            <p class="text-muted">&copy; {{ date('Y') }} {{ config('branding.name') }}. Todos os direitos reservados.</p>
         </div>
     </footer>
 </body>

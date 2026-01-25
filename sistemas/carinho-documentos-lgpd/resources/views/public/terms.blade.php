@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termos de Uso - Carinho com Voce</title>
+    <title>Termos de Uso - {{ config('branding.name') }}</title>
     <link rel="stylesheet" href="/css/brand.css">
     <style>
         .page-header {
@@ -63,7 +63,7 @@
     <header class="page-header">
         <div class="container">
             <h1>Termos de Uso</h1>
-            <p>Carinho com Voce</p>
+            <p>{{ config('branding.name') }}</p>
         </div>
     </header>
 
@@ -80,7 +80,7 @@
 
                 <h2>2. DESCRICAO DOS SERVICOS</h2>
                 <p>
-                    A Carinho com Voce oferece servicos de intermediacao entre clientes que necessitam
+                    A {{ config('branding.name') }} oferece servicos de intermediacao entre clientes que necessitam
                     de cuidadores domiciliares e profissionais qualificados para prestacao desses servicos.
                 </p>
 
@@ -98,13 +98,13 @@
 
                 <h2>5. PROPRIEDADE INTELECTUAL</h2>
                 <p>
-                    Todo o conteudo disponibilizado e de propriedade da Carinho com Voce ou de seus
+                    Todo o conteudo disponibilizado e de propriedade da {{ config('branding.name') }} ou de seus
                     licenciadores.
                 </p>
 
                 <h2>6. LIMITACAO DE RESPONSABILIDADE</h2>
                 <p>
-                    A Carinho com Voce nao se responsabiliza por danos indiretos, incidentais ou
+                    A {{ config('branding.name') }} nao se responsabiliza por danos indiretos, incidentais ou
                     consequentes decorrentes do uso de nossos servicos.
                 </p>
 
@@ -116,7 +116,7 @@
 
                 <h2>8. CONTATO</h2>
                 <p>
-                    Em caso de duvidas, entre em contato: <a href="mailto:contato@carinho.com.vc">contato@carinho.com.vc</a>
+                    Em caso de duvidas, entre em contato: <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
             </div>
         </div>
@@ -126,9 +126,9 @@
         <div class="container">
             <p>
                 <a href="/privacidade">Politica de Privacidade</a> |
-                <a href="https://carinho.com.vc">carinho.com.vc</a>
+                <a href="https://{{ config('branding.domain') }}">{{ config('branding.domain') }}</a>
             </p>
-            <p class="text-muted">&copy; {{ date('Y') }} Carinho com Voce. Todos os direitos reservados.</p>
+            <p class="text-muted">&copy; {{ date('Y') }} {{ config('branding.name') }}. Todos os direitos reservados.</p>
         </div>
     </footer>
 </body>

@@ -8,7 +8,7 @@ return [
     */
     'internal' => [
         'token' => env('INTERNAL_API_TOKEN'),
-        'timeout' => 5,
+        'timeout' => env('INTERNAL_API_TIMEOUT', 5),
     ],
 
     /*
@@ -27,8 +27,8 @@ return [
         'token' => env('ZAPI_TOKEN'),
         'client_token' => env('ZAPI_CLIENT_TOKEN'),
         'webhook_secret' => env('ZAPI_WEBHOOK_SECRET'),
-        'timeout' => 10,
-        'connect_timeout' => 3,
+        'timeout' => env('ZAPI_TIMEOUT', 10),
+        'connect_timeout' => env('ZAPI_CONNECT_TIMEOUT', 3),
     ],
 
     /*
@@ -42,7 +42,7 @@ return [
     'crm' => [
         'base_url' => env('CRM_BASE_URL', 'https://crm.carinho.com.vc/api'),
         'token' => env('CRM_TOKEN'),
-        'timeout' => 8,
+        'timeout' => env('CRM_TIMEOUT', 8),
     ],
 
     /*
@@ -56,7 +56,7 @@ return [
     'cuidadores' => [
         'base_url' => env('CUIDADORES_BASE_URL', 'https://cuidadores.carinho.com.vc/api'),
         'token' => env('CUIDADORES_TOKEN'),
-        'timeout' => 8,
+        'timeout' => env('CUIDADORES_TIMEOUT', 8),
     ],
 
     /*
@@ -70,7 +70,7 @@ return [
     'atendimento' => [
         'base_url' => env('ATENDIMENTO_BASE_URL', 'https://atendimento.carinho.com.vc/api'),
         'token' => env('ATENDIMENTO_TOKEN'),
-        'timeout' => 8,
+        'timeout' => env('ATENDIMENTO_TIMEOUT', 8),
     ],
 
     /*
@@ -84,7 +84,7 @@ return [
     'financeiro' => [
         'base_url' => env('FINANCEIRO_BASE_URL', 'https://financeiro.carinho.com.vc/api'),
         'token' => env('FINANCEIRO_TOKEN'),
-        'timeout' => 10,
+        'timeout' => env('FINANCEIRO_TIMEOUT', 10),
     ],
 
     /*
@@ -98,7 +98,7 @@ return [
     'integracoes' => [
         'base_url' => env('INTEGRACOES_BASE_URL', 'https://integracoes.carinho.com.vc/api'),
         'token' => env('INTEGRACOES_TOKEN'),
-        'timeout' => 8,
+        'timeout' => env('INTEGRACOES_TIMEOUT', 8),
     ],
 
     /*

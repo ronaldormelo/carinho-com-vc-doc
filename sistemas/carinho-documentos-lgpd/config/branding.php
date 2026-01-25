@@ -64,6 +64,7 @@ return [
         'signature_name' => env('BRAND_SIGNATURE_NAME', 'Equipe Carinho'),
         'from' => env('DOCUMENTOS_EMAIL_FROM', 'documentos@carinho.com.vc'),
         'reply_to' => env('BRAND_REPLY_TO', 'contato@carinho.com.vc'),
+        'privacy' => env('PRIVACY_EMAIL', 'privacidade@carinho.com.vc'),
     ],
 
     /*

@@ -176,7 +176,7 @@ class ZApiClient
 
         return "Carinho com Voce\n\n"
             . "Sua solicitacao de {$type} {$statusText}.\n\n"
-            . "Em caso de duvidas, entre em contato pelo e-mail privacidade@carinho.com.vc";
+            . "Em caso de duvidas, entre em contato pelo e-mail " . config('branding.email.privacy');
     }
 
     /**

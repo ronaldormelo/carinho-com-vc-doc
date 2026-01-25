@@ -27,22 +27,22 @@ return [
     */
     'matching' => [
         // Peso para score de habilidades
-        'skill_weight' => 0.35,
+        'skill_weight' => env('MATCH_SKILL_WEIGHT', 0.35),
 
         // Peso para score de disponibilidade
-        'availability_weight' => 0.25,
+        'availability_weight' => env('MATCH_AVAILABILITY_WEIGHT', 0.25),
 
         // Peso para score de regiao/distancia
-        'region_weight' => 0.20,
+        'region_weight' => env('MATCH_REGION_WEIGHT', 0.20),
 
         // Peso para avaliacao media
-        'rating_weight' => 0.20,
+        'rating_weight' => env('MATCH_RATING_WEIGHT', 0.20),
 
         // Score minimo para match automatico
-        'min_auto_match_score' => 70,
+        'min_auto_match_score' => env('MATCH_MIN_AUTO_SCORE', 70),
 
         // Maximo de candidatos por match
-        'max_candidates' => 10,
+        'max_candidates' => env('MATCH_MAX_CANDIDATES', 10),
 
         // Raio maximo para busca de cuidadores (em km)
         'max_radius_km' => env('MATCH_MAX_RADIUS', 30),
@@ -80,13 +80,13 @@ return [
         'reduced_fee_hours' => env('CANCEL_REDUCED_HOURS', 24),
 
         // Percentual de taxa reduzida
-        'reduced_fee_percent' => 30,
+        'reduced_fee_percent' => env('CANCEL_REDUCED_FEE_PERCENT', 30),
 
         // Percentual de taxa integral (cancelamento tardio)
-        'full_fee_percent' => 50,
+        'full_fee_percent' => env('CANCEL_FULL_FEE_PERCENT', 50),
 
         // Maximo de cancelamentos por cliente por mes
-        'max_monthly_cancellations' => 3,
+        'max_monthly_cancellations' => env('CANCEL_MAX_MONTHLY', 3),
     ],
 
     /*

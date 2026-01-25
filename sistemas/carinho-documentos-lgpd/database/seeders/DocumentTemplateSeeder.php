@@ -12,6 +12,9 @@ class DocumentTemplateSeeder extends Seeder
      */
     public function run(): void
     {
+        $replyTo = config('branding.email.reply_to', 'contato@carinho.com.vc');
+        $privacyEmail = config('branding.email.privacy', 'privacidade@carinho.com.vc');
+        
         DB::table('document_templates')->insert([
             [
                 'doc_type_id' => 1, // contrato_cliente
@@ -28,13 +31,13 @@ class DocumentTemplateSeeder extends Seeder
             [
                 'doc_type_id' => 3, // termos
                 'version' => '1.0',
-                'content' => $this->getTermosContent(),
+                'content' => str_replace('contato@carinho.com.vc', $replyTo, $this->getTermosContent()),
                 'active' => true,
             ],
             [
                 'doc_type_id' => 4, // privacidade
                 'version' => '1.0',
-                'content' => $this->getPrivacidadeContent(),
+                'content' => str_replace('privacidade@carinho.com.vc', $privacyEmail, $this->getPrivacidadeContent()),
                 'active' => true,
             ],
         ]);

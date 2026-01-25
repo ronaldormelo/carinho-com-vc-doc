@@ -53,9 +53,9 @@ return [
 
         // Configuracoes de OTP
         'otp' => [
-            'length' => 6,
-            'expiration_minutes' => 10,
-            'max_attempts' => 3,
+            'length' => env('OTP_LENGTH', 6),
+            'expiration_minutes' => env('OTP_EXPIRATION_MINUTES', 10),
+            'max_attempts' => env('OTP_MAX_ATTEMPTS', 3),
         ],
     ],
 
