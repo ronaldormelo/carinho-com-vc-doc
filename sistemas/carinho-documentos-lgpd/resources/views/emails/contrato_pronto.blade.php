@@ -110,6 +110,7 @@
     <div class="container">
         <div class="card">
             <div class="header">
+                <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ $brandName }}" style="height: 50px; margin-bottom: 16px;" />
                 <h1>{{ $brandName }}</h1>
             </div>
             <div class="content">
@@ -141,7 +142,7 @@
             <div class="footer">
                 <p>
                     Em caso de duvidas, entre em contato conosco pelo email
-                    <a href="mailto:contato@carinho.com.vc">contato@carinho.com.vc</a>
+                    <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
                 <p>&copy; {{ date('Y') }} {{ $brandName }}. Todos os direitos reservados.</p>
             </div>

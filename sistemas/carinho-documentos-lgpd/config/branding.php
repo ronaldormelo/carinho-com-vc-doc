@@ -57,6 +57,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Brand Assets
+    |--------------------------------------------------------------------------
+    */
+    'assets' => [
+        'logo' => [
+            'primary' => '/images/logo-transparente.webp',
+            'white' => '/images/logo-white.webp',
+            'icon' => '/images/logo-icon.webp',
+            'favicon' => '/images/favicon.ico',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Email
     |--------------------------------------------------------------------------
     */
@@ -64,6 +78,7 @@ return [
         'signature_name' => env('BRAND_SIGNATURE_NAME', 'Equipe Carinho'),
         'from' => env('DOCUMENTOS_EMAIL_FROM', 'documentos@carinho.com.vc'),
         'reply_to' => env('BRAND_REPLY_TO', 'contato@carinho.com.vc'),
+        'privacy' => env('PRIVACY_EMAIL', 'privacidade@carinho.com.vc'),
     ],
 
     /*

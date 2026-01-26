@@ -55,7 +55,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', 'carinho_site_'),
+            'prefix' => env('REDIS_PREFIX', 'carinho_site:'),
         ],
 
         'default' => [

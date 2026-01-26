@@ -338,7 +338,7 @@ APP_DEBUG=false
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_DATABASE=carinho_integracoes
-DB_USERNAME=carinho
+DB_USERNAME=root
 DB_PASSWORD=
 
 # Redis

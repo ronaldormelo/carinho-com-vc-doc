@@ -24,9 +24,11 @@
             margin-bottom: 32px;
         }
         .logo {
-            color: #5BBFAD;
-            font-size: 28px;
-            font-weight: bold;
+            text-align: center;
+        }
+        .logo img {
+            height: 50px;
+            width: auto;
             margin-bottom: 8px;
         }
         h1 {
@@ -98,7 +100,9 @@
 <body>
     <div class="document">
         <div class="header">
-            <div class="logo">{{ $brandName }}</div>
+            <div class="logo">
+                <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ $brandName }}" />
+            </div>
             <h1>Termo de Responsabilidade do Cuidador</h1>
         </div>
 

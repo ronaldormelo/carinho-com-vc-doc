@@ -147,11 +147,52 @@ CREATE TABLE rate_limits (
   count INT UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE failed_jobs (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  uuid VARCHAR(255) NOT NULL UNIQUE,
+  connection TEXT NOT NULL,
+  queue TEXT NOT NULL,
+  payload LONGTEXT NOT NULL,
+  exception LONGTEXT NOT NULL,
+  failed_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE job_batches (
+  id VARCHAR(255) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  total_jobs INT NOT NULL,
+  pending_jobs INT NOT NULL,
+  failed_jobs INT NOT NULL,
+  failed_job_ids LONGTEXT NOT NULL,
+  options MEDIUMTEXT NULL,
+  cancelled_at INT NULL,
+  created_at INT NOT NULL,
+  finished_at INT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_api_keys_name
+  ON api_keys (name);
+
+CREATE INDEX idx_webhook_endpoints_system
+  ON webhook_endpoints (system_name);
+
 CREATE INDEX idx_integration_events_status
   ON integration_events (status_id, created_at);
+
+CREATE INDEX idx_integration_events_type_source
+  ON integration_events (event_type, source_system);
+
+CREATE INDEX idx_event_mappings_type_target
+  ON event_mappings (event_type, target_system);
 
 CREATE INDEX idx_webhook_deliveries_endpoint_status
   ON webhook_deliveries (endpoint_id, status_id);
 
 CREATE INDEX idx_retry_queue_next_retry
   ON retry_queue (next_retry_at);
+
+CREATE INDEX idx_sync_jobs_type_status
+  ON sync_jobs (job_type, status_id);
+
+CREATE INDEX idx_rate_limits_client_window
+  ON rate_limits (client_id, window_start);

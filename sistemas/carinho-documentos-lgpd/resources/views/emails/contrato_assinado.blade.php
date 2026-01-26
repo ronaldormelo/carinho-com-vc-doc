@@ -91,6 +91,7 @@
     <div class="container">
         <div class="card">
             <div class="header">
+                <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ config('branding.name') }}" style="height: 50px; margin-bottom: 16px;" />
                 <div class="success-icon">✓</div>
                 <h1>Contrato Assinado!</h1>
             </div>
@@ -117,7 +118,7 @@
             <div class="footer">
                 <p>
                     Em caso de duvidas, entre em contato conosco pelo email
-                    <a href="mailto:contato@carinho.com.vc">contato@carinho.com.vc</a>
+                    <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
                 <p>&copy; {{ date('Y') }} {{ $brandName }}. Todos os direitos reservados.</p>
             </div>
