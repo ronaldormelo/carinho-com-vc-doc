@@ -3,7 +3,7 @@
         <div class="header-inner">
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="logo" aria-label="Página inicial - Carinho com Você">
-                <span>Carinho com Você</span>
+                <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ config('branding.name') }}" />
             </a>
 
             {{-- Desktop Navigation --}}

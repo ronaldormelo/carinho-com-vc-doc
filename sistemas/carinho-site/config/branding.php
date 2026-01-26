@@ -122,9 +122,9 @@ return [
 
     'assets' => [
         'logo' => [
-            'primary' => '/images/logo-primary.svg',
-            'white' => '/images/logo-white.svg',
-            'icon' => '/images/logo-icon.svg',
+            'primary' => '/images/logo-primary.png',
+            'white' => '/images/logo-white.png',
+            'icon' => '/images/logo-icon.png',
             'favicon' => '/images/favicon.ico',
         ],
         'og_image' => '/images/og-image.jpg',

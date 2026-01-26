@@ -31,9 +31,11 @@
             margin-bottom: 24px;
         }
         .logo {
-            color: #5BBFAD;
-            font-size: 24px;
-            font-weight: bold;
+            text-align: center;
+        }
+        .logo img {
+            height: 50px;
+            width: auto;
         }
         h1 {
             color: #1F2933;
@@ -87,7 +89,9 @@
     <div class="container">
         <div class="card">
             <div class="header">
-                <div class="logo">{{ $brandName }}</div>
+                <div class="logo">
+                    <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ $brandName }}" />
+                </div>
             </div>
 
             <h1>Bem-vindo(a), {{ $caregiver->name }}!</h1>

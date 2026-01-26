@@ -7,6 +7,9 @@
     
     <title>Aceite Digital - Carinho com Você</title>
     
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset(config('branding.assets.logo.favicon', '/images/favicon.ico')) }}" type="image/x-icon">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,14 +62,9 @@
             margin-bottom: 2rem;
         }
         
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary-600);
-        }
-        
-        .logo-text span {
-            color: #f43f5e;
+        .logo img {
+            height: 50px;
+            width: auto;
         }
         
         h1 {
@@ -207,7 +205,7 @@
     <div class="container">
         <div class="card">
             <div class="logo">
-                <span class="logo-text">Carinho<span>CRM</span></span>
+                <img src="{{ asset('/images/logo-primary.png') }}" alt="Carinho CRM" />
             </div>
             
             <!-- Form View -->

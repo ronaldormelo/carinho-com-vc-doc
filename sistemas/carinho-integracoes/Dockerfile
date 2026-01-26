@@ -1,7 +1,7 @@
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
-    git unzip libzip-dev libicu-dev libpng-dev libonig-dev \
+    git unzip libzip-dev libicu-dev libpng-dev libonig-dev dos2unix telnet \
     supervisor cron \
     && docker-php-ext-install pdo_mysql mbstring zip intl gd pcntl \
     && pecl install redis \
@@ -11,20 +11,23 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Copiar e configurar entrypoint ANTES do WORKDIR para garantir que não seja sobrescrito pelo volume
+COPY docker-entrypoint.sh /tmp/docker-entrypoint.sh
+RUN chmod +x /tmp/docker-entrypoint.sh && \
+    sed -i 's/\r$//' /tmp/docker-entrypoint.sh && \
+    dos2unix /tmp/docker-entrypoint.sh 2>/dev/null || true && \
+    mv /tmp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh
+
 WORKDIR /var/www/html
 
 # Configura Apache
-RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf
-
-# Cria diretorios necessarios
-RUN mkdir -p /var/www/html/storage/logs \
-    && mkdir -p /var/www/html/storage/framework/cache \
-    && mkdir -p /var/www/html/storage/framework/sessions \
-    && mkdir -p /var/www/html/storage/framework/views \
-    && chown -R www-data:www-data /var/www/html/storage
+RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf && \
+    echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Copia configuracao do supervisor
 COPY supervisor/workers.conf /etc/supervisor/conf.d/carinho-integracoes.conf
 
 # Comando para iniciar Apache e Supervisor
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sh", "-c", "service supervisor start && apache2-foreground"]

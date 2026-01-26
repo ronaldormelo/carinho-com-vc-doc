@@ -107,10 +107,10 @@ return [
 
     'assets' => [
         'logo' => [
-            'primary' => '/assets/images/logo-primary.svg',
-            'white' => '/assets/images/logo-white.svg',
-            'icon' => '/assets/images/logo-icon.svg',
-            'favicon' => '/assets/images/favicon.ico',
+            'primary' => '/images/logo-primary.png',
+            'white' => '/images/logo-white.png',
+            'icon' => '/images/logo-icon.png',
+            'favicon' => '/images/favicon.ico',
         ],
         'templates' => [
             'post_square' => '/assets/templates/post-square.psd',

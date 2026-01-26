@@ -8,41 +8,47 @@
 
 /* CSS Variables - Design Tokens */
 :root {
-    /* Cores primárias - tons suaves de azul (confiança e calma) */
-    --color-primary-50: #f0f9ff;
-    --color-primary-100: #e0f2fe;
-    --color-primary-200: #bae6fd;
-    --color-primary-300: #7dd3fc;
-    --color-primary-400: #38bdf8;
-    --color-primary-500: #0ea5e9;
-    --color-primary-600: #0284c7;
-    --color-primary-700: #0369a1;
-    --color-primary-800: #075985;
-    --color-primary-900: #0c4a6e;
+    /* Primary Colors - Verde suave (confiança e cuidado) */
+    --color-primary: #5BBFAD;
+    --color-primary-dark: #4AA99A;
+    --color-primary-light: #8DD4C7;
+    --color-primary-50: #f0fdfa;
+    --color-primary-100: #ccfbf1;
+    --color-primary-200: #99f6e4;
+    --color-primary-300: #5eead4;
+    --color-primary-400: #2dd4bf;
+    --color-primary-500: #5BBFAD;
+    --color-primary-600: #4AA99A;
+    --color-primary-700: #0d9488;
+    --color-primary-800: #115e59;
+    --color-primary-900: #134e4a;
 
-    /* Cores secundárias - tons de verde (cuidado e saúde) */
-    --color-secondary-50: #f0fdf4;
-    --color-secondary-100: #dcfce7;
-    --color-secondary-200: #bbf7d0;
-    --color-secondary-300: #86efac;
-    --color-secondary-400: #4ade80;
-    --color-secondary-500: #22c55e;
-    --color-secondary-600: #16a34a;
-    --color-secondary-700: #15803d;
-    --color-secondary-800: #166534;
-    --color-secondary-900: #14532d;
+    /* Secondary Colors - Cinza claro (neutralidade) */
+    --color-secondary: #F4F7F9;
+    --color-secondary-50: #f9fafb;
+    --color-secondary-100: #f3f4f6;
+    --color-secondary-200: #e5e7eb;
+    --color-secondary-300: #d1d5db;
+    --color-secondary-400: #9ca3af;
+    --color-secondary-500: #6b7280;
+    --color-secondary-600: #4b5563;
+    --color-secondary-700: #374151;
+    --color-secondary-800: #1f2937;
+    --color-secondary-900: #111827;
 
-    /* Cores de acentuação - tons de rosa/coral (calor humano) */
-    --color-accent-50: #fff1f2;
-    --color-accent-100: #ffe4e6;
-    --color-accent-200: #fecdd3;
-    --color-accent-300: #fda4af;
-    --color-accent-400: #fb7185;
-    --color-accent-500: #f43f5e;
-    --color-accent-600: #e11d48;
-    --color-accent-700: #be123c;
-    --color-accent-800: #9f1239;
-    --color-accent-900: #881337;
+    /* Accent Colors - Pêssego (calor humano) */
+    --color-accent: #F5C6AA;
+    --color-accent-dark: #E5A880;
+    --color-accent-50: #fff7ed;
+    --color-accent-100: #ffedd5;
+    --color-accent-200: #fed7aa;
+    --color-accent-300: #fdba74;
+    --color-accent-400: #fb923c;
+    --color-accent-500: #F5C6AA;
+    --color-accent-600: #ea580c;
+    --color-accent-700: #c2410c;
+    --color-accent-800: #9a3412;
+    --color-accent-900: #7c2d12;
 
     /* Neutros */
     --color-gray-50: #f9fafb;
@@ -57,10 +63,23 @@
     --color-gray-900: #111827;
 
     /* Status colors */
-    --color-success: #22c55e;
-    --color-warning: #f59e0b;
-    --color-error: #ef4444;
-    --color-info: #0ea5e9;
+    --color-success: #38A169;
+    --color-warning: #D69E2E;
+    --color-error: #E53E3E;
+    --color-info: #3182CE;
+    
+    /* Text Colors */
+    --color-text: #1F2933;
+    --color-text-light: #616E7C;
+    --color-text-muted: #9AA5B1;
+    
+    /* Background Colors */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F9FAFB;
+    --bg-tertiary: #F4F7F9;
+    
+    /* Border */
+    --border-color: #E4E7EB;
 
     /* Typography */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -123,8 +142,8 @@ body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
     line-height: 1.5;
-    color: var(--color-gray-800);
-    background-color: var(--color-gray-50);
+    color: var(--color-text);
+    background-color: var(--bg-primary);
 }
 
 /* Typography */
@@ -132,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0 var(--space-4);
     font-weight: 600;
     line-height: 1.25;
-    color: var(--color-gray-900);
+    color: var(--color-text);
 }
 
 h1 { font-size: var(--text-4xl); }
@@ -147,13 +166,13 @@ p {
 }
 
 a {
-    color: var(--color-primary-600);
+    color: var(--color-primary);
     text-decoration: none;
     transition: color var(--transition-fast);
 }
 
 a:hover {
-    color: var(--color-primary-700);
+    color: var(--color-primary-dark);
 }
 
 /* Layout */
@@ -166,7 +185,7 @@ a:hover {
 
 .page-header {
     background: white;
-    border-bottom: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--border-color);
     padding: var(--space-6) 0;
     margin-bottom: var(--space-6);
 }
@@ -176,7 +195,7 @@ a:hover {
 }
 
 .page-subtitle {
-    color: var(--color-gray-600);
+    color: var(--color-text-light);
     font-size: var(--text-lg);
     margin: 0;
 }
@@ -196,7 +215,7 @@ a:hover {
     align-items: center;
     margin-bottom: var(--space-4);
     padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--color-gray-100);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .card-title {
@@ -228,7 +247,7 @@ a:hover {
 }
 
 .btn-primary {
-    background: var(--color-primary-600);
+    background: var(--color-primary);
     color: white;
 }
 
@@ -242,7 +261,7 @@ a:hover {
 }
 
 .btn-secondary:hover {
-    background: var(--color-gray-200);
+    background: var(--bg-tertiary);
 }
 
 .btn-success {
@@ -265,13 +284,13 @@ a:hover {
 
 .btn-outline {
     background: transparent;
-    border: 1px solid var(--color-gray-300);
-    color: var(--color-gray-700);
+    border: 1px solid var(--border-color);
+    color: var(--color-text);
 }
 
 .btn-outline:hover {
-    background: var(--color-gray-50);
-    border-color: var(--color-gray-400);
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
 }
 
 /* Forms */
@@ -309,7 +328,7 @@ a:hover {
 }
 
 .form-input::placeholder {
-    color: var(--color-gray-400);
+    color: var(--color-text-muted);
 }
 
 /* Tables */
@@ -328,14 +347,14 @@ a:hover {
 .table td {
     padding: var(--space-3) var(--space-4);
     text-align: left;
-    border-bottom: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .table th {
     background: var(--color-gray-50);
     font-weight: 600;
     font-size: var(--text-sm);
-    color: var(--color-gray-600);
+    color: var(--color-text-light);
 }
 
 .table tbody tr:hover {
@@ -408,7 +427,7 @@ a:hover {
 
 .stat-label {
     font-size: var(--text-sm);
-    color: var(--color-gray-600);
+    color: var(--color-text-light);
 }
 
 .stat-change {
@@ -459,7 +478,7 @@ a:hover {
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-full);
     font-size: var(--text-sm);
-    color: var(--color-gray-600);
+    color: var(--color-text-light);
 }
 
 .pipeline-deal {
@@ -509,7 +528,7 @@ a:hover {
 
 .sidebar-logo {
     padding: var(--space-6);
-    border-bottom: 1px solid var(--color-gray-100);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .sidebar-logo img {
@@ -529,7 +548,7 @@ a:hover {
     gap: var(--space-3);
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-lg);
-    color: var(--color-gray-600);
+    color: var(--color-text-light);
     font-weight: 500;
     transition: all var(--transition-fast);
 }
