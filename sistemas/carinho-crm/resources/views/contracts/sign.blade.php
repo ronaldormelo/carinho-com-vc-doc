@@ -205,7 +205,7 @@
     <div class="container">
         <div class="card">
             <div class="logo">
-                <img src="{{ asset('/images/logo-primary.png') }}" alt="Carinho CRM" />
+                <img src="{{ asset(config('branding.assets.logo.primary', '/images/logo-transparente.webp')) }}" alt="Carinho CRM" />
             </div>
             
             <!-- Form View -->

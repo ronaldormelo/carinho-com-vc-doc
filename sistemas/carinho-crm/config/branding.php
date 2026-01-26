@@ -107,9 +107,9 @@ return [
 
     'assets' => [
         'logo' => [
-            'primary' => '/images/logo-primary.png',
-            'white' => '/images/logo-white.png',
-            'icon' => '/images/logo-icon.png',
+            'primary' => '/images/logo-transparente.webp',
+            'white' => '/images/logo-white.webp',
+            'icon' => '/images/logo-icon.webp',
             'favicon' => '/images/favicon.ico',
         ],
     ],

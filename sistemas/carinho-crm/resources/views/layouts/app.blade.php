@@ -26,7 +26,7 @@
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <a href="{{ route('dashboard') }}" class="logo">
-                    <img src="{{ asset('/images/logo-primary.png') }}" alt="Carinho CRM" style="height: 40px;" />
+                    <img src="{{ asset(config('branding.assets.logo.primary', '/images/logo-transparente.webp')) }}" alt="Carinho CRM" style="height: 40px;" />
                 </a>
             </div>
             

@@ -19,11 +19,12 @@ RUN chmod +x /tmp/docker-entrypoint.sh && \
     mv /tmp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# Copiar configuração do Apache
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
 WORKDIR /var/www/html
 
-# Configura Apache
-RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf && \
-    echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Copia configuracao do supervisor
 COPY supervisor/workers.conf /etc/supervisor/conf.d/carinho-integracoes.conf

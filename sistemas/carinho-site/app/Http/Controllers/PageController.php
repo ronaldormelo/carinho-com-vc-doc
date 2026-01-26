@@ -86,9 +86,11 @@ class PageController extends Controller
     public function forCaregivers(): View
     {
         $commissions = config('site.caregiver_commission');
+        $payoutPolicy = config('site.payout_policy');
 
         return view('pages.caregivers', [
             'commissions' => $commissions,
+            'payoutPolicy' => $payoutPolicy,
             'seo' => [
                 'title' => 'Para Cuidadores - Trabalhe Conosco' . config('branding.seo.title_suffix'),
                 'description' => 'Seja um cuidador parceiro da Carinho com Voce. Mais oportunidades, recorrencia e suporte profissional.',
