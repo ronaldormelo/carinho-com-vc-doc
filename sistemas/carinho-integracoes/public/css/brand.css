@@ -1,82 +1,151 @@
 /**
- * Carinho com Voce - Identidade Visual
+ * Carinho com Voce - Brand CSS
+ * Sistema de Integracoes
  *
- * Paleta de cores suaves que transmitem confianca e calma.
- * Tipografia sans-serif com alta legibilidade.
+ * Identidade visual baseada no arquivo "00 - Identidade da Marca.txt"
+ * Paleta: tons suaves que transmitem confianca e calma
+ * Tipografia: sans-serif, alta legibilidade
  */
 
+/* =================================================================
+   CSS Variables (Custom Properties)
+   ================================================================= */
+
 :root {
-    /* Cores Principais */
-    --color-primary: #5B8C5A;
-    --color-primary-dark: #4A7249;
-    --color-primary-light: #7DA87C;
+  /* Primary Colors */
+  --color-primary: #5BBFAD;
+  --color-primary-dark: #4AA99A;
+  --color-primary-light: #8DD4C7;
+  --color-primary-rgb: 91, 191, 173;
 
-    --color-secondary: #8FBC8F;
-    --color-secondary-dark: #6B9A6B;
-    --color-secondary-light: #B3D4B3;
+  /* Secondary Colors */
+  --color-secondary: #F4F7F9;
+  --color-accent: #F5C6AA;
+  --color-accent-dark: #E5A880;
 
-    /* Cores de Acentuacao */
-    --color-accent: #F5E6D3;
-    --color-accent-dark: #E5D1B8;
+  /* Text Colors */
+  --color-text: #1F2933;
+  --color-text-light: #616E7C;
+  --color-text-muted: #9AA5B1;
 
-    /* Cores de Fundo */
-    --color-background: #FAFAF8;
-    --color-surface: #FFFFFF;
+  /* Background Colors */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F9FAFB;
+  --bg-tertiary: #F4F7F9;
 
-    /* Cores de Texto */
-    --color-text: #2C3E50;
-    --color-text-light: #7F8C8D;
-    --color-text-inverse: #FFFFFF;
+  /* State Colors */
+  --color-success: #38A169;
+  --color-warning: #D69E2E;
+  --color-danger: #E53E3E;
+  --color-info: #3182CE;
 
-    /* Cores de Estado */
-    --color-success: #27AE60;
-    --color-warning: #F39C12;
-    --color-danger: #E74C3C;
-    --color-info: #3498DB;
+  /* Border */
+  --border-color: #E4E7EB;
+  --border-color-dark: #CBD2D9;
 
-    /* Tipografia */
-    --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-secondary: 'Open Sans', system-ui, sans-serif;
-    --font-monospace: 'JetBrains Mono', 'Fira Code', monospace;
+  /* Typography */
+  --font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --line-height: 1.6;
 
-    /* Espacamento */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
 
-    /* Bordas */
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 16px;
+  /* Border Radius */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
 
-    /* Sombras */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
 }
 
-/* Reset basico */
+/* =================================================================
+   Reset & Base Styles
+   ================================================================= */
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Tipografia */
 body {
-    font-family: var(--font-primary);
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--color-text);
-    background-color: var(--color-background);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background-color: var(--bg-primary);
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* =================================================================
+   Logo
+   ================================================================= */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.logo-white {
+  color: white;
+}
+
+.logo-white img {
+  filter: brightness(0) invert(1);
+}
+
+/* =================================================================
+   Typography
+   ================================================================= */
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    line-height: 1.3;
-    margin-bottom: var(--spacing-md);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
 }
 
 h1 { font-size: 2rem; }
@@ -85,190 +154,202 @@ h3 { font-size: 1.25rem; }
 h4 { font-size: 1rem; }
 
 p {
-    margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
 }
 
-/* Links */
-a {
-    color: var(--color-primary);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
+/* =================================================================
+   Buttons
+   ================================================================= */
 
-a:hover {
-    color: var(--color-primary-dark);
-}
-
-/* Botoes */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-family: var(--font-primary);
-    font-size: 1rem;
-    font-weight: 500;
-    border: none;
-    border-radius: var(--border-radius-md);
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-decoration: none;
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-inverse);
+  background-color: var(--color-primary);
+  color: white;
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
 }
 
 .btn-secondary {
-    background-color: var(--color-secondary);
-    color: var(--color-text);
+  background-color: var(--color-secondary);
+  color: var(--color-text);
 }
 
 .btn-secondary:hover {
-    background-color: var(--color-secondary-dark);
+  background-color: var(--bg-tertiary);
 }
 
 .btn-outline {
-    background-color: transparent;
-    border: 2px solid var(--color-primary);
-    color: var(--color-primary);
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
 }
 
 .btn-outline:hover {
-    background-color: var(--color-primary);
-    color: var(--color-text-inverse);
+  background-color: var(--color-primary);
+  color: white;
 }
 
-/* Cards */
+/* =================================================================
+   Cards
+   ================================================================= */
+
 .card {
-    background-color: var(--color-surface);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow-md);
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .card-header {
-    margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--color-accent);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
 }
 
-/* Formularios */
+/* =================================================================
+   Forms
+   ================================================================= */
+
 .form-group {
-    margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
 }
 
 .form-label {
-    display: block;
-    margin-bottom: var(--spacing-xs);
-    font-weight: 500;
-    color: var(--color-text);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 .form-input {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-family: var(--font-primary);
-    font-size: 1rem;
-    border: 1px solid var(--color-accent-dark);
-    border-radius: var(--border-radius-sm);
-    transition: border-color 0.2s ease;
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  transition: border-color var(--transition-fast);
 }
 
 .form-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
+  outline: none;
+  border-color: var(--color-primary);
 }
 
-/* Alertas */
+/* =================================================================
+   Alerts
+   ================================================================= */
+
 .alert {
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid transparent;
 }
 
 .alert-success {
-    background-color: rgba(39, 174, 96, 0.1);
-    border: 1px solid var(--color-success);
-    color: var(--color-success);
+  background-color: rgba(56, 161, 105, 0.1);
+  border-color: var(--color-success);
+  color: var(--color-success);
 }
 
 .alert-warning {
-    background-color: rgba(243, 156, 18, 0.1);
-    border: 1px solid var(--color-warning);
-    color: var(--color-warning);
+  background-color: rgba(214, 158, 46, 0.1);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
 }
 
 .alert-danger {
-    background-color: rgba(231, 76, 60, 0.1);
-    border: 1px solid var(--color-danger);
-    color: var(--color-danger);
+  background-color: rgba(229, 62, 62, 0.1);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
 }
 
 .alert-info {
-    background-color: rgba(52, 152, 219, 0.1);
-    border: 1px solid var(--color-info);
-    color: var(--color-info);
+  background-color: rgba(49, 130, 206, 0.1);
+  border-color: var(--color-info);
+  color: var(--color-info);
 }
 
-/* Status badges */
+/* =================================================================
+   Status Badges
+   ================================================================= */
+
 .badge {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: var(--border-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
 }
 
 .badge-success {
-    background-color: var(--color-success);
-    color: var(--color-text-inverse);
+  background-color: var(--color-success);
+  color: white;
 }
 
 .badge-warning {
-    background-color: var(--color-warning);
-    color: var(--color-text-inverse);
+  background-color: var(--color-warning);
+  color: white;
 }
 
 .badge-danger {
-    background-color: var(--color-danger);
-    color: var(--color-text-inverse);
+  background-color: var(--color-danger);
+  color: white;
 }
 
 .badge-info {
-    background-color: var(--color-info);
-    color: var(--color-text-inverse);
+  background-color: var(--color-info);
+  color: white;
 }
 
-/* Tabelas */
+/* =================================================================
+   Tables
+   ================================================================= */
+
 .table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .table th,
 .table td {
-    padding: var(--spacing-sm) var(--spacing-md);
-    text-align: left;
-    border-bottom: 1px solid var(--color-accent);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .table th {
-    font-weight: 600;
-    color: var(--color-text);
-    background-color: var(--color-accent);
+  font-weight: 600;
+  color: var(--color-text);
+  background-color: var(--bg-secondary);
 }
 
 .table tr:hover {
-    background-color: var(--color-accent);
+  background-color: var(--bg-secondary);
 }
 
-/* Utilidades */
+/* =================================================================
+   Utilities
+   ================================================================= */
+
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 .text-muted { color: var(--color-text-light); }

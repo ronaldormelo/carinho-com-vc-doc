@@ -237,7 +237,7 @@ php artisan serve
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_DATABASE=carinho_crm
-DB_USERNAME=carinho
+DB_USERNAME=root
 DB_PASSWORD=
 
 # Redis

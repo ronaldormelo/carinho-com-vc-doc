@@ -29,8 +29,14 @@ Mensagens-chave
 
 Elementos visuais
 - Logomarca: legivel em tamanhos pequenos e aplicada em digital.
-- Paleta: tons suaves que transmitam confianca e calma.
+- Paleta: tons suaves que transmitam confianca e calma. 
+	346063 - Verde claro
+	1a2b32 - Verde escuro
+	eb7d70 - Vermelho
 - Tipografia: fonte sans-serif, alta legibilidade.
+    Layout da Logomarca: 
+        Playwrite AR
+        Dancing Script	
 
 Kit de marca (entregaveis)
 - Logo principal e versoes reduzidas.

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Politica de Privacidade - {{ config('branding.name') }}</title>
+    <link rel="icon" href="{{ asset(config('branding.assets.logo.favicon', '/images/favicon.ico')) }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/brand.css">
     <style>
         .page-header {
@@ -68,6 +69,9 @@
 <body>
     <header class="page-header">
         <div class="container">
+            <div style="margin-bottom: var(--spacing-6);">
+                <img src="{{ asset(config('branding.assets.logo.white')) }}" alt="{{ config('branding.name') }}" style="height: 50px;" />
+            </div>
             <h1>Politica de Privacidade</h1>
             <p>{{ config('branding.name') }}</p>
         </div>

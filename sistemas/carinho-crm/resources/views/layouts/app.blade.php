@@ -7,6 +7,9 @@
     
     <title>@yield('title', 'Dashboard') - Carinho CRM</title>
     
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset(config('branding.assets.logo.favicon', '/images/favicon.ico')) }}" type="image/x-icon">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,10 +25,8 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <a href="{{ route('dashboard') }}">
-                    <span style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary-600);">
-                        Carinho<span style="color: var(--color-accent-500);">CRM</span>
-                    </span>
+                <a href="{{ route('dashboard') }}" class="logo">
+                    <img src="{{ asset(config('branding.assets.logo.primary', '/images/logo-transparente.webp')) }}" alt="Carinho CRM" style="height: 40px;" />
                 </a>
             </div>
             

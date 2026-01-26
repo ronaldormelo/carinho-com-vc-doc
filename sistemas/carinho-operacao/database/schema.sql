@@ -228,5 +228,128 @@ CREATE INDEX idx_schedules_caregiver_date
 CREATE INDEX idx_schedules_client_date
   ON schedules (client_id, shift_date);
 
+CREATE TABLE domain_audit_action (
+  id TINYINT UNSIGNED PRIMARY KEY,
+  code VARCHAR(32) NOT NULL UNIQUE,
+  label VARCHAR(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO domain_audit_action (id, code, label) VALUES
+  (1, 'schedule_created', 'Agendamento Criado'),
+  (2, 'schedule_updated', 'Agendamento Atualizado'),
+  (3, 'schedule_canceled', 'Agendamento Cancelado'),
+  (4, 'checkin_performed', 'Check-in Realizado'),
+  (5, 'checkout_performed', 'Check-out Realizado'),
+  (6, 'assignment_created', 'Alocação Criada'),
+  (7, 'assignment_confirmed', 'Alocação Confirmada'),
+  (8, 'substitution_processed', 'Substituição Processada'),
+  (9, 'emergency_created', 'Emergência Registrada'),
+  (10, 'emergency_resolved', 'Emergência Resolvida'),
+  (11, 'emergency_escalated', 'Emergência Escalonada'),
+  (12, 'exception_approved', 'Exceção Aprovada'),
+  (13, 'exception_rejected', 'Exceção Rejeitada'),
+  (14, 'manual_override', 'Alteração Manual');
+
+CREATE TABLE operational_audit_trail (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  action_id TINYINT UNSIGNED NOT NULL,
+  entity_type VARCHAR(64) NOT NULL COMMENT 'Tipo da entidade: schedule, assignment, emergency, etc',
+  entity_id BIGINT UNSIGNED NOT NULL COMMENT 'ID da entidade afetada',
+  user_id BIGINT UNSIGNED NULL COMMENT 'Usuário que realizou a ação',
+  user_type VARCHAR(32) NOT NULL DEFAULT 'system' COMMENT 'Tipo: system, operator, supervisor',
+  old_values JSON NULL COMMENT 'Valores anteriores',
+  new_values JSON NULL COMMENT 'Novos valores',
+  reason VARCHAR(500) NULL COMMENT 'Motivo/justificativa',
+  ip_address VARCHAR(45) NULL,
+  user_agent VARCHAR(255) NULL,
+  created_at DATETIME NOT NULL,
+  CONSTRAINT fk_operational_audit_action
+    FOREIGN KEY (action_id) REFERENCES domain_audit_action(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE operational_exceptions (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  exception_type VARCHAR(64) NOT NULL COMMENT 'Tipo: late_checkin, early_checkout, schedule_change, etc',
+  entity_type VARCHAR(64) NOT NULL,
+  entity_id BIGINT UNSIGNED NOT NULL,
+  requested_by BIGINT UNSIGNED NULL,
+  description TEXT NOT NULL,
+  status VARCHAR(32) NOT NULL DEFAULT 'pending' COMMENT 'pending, approved, rejected',
+  approved_by BIGINT UNSIGNED NULL,
+  approval_notes TEXT NULL,
+  requested_at DATETIME NOT NULL,
+  resolved_at DATETIME NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE backup_caregivers (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  caregiver_id BIGINT UNSIGNED NOT NULL,
+  region_code VARCHAR(32) NOT NULL,
+  priority TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '1=Alta, 2=Media, 3=Baixa',
+  is_available TINYINT(1) NOT NULL DEFAULT 1,
+  available_from TIME NULL,
+  available_until TIME NULL,
+  service_types JSON NULL COMMENT 'Tipos de serviço que aceita',
+  last_assignment_at DATETIME NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NULL,
+  UNIQUE KEY uk_backup_caregiver_region (caregiver_id, region_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE sla_metrics (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  metric_date DATE NOT NULL,
+  metric_type VARCHAR(64) NOT NULL COMMENT 'allocation_time, checkin_punctuality, substitution_rate, etc',
+  dimension VARCHAR(64) NULL COMMENT 'region, caregiver, service_type',
+  dimension_value VARCHAR(64) NULL,
+  target_value DECIMAL(10,2) NOT NULL,
+  actual_value DECIMAL(10,2) NOT NULL,
+  target_met TINYINT(1) NOT NULL DEFAULT 0,
+  sample_size INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NULL,
+  UNIQUE KEY sla_metrics_unique (metric_date, metric_type, dimension, dimension_value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE sla_alerts (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  sla_metric_id BIGINT UNSIGNED NULL,
+  alert_type VARCHAR(64) NOT NULL COMMENT 'threshold_breach, trend_warning, critical',
+  metric_type VARCHAR(64) NOT NULL,
+  message TEXT NOT NULL,
+  severity VARCHAR(16) NOT NULL DEFAULT 'warning' COMMENT 'info, warning, critical',
+  is_acknowledged TINYINT(1) NOT NULL DEFAULT 0,
+  acknowledged_by BIGINT UNSIGNED NULL,
+  acknowledged_at DATETIME NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NULL,
+  CONSTRAINT fk_sla_alerts_metric
+    FOREIGN KEY (sla_metric_id) REFERENCES sla_metrics(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE INDEX idx_service_requests_status_date
   ON service_requests (status_id, start_date);
+
+CREATE INDEX idx_operational_audit_entity
+  ON operational_audit_trail (entity_type, entity_id);
+
+CREATE INDEX idx_operational_audit_user
+  ON operational_audit_trail (user_id, created_at);
+
+CREATE INDEX idx_operational_audit_created
+  ON operational_audit_trail (created_at);
+
+CREATE INDEX idx_operational_exceptions_status
+  ON operational_exceptions (status, requested_at);
+
+CREATE INDEX idx_operational_exceptions_entity
+  ON operational_exceptions (entity_type, entity_id);
+
+CREATE INDEX idx_backup_caregivers_region
+  ON backup_caregivers (region_code, is_available, priority);
+
+CREATE INDEX idx_sla_metrics_date
+  ON sla_metrics (metric_date, target_met);
+
+CREATE INDEX idx_sla_alerts_acknowledged
+  ON sla_alerts (is_acknowledged, severity);

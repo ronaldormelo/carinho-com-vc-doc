@@ -1,44 +1,89 @@
 /**
  * Carinho Marketing - Brand CSS
  * Identidade visual da marca Carinho com Voce
+ *
+ * Baseado no arquivo "00 - Identidade da Marca.txt"
+ * Paleta: tons suaves que transmitem confianca e calma
+ * Tipografia: sans-serif, alta legibilidade
  */
 
+/* =================================================================
+   CSS Variables (Custom Properties)
+   ================================================================= */
+
 :root {
-  /* Cores principais */
-  --brand-primary: #5BBFAD;
-  --brand-secondary: #F4F7F9;
-  --brand-accent: #F5C6AA;
-  --brand-text: #1F2933;
-  --brand-text-light: #616E7C;
-  --brand-background: #FFFFFF;
+  /* Primary Colors */
+  --color-primary: #5BBFAD;
+  --color-primary-dark: #4AA99A;
+  --color-primary-light: #8DD4C7;
+  --color-primary-rgb: 91, 191, 173;
 
-  /* Cores de status */
-  --brand-success: #38A169;
-  --brand-warning: #D69E2E;
-  --brand-danger: #E53E3E;
-  --brand-info: #3182CE;
+  /* Secondary Colors */
+  --color-secondary: #F4F7F9;
+  --color-accent: #F5C6AA;
+  --color-accent-dark: #E5A880;
 
-  /* Tipografia */
+  /* Text Colors */
+  --color-text: #1F2933;
+  --color-text-light: #616E7C;
+  --color-text-muted: #9AA5B1;
+
+  /* Background Colors */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F9FAFB;
+  --bg-tertiary: #F4F7F9;
+
+  /* State Colors */
+  --color-success: #38A169;
+  --color-warning: #D69E2E;
+  --color-danger: #E53E3E;
+  --color-info: #3182CE;
+
+  /* Border */
+  --border-color: #E4E7EB;
+  --border-color-dark: #CBD2D9;
+
+  /* Typography */
   --font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   --font-family-headings: "Nunito", Arial, sans-serif;
-  --font-size-base: 16px;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
   --line-height: 1.5;
 
-  /* Espacamentos */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
 
-  /* Bordas */
-  --border-radius: 8px;
-  --border-radius-lg: 12px;
-  --border-color: #E4E7EB;
+  /* Border Radius */
+  --border-radius: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
 }
 
-/* Reset basico */
+/* =================================================================
+   Reset & Base Styles
+   ================================================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -47,17 +92,64 @@ body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);
   line-height: var(--line-height);
-  color: var(--brand-text);
-  background-color: var(--brand-background);
+  color: var(--color-text);
+  background-color: var(--bg-primary);
   margin: 0;
   padding: 0;
 }
 
-/* Tipografia */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* =================================================================
+   Logo
+   ================================================================= */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.logo-white {
+  color: white;
+}
+
+.logo-white img {
+  filter: brightness(0) invert(1);
+}
+
+/* =================================================================
+   Typography
+   ================================================================= */
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-headings);
-  color: var(--brand-text);
+  color: var(--color-text);
   margin-top: 0;
+  margin-bottom: var(--spacing-md);
 }
 
 h1 { font-size: 2.5rem; }
@@ -71,63 +163,61 @@ p {
   margin-bottom: var(--spacing-md);
 }
 
-a {
-  color: var(--brand-primary);
-  text-decoration: none;
-}
+/* =================================================================
+   Buttons
+   ================================================================= */
 
-a:hover {
-  text-decoration: underline;
-}
-
-/* Botoes */
 .btn {
   display: inline-block;
   padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   text-align: center;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
+  text-decoration: none;
 }
 
 .btn-primary {
-  background-color: var(--brand-primary);
+  background-color: var(--color-primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #4AA99B;
+  background-color: var(--color-primary-dark);
 }
 
 .btn-secondary {
-  background-color: var(--brand-secondary);
-  color: var(--brand-text);
+  background-color: var(--color-secondary);
+  color: var(--color-text);
 }
 
 .btn-secondary:hover {
-  background-color: #E4E7EB;
+  background-color: var(--bg-tertiary);
 }
 
 .btn-accent {
-  background-color: var(--brand-accent);
-  color: var(--brand-text);
+  background-color: var(--color-accent);
+  color: var(--color-text);
 }
 
 .btn-accent:hover {
-  background-color: #E8B599;
+  background-color: var(--color-accent-dark);
 }
 
-/* Cards */
+/* =================================================================
+   Cards
+   ================================================================= */
+
 .card {
   background-color: white;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
 .card-header {
@@ -141,38 +231,45 @@ a:hover {
   font-size: 1.25rem;
 }
 
-/* Alertas */
+/* =================================================================
+   Alerts
+   ================================================================= */
+
 .alert {
   padding: var(--spacing-md);
   border-radius: var(--border-radius);
   margin-bottom: var(--spacing-md);
+  border: 1px solid transparent;
 }
 
 .alert-success {
-  background-color: #F0FFF4;
-  border: 1px solid var(--brand-success);
-  color: var(--brand-success);
+  background-color: rgba(56, 161, 105, 0.1);
+  border-color: var(--color-success);
+  color: var(--color-success);
 }
 
 .alert-warning {
-  background-color: #FFFFF0;
-  border: 1px solid var(--brand-warning);
-  color: var(--brand-warning);
+  background-color: rgba(214, 158, 46, 0.1);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
 }
 
 .alert-danger {
-  background-color: #FFF5F5;
-  border: 1px solid var(--brand-danger);
-  color: var(--brand-danger);
+  background-color: rgba(229, 62, 62, 0.1);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
 }
 
 .alert-info {
-  background-color: #EBF8FF;
-  border: 1px solid var(--brand-info);
-  color: var(--brand-info);
+  background-color: rgba(49, 130, 206, 0.1);
+  border-color: var(--color-info);
+  color: var(--color-info);
 }
 
-/* Formularios */
+/* =================================================================
+   Forms
+   ================================================================= */
+
 .form-group {
   margin-bottom: var(--spacing-md);
 }
@@ -181,25 +278,28 @@ a:hover {
   display: block;
   margin-bottom: var(--spacing-xs);
   font-weight: 600;
-  color: var(--brand-text);
+  color: var(--color-text);
 }
 
 .form-control {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(91, 191, 173, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
 }
 
-/* Badges */
+/* =================================================================
+   Badges
+   ================================================================= */
+
 .badge {
   display: inline-block;
   padding: 2px 8px;
@@ -209,35 +309,38 @@ a:hover {
 }
 
 .badge-primary {
-  background-color: var(--brand-primary);
+  background-color: var(--color-primary);
   color: white;
 }
 
 .badge-success {
-  background-color: var(--brand-success);
+  background-color: var(--color-success);
   color: white;
 }
 
 .badge-warning {
-  background-color: var(--brand-warning);
+  background-color: var(--color-warning);
   color: white;
 }
 
 .badge-danger {
-  background-color: var(--brand-danger);
+  background-color: var(--color-danger);
   color: white;
 }
 
-/* Utilidades */
-.text-primary { color: var(--brand-primary); }
-.text-secondary { color: var(--brand-text-light); }
-.text-success { color: var(--brand-success); }
-.text-warning { color: var(--brand-warning); }
-.text-danger { color: var(--brand-danger); }
+/* =================================================================
+   Utilities
+   ================================================================= */
 
-.bg-primary { background-color: var(--brand-primary); }
-.bg-secondary { background-color: var(--brand-secondary); }
-.bg-accent { background-color: var(--brand-accent); }
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-text-light); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-accent { background-color: var(--color-accent); }
 
 .mt-1 { margin-top: var(--spacing-sm); }
 .mt-2 { margin-top: var(--spacing-md); }

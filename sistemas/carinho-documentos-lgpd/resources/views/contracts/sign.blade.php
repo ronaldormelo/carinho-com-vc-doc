@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assinatura de Contrato - Carinho com Voce</title>
+    <link rel="icon" href="{{ asset(config('branding.assets.logo.favicon', '/images/favicon.ico')) }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/brand.css">
     <style>
         .page-container {
@@ -22,9 +23,13 @@
             align-items: center;
         }
         .logo {
-            font-size: var(--font-size-xl);
-            font-weight: 600;
-            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+        .logo img {
+            height: 40px;
+            width: auto;
         }
         .main-content {
             flex: 1;
@@ -136,7 +141,9 @@
     <div class="page-container">
         <nav class="navbar">
             <div class="container">
-                <span class="logo">Carinho com Voce</span>
+                <div class="logo">
+                    <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ config('branding.name') }}" />
+                </div>
                 <span class="text-muted">Assinatura Digital</span>
             </div>
         </nav>

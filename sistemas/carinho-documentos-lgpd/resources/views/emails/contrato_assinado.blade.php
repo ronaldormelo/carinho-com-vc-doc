@@ -91,6 +91,7 @@
     <div class="container">
         <div class="card">
             <div class="header">
+                <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ config('branding.name') }}" style="height: 50px; margin-bottom: 16px;" />
                 <div class="success-icon">✓</div>
                 <h1>Contrato Assinado!</h1>
             </div>

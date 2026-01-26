@@ -1,0 +1,47 @@
+# =============================================================================
+# MariaDB Compartilhado - Carinho com Você
+# =============================================================================
+# Este container MariaDB é compartilhado por todos os sistemas Carinho.
+# Execute: docker-compose -f docker-compose.mysql.yml up -d
+# =============================================================================
+
+services:
+  mariadb:
+    image: mariadb:10.11
+    container_name: carinho-mariadb
+    restart: always
+    ports:
+      - "${MARIADB_PORT:-3306}:3306"
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1
+      - MARIADB_DATABASE=${MARIADB_DATABASE:-carinho-dev}
+      - TZ=America/Sao_Paulo
+    volumes:
+      - /var/lib/mariadb-data:/var/lib/mysql      
+    networks:
+      - carinho-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  # Redis Compartilhado (opcional - pode ser usado por todos os sistemas)
+  redis:
+    image: redis:7-alpine
+    container_name: carinho-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - carinho-network
+    command: redis-server --appendonly yes
+
+networks:
+  carinho-network:
+    driver: bridge
+    name: carinho-network
+
+volumes:
+  mariadb_data:
+    name: carinho-mariadb-data
+  redis_data:
+    name: carinho-redis-data

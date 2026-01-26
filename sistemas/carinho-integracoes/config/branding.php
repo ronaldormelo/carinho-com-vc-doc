@@ -37,16 +37,22 @@ return [
     */
 
     'colors' => [
-        'primary' => '#5B8C5A',      // Verde suave - confianca
-        'secondary' => '#8FBC8F',    // Verde claro - tranquilidade
-        'accent' => '#F5E6D3',       // Bege claro - acolhimento
-        'background' => '#FAFAF8',   // Off-white - limpeza
-        'text' => '#2C3E50',         // Cinza escuro - legibilidade
-        'text_light' => '#7F8C8D',   // Cinza medio - secundario
-        'success' => '#27AE60',      // Verde - sucesso
-        'warning' => '#F39C12',      // Amarelo - atencao
-        'danger' => '#E74C3C',       // Vermelho - erro
-        'info' => '#3498DB',         // Azul - informacao
+        'primary' => '#5BBFAD',      // Verde suave - confianca, cuidado
+        'primary_dark' => '#4AA99A', // Verde escuro
+        'primary_light' => '#8DD4C7', // Verde claro
+        'secondary' => '#F4F7F9',    // Cinza claro - neutralidade
+        'accent' => '#F5C6AA',       // Pessego - calor humano
+        'accent_dark' => '#E5A880',  // Pessego escuro
+        'text' => '#1F2933',         // Cinza escuro - legibilidade
+        'text_light' => '#616E7C',   // Cinza medio
+        'text_muted' => '#9AA5B1',   // Cinza suave
+        'background' => '#FFFFFF',   // Branco - limpeza
+        'background_alt' => '#F9FAFB', // Cinza muito claro
+        'success' => '#38A169',      // Verde - confirmacao
+        'warning' => '#D69E2E',      // Amarelo - atencao
+        'danger' => '#E53E3E',       // Vermelho - erro
+        'info' => '#3182CE',         // Azul - informacao
+        'border' => '#E4E7EB',       // Cinza borda
     ],
 
     /*
@@ -59,9 +65,15 @@ return [
     */
 
     'typography' => [
-        'primary' => 'Inter, system-ui, sans-serif',
-        'secondary' => 'Open Sans, system-ui, sans-serif',
-        'monospace' => 'JetBrains Mono, monospace',
+        'font_family' => 'Arial, "Helvetica Neue", Helvetica, sans-serif',
+    ],
+    'assets' => [
+        'logo' => [
+            'primary' => '/images/logo-transparente.webp',
+            'white' => '/images/logo-white.webp',
+            'icon' => '/images/logo-icon.webp',
+            'favicon' => '/images/favicon.ico',
+        ],
     ],
 
     /*

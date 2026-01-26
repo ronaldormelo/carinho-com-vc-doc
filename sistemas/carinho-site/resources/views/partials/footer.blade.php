@@ -3,8 +3,8 @@
         <div class="footer-grid">
             {{-- Brand --}}
             <div class="footer-brand">
-                <a href="{{ route('home') }}" class="logo" aria-label="Página inicial - Carinho com Você">
-                    <span>Carinho com Você</span>
+                <a href="{{ route('home') }}" class="logo logo-white" aria-label="Página inicial - Carinho com Você">
+                    <img src="{{ asset(config('branding.assets.logo.white')) }}" alt="{{ config('branding.name') }}" />
                 </a>
                 <p>{{ config('branding.value_proposition') }}</p>
                 <p>

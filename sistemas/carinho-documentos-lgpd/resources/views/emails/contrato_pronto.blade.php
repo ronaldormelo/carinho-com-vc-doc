@@ -110,6 +110,7 @@
     <div class="container">
         <div class="card">
             <div class="header">
+                <img src="{{ asset(config('branding.assets.logo.primary')) }}" alt="{{ $brandName }}" style="height: 50px; margin-bottom: 16px;" />
                 <h1>{{ $brandName }}</h1>
             </div>
             <div class="content">

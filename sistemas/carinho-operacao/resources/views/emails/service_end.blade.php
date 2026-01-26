@@ -109,6 +109,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <img src="{{ asset(config('branding.assets.logo.white')) }}" alt="{{ config('branding.name') }}" style="height: 50px; margin-bottom: 16px;" />
             <h1>{{ config('branding.name') }}</h1>
         </div>
 

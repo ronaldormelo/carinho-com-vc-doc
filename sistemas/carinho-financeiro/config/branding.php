@@ -48,15 +48,22 @@ return [
     |
     */
     'colors' => [
-        'primary' => '#4A90A4',      // Azul calmo
-        'secondary' => '#7BB5C4',    // Azul claro
-        'accent' => '#E8B86D',       // Dourado suave
-        'success' => '#6BAF7A',      // Verde suave
-        'warning' => '#E8B86D',      // Dourado (igual accent)
-        'danger' => '#D4736D',       // Vermelho suave
-        'text' => '#3D4852',         // Cinza escuro
-        'text_light' => '#6C757D',   // Cinza médio
-        'background' => '#F8F9FA',   // Cinza muito claro
+        'primary' => '#5BBFAD',      // Verde suave - confianca, cuidado
+        'primary_dark' => '#4AA99A', // Verde escuro
+        'primary_light' => '#8DD4C7', // Verde claro
+        'secondary' => '#F4F7F9',    // Cinza claro - neutralidade
+        'accent' => '#F5C6AA',       // Pessego - calor humano
+        'accent_dark' => '#E5A880',  // Pessego escuro
+        'text' => '#1F2933',         // Cinza escuro - legibilidade
+        'text_light' => '#616E7C',   // Cinza medio
+        'text_muted' => '#9AA5B1',   // Cinza suave
+        'background' => '#FFFFFF',   // Branco - limpeza
+        'background_alt' => '#F9FAFB', // Cinza muito claro
+        'success' => '#38A169',      // Verde - confirmacao
+        'warning' => '#D69E2E',      // Amarelo - atencao
+        'danger' => '#E53E3E',       // Vermelho - erro
+        'info' => '#3182CE',         // Azul - informacao
+        'border' => '#E4E7EB',       // Cinza borda
         'white' => '#FFFFFF',
     ],
 
@@ -69,8 +76,15 @@ return [
     |
     */
     'typography' => [
-        'primary' => "'Inter', 'Segoe UI', system-ui, sans-serif",
-        'secondary' => "'Inter', 'Segoe UI', system-ui, sans-serif",
+        'font_family' => 'Arial, "Helvetica Neue", Helvetica, sans-serif',
+    ],
+    'assets' => [
+        'logo' => [
+            'primary' => '/images/logo-transparente.webp',
+            'white' => '/images/logo-white.webp',
+            'icon' => '/images/logo-icon.webp',
+            'favicon' => '/images/favicon.ico',
+        ],
     ],
 
     /*
