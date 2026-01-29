@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\InteractionController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\DomainController;
+use App\Http\Controllers\Api\ContentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -236,5 +237,41 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('export', [ReportController::class, 'export'])
             ->middleware('throttle:exports')
             ->name('reports.export');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gestão de Conteúdo do Site
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('content')->group(function () {
+        // Testimonials
+        Route::get('testimonials', [ContentController::class, 'testimonials'])->name('content.testimonials.index');
+        Route::get('testimonials/{id}', [ContentController::class, 'testimonial'])->name('content.testimonials.show');
+        Route::post('testimonials', [ContentController::class, 'createTestimonial'])->name('content.testimonials.store');
+        Route::put('testimonials/{id}', [ContentController::class, 'updateTestimonial'])->name('content.testimonials.update');
+        Route::delete('testimonials/{id}', [ContentController::class, 'deleteTestimonial'])->name('content.testimonials.destroy');
+
+        // FAQ Categories
+        Route::get('faq/categories', [ContentController::class, 'faqCategories'])->name('content.faq.categories.index');
+        Route::get('faq/categories/{id}', [ContentController::class, 'faqCategory'])->name('content.faq.categories.show');
+        Route::post('faq/categories', [ContentController::class, 'createFaqCategory'])->name('content.faq.categories.store');
+        Route::put('faq/categories/{id}', [ContentController::class, 'updateFaqCategory'])->name('content.faq.categories.update');
+        Route::delete('faq/categories/{id}', [ContentController::class, 'deleteFaqCategory'])->name('content.faq.categories.destroy');
+
+        // FAQ Items
+        Route::get('faq/categories/{categoryId}/items', [ContentController::class, 'faqItems'])->name('content.faq.items.index');
+        Route::get('faq/categories/{categoryId}/items/{itemId}', [ContentController::class, 'faqItem'])->name('content.faq.items.show');
+        Route::post('faq/categories/{categoryId}/items', [ContentController::class, 'createFaqItem'])->name('content.faq.items.store');
+        Route::put('faq/categories/{categoryId}/items/{itemId}', [ContentController::class, 'updateFaqItem'])->name('content.faq.items.update');
+        Route::delete('faq/categories/{categoryId}/items/{itemId}', [ContentController::class, 'deleteFaqItem'])->name('content.faq.items.destroy');
+
+        // Pages
+        Route::get('pages', [ContentController::class, 'pages'])->name('content.pages.index');
+        Route::get('pages/{id}', [ContentController::class, 'page'])->name('content.pages.show');
+        Route::post('pages', [ContentController::class, 'createPage'])->name('content.pages.store');
+        Route::put('pages/{id}', [ContentController::class, 'updatePage'])->name('content.pages.update');
+        Route::delete('pages/{id}', [ContentController::class, 'deletePage'])->name('content.pages.destroy');
+        Route::post('pages/cache/clear', [ContentController::class, 'clearPageCache'])->name('content.pages.cache.clear');
     });
 });

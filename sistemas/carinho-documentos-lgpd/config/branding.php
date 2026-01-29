@@ -36,7 +36,7 @@ return [
         'primary_light' => '#7ACFC0',
         'secondary' => '#F4F7F9',
         'accent' => '#F5C6AA',
-        'text' => '#1F2933',
+        'text' => '#1a2b32',
         'text_muted' => '#616E7C',
         'success' => '#38A169',
         'warning' => '#D69E2E',

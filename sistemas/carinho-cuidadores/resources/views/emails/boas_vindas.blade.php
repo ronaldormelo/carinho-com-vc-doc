@@ -8,7 +8,7 @@
         body {
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
             line-height: 1.6;
-            color: #1F2933;
+            color: #1a2b32;
             background-color: #F4F7F9;
             margin: 0;
             padding: 0;
@@ -38,7 +38,7 @@
             width: auto;
         }
         h1 {
-            color: #1F2933;
+            color: #1a2b32;
             font-size: 24px;
             margin: 0 0 16px;
         }
@@ -54,7 +54,7 @@
         }
         .highlight h3 {
             margin: 0 0 8px;
-            color: #1F2933;
+            color: #1a2b32;
             font-size: 16px;
         }
         .highlight ol {

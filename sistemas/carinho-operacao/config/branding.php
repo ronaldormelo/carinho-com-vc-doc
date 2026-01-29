@@ -12,7 +12,7 @@ return [
         'primary' => '#5BBFAD',
         'secondary' => '#F4F7F9',
         'accent' => '#F5C6AA',
-        'text' => '#1F2933',
+        'text' => '#1a2b32',
         'success' => '#38A169',
         'warning' => '#D69E2E',
         'danger' => '#E53E3E',

@@ -54,7 +54,7 @@ return [
         'secondary' => '#F4F7F9',    // Cinza claro - neutralidade
         'accent' => '#F5C6AA',       // Pessego - calor humano
         'accent_dark' => '#E5A880',  // Pessego escuro
-        'text' => '#1F2933',         // Cinza escuro - legibilidade
+        'text' => '#1a2b32',         // Cinza escuro - legibilidade
         'text_light' => '#616E7C',   // Cinza medio
         'text_muted' => '#9AA5B1',   // Cinza suave
         'background' => '#FFFFFF',   // Branco - limpeza

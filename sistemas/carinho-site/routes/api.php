@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\WebhookController;
+use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\HealthController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,40 @@ Route::middleware('throttle:60,1')->group(function () {
             'emergency_policy' => config('site.emergency_policy'),
             'sla' => config('site.sla'),
         ]);
+    });
+
+    // ======================================================================
+    // Gestão de Conteúdo (chamado pelo CRM)
+    // ======================================================================
+
+    Route::prefix('content')->group(function () {
+        // Testimonials
+        Route::get('/testimonials', [ContentController::class, 'testimonials']);
+        Route::get('/testimonials/{id}', [ContentController::class, 'testimonial']);
+        Route::post('/testimonials', [ContentController::class, 'createTestimonial']);
+        Route::put('/testimonials/{id}', [ContentController::class, 'updateTestimonial']);
+        Route::delete('/testimonials/{id}', [ContentController::class, 'deleteTestimonial']);
+
+        // FAQ Categories
+        Route::get('/faq/categories', [ContentController::class, 'faqCategories']);
+        Route::get('/faq/categories/{id}', [ContentController::class, 'faqCategory']);
+        Route::post('/faq/categories', [ContentController::class, 'createFaqCategory']);
+        Route::put('/faq/categories/{id}', [ContentController::class, 'updateFaqCategory']);
+        Route::delete('/faq/categories/{id}', [ContentController::class, 'deleteFaqCategory']);
+
+        // FAQ Items
+        Route::get('/faq/categories/{categoryId}/items', [ContentController::class, 'faqItems']);
+        Route::get('/faq/categories/{categoryId}/items/{itemId}', [ContentController::class, 'faqItem']);
+        Route::post('/faq/categories/{categoryId}/items', [ContentController::class, 'createFaqItem']);
+        Route::put('/faq/categories/{categoryId}/items/{itemId}', [ContentController::class, 'updateFaqItem']);
+        Route::delete('/faq/categories/{categoryId}/items/{itemId}', [ContentController::class, 'deleteFaqItem']);
+
+        // Pages
+        Route::get('/pages', [ContentController::class, 'pages']);
+        Route::get('/pages/{id}', [ContentController::class, 'page']);
+        Route::post('/pages', [ContentController::class, 'createPage']);
+        Route::put('/pages/{id}', [ContentController::class, 'updatePage']);
+        Route::delete('/pages/{id}', [ContentController::class, 'deletePage']);
     });
 
 });

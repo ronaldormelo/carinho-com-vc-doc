@@ -5,7 +5,7 @@
 <section class="section" style="background: var(--color-primary); color: white; padding: var(--spacing-12) 0;">
     <div class="container">
         <h1 style="color: white;">Termos para Cuidadores</h1>
-        <p style="opacity: 0.9;">Carinho com Voce</p>
+        <p style="opacity: 0.9;">Carinho com Você</p>
     </div>
 </section>
 
@@ -13,86 +13,86 @@
 <section class="section">
     <div class="container">
         <div class="legal-content">
-            <p class="text-muted">Ultima atualizacao: {{ date('d/m/Y') }}</p>
+            <p class="text-muted">Última atualização: {{ date('d/m/Y') }}</p>
 
-            <h2>1. ACEITACAO DOS TERMOS</h2>
+            <h2>1. ACEITAÇÃO DOS TERMOS</h2>
             <p>
-                Ao se cadastrar como cuidador parceiro da Carinho com Voce, voce concorda com estes Termos.
-                Eles regem a relacao entre voce e a plataforma, estabelecendo direitos e obrigacoes de ambas as partes.
+                Ao se cadastrar como cuidador parceiro da Carinho com Você, você concorda com estes Termos.
+                Eles regem a relação entre você e a plataforma, estabelecendo direitos e obrigações de ambas as partes.
             </p>
 
-            <h2>2. NATUREZA DA RELACAO</h2>
+            <h2>2. NATUREZA DA RELAÇÃO</h2>
             <p>
-                A Carinho com Voce e uma plataforma de intermediacao. Os cuidadores parceiros sao profissionais
-                autonomos ou microempreendedores individuais, nao havendo vinculo empregaticio com a plataforma.
+                A Carinho com Você é uma plataforma de intermediação. Os cuidadores parceiros são profissionais
+                autônomos ou microempreendedores individuais, não havendo vínculo empregatício com a plataforma.
             </p>
-            <p>A relacao envolve:</p>
+            <p>A relação envolve:</p>
             <ul>
-                <li>Cadastro e verificacao de perfil</li>
-                <li>Indicacao de oportunidades de trabalho</li>
-                <li>Gestao de agenda e comunicacao</li>
+                <li>Cadastro e verificação de perfil</li>
+                <li>Indicação de oportunidades de trabalho</li>
+                <li>Gestão de agenda e comunicação</li>
                 <li>Processamento de pagamentos</li>
                 <li>Suporte operacional</li>
             </ul>
 
             <h2>3. REQUISITOS PARA CADASTRO</h2>
-            <p>Para ser um cuidador parceiro, voce deve:</p>
+            <p>Para ser um cuidador parceiro, você deve:</p>
             <ul>
-                <li>Ter no minimo 18 anos de idade</li>
-                <li>Possuir documentos de identificacao validos (RG, CPF)</li>
-                <li>Comprovar experiencia minima de 1 ano como cuidador</li>
-                <li>Possuir certificado de curso de cuidador (desejavel)</li>
-                <li>Nao possuir antecedentes criminais graves</li>
+                <li>Ter no mínimo 18 anos de idade</li>
+                <li>Possuir documentos de identificação válidos (RG, CPF)</li>
+                <li>Comprovar experiência mínima de 1 ano como cuidador</li>
+                <li>Possuir certificado de curso de cuidador (desejável)</li>
+                <li>Não possuir antecedentes criminais graves</li>
                 <li>Manter disponibilidade atualizada na plataforma</li>
             </ul>
 
-            <h2>4. PROCESSO DE VERIFICACAO</h2>
-            <p>Apos o cadastro, seu perfil passara por verificacao que inclui:</p>
+            <h2>4. PROCESSO DE VERIFICAÇÃO</h2>
+            <p>Após o cadastro, seu perfil passará por verificação que inclui:</p>
             <ul>
-                <li>Validacao de documentos de identidade</li>
-                <li>Verificacao de experiencia e referencias</li>
-                <li>Avaliacao de perfil por nossa equipe</li>
+                <li>Validação de documentos de identidade</li>
+                <li>Verificação de experiência e referências</li>
+                <li>Avaliação de perfil por nossa equipe</li>
                 <li>Assinatura de contrato digital</li>
             </ul>
             <p>
-                A Carinho com Voce se reserva o direito de recusar ou desativar cadastros que nao atendam aos criterios.
+                A Carinho com Você se reserva o direito de recusar ou desativar cadastros que não atendam aos critérios.
             </p>
 
-            <h2>5. OBRIGACOES DO CUIDADOR</h2>
-            <p>Ao aceitar um atendimento, voce se compromete a:</p>
+            <h2>5. OBRIGAÇÕES DO CUIDADOR</h2>
+            <p>Ao aceitar um atendimento, você se compromete a:</p>
             <ul>
-                <li>Comparecer pontualmente no local e horario combinados</li>
+                <li>Comparecer pontualmente no local e horário combinados</li>
                 <li>Realizar check-in e check-out pelo sistema</li>
-                <li>Prestar o servico com zelo, dedicacao e respeito</li>
-                <li>Seguir as orientacoes da familia e do plano de cuidado</li>
+                <li>Prestar o serviço com zelo, dedicação e respeito</li>
+                <li>Seguir as orientações da família e do plano de cuidado</li>
                 <li>Registrar atividades realizadas durante o atendimento</li>
-                <li>Comunicar imediatamente qualquer intercorrencia</li>
-                <li>Manter sigilo sobre informacoes dos clientes</li>
-                <li>Zelar pela seguranca do paciente</li>
+                <li>Comunicar imediatamente qualquer intercorrência</li>
+                <li>Manter sigilo sobre informações dos clientes</li>
+                <li>Zelar pela segurança do paciente</li>
             </ul>
 
-            <h2>6. PROIBICOES</h2>
-            <p>E expressamente proibido:</p>
+            <h2>6. PROIBIÇÕES</h2>
+            <p>É expressamente proibido:</p>
             <ul>
                 <li>Captar clientes diretamente, fora da plataforma</li>
                 <li>Receber pagamentos diretamente dos clientes</li>
-                <li>Deixar o paciente sem supervisao durante o atendimento</li>
-                <li>Realizar procedimentos medicos sem habilitacao</li>
+                <li>Deixar o paciente sem supervisão durante o atendimento</li>
+                <li>Realizar procedimentos médicos sem habilitação</li>
                 <li>Compartilhar dados de clientes com terceiros</li>
                 <li>Utilizar celular excessivamente durante o atendimento</li>
-                <li>Consumir bebidas alcoolicas ou substancias ilicitas no trabalho</li>
+                <li>Consumir bebidas alcoólicas ou substâncias ilícitas no trabalho</li>
             </ul>
             <p>
-                Violacoes podem resultar em suspensao ou desligamento da plataforma.
+                Violações podem resultar em suspensão ou desligamento da plataforma.
             </p>
 
-            <h2>7. COMISSOES E PAGAMENTOS</h2>
-            <p>Voce recebera percentual do valor do servico conforme o tipo:</p>
+            <h2>7. COMISSÕES E PAGAMENTOS</h2>
+            <p>Você receberá percentual do valor do serviço conforme o tipo:</p>
 
             <table class="policy-table">
                 <thead>
                     <tr>
-                        <th>Tipo de Servico</th>
+                        <th>Tipo de Serviço</th>
                         <th>Seu Percentual</th>
                     </tr>
                 </thead>
@@ -112,10 +112,10 @@
                 </tbody>
             </table>
 
-            <p><strong>Bonus:</strong></p>
+            <p><strong>Bônus:</strong></p>
             <ul>
-                <li>Ate +{{ $commission['bonus']['rating'] }}% por avaliacao alta (media acima de 4.5)</li>
-                <li>Ate +{{ $commission['bonus']['tenure'] }}% por tempo de casa (apos 1 ano)</li>
+                <li>Até +{{ $commission['bonus']['rating'] }}% por avaliação alta (média acima de 4.5)</li>
+                <li>Até +{{ $commission['bonus']['tenure'] }}% por tempo de casa (após 1 ano)</li>
             </ul>
 
             <h2>8. REPASSES</h2>
@@ -126,70 +126,70 @@
                         <td>Semanal (sextas-feiras)</td>
                     </tr>
                     <tr>
-                        <td><strong>Valor minimo</strong></td>
+                        <td><strong>Valor mínimo</strong></td>
                         <td>R$ {{ number_format($payoutPolicy['min_value'], 2, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td><strong>Liberacao</strong></td>
-                        <td>{{ $payoutPolicy['release_days'] }} dias apos conclusao do servico</td>
+                        <td>{{ $payoutPolicy['release_days'] }} dias após conclusão do serviço</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="highlight-box">
                 <p style="margin: 0;">
-                    <strong>Importante:</strong> Para receber os repasses, voce deve manter seus dados bancarios
-                    atualizados na plataforma. Repasses sao feitos exclusivamente via PIX.
+                    <strong>Importante:</strong> Para receber os repasses, você deve manter seus dados bancários
+                    atualizados na plataforma. Repasses são feitos exclusivamente via PIX.
                 </p>
             </div>
 
             <h2>9. CANCELAMENTO E FALTAS</h2>
-            <p>Se voce precisar cancelar um atendimento:</p>
+            <p>Se você precisar cancelar um atendimento:</p>
             <ul>
                 <li><strong>Mais de 24h antes:</strong> Comunique pelo sistema, sem penalidade</li>
                 <li><strong>Menos de 24h:</strong> Comunique imediatamente e justifique</li>
-                <li><strong>Nao comparecimento (no-show):</strong> Pode resultar em suspensao</li>
+                <li><strong>Não comparecimento (no-show):</strong> Pode resultar em suspensão</li>
             </ul>
             <p>
-                Cancelamentos frequentes ou injustificados podem levar a suspensao ou desligamento da plataforma.
+                Cancelamentos frequentes ou injustificados podem levar à suspensão ou desligamento da plataforma.
             </p>
 
-            <h2>10. AVALIACOES</h2>
+            <h2>10. AVALIAÇÕES</h2>
             <p>
-                Apos cada atendimento, o cliente podera avaliar seu servico. As avaliacoes:
+                Após cada atendimento, o cliente poderá avaliar seu serviço. As avaliações:
             </p>
             <ul>
-                <li>Sao confidenciais (cliente nao e identificado)</li>
+                <li>São confidenciais (cliente não é identificado)</li>
                 <li>Influenciam seu ranking na plataforma</li>
-                <li>Podem impactar os bonus recebidos</li>
-                <li>Sao utilizadas para melhoria do servico</li>
+                <li>Podem impactar os bônus recebidos</li>
+                <li>São utilizadas para melhoria do serviço</li>
             </ul>
             <p>
-                Avaliacoes consistentemente baixas podem resultar em revisao da parceria.
+                Avaliações consistentemente baixas podem resultar em revisão da parceria.
             </p>
 
             <h2>11. CONFIDENCIALIDADE</h2>
             <p>
-                Voce se compromete a manter sigilo sobre todas as informacoes dos clientes,
-                incluindo dados pessoais, condicoes de saude e rotinas familiares.
+                Você se compromete a manter sigilo sobre todas as informações dos clientes,
+                incluindo dados pessoais, condições de saúde e rotinas familiares.
             </p>
             <p>
-                A violacao de confidencialidade constitui falta grave e pode resultar em
-                desligamento imediato e medidas legais cabiveis.
+                A violação de confidencialidade constitui falta grave e pode resultar em
+                desligamento imediato e medidas legais cabíveis.
             </p>
 
             <h2>12. ENCERRAMENTO DA PARCERIA</h2>
             <p>A parceria pode ser encerrada:</p>
             <ul>
-                <li><strong>Por voce:</strong> a qualquer momento, comunicando com 15 dias de antecedencia</li>
-                <li><strong>Pela plataforma:</strong> por descumprimento destes termos ou avaliacoes insatisfatorias</li>
+                <li><strong>Por você:</strong> a qualquer momento, comunicando com 15 dias de antecedência</li>
+                <li><strong>Pela plataforma:</strong> por descumprimento destes termos ou avaliações insatisfatórias</li>
             </ul>
             <p>
                 Atendimentos ja agendados devem ser concluidos ou transferidos antes do encerramento.
             </p>
 
             <h2>13. CONTATO</h2>
-            <p>Para duvidas sobre estes termos ou a parceria:</p>
+            <p>Para dúvidas sobre estes termos ou a parceria:</p>
             <p>
                 <strong>WhatsApp Cuidadores:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
                 <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a>

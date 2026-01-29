@@ -5,7 +5,7 @@
 <section class="section" style="background: var(--color-primary); color: white; padding: var(--spacing-12) 0;">
     <div class="container">
         <h1 style="color: white;">Termos de Uso</h1>
-        <p style="opacity: 0.9;">Carinho com Voce</p>
+        <p style="opacity: 0.9;">Carinho com Você</p>
     </div>
 </section>
 
@@ -13,88 +13,88 @@
 <section class="section">
     <div class="container">
         <div class="legal-content">
-            <p class="text-muted">Ultima atualizacao: {{ date('d/m/Y') }}</p>
+            <p class="text-muted">Última atualização: {{ date('d/m/Y') }}</p>
 
-            <h2>1. ACEITACAO DOS TERMOS</h2>
+            <h2>1. ACEITAÇÃO DOS TERMOS</h2>
             <p>
-                Ao utilizar os servicos da Carinho com Voce, voce concorda com estes Termos de Uso.
-                Se voce nao concordar com qualquer parte destes termos, nao utilize nossos servicos.
+                Ao utilizar os serviços da Carinho com Você, você concorda com estes Termos de Uso.
+                Se você não concordar com qualquer parte destes termos, não utilize nossos serviços.
             </p>
             <p>
-                Estes termos constituem um acordo juridicamente vinculativo entre voce e a Carinho com Voce.
+                Estes termos constituem um acordo juridicamente vinculativo entre você e a Carinho com Você.
             </p>
 
-            <h2>2. DESCRICAO DOS SERVICOS</h2>
+            <h2>2. DESCRIÇÃO DOS SERVIÇOS</h2>
             <p>
-                A Carinho com Voce oferece servicos de intermediacao entre clientes que necessitam
-                de cuidadores domiciliares e profissionais qualificados para prestacao desses servicos.
+                A Carinho com Você oferece serviços de intermediação entre clientes que necessitam
+                de cuidadores domiciliares e profissionais qualificados para prestação desses serviços.
             </p>
-            <p>Os servicos incluem:</p>
+            <p>Os serviços incluem:</p>
             <ul>
-                <li>Captacao e qualificacao de demandas de cuidado</li>
-                <li>Selecao e alocacao de cuidadores adequados</li>
-                <li>Gestao de contratos e pagamentos</li>
+                <li>Captação e qualificação de demandas de cuidado</li>
+                <li>Seleção e alocação de cuidadores adequados</li>
+                <li>Gestão de contratos e pagamentos</li>
                 <li>Suporte operacional durante o atendimento</li>
-                <li>Substituicao de cuidadores quando necessario</li>
+                <li>Substituição de cuidadores quando necessário</li>
             </ul>
 
             <h2>3. CADASTRO E CONTA</h2>
             <p>
-                Para utilizar nossos servicos, voce deve fornecer informacoes verdadeiras, precisas e completas.
-                Voce e responsavel por:
+                Para utilizar nossos serviços, você deve fornecer informações verdadeiras, precisas e completas.
+                Você é responsável por:
             </p>
             <ul>
                 <li>Manter a confidencialidade de seus dados de acesso</li>
                 <li>Todas as atividades realizadas em sua conta</li>
-                <li>Atualizar seus dados quando necessario</li>
-                <li>Notificar imediatamente qualquer uso nao autorizado</li>
+                <li>Atualizar seus dados quando necessário</li>
+                <li>Notificar imediatamente qualquer uso não autorizado</li>
             </ul>
 
-            <h2>4. OBRIGACOES DO CLIENTE</h2>
-            <p>Ao contratar nossos servicos, o cliente se compromete a:</p>
+            <h2>4. OBRIGAÇÕES DO CLIENTE</h2>
+            <p>Ao contratar nossos serviços, o cliente se compromete a:</p>
             <ul>
-                <li>Fornecer informacoes verdadeiras sobre o paciente e suas necessidades</li>
+                <li>Fornecer informações verdadeiras sobre o paciente e suas necessidades</li>
                 <li>Efetuar o pagamento conforme acordado (sempre adiantado)</li>
                 <li>Tratar o cuidador com respeito e dignidade</li>
                 <li>Fornecer ambiente de trabalho adequado e seguro</li>
-                <li>Comunicar alteracoes de agenda com antecedencia</li>
-                <li>Fornecer feedback honesto apos o atendimento</li>
+                <li>Comunicar alterações de agenda com antecedência</li>
+                <li>Fornecer feedback honesto após o atendimento</li>
             </ul>
 
-            <h2>5. RELACAO COM CUIDADORES</h2>
+            <h2>5. RELAÇÃO COM CUIDADORES</h2>
             <p>
-                Os cuidadores que atuam pela plataforma sao profissionais independentes.
-                A Carinho com Voce atua como intermediaria, sendo responsavel por:
+                Os cuidadores que atuam pela plataforma são profissionais independentes.
+                A Carinho com Você atua como intermediária, sendo responsável por:
             </p>
             <ul>
-                <li>Verificacao basica de documentos e experiencia</li>
-                <li>Alocacao de profissionais adequados ao perfil da demanda</li>
-                <li>Gestao de agenda e comunicacao</li>
+                <li>Verificação básica de documentos e experiência</li>
+                <li>Alocação de profissionais adequados ao perfil da demanda</li>
+                <li>Gestão de agenda e comunicação</li>
                 <li>Processamento de pagamentos e repasses</li>
             </ul>
             <p>
-                A Carinho com Voce nao e empregadora dos cuidadores e nao se responsabiliza por
-                atos praticados por eles fora do escopo do servico contratado.
+                A Carinho com Você não é empregadora dos cuidadores e não se responsabiliza por
+                atos praticados por eles fora do escopo do serviço contratado.
             </p>
 
             <h2>6. PAGAMENTO</h2>
             <p>
-                O pagamento dos servicos e sempre <strong>adiantado</strong>, devendo ser realizado
-                com antecedencia minima de 24 horas antes do inicio do atendimento.
+                O pagamento dos serviços é sempre <strong>adiantado</strong>, devendo ser realizado
+                com antecedência mínima de 24 horas antes do início do atendimento.
             </p>
             <p>Formas de pagamento aceitas:</p>
             <ul>
                 <li>PIX</li>
-                <li>Boleto bancario</li>
-                <li>Cartao de credito</li>
+                <li>Boleto bancário</li>
+                <li>Cartão de crédito</li>
             </ul>
             <p>
-                Consulte a <a href="{{ route('legal.payment') }}">Politica de Pagamento</a> para mais detalhes.
+                Consulte a <a href="{{ route('legal.payment') }}">Política de Pagamento</a> para mais detalhes.
             </p>
 
             <h2>7. CANCELAMENTO E REEMBOLSO</h2>
             <p>
-                Os cancelamentos estao sujeitos a nossa <a href="{{ route('legal.cancellation') }}">Politica de Cancelamento</a>.
+                Os cancelamentos estão sujeitos à nossa <a href="{{ route('legal.cancellation') }}">Política de Cancelamento</a>.
                 Em resumo:
             </p>
             <ul>
@@ -103,69 +103,69 @@
                 <li>Menos de 6h: sem reembolso</li>
             </ul>
 
-            <h2>8. LIMITACAO DE RESPONSABILIDADE</h2>
-            <p>A Carinho com Voce nao se responsabiliza por:</p>
+            <h2>8. LIMITAÇÃO DE RESPONSABILIDADE</h2>
+            <p>A Carinho com Você não se responsabiliza por:</p>
             <ul>
                 <li>Danos indiretos, incidentais ou consequentes</li>
-                <li>Acoes do cuidador fora do escopo contratado</li>
-                <li>Informacoes incorretas fornecidas pelo cliente</li>
-                <li>Emergencias medicas que exijam atendimento especializado</li>
-                <li>Perdas decorrentes de forca maior</li>
+                <li>Ações do cuidador fora do escopo contratado</li>
+                <li>Informações incorretas fornecidas pelo cliente</li>
+                <li>Emergências médicas que exijam atendimento especializado</li>
+                <li>Perdas decorrentes de força maior</li>
             </ul>
             <p>
-                Nossa responsabilidade total esta limitada ao valor pago pelo servico em questao.
+                Nossa responsabilidade total está limitada ao valor pago pelo serviço em questão.
             </p>
 
             <h2>9. PROPRIEDADE INTELECTUAL</h2>
             <p>
-                Todo o conteudo disponibilizado no site e de propriedade da Carinho com Voce ou de seus
+                Todo o conteúdo disponibilizado no site é de propriedade da Carinho com Você ou de seus
                 licenciadores, incluindo textos, imagens, logos, design e software.
             </p>
             <p>
-                E proibida a reproducao, distribuicao ou uso comercial sem autorizacao previa por escrito.
+                É proibida a reprodução, distribuição ou uso comercial sem autorização prévia por escrito.
             </p>
 
-            <h2>10. USO ACEITAVEL</h2>
-            <p>Voce concorda em nao:</p>
+            <h2>10. USO ACEITÁVEL</h2>
+            <p>Você concorda em não:</p>
             <ul>
-                <li>Utilizar os servicos para fins ilegais</li>
-                <li>Fornecer informacoes falsas ou enganosas</li>
-                <li>Assediar, ameacar ou discriminar cuidadores ou funcionarios</li>
-                <li>Tentar burlar os sistemas de pagamento ou seguranca</li>
+                <li>Utilizar os serviços para fins ilegais</li>
+                <li>Fornecer informações falsas ou enganosas</li>
+                <li>Assediar, ameaçar ou discriminar cuidadores ou funcionários</li>
+                <li>Tentar burlar os sistemas de pagamento ou segurança</li>
                 <li>Utilizar a plataforma para captar cuidadores diretamente</li>
             </ul>
 
-            <h2>11. COMUNICACOES</h2>
+            <h2>11. COMUNICAÇÕES</h2>
             <p>
-                Ao utilizar nossos servicos, voce concorda em receber comunicacoes por:
+                Ao utilizar nossos serviços, você concorda em receber comunicações por:
             </p>
             <ul>
                 <li>WhatsApp: principal canal de atendimento</li>
-                <li>E-mail: propostas, contratos e informacoes importantes</li>
-                <li>SMS: notificacoes urgentes quando necessario</li>
+                <li>E-mail: propostas, contratos e informações importantes</li>
+                <li>SMS: notificações urgentes quando necessário</li>
             </ul>
             <p>
-                Voce pode optar por nao receber comunicacoes de marketing a qualquer momento.
+                Você pode optar por não receber comunicações de marketing a qualquer momento.
             </p>
 
-            <h2>12. ALTERACOES NOS TERMOS</h2>
+            <h2>12. ALTERAÇÕES NOS TERMOS</h2>
             <p>
                 Reservamo-nos o direito de modificar estes Termos a qualquer momento.
-                As alteracoes entrarao em vigor apos publicacao no site.
+                As alterações entrarão em vigor após publicação no site.
             </p>
             <p>
-                O uso continuado dos servicos apos alteracoes constitui aceitacao dos novos termos.
+                O uso continuado dos serviços após alterações constitui aceitação dos novos termos.
             </p>
 
-            <h2>13. LEI APLICAVEL E FORO</h2>
+            <h2>13. LEI APLICÁVEL E FORO</h2>
             <p>
-                Estes Termos sao regidos pelas leis da Republica Federativa do Brasil.
-                Fica eleito o foro da comarca de Sao Paulo/SP para dirimir quaisquer controversias.
+                Estes Termos são regidos pelas leis da República Federativa do Brasil.
+                Fica eleito o foro da comarca de São Paulo/SP para dirimir quaisquer controvérsias.
             </p>
 
             <h2>14. CONTATO</h2>
             <p>
-                Em caso de duvidas sobre estes Termos:
+                Em caso de dúvidas sobre estes Termos:
             </p>
             <p>
                 <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a><br>

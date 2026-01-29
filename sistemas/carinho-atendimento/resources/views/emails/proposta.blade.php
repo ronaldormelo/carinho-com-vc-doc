@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Proposta</title>
   </head>
-  <body style="margin:0;padding:0;background:#F4F7F9;font-family:Arial,Helvetica,sans-serif;color:#1F2933;">
+  <body style="margin:0;padding:0;background:#F4F7F9;font-family:Arial,Helvetica,sans-serif;color:#1a2b32;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#F4F7F9;padding:24px 0;">
       <tr>
         <td align="center">

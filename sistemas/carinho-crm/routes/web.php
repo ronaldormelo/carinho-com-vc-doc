@@ -73,4 +73,41 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports', function () {
         return view('reports.index');
     })->name('reports');
+
+    // =====================================================================
+    // Gestão de Conteúdo do Site
+    // =====================================================================
+    Route::prefix('content')->name('content.')->group(function () {
+        // Testimonials
+        Route::get('/testimonials', [\App\Http\Controllers\ContentController::class, 'testimonials'])->name('testimonials');
+        Route::get('/testimonials/create', [\App\Http\Controllers\ContentController::class, 'testimonialForm'])->name('testimonials.create');
+        Route::get('/testimonials/{id}/edit', [\App\Http\Controllers\ContentController::class, 'testimonialForm'])->name('testimonials.edit');
+        Route::post('/testimonials', [\App\Http\Controllers\ContentController::class, 'saveTestimonial'])->name('testimonials.store');
+        Route::put('/testimonials/{id}', [\App\Http\Controllers\ContentController::class, 'saveTestimonial'])->name('testimonials.update');
+        Route::delete('/testimonials/{id}', [\App\Http\Controllers\ContentController::class, 'deleteTestimonial'])->name('testimonials.destroy');
+
+        // FAQ Categories
+        Route::get('/faq/categories', [\App\Http\Controllers\ContentController::class, 'faqCategories'])->name('faq.categories');
+        Route::get('/faq/categories/create', [\App\Http\Controllers\ContentController::class, 'faqCategoryForm'])->name('faq.categories.create');
+        Route::get('/faq/categories/{id}/edit', [\App\Http\Controllers\ContentController::class, 'faqCategoryForm'])->name('faq.categories.edit');
+        Route::post('/faq/categories', [\App\Http\Controllers\ContentController::class, 'saveFaqCategory'])->name('faq.categories.store');
+        Route::put('/faq/categories/{id}', [\App\Http\Controllers\ContentController::class, 'saveFaqCategory'])->name('faq.categories.update');
+        Route::delete('/faq/categories/{id}', [\App\Http\Controllers\ContentController::class, 'deleteFaqCategory'])->name('faq.categories.destroy');
+
+        // FAQ Items
+        Route::get('/faq/categories/{categoryId}/items', [\App\Http\Controllers\ContentController::class, 'faqItems'])->name('faq.items');
+        Route::get('/faq/categories/{categoryId}/items/create', [\App\Http\Controllers\ContentController::class, 'faqItemForm'])->name('faq.items.create');
+        Route::get('/faq/categories/{categoryId}/items/{itemId}/edit', [\App\Http\Controllers\ContentController::class, 'faqItemForm'])->name('faq.items.edit');
+        Route::post('/faq/categories/{categoryId}/items', [\App\Http\Controllers\ContentController::class, 'saveFaqItem'])->name('faq.items.store');
+        Route::put('/faq/categories/{categoryId}/items/{itemId}', [\App\Http\Controllers\ContentController::class, 'saveFaqItem'])->name('faq.items.update');
+        Route::delete('/faq/categories/{categoryId}/items/{itemId}', [\App\Http\Controllers\ContentController::class, 'deleteFaqItem'])->name('faq.items.destroy');
+
+        // Pages
+        Route::get('/pages', [\App\Http\Controllers\ContentController::class, 'pages'])->name('pages');
+        Route::get('/pages/create', [\App\Http\Controllers\ContentController::class, 'pageForm'])->name('pages.create');
+        Route::get('/pages/{id}/edit', [\App\Http\Controllers\ContentController::class, 'pageForm'])->name('pages.edit');
+        Route::post('/pages', [\App\Http\Controllers\ContentController::class, 'savePage'])->name('pages.store');
+        Route::put('/pages/{id}', [\App\Http\Controllers\ContentController::class, 'savePage'])->name('pages.update');
+        Route::delete('/pages/{id}', [\App\Http\Controllers\ContentController::class, 'deletePage'])->name('pages.destroy');
+    });
 });

@@ -1,0 +1,670 @@
+{
+  "info": {
+    "name": "Carinho Atendimento API",
+    "_postman_id": "00000000-0000-0000-0000-000000000000",
+    "description": "Coleção Postman para o serviço Carinho Atendimento (atendimento.carinho.com.vc).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "internal_token",
+      "value": "changeme-internal-token"
+    }
+  ],
+  "item": [
+    {
+      "name": "Index",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/health",
+          "host": ["{{base_url}}"],
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "WhatsApp - Z-API Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"5589999999999\",\n  \"message\": \"Exemplo de mensagem\",\n  \"timestamp\": 1700000000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/webhooks/whatsapp/z-api",
+              "host": ["{{base_url}}"],
+              "path": ["api", "webhooks", "whatsapp", "z-api"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inbox",
+      "item": [
+        {
+          "name": "Listar conversas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/inbox",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox"]
+            }
+          }
+        },
+        {
+          "name": "Detalhar conversa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar status da conversa",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"waiting\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Marcar conversa como perdida",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason_code\": \"price\",\n  \"notes\": \"Cliente achou caro\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/lost",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "lost"]
+            }
+          }
+        },
+        {
+          "name": "Adicionar tags à conversa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tags\": [\"urgente\", \"cliente_vip\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/tags",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "tags"]
+            }
+          }
+        },
+        {
+          "name": "Criar incidente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"severity\": \"high\",\n  \"category\": \"quality\",\n  \"notes\": \"Cliente reclamou da qualidade do atendimento\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/incident",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "incident"]
+            }
+          }
+        },
+        {
+          "name": "Histórico da conversa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/history",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "history"]
+            }
+          }
+        },
+        {
+          "name": "Adicionar nota interna",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Cliente pediu para ligar amanhã cedo\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/notes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "notes"]
+            }
+          }
+        },
+        {
+          "name": "Escalonar conversa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"level\": \"n2\",\n  \"reason\": \"Caso complexo, precisa de supervisor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/escalate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "escalate"]
+            }
+          }
+        },
+        {
+          "name": "Rebaixar escalonamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Caso resolvido no nível atual\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/deescalate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "deescalate"]
+            }
+          }
+        },
+        {
+          "name": "Registrar satisfação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 5,\n  \"feedback\": \"Atendimento excelente!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inbox/{{conversation_id}}/satisfaction",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inbox", "{{conversation_id}}", "satisfaction"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mensagens",
+      "item": [
+        {
+          "name": "Enviar mensagem na conversa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"Olá, tudo bem?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/conversations/{{conversation_id}}/messages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "{{conversation_id}}", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Enviar e-mail de proposta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"cliente@example.com\",\n  \"subject\": \"Proposta de atendimento\",\n  \"body\": \"Segue proposta em anexo.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/conversations/{{conversation_id}}/proposal-email",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "{{conversation_id}}", "proposal-email"]
+            }
+          }
+        },
+        {
+          "name": "Enviar e-mail de contrato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"cliente@example.com\",\n  \"subject\": \"Contrato de prestação de serviço\",\n  \"body\": \"Segue contrato para assinatura.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/conversations/{{conversation_id}}/contract-email",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "{{conversation_id}}", "contract-email"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Triagem",
+      "item": [
+        {
+          "name": "Checklist de triagem",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/triage/checklist",
+              "host": ["{{base_url}}"],
+              "path": ["api", "triage", "checklist"]
+            }
+          }
+        },
+        {
+          "name": "Script de triagem",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/triage/script",
+              "host": ["{{base_url}}"],
+              "path": ["api", "triage", "script"]
+            }
+          }
+        },
+        {
+          "name": "Status da triagem",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/triage/{{conversation_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "triage", "{{conversation_id}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Salvar resposta única",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"item_key\": \"patient_name\",\n  \"response\": \"João da Silva\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/triage/{{conversation_id}}/response",
+              "host": ["{{base_url}}"],
+              "path": ["api", "triage", "{{conversation_id}}", "response"]
+            }
+          }
+        },
+        {
+          "name": "Salvar múltiplas respostas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"responses\": [\n    { \"item_key\": \"patient_name\", \"response\": \"João\" },\n    { \"item_key\": \"care_type\", \"response\": \"companionship\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/triage/{{conversation_id}}/responses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "triage", "{{conversation_id}}", "responses"]
+            }
+          }
+        },
+        {
+          "name": "Resumo da triagem",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/triage/{{conversation_id}}/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "triage", "{{conversation_id}}", "summary"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Métricas",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "SLA",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/sla",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "sla"]
+            }
+          }
+        },
+        {
+          "name": "Funil de atendimento",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/funnel",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "funnel"]
+            }
+          }
+        },
+        {
+          "name": "Incidentes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/incidents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "incidents"]
+            }
+          }
+        },
+        {
+          "name": "Satisfação",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/satisfaction",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "satisfaction"]
+            }
+          }
+        },
+        {
+          "name": "Escalonamentos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/escalations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "escalations"]
+            }
+          }
+        },
+        {
+          "name": "Horário de trabalho",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/working-hours",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "working-hours"]
+            }
+          }
+        },
+        {
+          "name": "Feriados",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Token",
+                "value": "{{internal_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metrics/holidays",
+              "host": ["{{base_url}}"],
+              "path": ["api", "metrics", "holidays"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

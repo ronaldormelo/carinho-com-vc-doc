@@ -39,7 +39,12 @@ abstract class BaseInternalService
             return null;
         }
 
-        $url = "{$this->baseUrl}/api/v1/{$endpoint}";
+        // Para endpoints de conteúdo, não usar /api/v1
+        if (str_starts_with($endpoint, 'content/') || str_starts_with($endpoint, 'webhooks/')) {
+            $url = "{$this->baseUrl}/api/{$endpoint}";
+        } else {
+            $url = "{$this->baseUrl}/api/v1/{$endpoint}";
+        }
 
         $defaultHeaders = [
             'X-API-Key' => $this->apiKey,

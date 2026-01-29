@@ -8,7 +8,7 @@
         body {
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
             line-height: 1.8;
-            color: #1F2933;
+            color: #1a2b32;
             background-color: #FFFFFF;
             margin: 0;
             padding: 40px;
@@ -32,14 +32,14 @@
             margin-bottom: 8px;
         }
         h1 {
-            color: #1F2933;
+            color: #1a2b32;
             font-size: 22px;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 16px 0 0;
         }
         h2 {
-            color: #1F2933;
+            color: #1a2b32;
             font-size: 16px;
             margin: 24px 0 12px;
             border-bottom: 1px solid #E4E7EB;
@@ -80,7 +80,7 @@
             margin-top: 48px;
         }
         .signature-line {
-            border-top: 1px solid #1F2933;
+            border-top: 1px solid #1a2b32;
             padding-top: 8px;
             margin-top: 60px;
         }

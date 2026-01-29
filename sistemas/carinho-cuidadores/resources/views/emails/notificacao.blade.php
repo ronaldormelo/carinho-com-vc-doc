@@ -8,7 +8,7 @@
         body {
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
             line-height: 1.6;
-            color: #1F2933;
+            color: #1a2b32;
             background-color: #F4F7F9;
             margin: 0;
             padding: 0;
@@ -38,7 +38,7 @@
             width: auto;
         }
         h1 {
-            color: #1F2933;
+            color: #1a2b32;
             font-size: 22px;
             margin: 0 0 16px;
         }
@@ -48,7 +48,7 @@
             padding: 20px;
             margin: 24px 0;
             white-space: pre-line;
-            color: #1F2933;
+            color: #1a2b32;
         }
         .footer {
             text-align: center;

@@ -76,7 +76,7 @@ return [
         'primary' => '#5BBFAD',      // Verde suave - confianca, cuidado
         'secondary' => '#F4F7F9',    // Cinza claro - neutralidade
         'accent' => '#F5C6AA',       // Pessego - calor humano
-        'text' => '#1F2933',         // Cinza escuro - legibilidade
+        'text' => '#1a2b32',         // Cinza escuro - legibilidade
         'text_light' => '#616E7C',   // Cinza medio
         'background' => '#FFFFFF',   // Branco - limpeza
         'success' => '#38A169',      // Verde - confirmacao

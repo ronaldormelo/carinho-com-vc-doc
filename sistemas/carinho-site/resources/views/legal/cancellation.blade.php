@@ -4,8 +4,8 @@
 {{-- Page Header --}}
 <section class="section" style="background: var(--color-primary); color: white; padding: var(--spacing-12) 0;">
     <div class="container">
-        <h1 style="color: white;">Politica de Cancelamento</h1>
-        <p style="opacity: 0.9;">Carinho com Voce</p>
+        <h1 style="color: white;">Política de Cancelamento</h1>
+        <p style="opacity: 0.9;">Carinho com Você</p>
     </div>
 </section>
 
@@ -13,12 +13,12 @@
 <section class="section">
     <div class="container">
         <div class="legal-content">
-            <p class="text-muted">Ultima atualizacao: {{ date('d/m/Y') }}</p>
+            <p class="text-muted">Última atualização: {{ date('d/m/Y') }}</p>
 
-            <h2>1. VISAO GERAL</h2>
+            <h2>1. VISÃO GERAL</h2>
             <p>
-                Entendemos que imprevistos acontecem. Esta politica estabelece as regras para
-                cancelamento de servicos contratados e os respectivos reembolsos.
+                Entendemos que imprevistos acontecem. Esta política estabelece as regras para
+                cancelamento de serviços contratados e os respectivos reembolsos.
             </p>
 
             <h2>2. REGRAS DE CANCELAMENTO E REEMBOLSO</h2>
@@ -28,7 +28,7 @@
                     <tr>
                         <th>Prazo de Cancelamento</th>
                         <th>Reembolso</th>
-                        <th>Observacao</th>
+                        <th>Observação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,15 +50,15 @@
             </div>
 
             <h2>3. COMO SOLICITAR O CANCELAMENTO</h2>
-            <p>Para cancelar um servico agendado:</p>
+            <p>Para cancelar um serviço agendado:</p>
             <ol>
                 <li>Entre em contato pelo WhatsApp: {{ config('branding.contact.whatsapp_display') }}</li>
-                <li>Informe o numero do contrato ou agendamento</li>
-                <li>Confirme a solicitacao de cancelamento</li>
-                <li>Aguarde a confirmacao e instrucoes sobre reembolso (se aplicavel)</li>
+                <li>Informe o número do contrato ou agendamento</li>
+                <li>Confirme a solicitação de cancelamento</li>
+                <li>Aguarde a confirmação e instruções sobre reembolso (se aplicável)</li>
             </ol>
             <p>
-                O cancelamento e considerado efetivado no momento da confirmacao por nossa equipe.
+                O cancelamento é considerado efetivado no momento da confirmação por nossa equipe.
             </p>
 
             <h2>4. CANCELAMENTO PELO CUIDADOR</h2>
@@ -70,54 +70,54 @@
                 para que voce nao fique sem atendimento.
             </p>
 
-            <h2>5. CANCELAMENTO POR FORCA MAIOR</h2>
+            <h2>5. CANCELAMENTO POR FORÇA MAIOR</h2>
             <p>
-                Em casos de forca maior (desastres naturais, emergencias de saude publica, etc.),
-                os cancelamentos serao avaliados individualmente e podem ter tratamento diferenciado.
+                Em casos de força maior (desastres naturais, emergências de saúde pública, etc.),
+                os cancelamentos serão avaliados individualmente e podem ter tratamento diferenciado.
             </p>
 
             <h2>6. PRAZO PARA REEMBOLSO</h2>
-            <p>Os reembolsos serao processados da seguinte forma:</p>
+            <p>Os reembolsos serão processados da seguinte forma:</p>
             <ul>
-                <li><strong>PIX:</strong> ate 2 dias uteis</li>
-                <li><strong>Cartao de credito:</strong> ate 2 faturas, dependendo da operadora</li>
-                <li><strong>Boleto:</strong> ate 5 dias uteis via transferencia bancaria</li>
+                <li><strong>PIX:</strong> até 2 dias úteis</li>
+                <li><strong>Cartão de crédito:</strong> até 2 faturas, dependendo da operadora</li>
+                <li><strong>Boleto:</strong> até 5 dias úteis via transferência bancária</li>
             </ul>
 
             <h2>7. REAGENDAMENTO</h2>
             <p>
-                Caso prefira, voce pode optar por reagendar o servico em vez de cancelar.
+                Caso prefira, você pode optar por reagendar o serviço em vez de cancelar.
                 O reagendamento:
             </p>
             <ul>
-                <li>Nao incorre em taxas se solicitado com mais de 24h de antecedencia</li>
-                <li>Esta sujeito a disponibilidade de cuidadores</li>
+                <li>Não incorre em taxas se solicitado com mais de 24h de antecedência</li>
+                <li>Está sujeito à disponibilidade de cuidadores</li>
                 <li>Deve ser feito para data dentro de 30 dias</li>
             </ul>
 
             <h2>8. CANCELAMENTO DE PLANOS MENSAIS</h2>
             <p>
-                Para servicos contratados em regime mensal:
+                Para serviços contratados em regime mensal:
             </p>
             <ul>
-                <li>A solicitacao de cancelamento deve ser feita com 15 dias de antecedencia</li>
-                <li>Servicos ja prestados no mes serao cobrados proporcionalmente</li>
-                <li>Nao ha multa por cancelamento antecipado</li>
+                <li>A solicitação de cancelamento deve ser feita com 15 dias de antecedência</li>
+                <li>Serviços já prestados no mês serão cobrados proporcionalmente</li>
+                <li>Não há multa por cancelamento antecipado</li>
             </ul>
 
-            <h2>9. NAO COMPARECIMENTO (NO-SHOW)</h2>
+            <h2>9. NÃO COMPARECIMENTO (NO-SHOW)</h2>
             <p>
-                Se o cliente nao estiver disponivel no momento combinado para o inicio do servico:
+                Se o cliente não estiver disponível no momento combinado para o início do serviço:
             </p>
             <ul>
-                <li>O cuidador aguardara por ate 30 minutos</li>
-                <li>Apos esse prazo, o servico sera considerado prestado</li>
-                <li>Nao havera reembolso neste caso</li>
+                <li>O cuidador aguardará por até 30 minutos</li>
+                <li>Após esse prazo, o serviço será considerado prestado</li>
+                <li>Não haverá reembolso neste caso</li>
             </ul>
 
             <h2>10. CONTATO</h2>
             <p>
-                Para cancelamentos ou duvidas sobre esta politica:
+                Para cancelamentos ou dúvidas sobre esta política:
             </p>
             <p>
                 <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
@@ -126,8 +126,8 @@
 
             <div class="highlight-box" style="background: #fff3cd; border-color: var(--color-warning);">
                 <p style="margin: 0;">
-                    <strong>Importante:</strong> Recomendamos sempre confirmar o recebimento da solicitacao de cancelamento
-                    para garantir que sua requisicao foi processada corretamente.
+                    <strong>Importante:</strong> Recomendamos sempre confirmar o recebimento da solicitação de cancelamento
+                    para garantir que sua requisição foi processada corretamente.
                 </p>
             </div>
         </div>

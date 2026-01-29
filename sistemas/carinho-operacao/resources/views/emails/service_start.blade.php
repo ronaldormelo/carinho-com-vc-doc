@@ -10,7 +10,7 @@
             background-color: #F4F7F9;
             margin: 0;
             padding: 20px;
-            color: #1F2933;
+            color: #1a2b32;
         }
         .container {
             max-width: 600px;
@@ -62,7 +62,7 @@
             color: #616E7C;
         }
         .info-value {
-            color: #1F2933;
+            color: #1a2b32;
         }
         .status-badge {
             display: inline-block;
@@ -81,7 +81,7 @@
             color: #616E7C;
         }
         .footer a {
-            color: #5BBFAD;
+            color: #325B5D;
             text-decoration: none;
         }
     </style>

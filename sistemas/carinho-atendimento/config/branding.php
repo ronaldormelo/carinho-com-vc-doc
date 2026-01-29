@@ -11,7 +11,7 @@ return [
         'primary' => '#5BBFAD',
         'secondary' => '#F4F7F9',
         'accent' => '#F5C6AA',
-        'text' => '#1F2933',
+        'text' => '#1a2b32',
     ],
     'typography' => [
         'font_family' => 'Arial, "Helvetica Neue", Helvetica, sans-serif',

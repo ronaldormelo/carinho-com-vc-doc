@@ -79,6 +79,15 @@
                     </svg>
                     Relatórios
                 </a>
+                
+                <div class="nav-divider"></div>
+                
+                <a href="{{ route('content.testimonials') }}" class="nav-item {{ request()->routeIs('content.*') ? 'active' : '' }}">
+                    <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                    </svg>
+                    Conteúdo do Site
+                </a>
             </nav>
             
             <div style="padding: var(--space-4); border-top: 1px solid var(--color-gray-100);">

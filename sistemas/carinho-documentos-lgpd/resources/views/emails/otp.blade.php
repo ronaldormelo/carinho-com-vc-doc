@@ -11,7 +11,7 @@
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
             font-size: 16px;
             line-height: 1.6;
-            color: #1F2933;
+            color: #1a2b32;
             background-color: #F4F7F9;
         }
         .container {
@@ -48,7 +48,7 @@
             font-size: 36px;
             font-weight: 700;
             letter-spacing: 8px;
-            color: #5BBFAD;
+            color: #325B5D;
             padding: 20px;
             background-color: #F4F7F9;
             border-radius: 8px;

@@ -11,7 +11,7 @@
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
             font-size: 16px;
             line-height: 1.6;
-            color: #1F2933;
+            color: #1a2b32;
             background-color: #F4F7F9;
         }
         .container {
@@ -72,7 +72,7 @@
         }
         .info-box h3 {
             margin-top: 0;
-            color: #1F2933;
+            color: #1a2b32;
             font-size: 14px;
             font-weight: 600;
         }
@@ -93,7 +93,7 @@
             color: #9AA5B1;
         }
         .footer a {
-            color: #5BBFAD;
+            color: #325B5D;
             text-decoration: none;
         }
         .expiration {

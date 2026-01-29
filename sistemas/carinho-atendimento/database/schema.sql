@@ -412,3 +412,153 @@ CREATE INDEX idx_holidays_date
 
 CREATE INDEX idx_incidents_category
   ON incidents (category_id, severity_id);
+
+-- =============================================================================
+-- Tabelas do Laravel Framework
+-- =============================================================================
+
+-- Tabela de migrations (controle de versão do banco)
+CREATE TABLE migrations (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  migration VARCHAR(255) NOT NULL,
+  batch INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Tabelas de filas (Laravel Horizon)
+CREATE TABLE jobs (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  queue VARCHAR(255) NOT NULL,
+  payload LONGTEXT NOT NULL,
+  attempts TINYINT UNSIGNED NOT NULL,
+  reserved_at INT UNSIGNED NULL,
+  available_at INT UNSIGNED NOT NULL,
+  created_at INT UNSIGNED NOT NULL,
+  KEY idx_jobs_queue (queue)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE job_batches (
+  id VARCHAR(255) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  total_jobs INT NOT NULL,
+  pending_jobs INT NOT NULL,
+  failed_jobs INT NOT NULL,
+  failed_job_ids LONGTEXT NOT NULL,
+  options MEDIUMTEXT NULL,
+  cancelled_at INT NULL,
+  created_at INT NOT NULL,
+  finished_at INT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE failed_jobs (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  uuid VARCHAR(255) NOT NULL UNIQUE,
+  connection TEXT NOT NULL,
+  queue TEXT NOT NULL,
+  payload LONGTEXT NOT NULL,
+  exception LONGTEXT NOT NULL,
+  failed_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Tabela de tokens de acesso pessoal (Laravel Sanctum)
+CREATE TABLE personal_access_tokens (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  tokenable_type VARCHAR(255) NOT NULL,
+  tokenable_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  token VARCHAR(64) NOT NULL UNIQUE,
+  abilities TEXT NULL,
+  last_used_at DATETIME NULL,
+  expires_at DATETIME NULL,
+  created_at DATETIME NULL,
+  updated_at DATETIME NULL,
+  KEY idx_personal_access_tokens_tokenable (tokenable_type, tokenable_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================================================
+-- Tabelas do Spatie Activity Log
+-- =============================================================================
+
+CREATE TABLE activity_log (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  log_name VARCHAR(255) NULL,
+  description TEXT NOT NULL,
+  event VARCHAR(255) NULL,
+  subject_type VARCHAR(255) NULL,
+  subject_id BIGINT UNSIGNED NULL,
+  causer_type VARCHAR(255) NULL,
+  causer_id BIGINT UNSIGNED NULL,
+  properties JSON NULL,
+  batch_uuid CHAR(36) NULL,
+  created_at DATETIME NULL,
+  updated_at DATETIME NULL,
+  KEY idx_activity_log_subject (subject_type, subject_id),
+  KEY idx_activity_log_causer (causer_type, causer_id),
+  KEY idx_activity_log_log_name (log_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================================================
+-- Tabelas do Spatie Permission
+-- =============================================================================
+
+CREATE TABLE permissions (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  guard_name VARCHAR(255) NOT NULL,
+  created_at DATETIME NULL,
+  updated_at DATETIME NULL,
+  UNIQUE KEY uk_permissions_name_guard (name, guard_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE roles (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  guard_name VARCHAR(255) NOT NULL,
+  created_at DATETIME NULL,
+  updated_at DATETIME NULL,
+  UNIQUE KEY uk_roles_name_guard (name, guard_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE model_has_permissions (
+  permission_id BIGINT UNSIGNED NOT NULL,
+  model_type VARCHAR(255) NOT NULL,
+  model_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (permission_id, model_id, model_type),
+  KEY idx_model_has_permissions_model (model_type, model_id),
+  CONSTRAINT fk_model_has_permissions_permission
+    FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE model_has_roles (
+  role_id BIGINT UNSIGNED NOT NULL,
+  model_type VARCHAR(255) NOT NULL,
+  model_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (role_id, model_id, model_type),
+  KEY idx_model_has_roles_model (model_type, model_id),
+  CONSTRAINT fk_model_has_roles_role
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE role_has_permissions (
+  permission_id BIGINT UNSIGNED NOT NULL,
+  role_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (permission_id, role_id),
+  CONSTRAINT fk_role_has_permissions_permission
+    FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE,
+  CONSTRAINT fk_role_has_permissions_role
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================================================
+-- Tabela de sessoes para SESSION_DRIVER=database (Laravel)
+-- =============================================================================
+CREATE TABLE sessions (
+  id VARCHAR(255) NOT NULL,
+  user_id BIGINT UNSIGNED NULL,
+  ip_address VARCHAR(45) NULL,
+  user_agent TEXT NULL,
+  payload LONGTEXT NOT NULL,
+  last_activity INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id),
+  KEY sessions_user_id_index (user_id),
+  KEY sessions_last_activity_index (last_activity)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
