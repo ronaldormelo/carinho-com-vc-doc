@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
+use App\Models\Domain\DomainEventType;
+use App\Services\ClientEventService;
 use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
     public function __construct(
-        protected ClientService $clientService
+        protected ClientService $clientService,
+        protected ClientEventService $clientEventService
     ) {}
 
     /**
@@ -163,5 +166,64 @@ class ClientController extends Controller
         $history = $this->clientService->getClientHistory($client);
 
         return $this->successResponse($history);
+    }
+
+    /**
+     * Timeline de eventos do cliente.
+     */
+    public function events(Client $client)
+    {
+        $events = $this->clientEventService->getTimeline($client->id);
+
+        return $this->successResponse($events);
+    }
+
+    /**
+     * Registra evento na timeline (Operação / hub).
+     */
+    public function logEvent(Request $request, Client $client)
+    {
+        $validated = $request->validate([
+            'event_type' => 'nullable|string|max:64',
+            'event_type_id' => 'nullable|integer',
+            'title' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'data' => 'nullable|array',
+            'source' => 'nullable|string|max:64',
+            'timestamp' => 'nullable|date',
+        ]);
+
+        $typeId = (int) ($validated['event_type_id'] ?? $this->resolveEventTypeId($validated['event_type'] ?? ''));
+        $title = $validated['title'] ?? ($validated['event_type'] ?: 'Evento operacional');
+        $occurredAt = isset($validated['timestamp'])
+            ? new \DateTime((string) $validated['timestamp'])
+            : null;
+
+        $event = $this->clientEventService->logEvent(
+            $client->id,
+            $typeId,
+            $title,
+            $validated['description'] ?? ($validated['source'] ?? null),
+            $validated['data'] ?? null,
+            null,
+            null,
+            $occurredAt
+        );
+
+        return $this->createdResponse($event, 'Evento registrado');
+    }
+
+    private function resolveEventTypeId(string $eventType): int
+    {
+        $normalized = strtolower($eventType);
+
+        return match (true) {
+            str_contains($normalized, 'payment') && str_contains($normalized, 'overdue') => DomainEventType::PAYMENT_OVERDUE,
+            str_contains($normalized, 'payment') => DomainEventType::PAYMENT_RECEIVED,
+            str_contains($normalized, 'contract') && str_contains($normalized, 'sign') => DomainEventType::CONTRACT_SIGNED,
+            str_contains($normalized, 'contract') => DomainEventType::CONTRACT_ACTIVATED,
+            str_contains($normalized, 'service') => DomainEventType::REVIEW_COMPLETED,
+            default => DomainEventType::CONTACT_PHONE,
+        };
     }
 }

@@ -20,6 +20,7 @@ class MessagesController extends Controller
         $validated = $request->validate([
             'body' => ['required', 'string'],
             'media_url' => ['nullable', 'string', 'max:512'],
+            'direction' => ['nullable', 'in:inbound,outbound'],
         ]);
 
         $conversationData = $this->repository->findConversationById($conversation);
@@ -32,6 +33,22 @@ class MessagesController extends Controller
 
         if (!$contact) {
             return response()->json(['message' => 'Contact not found'], 404);
+        }
+
+        $direction = $validated['direction'] ?? 'outbound';
+
+        if ($direction === 'inbound') {
+            $domainLookup = app(\App\Support\DomainLookup::class);
+            $messageId = $this->repository->createMessage([
+                'conversation_id' => $conversation,
+                'direction_id' => $domainLookup->messageDirectionId('inbound'),
+                'body' => $validated['body'],
+                'media_url' => $validated['media_url'] ?? null,
+                'sent_at' => now()->toDateTimeString(),
+                'status_id' => $domainLookup->messageStatusId('delivered'),
+            ]);
+
+            return response()->json(['message_id' => $messageId], 201);
         }
 
         $messageId = $this->inboxService->queueOutboundMessage(

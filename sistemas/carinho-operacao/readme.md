@@ -2,6 +2,18 @@
 
 **Subdominio:** operacao.carinho.com.vc
 
+## Documentação deste módulo
+
+| Precisa de | Arquivo |
+|------------|---------|
+| Arquitetura | [docs/arquitetura.md](docs/arquitetura.md) |
+| Módulos | [docs/modulos.md](docs/modulos.md) |
+| Integrações | [docs/integracoes.md](docs/integracoes.md) |
+| NFRs (API P95 500 ms, alocação 4 h) | [docs/nao-funcionais.md](docs/nao-funcionais.md) |
+| Manual / guia | [docs/manual-operacional.md](docs/manual-operacional.md), [docs/guia-usuario-operacional.md](docs/guia-usuario-operacional.md) |
+
+Política de **reembolso ao cliente**: [Financeiro — políticas](../carinho-financeiro/docs/politicas.md). Defaults de **horas** em `config/operacao.php` (`CANCEL_FREE_HOURS=24`, `CANCEL_REDUCED_HOURS=6`) seguem essa tabela. As taxas `CANCEL_*_FEE_PERCENT` (30%/50%) são parâmetro interno de operação, **não** o reembolso 100/50/0 que a família vê.
+
 ## Descricao
 
 Sistema operacional que conecta cliente e cuidador. Gerencia agenda, alocacao, execucao do servico e comunicacao de status. Este sistema e o coracao da operacao diaria, responsavel por garantir que cada atendimento aconteca de forma fluida e com qualidade.
@@ -10,7 +22,7 @@ Sistema operacional que conecta cliente e cuidador. Gerencia agenda, alocacao, e
 
 - **Linguagem:** PHP 8.2+
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0+
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`, schema `carinho_operacao`)
 - **Cache e filas:** Redis
 - **Mensageria:** Laravel Horizon
 
@@ -53,10 +65,9 @@ Sistema operacional que conecta cliente e cuidador. Gerencia agenda, alocacao, e
 - Escalonamento automatico de emergencias nao resolvidas
 
 ### 7. Politicas de Cancelamento
-- Cancelamento gratuito (48h+ de antecedencia)
-- Taxa reduzida (24-48h de antecedencia)
-- Taxa integral (menos de 24h)
-- Integracao com Financeiro para cobranca
+- A tabela que o cliente vê (reembolso 100% / 50% / 0%) está no Financeiro e no Site.
+- Janelas de hora neste módulo: 24 h (sem taxa operacional) e 6 h (taxa reduzida vs integral).
+- `CANCEL_*_FEE_PERCENT` default 30%/50% **não** substitui o reembolso publicado.
 
 ## Estrutura do Projeto
 
@@ -179,18 +190,18 @@ carinho-operacao/
 - Distancia maxima: 500 metros
 
 ### Cancelamento
-- Gratuito: 48+ horas antes
-- Taxa reduzida (30%): 24-48 horas
-- Taxa integral (50%): menos de 24 horas
+Valores de `config/operacao.php` (horas alinhadas ao Financeiro; taxas só para operação interna):
+- `CANCEL_FREE_HOURS` default **24**
+- `CANCEL_REDUCED_HOURS` default **6**
+- Taxas default 30% / 50% (não publicar como reembolso)
+Fonte de verdade comercial: `sistemas/carinho-financeiro/docs/politicas.md`.
+
+Health: `GET /up` (Laravel) e `GET /api/health` + `GET /api/status` (módulo). Rotas de API **sem** `/v1`.
 
 ## Instalacao
 
 ```bash
-# Clone o repositorio
-git clone [repo-url]
-cd carinho-operacao
-
-# Instale dependencias
+cd sistemas/carinho-operacao
 composer install
 
 # Configure ambiente

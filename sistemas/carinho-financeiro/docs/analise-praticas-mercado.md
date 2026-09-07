@@ -2,6 +2,8 @@
 
 ## Práticas Consolidadas de Mercado para HomeCare
 
+> Referência (janeiro/2026). A tabela comercial vigente está em [politicas.md](politicas.md).
+
 **Data da Análise:** Janeiro 2026  
 **Módulo:** carinho-financeiro  
 **Versão:** 2.0 (após melhorias)

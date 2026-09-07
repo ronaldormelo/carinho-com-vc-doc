@@ -63,7 +63,10 @@ class ExportReportJob implements ShouldQueue
                 'user_id' => $this->userId,
             ]);
 
-            // TODO: Enviar notificação por e-mail com link para download
+            Log::info('Exportação disponível em storage; e-mail de download não é enviado neste job', [
+                'filepath' => $filepath,
+                'user_id' => $this->userId,
+            ]);
 
         } catch (\Exception $e) {
             Log::error("Erro na exportação de relatório", [

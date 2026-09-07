@@ -24,7 +24,7 @@ class CrmClient extends BaseClient
      */
     public function sendLead(array $leadData): array
     {
-        return $this->post('/leads', $leadData);
+        return $this->post('/v1/public/leads', $leadData);
     }
 
     /**
@@ -32,7 +32,12 @@ class CrmClient extends BaseClient
      */
     public function updateLeadSource(string $leadId, array $sourceData): array
     {
-        return $this->put("/leads/{$leadId}/source", $sourceData);
+        return [
+            'success' => false,
+            'status' => 501,
+            'data' => null,
+            'error' => 'CRM não possui PUT /leads/{id}/source; use POST /webhooks/internal/marketing/utm',
+        ];
     }
 
     /**
@@ -40,7 +45,7 @@ class CrmClient extends BaseClient
      */
     public function findLeadByPhone(string $phone): array
     {
-        return $this->get('/leads/search', ['phone' => $phone]);
+        return $this->get('/v1/leads/search', ['q' => $phone]);
     }
 
     /**
@@ -48,7 +53,7 @@ class CrmClient extends BaseClient
      */
     public function findLeadByEmail(string $email): array
     {
-        return $this->get('/leads/search', ['email' => $email]);
+        return $this->get('/v1/leads/search', ['q' => $email]);
     }
 
     /**
@@ -56,7 +61,7 @@ class CrmClient extends BaseClient
      */
     public function getLeadStats(string $startDate, string $endDate): array
     {
-        return $this->get('/leads/stats', [
+        return $this->get('/v1/leads/statistics', [
             'start_date' => $startDate,
             'end_date' => $endDate,
         ]);
@@ -77,7 +82,7 @@ class CrmClient extends BaseClient
             $params['end_date'] = $endDate;
         }
 
-        return $this->get('/leads/by-source', $params);
+        return $this->get('/v1/leads', $params);
     }
 
     /**
@@ -85,11 +90,12 @@ class CrmClient extends BaseClient
      */
     public function registerConversion(string $leadId, string $conversionType, array $data = []): array
     {
-        return $this->post("/leads/{$leadId}/conversions", [
-            'type' => $conversionType,
-            'data' => $data,
-            'converted_at' => now()->toIso8601String(),
-        ]);
+        return [
+            'success' => false,
+            'status' => 501,
+            'data' => null,
+            'error' => 'CRM não possui POST /leads/{id}/conversions',
+        ];
     }
 
     /**
@@ -100,6 +106,8 @@ class CrmClient extends BaseClient
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
+            'X-API-Key' => config('integrations.crm.token'),
+            'X-Service-Origin' => 'marketing',
             'Authorization' => 'Bearer ' . config('integrations.crm.token'),
             'X-Internal-Token' => config('integrations.internal.token'),
         ];

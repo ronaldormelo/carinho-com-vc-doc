@@ -45,11 +45,9 @@ class CuidadoresClient
      */
     public function getCaregiverBankAccount(int $caregiverId): ?array
     {
-        $response = $this->request('GET', "/caregivers/{$caregiverId}/bank-account");
-
-        if ($response['success']) {
-            return $response['data'];
-        }
+        Log::info('Cuidadores não expõe bank-account; contas ficam no Financeiro', [
+            'caregiver_id' => $caregiverId,
+        ]);
 
         return null;
     }
@@ -68,7 +66,7 @@ class CuidadoresClient
      */
     public function getCaregiverRating(int $caregiverId): float
     {
-        $response = $this->request('GET', "/caregivers/{$caregiverId}/rating");
+        $response = $this->request('GET', "/caregivers/{$caregiverId}/ratings-summary");
 
         if ($response['success']) {
             return (float) ($response['data']['average'] ?? 0);

@@ -2,6 +2,20 @@
 
 **Subdomínio:** crm.carinho.com.vc
 
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Integrações](docs/integracoes.md) · [NFRs](docs/nao-funcionais.md) · [Guia operacional](docs/guia-usuario-operacional.md) · [CMS do site](docs/modulo-gestao-conteudo.md)
+
+## Health
+
+- Laravel: `GET /up`
+- Módulo: `GET /health` (web, JSON)
+- API: prefixo canônico **`/api/v1`** (não há alias `/api` sem versão)
+
+Webhooks: `/webhooks/zapi/*` e `/webhooks/internal/*` (middleware `verify.internal` registrado em `bootstrap/app.php`). Aceite digital: `GET/POST /contract/{token}/sign` e `/accept` (CSRF).
+
+`docs/analise-praticas-tradicionais.md` é estudo, não backlog. Google Calendar, Mailchimp e Stripe **não** são oficiais neste módulo (agenda é Operação; pagamento é Financeiro).
+
 ## Descrição
 
 Base única de leads e clientes do ecossistema Carinho com Você. Mantém o pipeline comercial, registra interações e consolida o histórico de atendimentos e serviços.
@@ -10,7 +24,7 @@ Base única de leads e clientes do ecossistema Carinho com Você. Mantém o pipe
 
 - **Linguagem:** PHP 8.2+
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`, schema `carinho_crm`)
 - **Cache e Filas:** Redis
 - **Autenticação:** Laravel Sanctum
 - **Auditoria:** Spatie Activity Log
@@ -210,11 +224,7 @@ Todos os sistemas do ecossistema são integrados via API REST com autenticação
 ## Instalação
 
 ```bash
-# Clone o repositório
-git clone [repo-url]
-cd carinho-crm
-
-# Instale dependências
+cd sistemas/carinho-crm
 composer install
 
 # Configure ambiente

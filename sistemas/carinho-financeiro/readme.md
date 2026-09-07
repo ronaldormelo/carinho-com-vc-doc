@@ -3,6 +3,12 @@
 **Subdomínio:** financeiro.carinho.com.vc  
 **Versão:** 2.0
 
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Políticas (fonte de verdade comercial)](docs/politicas.md) · [Integrações](docs/integracoes.md) · [NFRs](docs/nao-funcionais.md) · [Manual](docs/manual-operacional.md)
+
+`docs/analise-praticas-mercado.md` é referência, não tabela de preço.
+
 ## Descrição
 
 Sistema de controle financeiro completo para a plataforma Carinho com Você. Responsável por gerenciar todo o ciclo financeiro: cobrança de clientes, processamento de pagamentos, repasses aos cuidadores, precificação, conciliação bancária, controle de fluxo de caixa, gestão de contas a pagar, relatórios gerenciais e workflow de aprovações.
@@ -11,7 +17,7 @@ Sistema de controle financeiro completo para a plataforma Carinho com Você. Res
 
 - **Linguagem:** PHP 8.2+
 - **Framework:** Laravel 11
-- **Banco de Dados:** MySQL 8.0
+- **Banco de Dados:** MariaDB 10.11 compartilhado (driver `mysql`, schema `carinho_financeiro`)
 - **Cache e Filas:** Redis
 - **Gateway de Pagamento:** Stripe
 - **Notificações:** Z-API (WhatsApp)
@@ -323,4 +329,4 @@ curl https://financeiro.carinho.com.vc/api/settings/commission_horista/history
 - Logs estruturados de todas as operações
 - Alertas para falhas de pagamento
 - Métricas de performance via Horizon
-- Health checks: `/health` e `/health/detailed`
+- Health checks: `/health` e `/health/detailed` (web). Laravel: `/up`.

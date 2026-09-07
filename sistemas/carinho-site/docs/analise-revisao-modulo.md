@@ -1,5 +1,7 @@
 # Análise e Revisão do Módulo Carinho-Site
 
+> Documento de **revisão** (janeiro/2026). Não substitui o README, as políticas financeiras nem os NFRs.
+
 **Data:** Janeiro/2026  
 **Módulo:** carinho-site (site.carinho.com.vc)
 

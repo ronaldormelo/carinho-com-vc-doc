@@ -13,20 +13,20 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --color-primary-500: #0ea5e9;
-            --color-primary-600: #0284c7;
-            --color-primary-700: #0369a1;
-            --color-secondary-500: #22c55e;
-            --color-gray-50: #f9fafb;
+            --color-primary-500: #5BBFAD;
+            --color-primary-600: #4AA99A;
+            --color-primary-700: #3D8F82;
+            --color-secondary-500: #38A169;
+            --color-gray-50: #F4F7F9;
             --color-gray-100: #f3f4f6;
             --color-gray-200: #e5e7eb;
-            --color-gray-600: #4b5563;
-            --color-gray-800: #1f2937;
-            --color-gray-900: #111827;
+            --color-gray-600: #616E7C;
+            --color-gray-800: #1a2b32;
+            --color-gray-900: #1a2b32;
         }
         
         * {
@@ -35,7 +35,7 @@
         
         body {
             margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Nunito', 'Inter', Arial, sans-serif;
             background: var(--color-gray-50);
             color: var(--color-gray-800);
             min-height: 100vh;
@@ -217,19 +217,19 @@
                     <h3>Informações do Contrato</h3>
                     <div class="info-row">
                         <span class="info-label">Cliente</span>
-                        <span class="info-value" id="client-name">Carregando...</span>
+                        <span class="info-value">{{ $contract->client?->lead?->name ?? 'Cliente' }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Tipo de Serviço</span>
-                        <span class="info-value" id="service-type">-</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Valor Mensal</span>
-                        <span class="info-value" id="monthly-value">-</span>
+                        <span class="info-value">{{ $contract->proposal?->serviceType?->label ?? $contract->proposal?->serviceType?->name ?? '-' }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Início</span>
-                        <span class="info-value" id="start-date">-</span>
+                        <span class="info-value">{{ optional($contract->start_date)->format('d/m/Y') ?? '-' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Término</span>
+                        <span class="info-value">{{ optional($contract->end_date)->format('d/m/Y') ?? '-' }}</span>
                     </div>
                 </div>
                 
@@ -251,7 +251,7 @@
                     O presente contrato terá vigência conforme período especificado acima.
                     <br><br>
                     <strong>5. DO CANCELAMENTO</strong><br>
-                    O cancelamento poderá ser solicitado com antecedência mínima de 48 horas.
+                    O cancelamento segue a tabela publicada no site e no Financeiro: reembolso total com mais de 24 horas de antecedência; 50% entre 6 e 24 horas; sem reembolso com menos de 6 horas. Cancelamento pelo cuidador gera reembolso total ao cliente.
                     <br><br>
                     <strong>6. DA PROTEÇÃO DE DADOS (LGPD)</strong><br>
                     As partes se comprometem a tratar os dados pessoais de acordo com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).

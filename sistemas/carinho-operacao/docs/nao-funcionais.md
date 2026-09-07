@@ -1,5 +1,7 @@
 # Requisitos Nao Funcionais
 
+Contrato de plataforma: [PERFORMANCE.md](../../../PERFORMANCE.md) e [SECURITY.md](../../../SECURITY.md). Reembolso ao cliente: [políticas do Financeiro](../../carinho-financeiro/docs/politicas.md). Horas de cancelamento neste módulo: 24 h / 6 h. Taxas `CANCEL_*_FEE_PERCENT` não são a tabela de reembolso.
+
 ## Performance
 
 ### Cache

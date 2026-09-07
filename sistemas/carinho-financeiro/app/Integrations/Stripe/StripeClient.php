@@ -345,8 +345,12 @@ class StripeClient
     /**
      * Valida assinatura do webhook.
      */
-    public function validateWebhookSignature(string $payload, string $signature): bool
+    public function validateWebhookSignature(string $payload, ?string $signature): bool
     {
+        if ($signature === null || $signature === '') {
+            return false;
+        }
+
         $secret = config('integrations.stripe.webhook_secret');
 
         if (!$secret) {

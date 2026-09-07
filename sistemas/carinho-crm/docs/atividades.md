@@ -174,10 +174,9 @@ Lista de atividades realizadas e pendentes para o sistema Carinho CRM.
 - 📋 Monitoramento (Prometheus/Grafana)
 - 📋 Alertas de erros (Sentry)
 
-### Integrações Avançadas
-- 📋 Integração com Google Calendar (agenda)
-- 📋 Integração com e-mail marketing (Mailchimp/SendGrid)
-- 📋 Integração com pagamentos (Stripe/PagSeguro)
+### Integrações avançadas (não oficiais)
+
+Não implementar como sistema da plataforma: Google Calendar (agenda é Operação), Mailchimp/SendGrid de marketing (Marketing + Z-API), Stripe/PagSeguro (Financeiro).
 
 ## Métricas de Qualidade
 

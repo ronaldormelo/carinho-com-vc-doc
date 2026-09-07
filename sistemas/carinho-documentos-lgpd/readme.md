@@ -2,6 +2,10 @@
 
 **Subdomínio:** documentos.carinho.com.vc
 
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Módulos](docs/modulos.md) · [Integrações](docs/integracoes.md) · [NFRs](docs/nao-funcionais.md) · [Auditoria](docs/procedimentos-auditoria.md)
+
 ## Descrição
 
 Repositório central de documentos e conformidade LGPD. Organiza contratos, consentimentos e registros para operação segura e aderente à Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
@@ -57,9 +61,10 @@ Repositório central de documentos e conformidade LGPD. Organiza contratos, cons
 
 - **Linguagem:** PHP 8.2
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`)
 - **Cache e filas:** Redis 7
 - **Storage:** AWS S3
+- Health: `GET /up` (Laravel), `GET /api/health` e `GET /api/up` (módulo)
 
 ## Integrações
 
@@ -105,7 +110,11 @@ carinho-documentos-lgpd/
 │   └── schema.sql               # Schema SQL
 ├── docs/
 │   ├── arquitetura.md
-│   └── atividades.md
+│   ├── atividades.md
+│   ├── integracoes.md
+│   ├── modulos.md
+│   ├── nao-funcionais.md
+│   └── procedimentos-auditoria.md
 ├── public/
 │   ├── css/brand.css            # CSS da marca
 │   └── index.php

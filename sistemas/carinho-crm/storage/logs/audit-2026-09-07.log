@@ -1,0 +1,5 @@
+[2026-09-07 17:38:28] local.INFO: Lead criado {"lead_id":2,"source":"site"} 
+[2026-09-07 17:38:29] local.INFO: Lead Activity: LeadCreated {"lead_id":2,"lead_name":"Joao Public Lead","status_id":1,"previous_status_id":null} 
+[2026-09-07 17:38:32] local.INFO: Lead atualizado {"lead_id":2,"changes":{"email":"eyJpdiI6IkdlY3ZpUFp6UE1nY01PRUdNTm4wekE9PSIsInZhbHVlIjoiNmNxZHV0WnM2K0dRYXJsLzVMaXpoVXFKVGNrWTUvUFg3UUVoTU5USmFNVT0iLCJtYWMiOiJiOTMxMTQzZTYwMWU2MjVjNmFlOGRmMWNhZWVmMThjNTY3MzNlZTM3NjgzODYzMDNmNGI3MTBlMGVjYTQ1OTRjIiwidGFnIjoiIn0=","updated_at":"2026-09-07 17:38:32"}} 
+[2026-09-07 17:38:52] local.INFO: Lead criado {"lead_id":3,"source":"site"} 
+[2026-09-07 17:38:52] local.INFO: Lead Activity: LeadCreated {"lead_id":3,"lead_name":"Maria Site Sync","status_id":1,"previous_status_id":null} 

@@ -6,117 +6,79 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Cliente para integracao com o sistema CRM.
- *
- * Endpoints principais:
- * - POST /webhooks/documents/contract-created
- * - POST /webhooks/documents/contract-signed
- * - POST /webhooks/documents/consent-updated
- * - POST /webhooks/documents/data-request
+ * Cliente CRM a partir de Documentos. Webhook real: /webhooks/internal/documentos/contract-signed.
  */
 class CrmClient
 {
-    /**
-     * Notifica criacao de contrato.
-     */
     public function notifyContractCreated(array $data): array
     {
-        return $this->request('webhooks/documents/contract-created', [
-            'document_id' => $data['document_id'] ?? null,
-            'owner_type' => $data['owner_type'] ?? null,
-            'owner_id' => $data['owner_id'] ?? null,
-            'contract_type' => $data['contract_type'] ?? null,
-            'signature_url' => $data['signature_url'] ?? null,
-            'created_at' => $data['created_at'] ?? now()->toIso8601String(),
-            'source' => 'carinho-documentos-lgpd',
-        ]);
+        return $this->notImplemented('webhooks/documents/contract-created');
     }
 
-    /**
-     * Notifica assinatura de contrato.
-     */
     public function notifyContractSigned(array $data): array
     {
-        return $this->request('webhooks/documents/contract-signed', [
-            'document_id' => $data['document_id'] ?? null,
-            'signature_id' => $data['signature_id'] ?? null,
-            'signer_type' => $data['signer_type'] ?? null,
-            'signer_id' => $data['signer_id'] ?? null,
+        return $this->requestHost('webhooks/internal/documentos/contract-signed', [
+            'contract_id' => $data['contract_id'] ?? $data['document_id'] ?? null,
             'signed_at' => $data['signed_at'] ?? now()->toIso8601String(),
-            'method' => $data['method'] ?? null,
-            'source' => 'carinho-documentos-lgpd',
+            'ip_address' => $data['ip_address'] ?? null,
+            'user_agent' => $data['user_agent'] ?? $data['method'] ?? null,
         ]);
     }
 
-    /**
-     * Notifica concessao de consentimento.
-     */
     public function notifyConsentGranted(array $data): array
     {
-        return $this->request('webhooks/documents/consent-updated', [
-            'consent_id' => $data['consent_id'] ?? null,
-            'subject_type' => $data['subject_type'] ?? null,
-            'subject_id' => $data['subject_id'] ?? null,
-            'consent_type' => $data['consent_type'] ?? null,
-            'action' => 'granted',
-            'granted_at' => $data['granted_at'] ?? now()->toIso8601String(),
-            'source' => 'carinho-documentos-lgpd',
-        ]);
+        return $this->notImplemented('webhooks/documents/consent-updated');
     }
 
-    /**
-     * Notifica revogacao de consentimento.
-     */
     public function notifyConsentRevoked(array $data): array
     {
-        return $this->request('webhooks/documents/consent-updated', [
-            'consent_id' => $data['consent_id'] ?? null,
-            'subject_type' => $data['subject_type'] ?? null,
-            'subject_id' => $data['subject_id'] ?? null,
-            'consent_type' => $data['consent_type'] ?? null,
-            'action' => 'revoked',
-            'revoked_at' => $data['revoked_at'] ?? now()->toIso8601String(),
-            'source' => 'carinho-documentos-lgpd',
-        ]);
+        return $this->notImplemented('webhooks/documents/consent-updated');
     }
 
-    /**
-     * Notifica solicitacao de dados LGPD.
-     */
     public function notifyDataRequest(array $data): array
     {
-        return $this->request('webhooks/documents/data-request', [
-            'request_id' => $data['request_id'] ?? null,
-            'subject_type' => $data['subject_type'] ?? null,
-            'subject_id' => $data['subject_id'] ?? null,
-            'request_type' => $data['request_type'] ?? null,
-            'status' => $data['status'] ?? 'open',
-            'requested_at' => $data['requested_at'] ?? now()->toIso8601String(),
-            'source' => 'carinho-documentos-lgpd',
-        ]);
+        return $this->notImplemented('webhooks/documents/data-request');
     }
 
-    /**
-     * Obtem dados de cliente do CRM.
-     */
     public function getClient(int $clientId): array
     {
-        return $this->request("clients/{$clientId}", [], 'GET');
+        return $this->request("v1/clients/{$clientId}", [], 'GET');
     }
 
-    /**
-     * Realiza requisicao para a API.
-     */
+    private function notImplemented(string $path): array
+    {
+        Log::info('CRM não expõe rota de documentos', ['path' => $path]);
+
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => "CRM não expõe {$path}",
+        ];
+    }
+
     private function request(string $path, array $payload = [], string $method = 'POST'): array
     {
+        return $this->send($this->endpoint($path), $payload, $method, $path);
+    }
+
+    private function requestHost(string $path, array $payload = []): array
+    {
+        $baseUrl = rtrim((string) config('integrations.crm.base_url'), '/');
+        $host = preg_replace('#/api$#', '', $baseUrl);
+
+        return $this->send("{$host}/{$path}", $payload, 'POST', $path);
+    }
+
+    private function send(string $url, array $payload, string $method, string $path): array
+    {
         try {
-            $request = Http::withHeaders($this->headers())
+            $http = Http::withHeaders($this->headers())
                 ->timeout((int) config('integrations.crm.timeout', 8));
 
-            $response = match ($method) {
-                'GET' => $request->get($this->endpoint($path)),
-                default => $request->post($this->endpoint($path), $payload),
-            };
+            $response = $method === 'GET'
+                ? $http->get($url, $payload)
+                : $http->post($url, $payload);
 
             $result = [
                 'status' => $response->status(),
@@ -127,7 +89,6 @@ class CrmClient
             if (!$response->successful()) {
                 Log::warning('CRM request failed', [
                     'path' => $path,
-                    'method' => $method,
                     'status' => $response->status(),
                 ]);
             }
@@ -136,7 +97,6 @@ class CrmClient
         } catch (\Throwable $e) {
             Log::error('CRM request error', [
                 'path' => $path,
-                'method' => $method,
                 'error' => $e->getMessage(),
             ]);
 
@@ -149,9 +109,6 @@ class CrmClient
         }
     }
 
-    /**
-     * Monta URL do endpoint.
-     */
     private function endpoint(string $path): string
     {
         $baseUrl = rtrim((string) config('integrations.crm.base_url'), '/');
@@ -159,9 +116,6 @@ class CrmClient
         return "{$baseUrl}/{$path}";
     }
 
-    /**
-     * Retorna headers da requisicao.
-     */
     private function headers(): array
     {
         $token = config('integrations.crm.token');
@@ -169,11 +123,13 @@ class CrmClient
         $headers = [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'X-Source' => 'carinho-documentos-lgpd',
+            'X-Service-Origin' => 'documentos',
         ];
 
         if ($token) {
             $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-Internal-Token'] = $token;
+            $headers['X-API-Key'] = $token;
         }
 
         return $headers;

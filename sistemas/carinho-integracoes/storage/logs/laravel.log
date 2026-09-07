@@ -1,0 +1,13 @@
+[2026-09-07 17:50:55] local.ERROR: Cannot make non static method Illuminate\Database\Eloquent\Model::increment() static in class App\Models\RateLimit {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot make non static method Illuminate\\Database\\Eloquent\\Model::increment() static in class App\\Models\\RateLimit at /var/www/html/app/Models/RateLimit.php:35)
+[stacktrace]
+#0 {main}
+"} 
+[2026-09-07 17:50:58] local.ERROR: Cannot make non static method Illuminate\Database\Eloquent\Model::increment() static in class App\Models\RateLimit {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot make non static method Illuminate\\Database\\Eloquent\\Model::increment() static in class App\\Models\\RateLimit at /var/www/html/app/Models/RateLimit.php:35)
+[stacktrace]
+#0 {main}
+"} 
+[2026-09-07 17:51:32] local.WARNING: API request without API key {"ip":"172.18.0.1","path":"api/events"} 
+[2026-09-07 17:51:35] local.WARNING: Invalid API key {"ip":"172.18.0.1","path":"api/events"} 
+[2026-09-07 17:51:58] local.INFO: Event created {"event_id":1,"event_type":"lead.created","source":"site"} 
+[2026-09-07 17:52:01] local.INFO: Processing event {"event_id":1,"event_type":"lead.created"} 
+[2026-09-07 17:52:01] local.WARNING: No target endpoints for event {"event_id":1,"event_type":"lead.created"} 

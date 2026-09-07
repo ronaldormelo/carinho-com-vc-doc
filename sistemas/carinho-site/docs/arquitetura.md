@@ -8,7 +8,7 @@ WhatsApp e registro de origem para o CRM.
 ## Stack
 - Linguagem: PHP
 - Framework: Laravel
-- Banco de dados: MySQL
+- Banco de dados: MariaDB 10.11 compartilhado (driver `mysql`)
 - Cache e filas: Redis
 - Storage de midias: objeto (S3 compativel)
 - CDN para ativos estaticos

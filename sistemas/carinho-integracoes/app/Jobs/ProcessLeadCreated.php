@@ -39,48 +39,26 @@ class ProcessLeadCreated implements ShouldQueue
     {
         Log::info('Processing new lead', [
             'name' => $this->leadData['name'] ?? 'unknown',
-            'phone' => $this->leadData['phone'] ?? 'unknown',
+            'source' => $this->leadData['source'] ?? 'unknown',
         ]);
 
-        // 1. Verifica se lead ja existe no CRM
-        $existingLead = null;
-        if (!empty($this->leadData['phone'])) {
-            $response = $crm->findLeadByPhone($this->leadData['phone']);
-            if ($response['ok'] && !empty($response['body']['data'])) {
-                $existingLead = $response['body']['data'][0] ?? null;
-            }
+        $crmResponse = $crm->createLead([
+            'name' => $this->leadData['name'] ?? 'Contato WhatsApp',
+            'phone' => $this->leadData['phone'] ?? null,
+            'email' => $this->leadData['email'] ?? null,
+            'source' => $this->leadData['source'] ?? 'whatsapp',
+            'city' => $this->leadData['city'] ?? 'nao_informada',
+        ]);
+
+        if (!$crmResponse['ok']) {
+            throw new \Exception('Failed to create lead in CRM');
         }
 
-        // 2. Cria ou atualiza lead no CRM
-        if ($existingLead) {
-            $crmResponse = $crm->updateLead($existingLead['id'], [
-                'last_contact_at' => now()->toIso8601String(),
-                'interaction_count' => ($existingLead['interaction_count'] ?? 0) + 1,
-            ]);
+        $leadId = $crmResponse['body']['data']['id']
+            ?? $crmResponse['body']['id']
+            ?? null;
 
-            $leadId = $existingLead['id'];
-
-            Log::info('Lead updated in CRM', ['lead_id' => $leadId]);
-        } else {
-            $crmResponse = $crm->createLead([
-                'name' => $this->leadData['name'],
-                'phone' => $this->leadData['phone'] ?? null,
-                'email' => $this->leadData['email'] ?? null,
-                'source' => $this->leadData['source'] ?? 'whatsapp',
-                'utm_source' => $this->leadData['utm_source'] ?? null,
-                'utm_medium' => $this->leadData['utm_medium'] ?? null,
-                'utm_campaign' => $this->leadData['utm_campaign'] ?? null,
-                'message' => $this->leadData['message'] ?? null,
-            ]);
-
-            if (!$crmResponse['ok']) {
-                throw new \Exception('Failed to create lead in CRM');
-            }
-
-            $leadId = $crmResponse['body']['id'];
-
-            Log::info('Lead created in CRM', ['lead_id' => $leadId]);
-        }
+        Log::info('Lead ingested in CRM', ['lead_id' => $leadId]);
 
         // 3. Envia mensagem automatica via WhatsApp
         if (!empty($this->leadData['phone'])) {
@@ -90,7 +68,7 @@ class ProcessLeadCreated implements ShouldQueue
             ]);
 
             Log::info('Auto-response scheduled for lead', [
-                'phone' => $this->leadData['phone'],
+                'lead_id' => $leadId,
             ]);
         }
 
@@ -118,7 +96,6 @@ class ProcessLeadCreated implements ShouldQueue
     public function failed(\Throwable $exception): void
     {
         Log::error('Lead processing failed', [
-            'phone' => $this->leadData['phone'] ?? 'unknown',
             'error' => $exception->getMessage(),
         ]);
     }

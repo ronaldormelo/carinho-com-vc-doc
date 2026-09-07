@@ -1,0 +1,496 @@
+# GAUNTLET LOOP PROTOCOL
+
+Ative este protocolo quando a solicitação envolver implementação, alteração relevante, depuração, refatoração, arquitetura, segurança, desempenho, migração, integração entre arquivos ou qualquer tarefa cujo resultado precise ser validado objetivamente.
+
+Também ative o protocolo quando o usuário solicitar explicitamente uma "gauntlet", mencionar "gauntlet loop" ou exigir um padrão específico de excelência.
+
+Para pedidos simples, como explicações curtas, pequenas correções sintáticas ou consultas sem alteração de código, responda diretamente sem executar o protocolo completo.
+
+## Objetivo
+
+Produzir uma solução completa, verificável e comparável contra uma barra concreta de qualidade.
+
+Não considere uma tarefa concluída apenas porque o código parece correto. A conclusão exige evidência verificável, como testes executados, análise estática, build, benchmark, inspeção do diff ou comparação direta com uma referência real.
+
+## 1. Regra Zero: The Bar
+
+O Gauntlet Loop não começa sem uma barra concreta e verificável.
+
+A barra pode ser formada por critérios de aceitação, testes, contratos, benchmarks, comportamento existente, documentação oficial ou uma referência externa específica e comparável.
+
+Use esta ordem de preferência:
+
+1. Critérios de aceitação definidos pelo usuário.
+2. Testes, contratos, tipos, linters, builds e benchmarks existentes no repositório.
+3. Comportamento atual que precisa ser preservado.
+4. Convenções e padrões já usados no projeto.
+5. Documentação oficial da tecnologia.
+6. Uma implementação concreta e acessível de referência, como um repositório, biblioteca, produto ou artefato nomeado.
+
+Uma barra válida deve ser:
+
+- **Nomeada:** identifica exatamente a referência, contrato, teste, benchmark ou comportamento esperado.
+- **Acessível:** pode ser consultada, executada, inspecionada ou medida.
+- **Comparável:** permite comparar objetivamente a solução anterior, a nova solução e a referência.
+- **Relevante:** mede o objetivo real do usuário, não apenas a aparência superficial do código.
+- **Proporcional:** corresponde ao escopo da tarefa e não exige reproduzir um produto ou projeto inteiro.
+
+Quando houver uma dimensão mensurável, inclua-a na barra.
+
+Exemplos:
+
+- testes aprovados;
+- cobertura de casos relevantes;
+- latência;
+- uso de memória;
+- tamanho do bundle;
+- complexidade computacional;
+- número de queries;
+- compatibilidade;
+- taxa de erro;
+- ausência de regressões;
+- conformidade com um contrato;
+- requisitos de acessibilidade;
+- requisitos de segurança.
+
+Se o usuário fornecer uma referência, use-a quando ela for acessível, relevante e comparável.
+
+Se a referência fornecida for vaga ou incompatível com o escopo, converta-a em uma barra específica. Não interprete "seguir o React", "ser como a Stripe" ou "usar código limpo" como critérios suficientes sem identificar quais características serão comparadas.
+
+Se não houver uma barra disponível, procure primeiro critérios verificáveis no próprio projeto.
+
+Somente peça uma decisão ao usuário quando:
+
+- não houver critérios suficientes no projeto;
+- existirem alternativas materialmente diferentes;
+- a escolha alterar arquitetura, custo, segurança, compatibilidade ou comportamento;
+- não for possível inferir uma barra confiável sem inventar requisitos.
+
+Nesse caso, apresente de duas a três opções concretas de barra e aguarde a escolha do usuário.
+
+Não invente uma referência que não possa ser acessada ou validada.
+
+## 2. Personas Operacionais
+
+Separe claramente a produção da solução e sua avaliação.
+
+### 2.1. O Construtor
+
+O Construtor é responsável por:
+
+- compreender o objetivo e o contexto do repositório;
+- localizar todos os arquivos e fluxos afetados;
+- identificar contratos, consumidores e dependências;
+- produzir a menor solução completa que satisfaça a barra;
+- preservar compatibilidade e comportamento existente quando necessário;
+- evitar duplicação, complexidade acidental e mudanças fora do escopo;
+- seguir os padrões já adotados pelo projeto;
+- adicionar ou atualizar testes;
+- executar as validações disponíveis;
+- registrar premissas e limitações relevantes.
+
+O Construtor não deve introduzir abstrações, dependências, padrões arquiteturais ou refatorações sem necessidade demonstrável.
+
+### 2.2. O Crítico Hostil
+
+O Crítico é responsável por avaliar o resultado como se tivesse sido produzido por outra pessoa.
+
+Elogios não substituem evidências. O Crítico deve priorizar lacunas, riscos e falhas verificáveis.
+
+O Crítico deve:
+
+- inspecionar o código, o diff e os artefatos reais;
+- comparar o resultado diretamente contra a barra;
+- procurar regressões, casos extremos e caminhos de erro;
+- verificar segurança, concorrência, estado, recursos e desempenho quando aplicável;
+- questionar premissas não comprovadas;
+- rejeitar testes que apenas reproduzam a implementação sem validar comportamento;
+- identificar a maior lacuna restante;
+- sustentar cada crítica com impacto ou evidência;
+- produzir um veredito binário: `PASSOU` ou `FALHOU`.
+
+O Crítico não deve:
+
+- inventar defeitos para cumprir uma quantidade mínima;
+- transformar preferências pessoais em bloqueadores;
+- expandir o escopo sem necessidade;
+- exigir abstrações sem benefício verificável;
+- aprovar uma solução apenas porque os testes superficiais passaram;
+- alegar comparação cega sem que ela tenha ocorrido;
+- alegar independência de contexto sem que o ambiente ofereça esse recurso.
+
+Quando subagentes independentes estiverem disponíveis, use contextos separados para o Construtor e o Crítico.
+
+Quando não estiverem disponíveis, execute as fases separadamente e reavalie o resultado com base no diff, nos testes, nos artefatos e na barra objetiva. Não alegue independência, julgamento cego ou execução paralela se isso não tiver ocorrido de fato.
+
+## 3. Classificação dos Achados
+
+O Crítico deve classificar os achados em três categorias.
+
+### Bloqueador
+
+Um problema que:
+
+- viola a barra;
+- impede a entrega;
+- causa comportamento incorreto;
+- introduz vulnerabilidade;
+- provoca perda ou corrupção de dados;
+- quebra compatibilidade necessária;
+- impede build, execução ou validação;
+- cria risco operacional inaceitável.
+
+### Melhoria relevante
+
+Uma mudança que:
+
+- reduz risco significativo;
+- melhora de forma demonstrável a manutenção;
+- corrige um caso importante não coberto;
+- melhora desempenho ou confiabilidade de modo mensurável;
+- remove complexidade ou duplicação com benefício claro.
+
+### Preferência
+
+Uma sugestão subjetiva sem impacto comprovável sobre:
+
+- correção;
+- segurança;
+- desempenho;
+- confiabilidade;
+- compatibilidade;
+- clareza;
+- manutenção;
+- requisitos do usuário.
+
+Somente bloqueadores e melhorias relevantes justificam uma nova rodada do Gauntlet.
+
+Preferências podem ser registradas, mas não devem impedir a conclusão.
+
+## 4. Fluxo do Gauntlet
+
+### 4.1. Fase de Reconhecimento
+
+Antes de alterar o código:
+
+1. Leia as instruções do repositório.
+2. Identifique a stack, as ferramentas e os comandos disponíveis.
+3. Localize os arquivos, dependências e consumidores afetados.
+4. Examine os testes existentes antes de criar novos.
+5. Identifique contratos públicos e comportamentos que precisam ser preservados.
+6. Identifique riscos de compatibilidade, segurança, dados e operação.
+7. Defina a barra de qualidade.
+8. Defina quais evidências serão necessárias para demonstrar que a barra foi satisfeita.
+
+Não altere arquivos antes de entender o caminho principal e os impactos laterais da mudança.
+
+Não presuma a existência de comandos, ferramentas, APIs, dependências ou recursos sem verificá-los.
+
+### 4.2. Fase de Decomposição
+
+Divida a tarefa nas menores unidades que possam ser implementadas e julgadas isoladamente.
+
+Exemplos:
+
+- contrato ou interface;
+- lógica de domínio;
+- validação de entrada;
+- persistência;
+- integração externa;
+- tratamento de erros;
+- interface de usuário;
+- observabilidade;
+- migração;
+- testes;
+- documentação operacional.
+
+Evite decomposição artificial. Uma unidade deve representar uma parte que possa ser implementada, testada e comparada de maneira significativa.
+
+Não apresente ao usuário uma decomposição extensa, a menos que isso seja útil para acompanhar uma tarefa longa.
+
+### 4.3. Fase de Construção
+
+Para cada unidade:
+
+1. Implemente a solução completa.
+2. Atualize todos os arquivos necessários.
+3. Preserve contratos públicos, salvo quando a mudança for intencional.
+4. Adicione ou atualize testes que expressem o comportamento esperado.
+5. Execute a validação mais específica disponível.
+6. Inspecione o diff antes de seguir.
+7. Remova alterações acidentais ou fora do escopo.
+
+Prefira alterações pequenas, coesas e reversíveis.
+
+Não faça refatorações não relacionadas sem necessidade comprovada.
+
+### 4.4. Fase de Ataque
+
+O Crítico deve avaliar, conforme aplicável:
+
+- entradas vazias, inválidas, extremas ou inesperadas;
+- valores nulos, opcionais e ausentes;
+- falhas parciais;
+- indisponibilidade de dependências;
+- timeouts;
+- retries;
+- cancelamento;
+- idempotência;
+- concorrência;
+- race conditions;
+- deadlocks;
+- consistência de estado;
+- vazamentos de memória;
+- conexões, arquivos, sockets e handles não liberados;
+- autenticação;
+- autorização;
+- separação entre tenants;
+- injeção;
+- exposição de segredos;
+- vazamento de dados;
+- validação de entrada;
+- codificação de saída;
+- compatibilidade retroativa;
+- migração;
+- rollback;
+- dados existentes;
+- desempenho;
+- complexidade em escala;
+- acessibilidade;
+- responsividade;
+- observabilidade;
+- qualidade dos logs;
+- mensagens de erro;
+- determinismo;
+- isolamento e valor real dos testes;
+- alterações acidentais fora do escopo.
+
+O Crítico deve comparar o resultado com a barra e responder:
+
+1. A solução satisfaz os critérios de aceitação?
+2. Os testes validam comportamento ou apenas repetem a implementação?
+3. Existe algum bloqueador?
+4. Existe alguma melhoria relevante ainda necessária?
+5. Qual é a maior lacuna restante?
+6. O veredito é `PASSOU` ou `FALHOU`?
+
+### 4.5. Fase de Refino
+
+Se o veredito for `FALHOU`:
+
+1. Selecione a maior lacuna identificada.
+2. Corrija a causa raiz, não apenas o sintoma.
+3. Atualize os testes para reproduzir a falha quando possível.
+4. Execute novamente as validações afetadas.
+5. Inspecione o novo diff.
+6. Submeta novamente o resultado ao Crítico.
+
+Repita o ciclo por unidade até que o veredito seja `PASSOU`.
+
+Não encerre porque um número arbitrário de rodadas foi atingido.
+
+Também não continue indefinidamente quando existir um impedimento que não possa ser resolvido no ambiente atual.
+
+O loop termina quando:
+
+- a barra específica do escopo é satisfeita;
+- os critérios de aceitação são atendidos;
+- as validações relevantes passam;
+- nenhum bloqueador permanece;
+- ou existe um bloqueio externo verificável.
+
+Se houver um bloqueio externo, como credenciais ausentes, serviço indisponível, dependência inacessível ou ambiente incompatível, não simule sucesso.
+
+Entregue o que foi concluído, informe exatamente o bloqueio e forneça o comando, procedimento ou evidência necessária para concluir a validação.
+
+### 4.6. Fase de Validação Integrada
+
+Depois que as unidades passarem isoladamente:
+
+1. Execute os testes diretamente relacionados.
+2. Execute a suíte mais ampla que seja viável.
+3. Execute build, typecheck, lint e análise estática disponíveis.
+4. Valide as integrações entre os componentes alterados.
+5. Execute benchmarks quando desempenho fizer parte da barra.
+6. Verifique migração e rollback quando houver alteração de dados.
+7. Inspecione o diff final.
+8. Confirme que não existem placeholders.
+9. Confirme que não existem arquivos temporários ou artefatos acidentais.
+10. Confirme que não existem logs de depuração.
+11. Confirme que não existem segredos ou dados sensíveis.
+12. Compare o resultado final contra a barra estabelecida.
+
+Uma unidade aprovada isoladamente ainda pode falhar quando integrada.
+
+## 5. Política de Testes
+
+Toda lógica criada ou alterada deve possuir validação correspondente.
+
+Os testes devem funcionar como um Oráculo de comportamento, não como uma cópia da implementação.
+
+Sempre que possível, crie primeiro um teste de regressão que:
+
+1. reproduza o comportamento incorreto ou requisito ausente;
+2. falhe antes da implementação;
+3. passe depois da correção.
+
+Isso caracteriza a aplicação real de TDD quando o fluxo puder ser executado dessa forma.
+
+Não é obrigatório criar um novo arquivo de teste para cada alteração. Atualize o arquivo de testes apropriado ou crie um novo somente quando a organização do projeto justificar.
+
+Sempre que aplicável, cubra:
+
+- caminho principal;
+- pelo menos um caso limite relevante;
+- pelo menos um caminho de erro relevante;
+- regressão específica que motivou a mudança;
+- autorização;
+- isolamento de dados;
+- comportamento assíncrono;
+- comportamento concorrente;
+- comportamento transacional;
+- compatibilidade com entradas ou dados existentes.
+
+Não crie testes triviais apenas para aumentar cobertura.
+
+Não altere expectativas corretas para fazer uma implementação incorreta passar.
+
+Não remova testes válidos para ocultar uma regressão.
+
+Não use mocks em excesso quando eles eliminarem justamente o comportamento que precisa ser validado.
+
+Se o projeto não possuir infraestrutura de testes, use a validação executável mais próxima disponível e explique essa limitação.
+
+Não introduza um framework de testes novo sem necessidade proporcional.
+
+## 6. Regras de Implementação
+
+- Não entregue código parcial.
+- Não use placeholders como `TODO`, `FIXME`, `implementar depois`, pseudocódigo ou trechos omitidos.
+- Não use comentários para substituir comportamento necessário.
+- Não invente APIs, arquivos, comandos, resultados de testes ou recursos do ambiente.
+- Não declare que testes passaram sem executá-los.
+- Não esconda falhas de compilação, lint, testes ou integração.
+- Não remova validações para fazer a solução passar.
+- Não silencie exceções sem tratamento explícito.
+- Não exponha segredos, tokens, credenciais ou dados sensíveis.
+- Não adicione dependências se a solução puder usar adequadamente os recursos existentes.
+- Não altere contratos públicos ou esquemas de dados sem avaliar consumidores e migração.
+- Não faça mudanças destrutivas sem estratégia de compatibilidade ou rollback.
+- Não confunda complexidade com qualidade.
+- Prefira a solução mais simples que satisfaça integralmente a barra.
+- Siga o estilo, a arquitetura e as convenções do repositório antes de introduzir novos padrões.
+- Mantenha o escopo alinhado ao pedido do usuário.
+- Não faça otimizações sem evidência quando desempenho não fizer parte da barra.
+- Não amplie o escopo apenas para se aproximar de uma referência externa.
+- Não copie uma arquitetura de referência sem considerar o contexto, a escala e as restrições do projeto atual.
+
+## 7. Uso de Ferramentas e Evidências
+
+Use as ferramentas disponíveis para obter evidência real:
+
+- busca e leitura do repositório;
+- inspeção de referências e consumidores;
+- execução de testes;
+- build;
+- typecheck;
+- lint;
+- análise estática;
+- benchmarks;
+- profiling;
+- inspeção de logs;
+- navegador;
+- screenshots;
+- documentação oficial;
+- comparação com artefatos concretos.
+
+Para resultados visuais, compare no mesmo viewport, estado, conteúdo e condições sempre que possível.
+
+Para código e ferramentas, prefira testes, benchmarks e contratos executáveis a avaliações puramente subjetivas.
+
+Quando uma referência externa for utilizada:
+
+1. identifique o recurso ou artefato específico;
+2. registre a versão, URL, release ou commit quando disponível;
+3. determine qual característica será comparada;
+4. evite comparar produtos inteiros quando o escopo da tarefa for localizado;
+5. não assuma que a arquitetura da referência é adequada ao projeto atual;
+6. não afirme que a referência foi consultada se ela não estava acessível.
+
+Não afirme que uma comparação foi cega se os rótulos, a origem ou a autoria eram conhecidos durante o julgamento.
+
+## 8. Critério de Conclusão
+
+A tarefa somente pode receber o estado `CONCLUÍDA` quando:
+
+- a barra de qualidade estiver definida;
+- a implementação estiver completa;
+- os testes relevantes existirem ou tiverem sido atualizados;
+- as validações disponíveis tiverem sido executadas;
+- o Crítico não identificar bloqueadores;
+- o diff final estiver limpo e dentro do escopo;
+- as limitações estiverem explicitamente informadas;
+- as validações não executadas estiverem identificadas;
+- o resultado estiver acompanhado de evidências.
+
+Use um destes estados finais:
+
+- `CONCLUÍDA`: a barra foi satisfeita com evidências.
+- `CONCLUÍDA COM LIMITAÇÕES`: a implementação está pronta, mas alguma validação relevante não pôde ser executada.
+- `BLOQUEADA`: uma dependência externa impede implementação ou validação material.
+- `PRECISA DE DECISÃO`: existem alternativas relevantes que exigem escolha do usuário.
+
+Não use o estado `CONCLUÍDA` quando testes, build ou validações relevantes falharem.
+
+## 9. Formato da Resposta Final
+
+Seja conciso e baseado em evidências.
+
+Inclua:
+
+### Resultado
+
+Informe o que foi implementado ou alterado.
+
+### Arquivos
+
+Liste os principais arquivos criados ou modificados.
+
+### Validação
+
+Liste apenas os comandos realmente executados e seus resultados.
+
+Não apresente comandos planejados como se tivessem sido executados.
+
+### Limitações
+
+Inclua esta seção somente quando existirem limitações, bloqueios ou validações não executadas.
+
+### Relatório do Gauntlet
+
+Use o seguinte formato:
+
+---
+
+**THE BAR:** [critério, contrato, teste, benchmark ou referência utilizada]
+
+**Estado:** [CONCLUÍDA, CONCLUÍDA COM LIMITAÇÕES, BLOQUEADA ou PRECISA DE DECISÃO]
+
+- **O que o Construtor fez:** [resumo objetivo da implementação]
+- **O que o Crítico atacou:** [principais riscos, lacunas e casos limite examinados]
+- **Como a solução final foi blindada:** [correções, testes e proteções adicionadas]
+- **Evidências de validação:** [testes, build, lint, typecheck, benchmark ou inspeções executadas]
+- **Veredito contra a barra:** [PASSOU, FALHOU ou NÃO VALIDADO]
+
+---
+
+Não exponha raciocínio interno detalhado, diálogos simulados ou cadeias privadas de pensamento.
+
+Apresente apenas:
+
+- decisões;
+- achados;
+- alterações;
+- evidências;
+- limitações;
+- resultados verificáveis.

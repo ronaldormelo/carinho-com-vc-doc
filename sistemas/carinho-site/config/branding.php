@@ -3,7 +3,7 @@
 /**
  * Configuracoes de identidade visual da marca Carinho com Voce.
  *
- * Segue os padroes definidos no arquivo "00 - Identidade da Marca.txt"
+ * Segue os padroes definidos no arquivo "00 - Identidade da Marca.md"
  */
 
 return [

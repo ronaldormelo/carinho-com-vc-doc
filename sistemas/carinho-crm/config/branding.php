@@ -3,7 +3,7 @@
 /**
  * Configuracoes de identidade visual da marca Carinho com Voce.
  *
- * Segue os padroes definidos no arquivo "00 - Identidade da Marca.txt"
+ * Segue os padroes definidos no arquivo "00 - Identidade da Marca.md"
  */
 
 return [
@@ -89,7 +89,7 @@ return [
     |--------------------------------------------------------------------------
     | Visual Elements - Typography
     |--------------------------------------------------------------------------
-    | Conforme "00 - Identidade da Marca.txt": Nunito, Inter, Arial, sans-serif.
+    | Conforme "00 - Identidade da Marca.md": Nunito, Inter, Arial, sans-serif.
     */
 
     'typography' => [

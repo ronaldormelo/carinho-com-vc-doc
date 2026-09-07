@@ -68,13 +68,25 @@ abstract class BaseClient
      */
     protected function httpClient(): PendingRequest
     {
-        return Http::withHeaders([
+        $apiKey = $this->getApiKey();
+
+        $headers = [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'X-API-Key' => $this->getApiKey(),
             'X-Source-System' => 'integracoes',
+            'X-Service-Origin' => 'integracoes',
             'X-Request-ID' => $this->generateRequestId(),
-        ])
+        ];
+
+        if ($apiKey) {
+            // Destinos aceitam combinações diferentes: X-API-Key (CRM webhook),
+            // X-Internal-Token / Bearer (demais módulos).
+            $headers['X-API-Key'] = $apiKey;
+            $headers['X-Internal-Token'] = $apiKey;
+            $headers['Authorization'] = "Bearer {$apiKey}";
+        }
+
+        return Http::withHeaders($headers)
             ->timeout($this->getTimeout())
             ->connectTimeout(3);
     }
@@ -117,6 +129,32 @@ abstract class BaseClient
     public function delete(string $path): array
     {
         return $this->request('DELETE', $path);
+    }
+
+    /**
+     * Realiza requisicao PATCH.
+     */
+    public function patch(string $path, array $data = []): array
+    {
+        return $this->request('PATCH', $path, $data);
+    }
+
+    /**
+     * Recurso inexistente no destino — não dispara HTTP para path fantasma.
+     */
+    protected function unsupported(string $capability): array
+    {
+        Log::info("Integracao {$this->configKey}: capacidade ausente no destino", [
+            'capability' => $capability,
+        ]);
+
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => "Nao implementado no destino ({$this->configKey}): {$capability}",
+            'not_implemented' => true,
+        ];
     }
 
     /**

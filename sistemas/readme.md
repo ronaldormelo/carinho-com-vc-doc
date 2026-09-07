@@ -1,118 +1,35 @@
-# Sistemas necessarios
+# Sistemas da plataforma
 
-Este documento define os sistemas minimos para viabilizar a operacao
-do projeto de home care. Todos os subdominios abaixo consideram o
-dominio base carinho.com.vc.
+Nove aplicações Laravel no domínio `carinho.com.vc`. Visão de produto: [README da raiz](../README.md). Limites e integrações: [ARCHITECTURE.md](../ARCHITECTURE.md). Padrão desta pasta: [PADRAO-DOCUMENTACAO.md](PADRAO-DOCUMENTACAO.md).
 
-## 1) Carinho Site
-**Subdominio:** site.carinho.com.vc  
-**Objetivo:** Presenca digital, informacao e captura de leads.
+Banco no Docker da raiz: **MariaDB 10.11** (driver `mysql` nos apps). Redis 7 compartilhado, prefixo por sistema.
 
-**Modulos essenciais:**
-- Paginas institucionais (home, quem somos, servicos).
-- Paginas por publico (clientes e cuidadores).
-- Formularios de cadastro para clientes e cuidadores.
-- Politica de privacidade, termos de uso e LGPD.
-- SEO local e integracao com Google Meu Negocio.
-- CTA para WhatsApp e contato rapido.
-- Analytics, tags e UTM.
+| # | Sistema | Subdomínio | Porta | Objetivo | Documentação |
+|---|---------|------------|-------|----------|--------------|
+| 1 | Site | site.carinho.com.vc | 8084 | Presença e captura de leads | [readme](carinho-site/readme.md) |
+| 2 | Marketing | marketing.carinho.com.vc | 8086 | Campanhas, UTM, marca | [readme](carinho-marketing/readme.md) |
+| 3 | Atendimento | atendimento.carinho.com.vc | 8080 | WhatsApp, funil, SLA | [readme](carinho-atendimento/readme.md) |
+| 4 | CRM | crm.carinho.com.vc | 8085 | Leads, clientes, pipeline | [readme](carinho-crm/readme.md) |
+| 5 | Cuidadores | cuidadores.carinho.com.vc | 8081 | Recrutamento e banco | [readme](carinho-cuidadores/readme.md) |
+| 6 | Operação | operacao.carinho.com.vc | 8083 | Agenda, match, campo | [readme](carinho-operacao/readme.md) |
+| 7 | Financeiro | financeiro.carinho.com.vc | 8087 | Cobrança e repasse | [readme](carinho-financeiro/readme.md) |
+| 8 | Documentos e LGPD | documentos.carinho.com.vc | 8082 | Contratos e titular | [readme](carinho-documentos-lgpd/readme.md) |
+| 9 | Integrações | integracoes.carinho.com.vc | 8088 | Eventos, Z-API, sync | [readme](carinho-integracoes/readme.md) |
 
-## 2) Carinho Marketing
-**Subdominio:** marketing.carinho.com.vc  
-**Objetivo:** Atrair e qualificar leads com consistencia.
+Velocidade e SLA: [PERFORMANCE.md](../PERFORMANCE.md). Segurança: [SECURITY.md](../SECURITY.md). Contratos HTTP verificados no código: [contratos-rotas.md](carinho-integracoes/docs/contratos-rotas.md).
 
-**Modulos essenciais:**
-- Gestao de redes sociais e padrao de bio.
-- Calendario editorial e agendamento de posts.
-- Gestao de anuncios (Meta/Google) e landing pages.
-- Registro de origem do lead (rede, anuncio, indicacao).
-- Biblioteca de marca (logo, paleta, tipografia, tom de voz).
+Health (desenho, não unificado): Site `/health` + `/up`; demais em geral `/up` (Laravel) e `/api/health` ou `/health` no módulo. CRM: `/up` + `/health`. Integrações: `/health` público; status operacional com `X-API-Key`.
 
-## 3) Carinho Atendimento
-**Subdominio:** atendimento.carinho.com.vc  
-**Objetivo:** Centralizar o atendimento digital e o canal principal.
+## Módulos essenciais (produto)
 
-**Modulos essenciais:**
-- WhatsApp Business com numero exclusivo.
-- Inbox unificada, historico e etiquetas.
-- Mensagens automaticas (fora do horario, primeira resposta).
-- Funil de atendimento padrao (recepcao, entendimento, proposta, encaminhamento).
-- Canal de emergencia e suporte.
-- E-mail profissional com dominio para propostas e contratos.
-- Integracao com CRM e automacoes.
+Resumo do que cada sistema **deve** cobrir. O detalhe implementado está no `readme.md` e em `docs/modulos.md` de cada pasta.
 
-## 4) Carinho CRM
-**Subdominio:** crm.carinho.com.vc  
-**Objetivo:** Base unica de leads e clientes.
-
-**Modulos essenciais:**
-- Cadastro unico com dados, condicoes especiais e preferencias.
-- Pipeline lead -> atendimento -> contrato -> ativo.
-- Registro de tipo de servico (horista, diario, mensal).
-- Historico de interacoes e atendimentos.
-- Termo de prestacao de servico com aceite digital.
-- Tarefas e follow-up comercial.
-- Integracao com site, atendimento e agenda.
-
-## 5) Carinho Cuidadores
-**Subdominio:** cuidadores.carinho.com.vc  
-**Objetivo:** Recrutar, classificar e gerir cuidadores.
-
-**Modulos essenciais:**
-- Cadastro e triagem digital.
-- Coleta e validacao de documentos.
-- Registro de experiencia e formacao.
-- Classificacao por tipo de cuidado, disponibilidade e regiao.
-- Contrato digital e termo de responsabilidade.
-- Ativacao/desativacao e banco pesquisavel.
-- Canal exclusivo de comunicacao.
-- Registro de ocorrencias e avaliacao pos-servico.
-- Treinamentos e cursos internos (quando aplicavel).
-
-## 6) Carinho Operacao
-**Subdominio:** operacao.carinho.com.vc  
-**Objetivo:** Alocar cuidadores e executar o servico ponta a ponta.
-
-**Modulos essenciais:**
-- Agenda compartilhada e agendamentos.
-- Match cliente x cuidador por perfil e disponibilidade.
-- Check-in/out e checklists de inicio/fim.
-- Registro simples do servico realizado.
-- Notificacoes de inicio/fim para o cliente.
-- Substituicao e politicas de emergencia.
-- Regras de cancelamento e prazos operacionais.
-
-## 7) Carinho Financeiro
-**Subdominio:** financeiro.carinho.com.vc  
-**Objetivo:** Controle financeiro e repasses.
-
-**Modulos essenciais:**
-- Registro de entradas e saidas.
-- Contas a receber e a pagar.
-- Controle de pagamentos de cuidadores.
-- Precificacao (hora, pacote, mensalidade).
-- Comissao, margem e preco minimo viavel.
-- Emissao de nota fiscal e conciliacao bancaria.
-- Separacao PF x PJ.
-
-## 8) Carinho Documentos e LGPD
-**Subdominio:** documentos.carinho.com.vc  
-**Objetivo:** Governanca documental e conformidade.
-
-**Modulos essenciais:**
-- Armazenamento em nuvem por cliente e cuidador.
-- Contratos com clientes e cuidadores.
-- Politica de privacidade e termos.
-- Registro de consentimento e bases legais LGPD.
-- Assinatura digital e auditoria de versoes.
-
-## 9) Carinho Integracoes
-**Subdominio:** integracoes.carinho.com.vc  
-**Objetivo:** Automatizar o fluxo ponta a ponta.
-
-**Modulos essenciais:**
-- WhatsApp -> CRM (captura e registro).
-- Lead -> mensagem automatica.
-- Cadastro -> e-mail de boas-vindas.
-- Feedback automatico pos-servico.
-- Sincronizacao entre CRM, operacao e financeiro.
+1. **Site** — páginas institucionais e por público; formulários; políticas; SEO local; CTA WhatsApp; UTM; analytics.
+2. **Marketing** — redes; calendário; anúncios Meta/Google; origem do lead; biblioteca de marca.
+3. **Atendimento** — WhatsApp; inbox; automações; funil; emergência; e-mail de proposta; CRM.
+4. **CRM** — cadastro único; pipeline; tipo de serviço; histórico; aceite; tarefas.
+5. **Cuidadores** — cadastro; documentos; classificação; contrato; banco pesquisável; ocorrências.
+6. **Operação** — agenda; match; check-in/out; notificações; substituição.
+7. **Financeiro** — receber/pagar; precificação; comissão; Stripe; conciliação.
+8. **Documentos** — S3; contratos; consentimento; assinatura; auditoria.
+9. **Integrações** — WhatsApp→CRM; mensagens automáticas; boas-vindas; feedback; sync.

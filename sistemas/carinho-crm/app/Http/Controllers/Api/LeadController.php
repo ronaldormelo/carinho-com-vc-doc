@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LeadRequest;
+use App\Http\Requests\PublicLeadRequest;
 use App\Http\Resources\LeadResource;
 use App\Models\Lead;
 use App\Models\Domain\DomainLeadStatus;
@@ -79,6 +80,39 @@ class LeadController extends Controller
     public function store(LeadRequest $request)
     {
         $lead = $this->leadService->createLead($request->validated());
+
+        event(new LeadCreated($lead));
+
+        return $this->createdResponse(
+            new LeadResource($lead->load(['urgency', 'serviceType', 'status'])),
+            'Lead criado com sucesso'
+        );
+    }
+
+    /**
+     * Ingestão pública (site / WhatsApp / hub). Faz upsert por telefone.
+     */
+    public function storePublic(PublicLeadRequest $request)
+    {
+        $data = $request->validated();
+        $existing = $this->leadService->findByPhone($data['phone']);
+
+        if ($existing) {
+            $lead = $this->leadService->updateLead($existing, array_filter([
+                'name' => $data['name'] ?? null,
+                'email' => $data['email'] ?? null,
+                'city' => $data['city'] ?? null,
+                'utm_id' => $data['utm_id'] ?? null,
+                'source' => $data['source'] ?? null,
+            ], fn ($value) => $value !== null && $value !== ''));
+
+            return $this->successResponse(
+                new LeadResource($lead->load(['urgency', 'serviceType', 'status'])),
+                'Lead atualizado com sucesso'
+            );
+        }
+
+        $lead = $this->leadService->createLead($data);
 
         event(new LeadCreated($lead));
 

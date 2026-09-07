@@ -8,10 +8,11 @@ class IntegracoesClient
 {
     public function dispatchEvent(string $eventKey, array $payload): array
     {
-        return $this->request('events', array_merge([
-            'event' => $eventKey,
-            'source' => 'carinho-atendimento',
-        ], $payload));
+        return $this->request('events', [
+            'event_type' => $eventKey,
+            'source_system' => 'atendimento',
+            'payload' => $payload,
+        ]);
     }
 
     private function request(string $path, array $payload): array
@@ -38,6 +39,17 @@ class IntegracoesClient
     {
         $token = config('integrations.integracoes.token');
 
-        return $token ? ['Authorization' => "Bearer {$token}"] : [];
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        if ($token) {
+            $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-API-Key'] = $token;
+            $headers['X-Internal-Token'] = $token;
+        }
+
+        return $headers;
     }
 }

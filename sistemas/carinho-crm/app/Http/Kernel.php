@@ -4,6 +4,10 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
+/**
+ * Laravel 11 não usa este Kernel. Aliases e grupos estão em bootstrap/app.php.
+ * Mantido só como referência histórica; não altere esperando efeito em runtime.
+ */
 class Kernel extends HttpKernel
 {
     /**

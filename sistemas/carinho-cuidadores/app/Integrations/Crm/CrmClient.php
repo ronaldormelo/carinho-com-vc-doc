@@ -21,79 +21,49 @@ class CrmClient
      */
     public function syncCaregiver(array $payload): array
     {
-        return $this->request('caregivers', $payload);
+        return $this->notOnCrm('POST /caregivers');
     }
 
-    /**
-     * Atualiza status do cuidador no CRM.
-     */
     public function updateCaregiverStatus(int $caregiverId, string $status, ?string $reason = null): array
     {
-        return $this->request("caregivers/{$caregiverId}/status", [
-            'status' => $status,
-            'reason' => $reason,
-            'changed_at' => now()->toIso8601String(),
-        ], 'PATCH');
+        return $this->notOnCrm("PATCH /caregivers/{$caregiverId}/status");
     }
 
-    /**
-     * Registra incidente no CRM.
-     */
     public function registerIncident(array $payload): array
     {
-        return $this->request('incidents', [
-            'source' => 'cuidadores',
-            'caregiver_id' => $payload['caregiver_id'] ?? null,
-            'service_id' => $payload['service_id'] ?? null,
-            'incident_type' => $payload['incident_type'] ?? null,
-            'notes' => $payload['notes'] ?? null,
-            'occurred_at' => $payload['occurred_at'] ?? now()->toIso8601String(),
-        ]);
+        return $this->notOnCrm('POST /incidents');
     }
 
-    /**
-     * Sincroniza avaliacao com o CRM.
-     */
     public function syncRating(array $payload): array
     {
-        return $this->request('ratings', [
-            'source' => 'cuidadores',
-            'caregiver_id' => $payload['caregiver_id'] ?? null,
-            'service_id' => $payload['service_id'] ?? null,
-            'score' => $payload['score'] ?? null,
-            'comment' => $payload['comment'] ?? null,
-            'created_at' => $payload['created_at'] ?? now()->toIso8601String(),
-        ]);
+        return $this->notOnCrm('POST /ratings');
     }
 
-    /**
-     * Obtem historico do cuidador no CRM.
-     */
     public function getCaregiverHistory(int $caregiverId): array
     {
-        return $this->request("caregivers/{$caregiverId}/history", [], 'GET');
+        return $this->notOnCrm("GET /caregivers/{$caregiverId}/history");
     }
 
-    /**
-     * Busca cuidador no CRM por telefone.
-     */
     public function findByPhone(string $phone): array
     {
-        $normalizedPhone = preg_replace('/\D+/', '', $phone);
-        return $this->request("caregivers/search?phone={$normalizedPhone}", [], 'GET');
+        return $this->notOnCrm('GET /caregivers/search');
     }
 
-    /**
-     * Registra evento no CRM.
-     */
     public function logEvent(string $eventType, array $data): array
     {
-        return $this->request('events', [
-            'source' => 'cuidadores',
-            'event_type' => $eventType,
-            'data' => $data,
-            'timestamp' => now()->toIso8601String(),
-        ]);
+        return $this->notOnCrm('POST /events');
+    }
+
+    private function notOnCrm(string $path): array
+    {
+        Log::info('CRM não gerencia cuidadores neste path', ['path' => $path]);
+
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => "CRM não expõe {$path}",
+        ];
     }
 
     /**

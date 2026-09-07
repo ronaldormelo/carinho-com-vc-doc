@@ -53,15 +53,7 @@ ZAPI_WEBHOOK_SECRET=seu-webhook-secret
 
 **Base URL:** `https://crm.carinho.com.vc/api`
 
-#### Endpoints
-
-| Endpoint | Metodo | Descricao |
-|----------|--------|-----------|
-| `/caregivers` | POST | Sincroniza dados do cuidador |
-| `/caregivers/{id}/status` | PATCH | Atualiza status |
-| `/incidents` | POST | Registra incidente |
-| `/ratings` | POST | Sincroniza avaliacao |
-| `/caregivers/{id}/history` | GET | Historico do cuidador |
+O CRM **não** expõe `/caregivers`. Sincronize via hub (`POST /api/events`) ou rotas de cliente/lead em `/api/v1`. Tabela: [contratos-rotas.md](../carinho-integracoes/docs/contratos-rotas.md).
 
 #### Eventos Sincronizados
 
@@ -76,16 +68,7 @@ ZAPI_WEBHOOK_SECRET=seu-webhook-secret
 
 **Base URL:** `https://operacao.carinho.com.vc/api`
 
-#### Endpoints
-
-| Endpoint | Metodo | Descricao |
-|----------|--------|-----------|
-| `/caregivers/{id}/availability` | POST/GET | Sincroniza disponibilidade |
-| `/caregivers/{id}/activated` | POST | Notifica ativacao |
-| `/caregivers/{id}/deactivated` | POST | Notifica desativacao |
-| `/services/{id}/checkin` | POST | Registra check-in |
-| `/services/{id}/checkout` | POST | Registra check-out |
-| `/caregivers/available` | POST | Busca cuidadores disponiveis |
+Rotas reais da Operação: `/schedules`, `/checkin/schedule/{id}/in`, `/assignments`. Este cliente ainda pode chamar caminhos antigos (`/services/{id}/checkin`). Ver [contratos-rotas.md](../carinho-integracoes/docs/contratos-rotas.md).
 
 #### Funcionalidades
 

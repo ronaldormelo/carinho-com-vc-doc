@@ -2,6 +2,14 @@
 
 **Subdominio:** marketing.carinho.com.vc
 
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Módulos](docs/modulos.md) · [Integrações](docs/integracoes.md) · [NFRs](docs/nao-funcionais.md) · [Guia operacional](docs/guia-operacional.md) · [Referência rápida](docs/guia-rapido-referencia.md)
+
+`docs/analise-praticas-mercado.md` é referência de mercado, não política de mídia.
+
+Health: `GET /up` (Laravel) e `GET /api/health`. API **sem** `/v1`. Além do calendário/campanhas/UTM, o código expõe orçamento (`/api/budget`), parcerias, indicações e ROI (`/api/reports/roi`). Landings deste módulo; o Site **não** tem `/landing-pages`.
+
 ## Descricao
 Sistema de presenca digital e aquisicao de leads. Organiza a comunicacao
 nas redes sociais, campanhas e landing pages, garantindo captacao
@@ -73,7 +81,7 @@ consistente e rastreavel.
 ## Stack Tecnologica
 - **Linguagem:** PHP 8.2
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`)
 - **Cache/Filas:** Redis
 - **Queue Worker:** Laravel Horizon
 

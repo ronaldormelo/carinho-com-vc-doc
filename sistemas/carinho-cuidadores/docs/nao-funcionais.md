@@ -1,5 +1,7 @@
 # Requisitos Nao-Funcionais
 
+Contrato de plataforma: [PERFORMANCE.md](../../../PERFORMANCE.md) e [SECURITY.md](../../../SECURITY.md). Banco no Docker da raiz: MariaDB 10.11 (driver `mysql`).
+
 ## 1. Desempenho
 
 ### Metas
@@ -184,12 +186,10 @@
 - Primary: #5BBFAD (verde-agua)
 - Secondary: #F4F7F9 (cinza claro)
 - Accent: #F5C6AA (pessego)
-- Text: #1F2933 (cinza escuro)
+- Text: #1a2b32 (cinza escuro)
 
 ### Tipografia
-- Font: Arial, Helvetica Neue, sans-serif
-- Tamanhos: 12px a 24px
-- Legibilidade em dispositivos moveis
+- Font: Inter, Nunito, Arial, sans-serif (`config/branding.php`)
 
 ### Tom de Voz
 - Empatico e respeitoso

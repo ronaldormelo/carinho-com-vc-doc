@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'rate.limit' => \App\Http\Middleware\RateLimitMiddleware::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/*',
+            'circuit-breakers/*',
+        ]);
+
         $middleware->api(prepend: [
             \App\Http\Middleware\RateLimitMiddleware::class,
         ]);

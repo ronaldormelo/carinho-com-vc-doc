@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    {{-- Tipografia da marca (00 - Identidade da Marca.txt): Nunito, Inter, Arial, sans-serif - aplicada inline para não depender do app.css --}}
+    {{-- Tipografia da marca (00 - Identidade da Marca.md): Nunito, Inter, Arial, sans-serif - aplicada inline para não depender do app.css --}}
     <style>
         html, body { font-family: 'Nunito', 'Inter', Arial, sans-serif; margin: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #F4F7F9; padding: 1rem; font-family: 'Nunito', 'Inter', Arial, sans-serif; }

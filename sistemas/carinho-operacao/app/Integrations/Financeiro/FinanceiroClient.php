@@ -6,130 +6,117 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Cliente para integracao com o sistema Financeiro.
- *
- * Endpoints principais:
- * - POST /services - Registra servico para cobranca
- * - POST /services/{id}/complete - Finaliza servico
- * - POST /cancellations - Registra cancelamento
- * - POST /repasses - Solicita repasse para cuidador
+ * Cliente Financeiro. Destino real: /invoices, /payouts, /webhooks/internal.
  */
 class FinanceiroClient
 {
-    /**
-     * Registra servico para cobranca.
-     */
     public function registerService(array $data): array
     {
-        return $this->request('services', [
-            'source' => 'operacao',
-            'service_request_id' => $data['service_request_id'] ?? null,
+        return $this->notifyInternal('service.completed', [
+            'service_id' => $data['service_request_id'] ?? null,
             'client_id' => $data['client_id'] ?? null,
             'caregiver_id' => $data['caregiver_id'] ?? null,
-            'service_type' => $data['service_type'] ?? null,
-            'start_date' => $data['start_date'] ?? null,
-            'end_date' => $data['end_date'] ?? null,
             'hours' => $data['hours'] ?? null,
             'registered_at' => now()->toIso8601String(),
         ]);
     }
 
-    /**
-     * Finaliza servico para cobranca.
-     */
     public function completeService(int $serviceRequestId, array $data): array
     {
-        return $this->request("services/{$serviceRequestId}/complete", [
+        return $this->notifyInternal('service.completed', [
+            'service_id' => $serviceRequestId,
+            'client_id' => $data['client_id'] ?? null,
+            'caregiver_id' => $data['caregiver_id'] ?? null,
             'actual_hours' => $data['actual_hours'] ?? null,
             'completed_at' => $data['completed_at'] ?? now()->toIso8601String(),
-            'notes' => $data['notes'] ?? null,
         ]);
     }
 
-    /**
-     * Registra cancelamento.
-     */
     public function registerCancellation(array $data): array
     {
-        return $this->request('cancellations', [
-            'source' => 'operacao',
+        if (!empty($data['invoice_id'])) {
+            return $this->request("invoices/{$data['invoice_id']}/cancel", [
+                'reason' => $data['reason'] ?? 'Cancelamento operacional',
+            ]);
+        }
+
+        return $this->notifyInternal('service.cancelled', [
             'service_request_id' => $data['service_request_id'] ?? null,
             'client_id' => $data['client_id'] ?? null,
             'reason' => $data['reason'] ?? null,
-            'fee_type' => $data['fee_type'] ?? null, // free, reduced, full
-            'fee_percent' => $data['fee_percent'] ?? null,
+            'fee_type' => $data['fee_type'] ?? null,
             'canceled_at' => $data['canceled_at'] ?? now()->toIso8601String(),
         ]);
     }
 
-    /**
-     * Solicita repasse para cuidador.
-     */
     public function requestRepasse(array $data): array
     {
-        return $this->request('repasses', [
-            'source' => 'operacao',
+        $periodEnd = now()->toDateString();
+        $periodStart = now()->subDays(7)->toDateString();
+
+        return $this->request('payouts', [
             'caregiver_id' => $data['caregiver_id'] ?? null,
-            'service_request_id' => $data['service_request_id'] ?? null,
-            'schedule_ids' => $data['schedule_ids'] ?? [],
-            'total_hours' => $data['total_hours'] ?? null,
-            'requested_at' => now()->toIso8601String(),
+            'period_start' => $data['period_start'] ?? $periodStart,
+            'period_end' => $data['period_end'] ?? $periodEnd,
         ]);
     }
 
-    /**
-     * Consulta situacao financeira do servico.
-     */
     public function getServiceFinancialStatus(int $serviceRequestId): array
     {
-        return $this->request("services/{$serviceRequestId}/status", [], 'GET');
+        return $this->request('invoices', [
+            'external_reference' => (string) $serviceRequestId,
+        ], 'GET');
     }
 
-    /**
-     * Registra horas trabalhadas.
-     */
     public function registerWorkedHours(array $data): array
     {
-        return $this->request('hours', [
-            'source' => 'operacao',
-            'schedule_id' => $data['schedule_id'] ?? null,
-            'caregiver_id' => $data['caregiver_id'] ?? null,
+        return $this->notifyInternal('service.completed', [
+            'service_id' => $data['schedule_id'] ?? $data['service_request_id'] ?? null,
             'client_id' => $data['client_id'] ?? null,
+            'caregiver_id' => $data['caregiver_id'] ?? null,
+            'hours' => $data['total_hours'] ?? null,
             'shift_date' => $data['shift_date'] ?? null,
-            'check_in' => $data['check_in'] ?? null,
-            'check_out' => $data['check_out'] ?? null,
-            'total_hours' => $data['total_hours'] ?? null,
         ]);
     }
 
-    /**
-     * Notifica evento financeiro relevante.
-     */
     public function notifyEvent(string $eventType, array $data): array
     {
-        return $this->request('events', [
-            'source' => 'operacao',
-            'event_type' => $eventType,
-            'data' => $data,
-            'timestamp' => now()->toIso8601String(),
+        return $this->notifyInternal($eventType, $data);
+    }
+
+    private function notifyInternal(string $event, array $payload): array
+    {
+        return $this->requestHost('webhooks/internal', [
+            'event' => $event,
+            'payload' => $payload,
         ]);
     }
 
-    /**
-     * Realiza requisicao para a API.
-     */
     private function request(string $path, array $payload = [], string $method = 'POST'): array
+    {
+        return $this->send($this->endpoint($path), $payload, $method, $path);
+    }
+
+    private function requestHost(string $path, array $payload = [], string $method = 'POST'): array
+    {
+        $baseUrl = rtrim((string) config('integrations.financeiro.base_url'), '/');
+        $host = preg_replace('#/api$#', '', $baseUrl);
+
+        return $this->send("{$host}/{$path}", $payload, $method, $path);
+    }
+
+    private function send(string $url, array $payload, string $method, string $path): array
     {
         try {
             $request = Http::withHeaders($this->headers())
                 ->timeout((int) config('integrations.financeiro.timeout', 10));
 
             $response = match ($method) {
-                'GET' => $request->get($this->endpoint($path)),
-                'PATCH' => $request->patch($this->endpoint($path), $payload),
-                'PUT' => $request->put($this->endpoint($path), $payload),
-                'DELETE' => $request->delete($this->endpoint($path)),
-                default => $request->post($this->endpoint($path), $payload),
+                'GET' => $request->get($url, $payload),
+                'PATCH' => $request->patch($url, $payload),
+                'PUT' => $request->put($url, $payload),
+                'DELETE' => $request->delete($url),
+                default => $request->post($url, $payload),
             };
 
             $result = [
@@ -163,9 +150,6 @@ class FinanceiroClient
         }
     }
 
-    /**
-     * Monta URL do endpoint.
-     */
     private function endpoint(string $path): string
     {
         $baseUrl = rtrim((string) config('integrations.financeiro.base_url'), '/');
@@ -173,9 +157,6 @@ class FinanceiroClient
         return "{$baseUrl}/{$path}";
     }
 
-    /**
-     * Retorna headers da requisicao.
-     */
     private function headers(): array
     {
         $token = config('integrations.financeiro.token');
@@ -188,6 +169,7 @@ class FinanceiroClient
 
         if ($token) {
             $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-Internal-Token'] = $token;
         }
 
         return $headers;

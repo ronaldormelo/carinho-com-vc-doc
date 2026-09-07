@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\IntegrationEvent;
 use App\Services\Integrations\Crm\CrmClient;
 use App\Services\Integrations\Atendimento\AtendimentoClient;
-use App\Services\Integrations\WhatsApp\ZApiClient;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,9 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Job para processamento de mensagem WhatsApp recebida.
- *
- * Fluxo: Mensagem recebida -> Registro no CRM + Encaminhamento para atendimento
+ * Fluxo: mensagem WhatsApp → lead público no CRM + inbox no Atendimento.
  */
 class ProcessWhatsAppInbound implements ShouldQueue
 {
@@ -25,113 +22,60 @@ class ProcessWhatsAppInbound implements ShouldQueue
     public int $tries = 3;
     public int $timeout = 60;
 
-    /**
-     * Cria nova instancia do job.
-     */
     public function __construct(
         private array $messageData
     ) {
         $this->onQueue('integrations-high');
     }
 
-    /**
-     * Executa o job.
-     */
     public function handle(
         CrmClient $crm,
-        AtendimentoClient $atendimento,
-        ZApiClient $zapi
+        AtendimentoClient $atendimento
     ): void {
         Log::info('Processing WhatsApp inbound message', [
-            'phone' => $this->messageData['phone'],
             'event' => $this->messageData['event'] ?? 'message',
         ]);
 
-        // Ignora mensagens proprias
         if ($this->messageData['is_from_me'] ?? false) {
-            Log::info('Ignoring own message');
             return;
         }
 
-        // Ignora eventos de status (apenas mensagens)
         $event = $this->messageData['event'] ?? 'message';
         if (!in_array($event, ['message', 'receivedMessage'])) {
-            Log::info('Ignoring non-message event', ['event' => $event]);
             return;
         }
 
-        $phone = $this->messageData['phone'];
-        $body = $this->messageData['body'] ?? '';
-        $name = $this->messageData['name'] ?? '';
-
-        // 1. Verifica se e resposta de botao (feedback)
         if (!empty($this->messageData['button_response'])) {
             $this->handleButtonResponse($crm);
             return;
         }
 
-        // 2. Busca ou cria lead no CRM
-        $leadResponse = $crm->findLeadByPhone($phone);
-        $lead = null;
+        $phone = $this->messageData['phone'];
+        $body = $this->messageData['body'] ?? '';
+        $name = $this->messageData['name'] ?? 'Contato WhatsApp';
 
-        if ($leadResponse['ok'] && !empty($leadResponse['body']['data'])) {
-            $lead = $leadResponse['body']['data'][0];
+        $leadResponse = $crm->createLead([
+            'name' => $name,
+            'phone' => $phone,
+            'source' => 'whatsapp',
+        ]);
 
-            // Registra interacao
-            $crm->registerInteraction($lead['id'], [
+        $leadId = $leadResponse['body']['data']['id'] ?? $leadResponse['body']['id'] ?? null;
+
+        if ($leadId) {
+            $crm->registerInteraction((int) $leadId, [
                 'channel' => 'whatsapp',
-                'direction' => 'inbound',
                 'content' => $body,
-                'metadata' => [
-                    'message_id' => $this->messageData['message_id'] ?? null,
-                    'received_at' => $this->messageData['received_at'] ?? now()->toIso8601String(),
-                ],
-            ]);
-
-            Log::info('Interaction registered for existing lead', [
-                'lead_id' => $lead['id'],
-            ]);
-        } else {
-            // Novo lead via WhatsApp - cria e envia resposta automatica
-            ProcessLeadCreated::dispatch([
-                'name' => $name,
-                'phone' => $phone,
-                'source' => 'whatsapp',
-                'message' => $body,
-            ]);
-
-            Log::info('New lead created from WhatsApp', [
-                'phone' => $phone,
             ]);
         }
 
-        // 3. Encaminha para sistema de atendimento
-        $conversationResponse = $atendimento->findConversationByPhone($phone);
+        $atendimento->createConversation([
+            'phone' => $phone,
+            'name' => $name,
+            'initial_message' => $body,
+            'crm_lead_id' => $leadId,
+        ]);
 
-        if ($conversationResponse['ok'] && !empty($conversationResponse['body']['data'])) {
-            // Adiciona mensagem a conversa existente
-            $conversation = $conversationResponse['body']['data'][0];
-
-            $atendimento->addMessage($conversation['id'], [
-                'content' => $body,
-                'direction' => 'inbound',
-                'channel' => 'whatsapp',
-                'sender_phone' => $phone,
-                'sender_name' => $name,
-                'received_at' => $this->messageData['received_at'] ?? now()->toIso8601String(),
-            ]);
-        } else {
-            // Cria nova conversa
-            $atendimento->createConversation([
-                'phone' => $phone,
-                'name' => $name,
-                'channel' => 'whatsapp',
-                'crm_lead_id' => $lead['id'] ?? null,
-                'initial_message' => $body,
-            ]);
-        }
-
-        // 4. Registra evento de integracao
         IntegrationEvent::createEvent(
             IntegrationEvent::TYPE_WHATSAPP_INBOUND,
             IntegrationEvent::SOURCE_WHATSAPP,
@@ -139,70 +83,52 @@ class ProcessWhatsAppInbound implements ShouldQueue
                 'phone' => $phone,
                 'name' => $name,
                 'body' => $body,
-                'lead_id' => $lead['id'] ?? null,
+                'lead_id' => $leadId,
             ]
         );
-
-        Log::info('WhatsApp inbound processing completed', [
-            'phone' => $phone,
-        ]);
     }
 
-    /**
-     * Processa resposta de botao (feedback).
-     */
     private function handleButtonResponse(CrmClient $crm): void
     {
         $buttonId = $this->messageData['button_response']['id'] ?? '';
 
-        // Verifica se e rating de feedback
-        if (str_starts_with($buttonId, 'rating_')) {
-            $rating = (int) str_replace('rating_', '', $buttonId);
-
-            Log::info('Feedback rating received', [
-                'phone' => $this->messageData['phone'],
-                'rating' => $rating,
-            ]);
-
-            // Busca lead
-            $leadResponse = $crm->findLeadByPhone($this->messageData['phone']);
-
-            if ($leadResponse['ok'] && !empty($leadResponse['body']['data'])) {
-                $lead = $leadResponse['body']['data'][0];
-
-                // Registra feedback
-                $crm->dispatchEvent('feedback.received', [
-                    'lead_id' => $lead['id'],
-                    'phone' => $this->messageData['phone'],
-                    'rating' => $rating,
-                    'channel' => 'whatsapp',
-                ]);
-
-                // Envia agradecimento
-                SendWhatsAppMessage::dispatch('text', [
-                    'phone' => $this->messageData['phone'],
-                    'message' => $rating >= 4
-                        ? 'Muito obrigado pela avaliação! 😊 Ficamos felizes em saber que você está satisfeito com nosso serviço.'
-                        : 'Agradecemos seu feedback. Vamos trabalhar para melhorar nosso atendimento. Se precisar de algo, estamos à disposição.',
-                ]);
-            }
+        if (!str_starts_with($buttonId, 'rating_')) {
+            return;
         }
+
+        $rating = (int) str_replace('rating_', '', $buttonId);
+        $phone = $this->messageData['phone'];
+
+        $leadResponse = $crm->createLead([
+            'name' => $this->messageData['name'] ?? 'Contato WhatsApp',
+            'phone' => $phone,
+            'source' => 'whatsapp',
+        ]);
+
+        $leadId = $leadResponse['body']['data']['id'] ?? $leadResponse['body']['id'] ?? null;
+
+        if ($leadId) {
+            $crm->registerInteraction((int) $leadId, [
+                'channel' => 'whatsapp',
+                'content' => "Feedback WhatsApp: {$rating}/5",
+            ]);
+        }
+
+        SendWhatsAppMessage::dispatch('text', [
+            'phone' => $phone,
+            'message' => $rating >= 4
+                ? 'Muito obrigado pela avaliação! 😊 Ficamos felizes em saber que você está satisfeito com nosso serviço.'
+                : 'Agradecemos seu feedback. Vamos trabalhar para melhorar nosso atendimento. Se precisar de algo, estamos à disposição.',
+        ]);
     }
 
-    /**
-     * Handle job failure.
-     */
     public function failed(\Throwable $exception): void
     {
         Log::error('WhatsApp inbound processing failed', [
-            'phone' => $this->messageData['phone'] ?? 'unknown',
             'error' => $exception->getMessage(),
         ]);
     }
 
-    /**
-     * Tags para monitoramento.
-     */
     public function tags(): array
     {
         return [

@@ -9,7 +9,7 @@ triagem padronizada e pesquisa de satisfacao.
 ## Stack
 - Linguagem: PHP
 - Framework: Laravel
-- Banco de dados: MySQL
+- Banco de dados: MariaDB 10.11 compartilhado (driver `mysql`)
 - Cache e filas: Redis
 
 ## Componentes principais

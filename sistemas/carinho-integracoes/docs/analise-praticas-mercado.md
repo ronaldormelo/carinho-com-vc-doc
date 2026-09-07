@@ -1,5 +1,7 @@
 # Análise do Módulo carinho-integracoes
 
+> Referência (janeiro/2026). Contratos vigentes: [matriz-integracoes.md](matriz-integracoes.md) e [runbook-operacional.md](runbook-operacional.md).
+
 **Data da Análise:** Janeiro/2026
 **Versão:** 1.0
 

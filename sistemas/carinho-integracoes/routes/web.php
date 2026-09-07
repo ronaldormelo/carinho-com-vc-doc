@@ -21,23 +21,22 @@ use App\Http\Controllers\Webhook\SystemWebhookController;
 |--------------------------------------------------------------------------
 |
 | Endpoints para verificação de saúde e monitoramento operacional.
-| Não requerem autenticação para permitir acesso de load balancers.
+| `/health` e `/health/detailed` são públicos (load balancer).
+| Status, dashboard, alertas e reset de circuit breaker exigem `X-API-Key`.
 |
 */
 
-// Health checks básicos
 Route::get('/health', [HealthController::class, 'check']);
 Route::get('/health/detailed', [HealthController::class, 'detailed']);
-Route::get('/status', [HealthController::class, 'status']);
 
-// Dashboard e alertas operacionais
-Route::get('/dashboard', [HealthController::class, 'dashboard']);
-Route::get('/alerts', [HealthController::class, 'alerts']);
-Route::get('/report/daily', [HealthController::class, 'dailyReport']);
-
-// Circuit breakers
-Route::get('/circuit-breakers', [HealthController::class, 'circuitBreakers']);
-Route::post('/circuit-breakers/{service}/reset', [HealthController::class, 'resetCircuitBreaker']);
+Route::middleware('api.auth')->group(function () {
+    Route::get('/status', [HealthController::class, 'status']);
+    Route::get('/dashboard', [HealthController::class, 'dashboard']);
+    Route::get('/alerts', [HealthController::class, 'alerts']);
+    Route::get('/report/daily', [HealthController::class, 'dailyReport']);
+    Route::get('/circuit-breakers', [HealthController::class, 'circuitBreakers']);
+    Route::post('/circuit-breakers/{service}/reset', [HealthController::class, 'resetCircuitBreaker']);
+});
 
 /*
 |--------------------------------------------------------------------------

@@ -20,7 +20,9 @@ class AuthenticateApiKey
      */
     public function handle(Request $request, Closure $next, ?string $permission = null): Response
     {
-        $apiKey = $request->header('X-API-Key');
+        $apiKey = $request->header('X-API-Key')
+            ?? $request->header('X-Internal-Token')
+            ?? $request->bearerToken();
 
         if (!$apiKey) {
             Log::warning('API request without API key', [

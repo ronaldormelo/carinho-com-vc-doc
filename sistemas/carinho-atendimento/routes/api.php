@@ -16,6 +16,7 @@ Route::post('/webhooks/whatsapp/z-api', [WebhookController::class, 'whatsapp']);
 Route::middleware(['internal.token'])->group(function () {
     // Inbox e conversas
     Route::get('/inbox', [InboxController::class, 'index']);
+    Route::post('/inbox', [InboxController::class, 'store']);
     Route::get('/inbox/{conversation}', [InboxController::class, 'show']);
     Route::patch('/inbox/{conversation}/status', [InboxController::class, 'updateStatus']);
     Route::post('/inbox/{conversation}/lost', [InboxController::class, 'markAsLost']);

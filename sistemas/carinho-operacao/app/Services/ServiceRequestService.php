@@ -249,15 +249,17 @@ class ServiceRequestService
             throw new \RuntimeException('Erro ao buscar demanda do atendimento: ' . ($response['error'] ?? 'Unknown'));
         }
 
-        $demanda = $response['body']['demanda'] ?? null;
+        $demanda = $response['body']['conversation'] ?? $response['body']['demanda'] ?? $response['body'] ?? null;
         if (!$demanda) {
-            throw new \RuntimeException('Demanda nao encontrada.');
+            throw new \RuntimeException('Conversa nao encontrada.');
         }
 
+        $contact = $response['body']['contact'] ?? [];
+
         return $this->createServiceRequest([
-            'client_id' => $demanda['client_id'],
-            'service_type_id' => $this->mapServiceType($demanda['tipo']),
-            'urgency_id' => $this->mapUrgency($demanda['urgencia']),
+            'client_id' => $demanda['client_id'] ?? $contact['id'] ?? null,
+            'service_type_id' => $this->mapServiceType((string) ($demanda['tipo'] ?? 'diario')),
+            'urgency_id' => $this->mapUrgency((string) ($demanda['urgencia'] ?? 'sem_data')),
             'start_date' => $demanda['data_inicio'] ?? null,
             'end_date' => $demanda['data_fim'] ?? null,
         ]);

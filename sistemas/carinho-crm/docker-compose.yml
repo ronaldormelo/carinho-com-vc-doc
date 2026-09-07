@@ -1,3 +1,5 @@
+# MariaDB compartilhado: docker compose up -d na raiz (arquivo docker-compose.yml)
+
 services:
   app:
     build:

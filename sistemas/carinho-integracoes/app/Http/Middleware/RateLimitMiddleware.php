@@ -44,7 +44,7 @@ class RateLimitMiddleware
         }
 
         // Incrementa contador
-        RateLimit::increment($clientId);
+        RateLimit::incrementForClient($clientId);
 
         // Adiciona headers de rate limit
         $response = $next($request);

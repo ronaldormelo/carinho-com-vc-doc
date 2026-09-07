@@ -1,5 +1,7 @@
 # Análise do Módulo Carinho CRM - Práticas Tradicionais
 
+> Estudo (janeiro/2026). Não é backlog nem contrato de pipeline.
+
 Data da Análise: Janeiro/2026
 
 ---

@@ -1,5 +1,9 @@
 # Integracoes
 
+As tabelas abaixo descrevem o que os **clientes PHP deste módulo** chamam. Várias URLs **não existem** no destino. Caminhos verificados: [contratos-rotas.md](../carinho-integracoes/docs/contratos-rotas.md).
+
+Atendimento real: `/inbox`, `/emergencies` no destino Operação (este cliente ainda usa `/demandas/*`). Financeiro real: `/invoices`, `/payouts` (este cliente ainda usa `/services`, `/cancellations`, `/repasses`).
+
 ## Visao Geral
 
 O sistema Carinho Operacao integra-se com outros sistemas internos e APIs externas para compor o ecossistema completo de servicos.

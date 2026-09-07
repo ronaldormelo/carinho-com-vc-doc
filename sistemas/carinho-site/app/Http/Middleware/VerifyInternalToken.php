@@ -16,6 +16,10 @@ class VerifyInternalToken
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->is('health') || $request->is('api/health')) {
+            return $next($request);
+        }
+
         $token = $request->bearerToken() ?? $request->header('X-Internal-Token');
         $expectedToken = config('integrations.internal_token');
 

@@ -25,7 +25,7 @@ use App\Http\Controllers\Api\ContentController;
 // Rotas públicas (webhooks de sistemas internos)
 Route::prefix('public')->group(function () {
     // Receber lead do site
-    Route::post('leads', [LeadController::class, 'store'])
+    Route::post('leads', [LeadController::class, 'storePublic'])
         ->middleware('throttle:webhooks')
         ->name('public.leads.store');
 });

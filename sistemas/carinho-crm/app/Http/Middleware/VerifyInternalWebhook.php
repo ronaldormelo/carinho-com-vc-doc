@@ -32,9 +32,8 @@ class VerifyInternalWebhook
             ], 401);
         }
 
-        // Verifica se a chave de API é válida
         $validApiKey = config('integrations.webhooks.secret');
-        if ($validApiKey && $apiKey !== $validApiKey) {
+        if ($validApiKey && !hash_equals((string) $validApiKey, (string) $apiKey)) {
             Log::channel('integrations')->warning('Webhook rejeitado: API key inválida', [
                 'ip' => $request->ip(),
                 'service' => $serviceOrigin,

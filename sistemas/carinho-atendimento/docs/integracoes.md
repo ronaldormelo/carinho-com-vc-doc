@@ -18,12 +18,14 @@ Webhook:
 
 ## CRM (interno)
 Configuracoes em config/integrations.php:
-- CRM_BASE_URL
+- CRM_BASE_URL (default `https://crm.carinho.com.vc/api` — este cliente posta `leads` e `incidents` **sem** `/v1`)
 - CRM_TOKEN
 
-Endpoints usados:
-- POST /leads (upsert de lead)
-- POST /incidents (registro de incidente)
+Rotas reais do CRM: `POST /api/v1/public/leads` ou Sanctum `/api/v1/leads`. **Não há** `POST /incidents` no CRM.
+
+Endpoints usados por este cliente (podem 404 até o cliente ser alinhado):
+- POST /leads
+- POST /incidents
 
 ## Operacao (interno)
 Configuracoes:
