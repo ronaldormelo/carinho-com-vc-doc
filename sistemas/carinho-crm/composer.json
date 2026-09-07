@@ -2,6 +2,16 @@
   "name": "carinho/carinho-crm",
   "type": "project",
   "description": "Carinho CRM system",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "require": {
     "php": "^8.2",
     "ext-json": "*",

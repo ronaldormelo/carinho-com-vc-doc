@@ -1,3 +1,20 @@
+-- =============================================================================
+-- Carinho Cuidadores - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations:
+--   2026_01_22_000001_create_cuidadores_schema
+--   2026_01_23_000001_add_operational_controls
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_caregiver_status (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -368,3 +385,5 @@ CREATE INDEX idx_caregiver_leaves_dates
 
 CREATE INDEX idx_caregiver_leaves_period
   ON caregiver_leaves (start_date, end_date);
+
+SET FOREIGN_KEY_CHECKS = 1;

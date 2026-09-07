@@ -81,8 +81,10 @@
     /* Border */
     --border-color: #E4E7EB;
 
-    /* Typography */
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Typography - identidade da marca: Nunito, Inter, Arial, sans-serif */
+    --font-family: 'Nunito', 'Inter', Arial, sans-serif;
+    --font-family-headings: 'Nunito', 'Inter', Arial, sans-serif;
+    --font-sans: var(--font-family);
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Cascadia Mono', 'Liberation Mono', monospace;
 
     /* Font sizes */
@@ -139,16 +141,17 @@ html {
 
 body {
     margin: 0;
-    font-family: var(--font-sans);
+    font-family: var(--font-family);
     font-size: var(--text-base);
-    line-height: 1.5;
+    line-height: 1.6;
     color: var(--color-text);
     background-color: var(--bg-primary);
 }
 
-/* Typography */
+/* Typography - títulos com Nunito (identidade Carinho com Você) */
 h1, h2, h3, h4, h5, h6 {
     margin: 0 0 var(--space-4);
+    font-family: var(--font-family-headings);
     font-weight: 600;
     line-height: 1.25;
     color: var(--color-text);

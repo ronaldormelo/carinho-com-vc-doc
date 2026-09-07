@@ -17,6 +17,9 @@ mkdir -p bootstrap/cache
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
 
+# Garantir que o Apache consiga ler e acessar o DocumentRoot (evita 403 com volume montado)
+chmod -R a+rX /var/www/html 2>/dev/null || true
+
 echo "Instalando dependências do Composer..."
 # Instalar sem scripts primeiro (para evitar erro do artisan)
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts

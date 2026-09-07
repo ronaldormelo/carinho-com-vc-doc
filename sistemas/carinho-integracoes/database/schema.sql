@@ -1,3 +1,18 @@
+-- =============================================================================
+-- Carinho Integrações - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations: 2026_01_22_000001_create_integracoes_schema
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_api_key_status (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -196,3 +211,5 @@ CREATE INDEX idx_sync_jobs_type_status
 
 CREATE INDEX idx_rate_limits_client_window
   ON rate_limits (client_id, window_start);
+
+SET FOREIGN_KEY_CHECKS = 1;

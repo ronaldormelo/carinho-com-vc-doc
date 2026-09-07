@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,36 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/dashboard');
 });
+
+// Rotas de autenticação (guest)
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+
+    Route::post('/login', function (\Illuminate\Http\Request $request) {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('dashboard'));
+        }
+
+        return back()->withErrors([
+            'email' => __('As credenciais informadas não conferem.'),
+        ])->onlyInput('email');
+    });
+});
+
+Route::post('/logout', function (\Illuminate\Http\Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout')->middleware('auth');
 
 // Health check
 Route::get('/health', function () {

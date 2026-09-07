@@ -1,3 +1,20 @@
+-- =============================================================================
+-- Carinho Marketing - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations:
+--   2026_01_22_000001_create_marketing_schema
+--   2026_01_23_000001_add_operational_controls
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_channel_status (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -475,3 +492,5 @@ CREATE INDEX idx_utm_links_source_medium
 
 CREATE INDEX idx_conversion_events_key
   ON conversion_events (event_key);
+
+SET FOREIGN_KEY_CHECKS = 1;

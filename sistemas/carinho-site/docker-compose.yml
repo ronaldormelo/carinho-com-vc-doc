@@ -1,12 +1,3 @@
-version: "3.9"
-
-# =============================================================================
-# Carinho Site - Docker Compose
-# =============================================================================
-# MariaDB compartilhado: Use o docker-compose.mysql.yml na raiz do projeto
-# Execute: docker-compose -f ../docker-compose.mysql.yml up -d (na raiz)
-# =============================================================================
-
 services:
   app:
     build:

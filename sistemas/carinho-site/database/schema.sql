@@ -1,3 +1,19 @@
+-- =============================================================================
+-- Carinho Site - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar
+-- a partir de um único script.
+--
+-- Migrations: 2026_01_22_000001_create_site_schema
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_page_status (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -247,3 +263,5 @@ CREATE INDEX idx_legal_documents_type_published
 
 CREATE INDEX idx_access_logs_created_path
   ON access_logs (created_at, path);
+
+SET FOREIGN_KEY_CHECKS = 1;

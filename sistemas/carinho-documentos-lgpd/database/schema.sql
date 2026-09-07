@@ -1,3 +1,20 @@
+-- =============================================================================
+-- Carinho Documentos LGPD - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations:
+--   2026_01_22_000001_create_documentos_schema
+--   2026_01_23_000001_add_audit_fields_to_consents_table
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_doc_type (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -216,3 +233,5 @@ CREATE INDEX idx_signatures_document_time
 
 CREATE INDEX idx_access_logs_document_time
   ON access_logs (document_id, created_at);
+
+SET FOREIGN_KEY_CHECKS = 1;

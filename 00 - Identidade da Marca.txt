@@ -33,7 +33,7 @@ Elementos visuais
 	346063 - Verde claro
 	1a2b32 - Verde escuro
 	eb7d70 - Vermelho
-- Tipografia: fonte sans-serif, alta legibilidade.
+- Tipografia: fonte Nunito, Inter, Arial, sans-serif, alta legibilidade.
     Layout da Logomarca: 
         Playwrite AR
         Dancing Script	

@@ -89,12 +89,12 @@ return [
     |--------------------------------------------------------------------------
     | Visual Elements - Typography
     |--------------------------------------------------------------------------
-    | Fonte sans-serif com alta legibilidade.
+    | Conforme "00 - Identidade da Marca.txt": Nunito, Inter, Arial, sans-serif.
     */
 
     'typography' => [
-        'font_family' => 'Inter, Arial, "Helvetica Neue", Helvetica, sans-serif',
-        'font_family_headings' => 'Inter, Arial, sans-serif',
+        'font_family' => '"Nunito", Inter, Arial, sans-serif',
+        'font_family_headings' => '"Nunito", Inter, Arial, sans-serif',
         'font_size_base' => '16px',
         'line_height' => '1.6',
     ],
