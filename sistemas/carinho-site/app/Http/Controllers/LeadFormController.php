@@ -11,6 +11,7 @@ use App\Models\LeadForm;
 use App\Models\UtmCampaign;
 use App\Models\Domain\DomainFormTarget;
 use App\Services\RecaptchaService;
+use App\Services\WhatsAppService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,8 @@ use Illuminate\Http\Request;
 class LeadFormController extends Controller
 {
     public function __construct(
-        private RecaptchaService $recaptcha
+        private RecaptchaService $recaptcha,
+        private WhatsAppService $whatsApp
     ) {}
 
     /**
@@ -171,16 +173,18 @@ class LeadFormController extends Controller
      */
     private function generateWhatsAppUrl(FormSubmission $submission): string
     {
-        $phone = config('branding.contact.whatsapp');
-        $message = config('branding.whatsapp_messages.client');
+        $message = $this->whatsApp->resolveClientLeadMessage($submission->service_type_id);
 
-        // Adiciona UTM se existir
-        $utmSuffix = '';
+        $utm = [];
         if ($submission->utm) {
-            $utmSuffix = "?utm_source={$submission->utm->source}&utm_medium={$submission->utm->medium}&utm_campaign={$submission->utm->campaign}";
+            $utm = array_filter([
+                'utm_source' => $submission->utm->source,
+                'utm_medium' => $submission->utm->medium,
+                'utm_campaign' => $submission->utm->campaign,
+            ]);
         }
 
-        return "https://wa.me/{$phone}?text=" . urlencode($message) . $utmSuffix;
+        return $this->whatsApp->generateCtaUrl($message, $utm);
     }
 
     /**
@@ -188,10 +192,9 @@ class LeadFormController extends Controller
      */
     private function generateCaregiverWhatsAppUrl(FormSubmission $submission): string
     {
-        $phone = config('branding.contact.whatsapp');
-        $message = config('branding.whatsapp_messages.caregiver');
+        $message = $this->whatsApp->resolveCtaMessage('caregiver');
 
-        return "https://wa.me/{$phone}?text=" . urlencode($message);
+        return $this->whatsApp->generateCtaUrl($message);
     }
 
     /**

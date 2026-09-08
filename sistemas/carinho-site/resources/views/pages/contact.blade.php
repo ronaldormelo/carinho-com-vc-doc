@@ -36,7 +36,7 @@
                 <h3>WhatsApp</h3>
                 <p class="text-muted">Nosso principal canal de atendimento. Resposta em até 5 minutos!</p>
                 <p><strong>{{ config('branding.contact.whatsapp_display') }}</strong></p>
-                <a href="{{ route('whatsapp.cta') }}" class="btn btn-whatsapp btn-block" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+                <a href="{{ route('whatsapp.cta', ['msg' => 'contact']) }}" class="btn btn-whatsapp btn-block" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
                     Falar pelo WhatsApp
                 </a>
             </div>
@@ -51,10 +51,12 @@
                 </div>
                 <h3>E-mail</h3>
                 <p class="text-muted">Para propostas, contratos e comunicações formais.</p>
-                <p><strong>{{ config('branding.contact.email') }}</strong></p>
-                <a href="mailto:{{ config('branding.contact.email') }}" class="btn btn-secondary btn-block">
+                <p><strong><x-mailto :address="config('branding.contact.email')" /></strong></p>
+                @if($contactMailto = \App\Support\MailtoLink::href(config('branding.contact.email')))
+                <a href="{{ $contactMailto }}" class="btn btn-secondary btn-block">
                     Enviar e-mail
                 </a>
+                @endif
             </div>
 
             {{-- Emergências --}}
@@ -68,7 +70,7 @@
                 </div>
                 <h3>Emergências</h3>
                 <p class="text-muted">Para situações urgentes durante o atendimento.</p>
-                <p><strong>{{ config('branding.contact.email_emergency') }}</strong></p>
+                <p><strong><x-mailto :address="config('branding.contact.email_emergency')" /></strong></p>
                 <a href="{{ route('legal.emergency') }}" class="btn btn-secondary btn-block">
                     Ver política de emergências
                 </a>

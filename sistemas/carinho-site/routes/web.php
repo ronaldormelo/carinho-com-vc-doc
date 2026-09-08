@@ -4,6 +4,7 @@ use App\Http\Controllers\HealthController;
 use App\Http\Controllers\LeadFormController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\WhatsAppCtaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,25 +71,7 @@ Route::get('/termos', [LegalController::class, 'terms']);
 // WhatsApp CTA
 // ==========================================================================
 
-Route::get('/whatsapp', function () {
-    $phone = config('branding.contact.whatsapp');
-    $message = config('branding.whatsapp_messages.default');
-
-    // Captura UTM da sessao
-    $utm = [];
-    foreach (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as $param) {
-        if (session()->has($param)) {
-            $utm[$param] = session($param);
-        }
-    }
-
-    // Adiciona UTM a mensagem se existir
-    if (!empty($utm)) {
-        $message .= "\n\n[Origem: {$utm['utm_source']} / {$utm['utm_medium']} / {$utm['utm_campaign']}]";
-    }
-
-    return redirect("https://wa.me/{$phone}?text=" . urlencode($message));
-})->name('whatsapp.cta');
+Route::get('/whatsapp', WhatsAppCtaController::class)->name('whatsapp.cta');
 
 // ==========================================================================
 // Health Checks
