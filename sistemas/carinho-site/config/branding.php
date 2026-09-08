@@ -143,6 +143,7 @@ return [
         'email' => env('BRAND_EMAIL', 'contato@carinho.com.vc'),
         'email_privacy' => env('BRAND_EMAIL_PRIVACY', 'privacidade@carinho.com.vc'),
         'email_emergency' => env('BRAND_EMAIL_EMERGENCY', 'emergencia@carinho.com.vc'),
+        'email_investors' => env('BRAND_EMAIL_INVESTORS', 'investidores@carinho.com.vc'),
     ],
 
     /*

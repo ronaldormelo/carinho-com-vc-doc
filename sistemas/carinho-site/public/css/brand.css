@@ -134,6 +134,19 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
+a.mailto-link {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.footer-brand a.mailto-link {
+  color: var(--color-primary-light);
+}
+
+.footer-brand a.mailto-link:hover {
+  color: white;
+}
+
 /* =================================================================
    Typography
    ================================================================= */

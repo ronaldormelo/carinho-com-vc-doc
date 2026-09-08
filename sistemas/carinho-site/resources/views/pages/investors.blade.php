@@ -656,7 +656,7 @@
             <div style="margin-top: var(--spacing-8);">
                 <p style="opacity: 0.8; margin-bottom: var(--spacing-4);">Ou entre em contato diretamente:</p>
                 <p style="font-size: var(--font-size-lg);">
-                    <strong>E-mail:</strong> investidores@carinho.com.vc<br>
+                    <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email_investors')" /><br>
                     <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}
                 </p>
             </div>

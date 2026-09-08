@@ -51,10 +51,12 @@
                 </div>
                 <h3>E-mail</h3>
                 <p class="text-muted">Para propostas, contratos e comunicações formais.</p>
-                <p><strong>{{ config('branding.contact.email') }}</strong></p>
-                <a href="mailto:{{ config('branding.contact.email') }}" class="btn btn-secondary btn-block">
+                <p><strong><x-mailto :address="config('branding.contact.email')" /></strong></p>
+                @if($contactMailto = \App\Support\MailtoLink::href(config('branding.contact.email')))
+                <a href="{{ $contactMailto }}" class="btn btn-secondary btn-block">
                     Enviar e-mail
                 </a>
+                @endif
             </div>
 
             {{-- Emergências --}}
@@ -68,7 +70,7 @@
                 </div>
                 <h3>Emergências</h3>
                 <p class="text-muted">Para situações urgentes durante o atendimento.</p>
-                <p><strong>{{ config('branding.contact.email_emergency') }}</strong></p>
+                <p><strong><x-mailto :address="config('branding.contact.email_emergency')" /></strong></p>
                 <a href="{{ route('legal.emergency') }}" class="btn btn-secondary btn-block">
                     Ver política de emergências
                 </a>

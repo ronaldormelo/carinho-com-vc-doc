@@ -124,7 +124,7 @@
                 Para exercer seus direitos ou esclarecer dúvidas sobre privacidade e proteção de dados:
             </p>
             <p>
-                <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email_privacy') }}">{{ config('branding.contact.email_privacy') }}</a>
+                <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email_privacy')" />
             </p>
             <p>
                 Nos comprometemos a responder suas solicitações no prazo de 15 dias, conforme previsto na LGPD.

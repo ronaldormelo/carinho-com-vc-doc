@@ -35,7 +35,7 @@
                             @if($channel === 'whatsapp')
                             {{ config('branding.contact.whatsapp_display') }} - {{ $description }}
                             @elseif($channel === 'email')
-                            <a href="mailto:{{ config('branding.contact.email_emergency') }}">{{ config('branding.contact.email_emergency') }}</a>
+                            <x-mailto :address="config('branding.contact.email_emergency')" />
                             @else
                             {{ $description }}
                             @endif
@@ -167,7 +167,7 @@
                     <strong>WhatsApp Emergência:</strong> {{ config('branding.contact.whatsapp_display') }}
                 </p>
                 <p style="margin: 0;">
-                    <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email_emergency') }}">{{ config('branding.contact.email_emergency') }}</a>
+                    <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email_emergency')" />
                 </p>
             </div>
 

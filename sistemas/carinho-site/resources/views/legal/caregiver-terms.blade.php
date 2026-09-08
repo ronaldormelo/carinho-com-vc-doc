@@ -192,7 +192,7 @@
             <p>Para dúvidas sobre estes termos ou a parceria:</p>
             <p>
                 <strong>WhatsApp Cuidadores:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
-                <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a>
+                <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" />
             </p>
         </div>
     </div>
