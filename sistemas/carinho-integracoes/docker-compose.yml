@@ -65,6 +65,7 @@ services:
       REDIS_PREFIX: ${REDIS_PREFIX:-carinho_integracoes:}
       CACHE_STORE: redis
       QUEUE_CONNECTION: redis
+      SESSION_DRIVER: ${SESSION_DRIVER:-file}
     networks:
       - carinho-network
 
@@ -94,6 +95,7 @@ services:
       REDIS_DB: ${REDIS_DB:-0}
       REDIS_PREFIX: ${REDIS_PREFIX:-carinho_integracoes:}
       CACHE_STORE: redis
+      SESSION_DRIVER: ${SESSION_DRIVER:-file}
     networks:
       - carinho-network
 

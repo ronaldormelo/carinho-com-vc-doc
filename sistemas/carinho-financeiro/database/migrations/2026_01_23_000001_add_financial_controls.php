@@ -260,8 +260,21 @@ return new class extends Migration
             });
         }
 
-        // Adicionar campos à tabela de configurações
         $this->seedApprovalSettings();
+    }
+
+    /**
+     * Insere apenas colunas que existem no schema atual.
+     */
+    protected function insertExisting(string $table, array $row): int
+    {
+        $allowed = array_flip(Schema::getColumnListing($table));
+        $filtered = array_intersect_key($row, $allowed);
+        if ($filtered === []) {
+            throw new RuntimeException("Nenhuma coluna válida para inserir em {$table}");
+        }
+
+        return (int) DB::table($table)->insertGetId($filtered);
     }
 
     /**
@@ -300,22 +313,31 @@ return new class extends Migration
      */
     protected function seedApprovalSettings(): void
     {
-        // Criar categoria de aprovação se não existir
-        $existing = DB::table('setting_categories')->where('code', 'approval')->first();
-        if ($existing) {
+        if (!Schema::hasTable('setting_categories') || !Schema::hasTable('settings')) {
             return;
         }
 
-        $approvalCategoryId = DB::table('setting_categories')->insertGetId([
-            'code' => 'approval',
-            'name' => 'Aprovações',
-            'description' => 'Configurações de limites e workflow de aprovação',
-            'display_order' => 10,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $existing = DB::table('setting_categories')->where('code', 'approval')->first();
+        if ($existing) {
+            $approvalCategoryId = (int) $existing->id;
+        } else {
+            $approvalCategoryId = $this->insertExisting('setting_categories', [
+                'code' => 'approval',
+                'name' => 'Aprovações',
+                'description' => 'Configurações de limites e workflow de aprovação',
+                'display_order' => 10,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
-        // Inserir configurações de aprovação
+        $keyColumn = Schema::hasColumn('settings', 'key')
+            ? 'key'
+            : (Schema::hasColumn('settings', 'setting_key') ? 'setting_key' : null);
+        if ($keyColumn === null) {
+            return;
+        }
+
         $settings = [
             [
                 'key' => 'approval_discount_threshold',
@@ -385,7 +407,18 @@ return new class extends Migration
         ];
 
         foreach ($settings as $setting) {
-            DB::table('settings')->insert(array_merge($setting, [
+            $keyValue = $setting['key'];
+            unset($setting['key']);
+            $already = DB::table('settings')
+                ->where('category_id', $approvalCategoryId)
+                ->where($keyColumn, $keyValue)
+                ->exists();
+            if ($already) {
+                continue;
+            }
+
+            $this->insertExisting('settings', array_merge($setting, [
+                $keyColumn => $keyValue,
                 'category_id' => $approvalCategoryId,
                 'created_at' => now(),
                 'updated_at' => now(),

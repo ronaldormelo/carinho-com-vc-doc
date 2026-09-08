@@ -31,6 +31,7 @@ services:
       REDIS_DB: ${REDIS_DB:-0}
       REDIS_PREFIX: ${REDIS_PREFIX:-carinho_site:}
       CACHE_STORE: redis
+      SESSION_DRIVER: ${SESSION_DRIVER:-redis}
     networks:
       - carinho-network
 
