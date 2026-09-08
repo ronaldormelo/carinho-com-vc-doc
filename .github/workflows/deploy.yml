@@ -11,7 +11,9 @@
 #   DEPLOY_ENV          ambiente dos .env (production | testing). Padrão: production
 #   SSH_HOST            override do IP (opcional; padrão 212.85.23.26)
 #
-# Caminhos na VPS:
+# VPS SSH: o firewall precisa aceitar TCP 22 a partir dos runners do GitHub
+# (IPs em https://api.github.com/meta, chave "actions"). Timeout de conexão
+# abaixo não contorna bloqueio de pacote; só espera mais se a rota for lenta.
 #   /opt/carinho/carinho-com-vc-doc          clone deste repositório
 #   /opt/carinho/carinho-com-vc-doc-config   clone do repo de .env
 #
@@ -19,9 +21,12 @@
 #   <sistema>/.env.<DEPLOY_ENV>
 # O arquivo é copiado para carinho-com-vc-doc/sistemas/<sistema>/.env
 #
-# Depois do pull, a VPS sobe:
-#   docker compose up -d na raiz (MariaDB, Redis, rede carinho-network)
-#   docker compose up -d --build em cada sistemas/<sistema>
+# Depois do pull, a VPS:
+#   copia os .env do repo de config
+#   sincroniza a senha do usuário MariaDB (init.sql não roda de novo)
+#   docker compose up -d --remove-orphans na raiz (MariaDB, Redis, rede)
+#   docker compose up -d --build --force-recreate --remove-orphans em cada sistema
+#   (up -d sozinho não recria container já existente nem aplica env novo)
 
 name: CI/CD
 
@@ -136,6 +141,23 @@ jobs:
           echo "ENV_REPO_PATH=$ENV_REPO_PATH"
           echo "DEPLOY_ENV=$DEPLOY_ENV"
 
+      - name: Conferir alcance SSH da VPS
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST || '212.85.23.26' }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+        run: |
+          echo "Testando TCP $SSH_HOST:$SSH_PORT a partir do runner GitHub..."
+          if timeout 15 bash -c "echo >/dev/tcp/$SSH_HOST/$SSH_PORT"; then
+            echo "Porta alcançável."
+            exit 0
+          fi
+          echo "O runner do GitHub não consegue abrir TCP $SSH_HOST:$SSH_PORT (timeout)."
+          echo "O deploy SSH não chega a autenticar: o firewall da VPS (ufw, iptables ou painel)"
+          echo "precisa aceitar a porta SSH a partir dos IPs do GitHub Actions."
+          echo "Lista atual: https://api.github.com/meta (campo actions)."
+          echo "Teste local na VPS: ss -lnt | grep ':22' e ufw status."
+          exit 1
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.5
         env:
@@ -149,6 +171,8 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.SSH_PORT || 22 }}
           fingerprint: ${{ secrets.SSH_FINGERPRINT }}
+          protocol: tcp4
+          timeout: 2m
           command_timeout: 50m
           envs: DEPLOY_PATH,ENV_REPO_PATH,DEPLOY_ENV
           script: |
@@ -205,8 +229,18 @@ jobs:
                 exit 1
               fi
               mkdir -p "$DEPLOY_PATH/sistemas/$system"
+              old_key=""
+              if [ -f "$dest" ]; then
+                old_key="$(grep -E '^APP_KEY=' "$dest" | tail -n1 | cut -d= -f2- | tr -d '\r')"
+              fi
               cp -f "$src" "$dest"
-              echo "Atualizado $system a partir de $(basename "$src")"
+              new_key="$(grep -E '^APP_KEY=' "$dest" | tail -n1 | cut -d= -f2- | tr -d '\r')"
+              if [ -z "$new_key" ] && [ -n "$old_key" ]; then
+                sed -i "s#^APP_KEY=.*#APP_KEY=${old_key}#" "$dest"
+                echo "Atualizado $system a partir de $(basename "$src") (APP_KEY existente preservada)"
+              else
+                echo "Atualizado $system a partir de $(basename "$src")"
+              fi
             done
 
             echo ">>> Subindo containers na VPS"
@@ -221,18 +255,27 @@ jobs:
             fi
 
             echo ">>> Infra compartilhada (MariaDB, Redis, carinho-network)"
-            $COMPOSE -f "$DEPLOY_PATH/docker-compose.yml" --project-directory "$DEPLOY_PATH" up -d
+            $COMPOSE -f "$DEPLOY_PATH/docker-compose.yml" --project-directory "$DEPLOY_PATH" up -d --remove-orphans
 
             echo ">>> Aguardando MariaDB"
+            mariadb_ready=0
             i=0
             while [ "$i" -lt 30 ]; do
               if docker exec carinho-mariadb mariadb-admin ping --silent >/dev/null 2>&1; then
                 echo "MariaDB pronto"
+                mariadb_ready=1
                 break
               fi
               i=$((i + 1))
               sleep 2
             done
+            if [ "$mariadb_ready" -ne 1 ]; then
+              echo "MariaDB não ficou pronto a tempo."
+              exit 1
+            fi
+
+            echo ">>> Aplicando senha DB_PASSWORD no usuário MariaDB"
+            bash "$DEPLOY_PATH/scripts/sync-mariadb-app-user.sh" "$DEPLOY_PATH"
 
             export COMPOSER_NO_BLOCKING=1
             export COMPOSER_NO_SECURITY_BLOCKING=1
@@ -248,9 +291,9 @@ jobs:
               carinho-integracoes
             do
               app="$DEPLOY_PATH/sistemas/$system"
-              echo ">>> docker compose up — $system"
-              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build
-              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" restart
+              echo ">>> Recriando containers com env atual — $system"
+              rm -f "$app/bootstrap/cache/config.php"
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build --force-recreate --remove-orphans
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan config:clear || true
             done
             echo ">>> Deploy concluído"

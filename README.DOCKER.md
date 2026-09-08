@@ -79,7 +79,7 @@ docker exec -it carinho-[sistema]-app php artisan migrate:status
 docker exec -it carinho-[sistema]-app composer install
 ```
 
-Rebuild: `docker compose build --no-cache && docker compose up -d` na pasta do sistema.
+Rebuild: `docker compose up -d --build --force-recreate --remove-orphans` na pasta do sistema. `up -d` sozinho não recria container já existente nem aplica `.env` novo.
 
 ## Problemas frequentes
 

@@ -5,7 +5,9 @@
 -- Execute automaticamente ao iniciar o container MariaDB pela primeira vez
 -- =============================================================================
 
--- Criar usuário se não existir
+-- Usuário local de desenvolvimento. Em produção a senha vem dos .env do
+-- repo de config e é aplicada a cada deploy por scripts/sync-mariadb-app-user.sh
+-- (este arquivo só executa com datadir vazio).
 CREATE USER IF NOT EXISTS 'carinho'@'%' IDENTIFIED BY 'carinho';
 GRANT ALL PRIVILEGES ON carinho_*.* TO 'carinho'@'%';
 FLUSH PRIVILEGES;

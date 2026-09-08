@@ -25,8 +25,16 @@ composer install --no-interaction --prefer-dist --optimize-autoloader --no-scrip
 echo "Executando scripts do Composer..."
 php artisan package:discover --ansi
 
-echo "Gerando chave de aplicação (APP_KEY)..."
-php artisan key:generate --force --ansi
+current_key="${APP_KEY:-}"
+if [ -z "$current_key" ] && [ -f .env ]; then
+    current_key="$(grep -E '^APP_KEY=' .env | tail -n1 | cut -d= -f2- | tr -d '\r' | tr -d '"' | tr -d "'")"
+fi
+if [ -z "$current_key" ]; then
+    echo "Gerando chave de aplicação (APP_KEY)..."
+    php artisan key:generate --force --ansi
+else
+    echo "APP_KEY já definida; não regenerar."
+fi
 
 # Executar comando original
 exec "$@"
