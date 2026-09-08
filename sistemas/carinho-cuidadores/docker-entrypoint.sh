@@ -13,6 +13,9 @@ mkdir -p storage/framework/{cache,sessions,views}
 mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
+echo "Limpando cache de packages (evita Collision com composer --no-dev)..."
+rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php
+
 # Ajustar permissões (permissões podem falhar sem quebrar o container)
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true

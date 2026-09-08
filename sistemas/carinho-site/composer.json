@@ -57,7 +57,10 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "nunomaduro/collision",
+                "laravel/sail"
+            ]
         }
     },
     "config": {

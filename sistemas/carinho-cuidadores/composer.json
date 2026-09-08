@@ -56,6 +56,14 @@
       }
     }
   },
+  "extra": {
+    "laravel": {
+      "dont-discover": [
+        "nunomaduro/collision",
+        "laravel/sail"
+      ]
+    }
+  },
   "minimum-stability": "stable",
   "prefer-stable": true
 }

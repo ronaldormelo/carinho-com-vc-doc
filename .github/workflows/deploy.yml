@@ -109,6 +109,14 @@ jobs:
             --optimize-autoloader \
             --no-scripts
 
+      - name: Guard — Collision fora do cache versionado
+        if: matrix.system == 'carinho-site'
+        working-directory: ${{ github.workspace }}
+        run: |
+          php scripts/assert-production-package-discovery.php
+          php scripts/assert-dotenv-no-unquoted-whitespace.php
+          php scripts/assert-brand-whatsapp.php
+
   deploy:
     name: deploy
     needs: build
@@ -293,6 +301,10 @@ jobs:
               carinho-integracoes
             do
               app="$DEPLOY_PATH/sistemas/$system"
+              echo ">>> Removendo cache Laravel de packages/services — $system"
+              rm -f "$app/bootstrap/cache/config.php" \
+                    "$app/bootstrap/cache/packages.php" \
+                    "$app/bootstrap/cache/services.php"
               echo ">>> Composer (volume bind) — $system"
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" run --rm --no-deps \
                 -e COMPOSER_NO_BLOCKING=1 \

@@ -138,8 +138,8 @@ return [
     */
 
     'contact' => [
-        'whatsapp' => env('BRAND_WHATSAPP', '5511999999999'),
-        'whatsapp_display' => env('BRAND_WHATSAPP_DISPLAY', '(11) 99999-9999'),
+        'whatsapp' => env('BRAND_WHATSAPP', '5589999771471'),
+        'whatsapp_display' => env('BRAND_WHATSAPP_DISPLAY', '(89) 99977-1471'),
         'email' => env('BRAND_EMAIL', 'contato@carinho.com.vc'),
         'email_privacy' => env('BRAND_EMAIL_PRIVACY', 'privacidade@carinho.com.vc'),
         'email_emergency' => env('BRAND_EMAIL_EMERGENCY', 'emergencia@carinho.com.vc'),

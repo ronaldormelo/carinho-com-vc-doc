@@ -13,6 +13,9 @@ mkdir -p storage/framework/{cache,sessions,views}
 mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
+echo "Limpando cache de packages (evita Collision com composer --no-dev)..."
+rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php
+
 # Ajustar permissões (permissões podem falhar sem quebrar o container)
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
@@ -21,7 +24,7 @@ export COMPOSER_NO_BLOCKING="${COMPOSER_NO_BLOCKING:-1}"
 export COMPOSER_NO_SECURITY_BLOCKING="${COMPOSER_NO_SECURITY_BLOCKING:-1}"
 if [ ! -f vendor/autoload.php ]; then
     echo "Instalando dependências do Composer..."
-    composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+    composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --no-dev
 else
     echo "vendor/autoload.php presente; pulando composer install"
 fi

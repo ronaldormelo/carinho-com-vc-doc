@@ -10,13 +10,11 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copiar e configurar entrypoint ANTES do WORKDIR para garantir que não seja sobrescrito pelo volume
-COPY docker-entrypoint.sh /tmp/docker-entrypoint.sh
-RUN chmod +x /tmp/docker-entrypoint.sh && \
-    sed -i 's/\r$//' /tmp/docker-entrypoint.sh && \
-    dos2unix /tmp/docker-entrypoint.sh 2>/dev/null || true && \
-    mv /tmp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh
+# Wrapper: bind-mount usa o entrypoint do git (nao depende de layer antiga da imagem).
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.image.sh
+COPY docker-entrypoint-wrapper.sh /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.image.sh /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-entrypoint.image.sh /usr/local/bin/docker-entrypoint.sh
 
 # Copiar configuração do Apache
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
