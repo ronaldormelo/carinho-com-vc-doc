@@ -18,6 +18,10 @@
 # Layout em carinho-com-vc-doc-config:
 #   <sistema>/.env.<DEPLOY_ENV>
 # O arquivo é copiado para carinho-com-vc-doc/sistemas/<sistema>/.env
+#
+# Depois do pull, a VPS sobe:
+#   docker compose up -d na raiz (MariaDB, Redis, rede carinho-network)
+#   docker compose up -d --build em cada sistemas/<sistema>
 
 name: CI/CD
 
@@ -37,6 +41,10 @@ env:
   PHP_VERSION: "8.2"
   DEPLOY_PATH: /opt/carinho/carinho-com-vc-doc
   ENV_REPO_PATH: /opt/carinho/carinho-com-vc-doc-config
+  # Laravel 11.x is EOL: Composer 2.9+ blocks every 11.x release (no patched 11.x).
+  # Patches exist only in laravel/framework >=12.61.1. Keep this until the apps move off 11.
+  COMPOSER_NO_BLOCKING: "1"
+  COMPOSER_NO_SECURITY_BLOCKING: "1"
 
 jobs:
   build:
@@ -100,7 +108,7 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - name: Conferir variáveis de deploy
         env:
@@ -141,7 +149,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.SSH_PORT || 22 }}
           fingerprint: ${{ secrets.SSH_FINGERPRINT }}
-          command_timeout: 30m
+          command_timeout: 50m
           envs: DEPLOY_PATH,ENV_REPO_PATH,DEPLOY_ENV
           script: |
             set -e
@@ -201,12 +209,33 @@ jobs:
               echo "Atualizado $system a partir de $(basename "$src")"
             done
 
-            echo ">>> Instalando dependências de produção (vendor não versionado)"
-            if ! command -v composer >/dev/null 2>&1; then
-              echo "composer não está no PATH da VPS; o stage build já validou as dependências."
-              echo "Instale as dependências no runtime (PHP local ou Docker) após este pull."
-              exit 0
+            echo ">>> Subindo containers na VPS"
+            export PATH="/usr/local/bin:/usr/bin:$HOME/bin:$PATH"
+            if docker compose version >/dev/null 2>&1; then
+              COMPOSE="docker compose"
+            elif command -v docker-compose >/dev/null 2>&1; then
+              COMPOSE="docker-compose"
+            else
+              echo "docker compose não está disponível no PATH da VPS."
+              exit 1
             fi
+
+            echo ">>> Infra compartilhada (MariaDB, Redis, carinho-network)"
+            $COMPOSE -f "$DEPLOY_PATH/docker-compose.yml" --project-directory "$DEPLOY_PATH" up -d
+
+            echo ">>> Aguardando MariaDB"
+            i=0
+            while [ "$i" -lt 30 ]; do
+              if docker exec carinho-mariadb mariadb-admin ping --silent >/dev/null 2>&1; then
+                echo "MariaDB pronto"
+                break
+              fi
+              i=$((i + 1))
+              sleep 2
+            done
+
+            export COMPOSER_NO_BLOCKING=1
+            export COMPOSER_NO_SECURITY_BLOCKING=1
             for system in \
               carinho-site \
               carinho-marketing \
@@ -219,17 +248,9 @@ jobs:
               carinho-integracoes
             do
               app="$DEPLOY_PATH/sistemas/$system"
-              echo "composer install — $system"
-              composer install \
-                --working-dir="$app" \
-                --no-dev \
-                --no-interaction \
-                --prefer-dist \
-                --optimize-autoloader \
-                --no-scripts
-              if [ -f "$app/artisan" ]; then
-                php "$app/artisan" package:discover --ansi || true
-                php "$app/artisan" config:clear || true
-              fi
+              echo ">>> docker compose up — $system"
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" restart
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan config:clear || true
             done
             echo ">>> Deploy concluído"
