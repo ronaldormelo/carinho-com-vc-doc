@@ -79,6 +79,14 @@ class WhatsAppServiceCtaTest extends TestCase
         $this->assertSame('contact', $this->whatsApp->messageKeyForRoute('contact'));
         $this->assertSame('faq', $this->whatsApp->messageKeyForRoute('faq'));
         $this->assertSame('how_it_works', $this->whatsApp->messageKeyForRoute('how-it-works'));
+        $this->assertSame('investor', $this->whatsApp->messageKeyForRoute('investors'));
+        $this->assertSame('about', $this->whatsApp->messageKeyForRoute('about'));
+        $this->assertSame('legal_privacy', $this->whatsApp->messageKeyForRoute('legal.privacy'));
+        $this->assertSame('legal_terms', $this->whatsApp->messageKeyForRoute('legal.terms'));
+        $this->assertSame('legal_cancellation', $this->whatsApp->messageKeyForRoute('legal.cancellation'));
+        $this->assertSame('legal_payment', $this->whatsApp->messageKeyForRoute('legal.payment'));
+        $this->assertSame('urgent', $this->whatsApp->messageKeyForRoute('legal.emergency'));
+        $this->assertSame('legal_caregiver_terms', $this->whatsApp->messageKeyForRoute('legal.caregiver-terms'));
         $this->assertSame('default', $this->whatsApp->messageKeyForRoute('home'));
         $this->assertSame('default', $this->whatsApp->messageKeyForRoute(null));
     }
@@ -104,6 +112,40 @@ class WhatsAppServiceCtaTest extends TestCase
 
         $decoded = urldecode($url);
         $this->assertStringContainsString('[Origem: google / cpc / cuidadores]', $decoded);
+    }
+
+    public function test_whatsapp_url_always_includes_utf8_encoded_text(): void
+    {
+        $url = $this->whatsApp->whatsappUrl(null);
+
+        $this->assertStringStartsWith('https://wa.me/5589999771471?text=', $url);
+        $this->assertStringContainsString(
+            urlencode(config('branding.whatsapp_messages.default')),
+            $url
+        );
+        $this->assertMatchesRegularExpression('/%[0-9A-F]{2}/', $url);
+    }
+
+    public function test_publics_use_distinct_conversation_texts(): void
+    {
+        $home = $this->whatsApp->resolveCtaMessage('default');
+        $family = $this->whatsApp->resolveCtaMessage('quote');
+        $caregiver = $this->whatsApp->resolveCtaMessage('caregiver');
+        $investor = $this->whatsApp->resolveCtaMessage('investor');
+        $urgent = $this->whatsApp->resolveCtaMessage('urgent');
+        $contact = $this->whatsApp->resolveCtaMessage('contact');
+        $legal = $this->whatsApp->resolveCtaMessage('legal_terms');
+
+        $this->assertStringContainsString('cuidado domiciliar', $home);
+        $this->assertStringContainsString('familiar', $family);
+        $this->assertStringContainsString('Sou cuidador', $caregiver);
+        $this->assertStringContainsString('parceria', $investor);
+        $this->assertStringContainsString('urgente', $urgent);
+        $this->assertStringContainsString('entrar em contato', $contact);
+        $this->assertStringContainsString('Termos de Uso', $legal);
+        $this->assertNotSame($family, $caregiver);
+        $this->assertNotSame($investor, $urgent);
+        $this->assertNotSame($contact, $home);
     }
 
     public function test_configured_service_types_have_matching_quote_keys(): void

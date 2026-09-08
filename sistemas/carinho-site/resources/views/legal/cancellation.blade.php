@@ -52,7 +52,7 @@
             <h2>3. COMO SOLICITAR O CANCELAMENTO</h2>
             <p>Para cancelar um serviço agendado:</p>
             <ol>
-                <li>Entre em contato pelo WhatsApp: {{ config('branding.contact.whatsapp_display') }}</li>
+                <li>Entre em contato pelo WhatsApp: <x-whatsapp-number msg="legal_cancellation" /></li>
                 <li>Informe o número do contrato ou agendamento</li>
                 <li>Confirme a solicitação de cancelamento</li>
                 <li>Aguarde a confirmação e instruções sobre reembolso (se aplicável)</li>
@@ -120,8 +120,8 @@
                 Para cancelamentos ou dúvidas sobre esta política:
             </p>
             <p>
-                <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
-                <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a>
+                <strong>WhatsApp:</strong> <x-whatsapp-number msg="legal_cancellation" /><br>
+                <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" />
             </p>
 
             <div class="highlight-box" style="background: #fff3cd; border-color: var(--color-warning);">

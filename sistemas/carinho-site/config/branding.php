@@ -165,21 +165,26 @@ return [
     */
 
     'whatsapp_messages' => [
-        'default' => 'Olá! Vim pelo site e gostaria de saber mais sobre os serviços.',
-        'client' => 'Olá! Preciso contratar um cuidador.',
-        'caregiver' => 'Olá! Sou cuidador(a) e gostaria de me cadastrar.',
-        'urgent' => 'Olá! Preciso de um cuidador urgente!',
-        'quote' => 'Olá! Gostaria de solicitar um orçamento para um cuidador.',
+        'default' => 'Olá! Seja bem-vindo(a) à Carinho com Você. Preciso de cuidado domiciliar e gostaria de conversar.',
+        'client' => 'Olá! Busco um cuidador para um familiar e preciso contratar.',
+        'caregiver' => 'Olá! Sou cuidador(a) e gostaria de me cadastrar para trabalhar com a Carinho com Você.',
+        'urgent' => 'Olá! Preciso de ajuda imediata com um atendimento. É urgente.',
+        'quote' => 'Olá! Busco um cuidador para um familiar e gostaria de solicitar um orçamento.',
         'quote_horista' => 'Olá! Gostaria de solicitar um orçamento para um cuidador por hora.',
         'quote_diario' => 'Olá! Gostaria de solicitar um orçamento para a diária de um cuidador.',
         'quote_mensal' => 'Olá! Gostaria de solicitar um orçamento para um cuidador mensal.',
         'hire' => 'Olá! Gostaria de contratar um cuidador e receber uma proposta.',
         'need_caregiver' => 'Olá! Preciso de um cuidador e gostaria de receber um orçamento.',
-        'contact' => 'Olá! Vim pela página de contato e gostaria de falar com vocês.',
+        'contact' => 'Olá! Vim pelo site e gostaria de entrar em contato.',
         'faq' => 'Olá! Tenho uma dúvida e gostaria de mais informações sobre os serviços.',
         'how_it_works' => 'Olá! Gostaria de entender como funciona a contratação de um cuidador.',
         'about' => 'Olá! Gostaria de saber mais sobre a Carinho com Você.',
-        'investor' => 'Olá! Gostaria de saber mais sobre investimento e parceria na Carinho com Você.',
+        'investor' => 'Olá! Tenho interesse comercial em parceria ou investimento na Carinho com Você.',
+        'legal_privacy' => 'Olá! Tenho uma dúvida sobre a Política de Privacidade.',
+        'legal_terms' => 'Olá! Tenho uma dúvida sobre os Termos de Uso.',
+        'legal_cancellation' => 'Olá! Tenho uma dúvida sobre a Política de Cancelamento.',
+        'legal_payment' => 'Olá! Tenho uma dúvida sobre a Política de Pagamento e Comissões.',
+        'legal_caregiver_terms' => 'Olá! Tenho uma dúvida sobre os Termos para Cuidadores.',
     ],
 
     /*

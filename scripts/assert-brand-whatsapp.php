@@ -58,14 +58,17 @@ if (!is_file($componentPath)) {
     if ($component === false) {
         fail($componentRel . ': não foi possível ler o arquivo');
     } else {
-        if (!str_contains($component, "route('whatsapp.cta')")) {
+        if (!str_contains($component, "route('whatsapp.cta'")) {
             fail($componentRel . ': deve apontar para route(\'whatsapp.cta\')');
         }
         if (!str_contains($component, "config('branding.contact.whatsapp_display')")) {
             fail($componentRel . ': deve exibir branding.contact.whatsapp_display');
         }
-        if (!preg_match('/<a\b[^>]*href="\{\{\s*route\(\'whatsapp\.cta\'\)\s*\}\}"/s', $component)) {
-            fail($componentRel . ': o número precisa ser um <a href="{{ route(\'whatsapp.cta\') }}">');
+        if (!preg_match("/href=\"\{\{\s*route\('whatsapp\.cta',\s*\['msg'\s*=>\s*\\\$msg\]\)\s*\}\}\"/", $component)) {
+            fail($componentRel . ': o número precisa ser um <a href="{{ route(\'whatsapp.cta\', [\'msg\' => $msg]) }}">');
+        }
+        if (!str_contains($component, "@props(['msg' => 'contact'])")) {
+            fail($componentRel . ': deve aceitar msg contextual (padrão contact)');
         }
     }
 }

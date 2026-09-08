@@ -8,8 +8,8 @@
                 </a>
                 <p>{{ config('branding.value_proposition') }}</p>
                 <p>
-                    <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
-                    <strong>E-mail:</strong> {{ config('branding.contact.email') }}
+                    <strong>WhatsApp:</strong> <x-whatsapp-number msg="contact" /><br>
+                    <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" />
                 </p>
                 <p style="margin-top: var(--spacing-4);">
                     <strong>Horário de Atendimento:</strong><br>

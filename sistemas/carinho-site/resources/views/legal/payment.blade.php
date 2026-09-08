@@ -151,7 +151,7 @@
                 Para questões sobre pagamentos:
             </p>
             <p>
-                <strong>WhatsApp:</strong> <x-whatsapp-number /><br>
+                <strong>WhatsApp:</strong> <x-whatsapp-number msg="legal_payment" /><br>
                 <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" />
             </p>
         </div>
