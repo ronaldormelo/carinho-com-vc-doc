@@ -27,8 +27,8 @@
     <div class="container">
         <div class="grid grid-3">
             @foreach($serviceTypes as $key => $service)
-            <div class="card" style="{{ $key === 'diário' ? 'border: 2px solid var(--color-primary);' : '' }}">
-                @if($key === 'diário')
+            <div class="card" style="{{ $key === 'diario' ? 'border: 2px solid var(--color-primary);' : '' }}">
+                @if($key === 'diario')
                 <span style="background: var(--color-primary); color: white; padding: 4px 12px; border-radius: var(--border-radius); font-size: var(--font-size-sm); display: inline-block; margin-bottom: var(--spacing-4);">Mais procurado</span>
                 @endif
 
@@ -69,8 +69,16 @@
                     <li>Substituição garantida</li>
                 </ul>
 
-                <a href="{{ route('whatsapp.cta') }}" class="btn {{ $key === 'diário' ? 'btn-primary' : 'btn-secondary' }} btn-block" target="_blank" rel="noopener">
+                <a href="{{ route('whatsapp.cta', ['msg' => 'quote_'.$service['code']]) }}" class="btn {{ $key === 'diario' ? 'btn-primary' : 'btn-secondary' }} btn-block" target="_blank" rel="noopener">
+                    @if($key === 'horista')
+                    Solicitar orçamento por hora
+                    @elseif($key === 'diario')
+                    Solicitar orçamento diário
+                    @elseif($key === 'mensal')
+                    Solicitar orçamento mensal
+                    @else
                     Solicitar orçamento
+                    @endif
                 </a>
             </div>
             @endforeach
@@ -182,7 +190,7 @@
         <h2>Pronto para contratar?</h2>
         <p>Fale conosco e receba uma proposta personalizada.</p>
         <div style="display: flex; gap: var(--spacing-4); justify-content: center; flex-wrap: wrap;">
-            <a href="{{ route('whatsapp.cta') }}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">
+            <a href="{{ route('whatsapp.cta', ['msg' => 'hire']) }}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">
                 Falar pelo WhatsApp
             </a>
             <a href="{{ route('clients') }}" class="btn btn-primary btn-lg" style="background: white; color: var(--color-primary);">

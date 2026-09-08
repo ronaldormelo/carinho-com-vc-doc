@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\CrmClient;
 use App\Services\RecaptchaService;
 use App\Services\WhatsAppService;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer(['partials.header', 'partials.whatsapp-float'], function ($view) {
+            $key = app(WhatsAppService::class)->messageKeyForRoute(request()->route()?->getName());
+            $view->with('whatsappCtaUrl', route('whatsapp.cta', ['msg' => $key]));
+        });
     }
 }

@@ -194,7 +194,7 @@
         <div class="highlight-box text-center" style="margin-top: var(--spacing-12);">
             <h3>Não encontrou o que procurava?</h3>
             <p class="text-muted">Entre em contato pelo WhatsApp e teremos prazer em ajudar!</p>
-            <a href="{{ route('whatsapp.cta') }}" class="btn btn-whatsapp" target="_blank" rel="noopener">
+            <a href="{{ route('whatsapp.cta', ['msg' => 'faq']) }}" class="btn btn-whatsapp" target="_blank" rel="noopener">
                 Falar pelo WhatsApp
             </a>
         </div>

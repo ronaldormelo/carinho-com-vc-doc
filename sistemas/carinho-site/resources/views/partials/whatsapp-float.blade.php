@@ -1,5 +1,5 @@
 {{-- WhatsApp Floating Button --}}
-<a href="{{ route('whatsapp.cta') }}"
+<a href="{{ $whatsappCtaUrl ?? route('whatsapp.cta') }}"
    class="whatsapp-float"
    target="_blank"
    rel="noopener"
