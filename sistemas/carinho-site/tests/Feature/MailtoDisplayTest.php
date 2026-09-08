@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class MailtoDisplayTest extends TestCase
@@ -24,9 +25,7 @@ class MailtoDisplayTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider publicPagesProvider
-     */
+    #[DataProvider('publicPagesProvider')]
     public function test_displayed_brand_emails_are_mailto_links(string $path): void
     {
         $response = $this->get($path);

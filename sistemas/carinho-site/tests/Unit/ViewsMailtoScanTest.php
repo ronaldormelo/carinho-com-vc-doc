@@ -13,12 +13,14 @@ class ViewsMailtoScanTest extends TestCase
     {
         $viewsPath = dirname(__DIR__, 2).'/resources/views';
         $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($viewsPath));
+        $scanned = 0;
 
         foreach ($iterator as $file) {
             if (!$file instanceof SplFileInfo || $file->getExtension() !== 'php') {
                 continue;
             }
 
+            $scanned++;
             $content = (string) file_get_contents($file->getPathname());
             $content = preg_replace('#<script type="application/ld\+json">.*?</script>#s', '', $content) ?? $content;
 
@@ -39,6 +41,9 @@ class ViewsMailtoScanTest extends TestCase
                 );
             }
         }
+
+        $this->assertGreaterThan(0, $scanned);
+        $this->assertFileExists($viewsPath.'/components/mailto.blade.php');
     }
 
     public function test_contact_emails_in_views_use_mailto_component(): void
