@@ -183,7 +183,7 @@
         <h2>Pronto para começar?</h2>
         <p>Fale conosco agora e receba uma proposta em minutos!</p>
         <div style="display: flex; gap: var(--spacing-4); justify-content: center; flex-wrap: wrap;">
-            <a href="{{ route('whatsapp.cta') }}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">
+            <a href="{{ route('whatsapp.cta', ['msg' => 'how_it_works']) }}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">
                 Falar pelo WhatsApp
             </a>
             <a href="{{ route('clients') }}" class="btn btn-primary btn-lg" style="background: white; color: var(--color-primary);">

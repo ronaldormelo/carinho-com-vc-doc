@@ -169,6 +169,17 @@ return [
         'client' => 'Olá! Preciso contratar um cuidador.',
         'caregiver' => 'Olá! Sou cuidador(a) e gostaria de me cadastrar.',
         'urgent' => 'Olá! Preciso de um cuidador urgente!',
+        'quote' => 'Olá! Gostaria de solicitar um orçamento para um cuidador.',
+        'quote_horista' => 'Olá! Gostaria de solicitar um orçamento para um cuidador por hora.',
+        'quote_diario' => 'Olá! Gostaria de solicitar um orçamento para a diária de um cuidador.',
+        'quote_mensal' => 'Olá! Gostaria de solicitar um orçamento para um cuidador mensal.',
+        'hire' => 'Olá! Gostaria de contratar um cuidador e receber uma proposta.',
+        'need_caregiver' => 'Olá! Preciso de um cuidador e gostaria de receber um orçamento.',
+        'contact' => 'Olá! Vim pela página de contato e gostaria de falar com vocês.',
+        'faq' => 'Olá! Tenho uma dúvida e gostaria de mais informações sobre os serviços.',
+        'how_it_works' => 'Olá! Gostaria de entender como funciona a contratação de um cuidador.',
+        'about' => 'Olá! Gostaria de saber mais sobre a Carinho com Você.',
+        'investor' => 'Olá! Gostaria de saber mais sobre investimento e parceria na Carinho com Você.',
     ],
 
     /*

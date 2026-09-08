@@ -169,7 +169,7 @@
             </p>
             <p>
                 <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" /><br>
-                <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}
+                <strong>WhatsApp:</strong> <x-whatsapp-number />
             </p>
         </div>
     </div>
