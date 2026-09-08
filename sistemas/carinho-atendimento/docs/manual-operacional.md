@@ -1,6 +1,6 @@
 # Manual Operacional - Central de Atendimento Carinho
 
-Este manual descreve os procedimentos padrao para atendimento ao cliente,
+Este manual descreve os procedimentos padrão para atendimento ao cliente,
 seguindo as melhores praticas definidas pelo sistema.
 
 ---
@@ -14,7 +14,7 @@ seguindo as melhores praticas definidas pelo sistema.
 5. [Acompanhando o Cliente](#5-acompanhando-o-cliente)
 6. [Encerrando o Atendimento](#6-encerrando-o-atendimento)
 7. [Registrando Incidentes](#7-registrando-incidentes)
-8. [Escalonamento entre Niveis](#8-escalonamento-entre-niveis)
+8. [Escalonamento entre Níveis](#8-escalonamento-entre-niveis)
 9. [Boas Praticas de Comunicacao](#9-boas-praticas-de-comunicacao)
 10. [Perguntas Frequentes](#10-perguntas-frequentes)
 
@@ -22,13 +22,13 @@ seguindo as melhores praticas definidas pelo sistema.
 
 ## 1. Visao Geral do Atendimento
 
-### Niveis de Suporte
+### Níveis de Suporte
 
-| Nivel | Responsavel | Atua em |
+| Nivel | Responsável | Atua em |
 |-------|-------------|---------|
-| N1 | Atendente | Primeiro contato, triagem, duvidas simples, propostas |
+| N1 | Atendente | Primeiro contato, triagem, dúvidas simples, propostas |
 | N2 | Supervisor | Reclamacoes, casos complexos, excecoes, negociacoes |
-| N3 | Gestao | Emergencias, crises, decisoes estrategicas |
+| N3 | Gestão | Emergências, crises, decisoes estrategicas |
 
 ### Funil de Atendimento
 
@@ -38,7 +38,7 @@ NOVO → TRIAGEM → PROPOSTA → AGUARDANDO → ATIVO
                  PERDIDO ← (registrar motivo)
 ```
 
-### Horario de Atendimento
+### Horário de Atendimento
 
 - Segunda a Sexta: 08:00 as 18:00
 - Sabados (se configurado): 08:00 as 12:00
@@ -46,7 +46,7 @@ NOVO → TRIAGEM → PROPOSTA → AGUARDANDO → ATIVO
 
 ### Metas de Tempo de Resposta (SLA)
 
-| Prioridade | Primeira Resposta | Resolucao |
+| Prioridade | Primeira Resposta | Resolução |
 |------------|-------------------|-----------|
 | Urgente | 5 minutos | 1 hora |
 | Alta | 15 minutos | 2 horas |
@@ -78,13 +78,13 @@ Como posso ajudar voce hoje?
 
 ### Passo 3: Avaliar a Prioridade
 
-Identifique rapidamente se ha urgencia:
+Identifique rapidamente se há urgência:
 
-| Situacao | Prioridade | Acao |
+| Situação | Prioridade | Ação |
 |----------|------------|------|
-| Inicio imediato (hoje/amanha) | **Urgente** | Priorizar atendimento |
-| Inicio em ate 1 semana | **Alta** | Agilizar triagem |
-| Inicio em 2+ semanas | **Normal** | Seguir fluxo padrao |
+| Início imediato (hoje/amanha) | **Urgente** | Priorizar atendimento |
+| Início em até 1 semana | **Alta** | Agilizar triagem |
+| Início em 2+ semanas | **Normal** | Seguir fluxo padrão |
 | Apenas pesquisando | **Baixa** | Triagem basica |
 
 **Como definir a prioridade no sistema:**
@@ -96,7 +96,7 @@ Identifique rapidamente se ha urgencia:
 
 ## 3. Realizando a Triagem
 
-A triagem e o momento de coletar todas as informacoes necessarias
+A triagem e o momento de coletar todas as informações necessarias
 para elaborar uma proposta adequada.
 
 ### Passo 1: Iniciar a Triagem
@@ -108,7 +108,7 @@ Avance o status da conversa para **TRIAGEM**:
 
 ### Passo 2: Seguir o Script de Perguntas
 
-Colete as informacoes na ordem recomendada. Use o checklist do sistema.
+Colete as informações na ordem recomendada. Use o checklist do sistema.
 
 #### Perguntas Obrigatorias (devem ser respondidas)
 
@@ -137,7 +137,7 @@ administracao de medicamentos, acompanhamento em consultas...
 ```
 Em qual cidade e bairro sera realizado o atendimento?
 ```
-> Dica: Verificar se atendemos a regiao antes de continuar.
+> Dica: Verificar se atendemos a região antes de continuar.
 
 **5. Horario/Turno**
 ```
@@ -148,13 +148,13 @@ Qual o horario ou turno de preferencia?
 - Pernoite (22h-6h)
 - Integral (24h)
 ```
-> Dica: Pergunte tambem sobre finais de semana.
+> Dica: Pergunte também sobre finais de semana.
 
-**6. Data de Inicio**
+**6. Data de Início**
 ```
 Para quando precisa iniciar o servico?
 ```
-> Dica: Urgencia influencia disponibilidade e preco.
+> Dica: Urgência influencia disponibilidade e preco.
 
 #### Perguntas Opcionais (importantes para qualificacao)
 
@@ -171,24 +171,24 @@ uso de sondas, oxigenio...
 Voce ja tem uma expectativa de investimento mensal?
 Isso nos ajuda a indicar opcoes adequadas.
 ```
-> Dica: Nao pressione, deixe o cliente confortavel.
+> Dica: Não pressione, deixe o cliente confortável.
 
 **9. Decisor**
 ```
 Alem de voce, mais alguem participa da decisao
 sobre a contratacao?
 ```
-> Dica: Ajuda a entender o processo de decisao.
+> Dica: Ajuda a entender o processo de decisão.
 
 **10. Como nos Conheceu**
 ```
 Por curiosidade, como voce conheceu a Carinho?
 ```
-> Dica: Informacao importante para marketing.
+> Dica: Informação importante para marketing.
 
 ### Passo 3: Registrar as Respostas
 
-Apos cada resposta do cliente:
+Após cada resposta do cliente:
 1. Acesse "Triagem" na conversa
 2. Preencha o campo correspondente
 3. Salve a resposta
@@ -199,9 +199,9 @@ O sistema mostra o progresso da triagem (ex: 4/6 obrigatorias).
 
 Quando todas as perguntas obrigatorias estiverem respondidas:
 - O sistema avanca automaticamente para **PROPOSTA**
-- Voce recebe uma notificacao
+- Você recebe uma notificação
 
-**Se nao conseguir completar a triagem:**
+**Se não conseguir completar a triagem:**
 - Registre uma nota interna com o motivo
 - Agende retorno com o cliente
 
@@ -209,13 +209,13 @@ Quando todas as perguntas obrigatorias estiverem respondidas:
 
 ## 4. Elaborando a Proposta
 
-### Passo 1: Analisar as Informacoes
+### Passo 1: Analisar as Informações
 
 Com base na triagem, identifique:
-- Perfil do cuidador necessario (experiencia, habilidades)
+- Perfil do cuidador necessário (experiência, habilidades)
 - Carga horaria semanal
 - Faixa de valor adequada
-- Disponibilidade na regiao
+- Disponibilidade na região
 
 ### Passo 2: Preparar a Proposta
 
@@ -223,11 +223,11 @@ Monte a proposta considerando:
 
 | Item | Detalhamento |
 |------|--------------|
-| Perfil do cuidador | Experiencia minima, formacao |
-| Horarios | Dias e turnos de trabalho |
+| Perfil do cuidador | Experiência mínima, formacao |
+| Horários | Dias e turnos de trabalho |
 | Atividades | O que o cuidador fara |
 | Valor | Mensal ou por hora, o que inclui |
-| Condicoes | Forma de pagamento, reajustes |
+| Condições | Forma de pagamento, reajustes |
 
 ### Passo 3: Enviar por WhatsApp
 
@@ -261,7 +261,7 @@ Para formalizar:
 
 ### Passo 5: Atualizar Status
 
-Apos enviar a proposta:
+Após enviar a proposta:
 1. Atualize o status para **AGUARDANDO**
 2. Defina uma data para follow-up
 3. Adicione etiqueta "proposta-enviada"
@@ -272,7 +272,7 @@ Apos enviar a proposta:
 
 ### Regra de Follow-up
 
-| Situacao | Tempo para Retorno |
+| Situação | Tempo para Retorno |
 |----------|-------------------|
 | Proposta urgente | 4 horas |
 | Proposta alta prioridade | 24 horas |
@@ -282,9 +282,9 @@ Apos enviar a proposta:
 ### Passo 1: Verificar Pendencias
 
 Antes de entrar em contato:
-1. Revise o historico da conversa
+1. Revise o histórico da conversa
 2. Verifique anotacoes internas
-3. Confirme ultima proposta enviada
+3. Confirme última proposta enviada
 
 ### Passo 2: Retomar Contato
 
@@ -302,16 +302,16 @@ ou ajustar algum ponto?
 
 ### Passo 3: Registrar o Retorno
 
-Apos o contato:
+Após o contato:
 1. Adicione nota interna com o resultado
-2. Atualize a prioridade se necessario
-3. Agende proximo follow-up
+2. Atualize a prioridade se necessário
+3. Agende próximo follow-up
 
 ### Cenarios de Resposta
 
 **Cliente quer contratar:**
 1. Atualize status para **ATIVO**
-2. Inicie processo de contratacao
+2. Inicie processo de contratação
 3. Envie contrato por e-mail
 4. Sincronize com CRM
 
@@ -320,8 +320,8 @@ Apos o contato:
 2. Elabore nova proposta
 3. Mantenha status em **AGUARDANDO**
 
-**Cliente nao decidiu ainda:**
-1. Registre nota com situacao
+**Cliente não decidiu ainda:**
+1. Registre nota com situação
 2. Agende novo follow-up
 3. Mantenha status em **AGUARDANDO**
 
@@ -336,7 +336,7 @@ Apos o contato:
 
 Quando o cliente contrata:
 
-**Passo 1:** Confirmar a contratacao
+**Passo 1:** Confirmar a contratação
 ```
 Que otimo, [Nome]! Fico muito feliz em ajudar
 sua familia. Vou encaminhar seu contrato agora.
@@ -350,7 +350,7 @@ sua familia. Vou encaminhar seu contrato agora.
 **Passo 3:** Atualizar status
 1. Atualize para **ATIVO**
 2. Adicione etiqueta "contratado"
-3. O sistema sincroniza com CRM e Operacao
+3. O sistema sincroniza com CRM e Operação
 
 **Passo 4:** Agradecer e orientar
 ```
@@ -364,7 +364,7 @@ Obrigado por escolher a Carinho! 💙
 
 ### 6.2 Encerramento por Perda (PERDIDO)
 
-Quando o cliente nao contrata, e **obrigatorio** registrar o motivo.
+Quando o cliente não contrata, e **obrigatorio** registrar o motivo.
 
 **Passo 1:** Identificar o motivo real
 
@@ -379,15 +379,15 @@ poderia me contar o que pesou na sua decisao?
 1. Clique em "Marcar como Perdido"
 2. Selecione o motivo principal:
 
-| Codigo | Motivo | Quando usar |
+| Código | Motivo | Quando usar |
 |--------|--------|-------------|
 | price | Preco acima do orcamento | Cliente achou caro |
 | competitor | Escolheu concorrente | Foi para outra empresa |
 | no_response | Sem retorno do cliente | Cliente sumiu |
-| no_availability | Sem cuidador disponivel | Nao conseguimos atender |
-| region | Regiao nao atendida | Fora da area de cobertura |
-| requirements | Requisitos nao atendidos | Nao temos perfil adequado |
-| postponed | Cliente adiou decisao | Vai contratar depois |
+| no_availability | Sem cuidador disponível | Não conseguimos atender |
+| region | Região não atendida | Fora da área de cobertura |
+| requirements | Requisitos não atendidos | Não temos perfil adequado |
+| postponed | Cliente adiou decisão | Vai contratar depois |
 | other | Outro motivo | Especificar nas notas |
 
 3. Adicione notas com detalhes
@@ -404,10 +404,10 @@ Desejamos tudo de bom para voce e sua familia! 💙
 
 ### 6.3 Encerramento Neutro (FECHADO)
 
-Para atendimentos que nao sao vendas (duvidas, informacoes):
+Para atendimentos que não são vendas (dúvidas, informações):
 
 1. Atualize status para **FECHADO**
-2. Adicione etiqueta apropriada ("duvida-respondida", "informacao")
+2. Adicione etiqueta apropriada ("duvida-respondida", "informação")
 3. O sistema enviara pesquisa de satisfacao
 
 ---
@@ -415,7 +415,7 @@ Para atendimentos que nao sao vendas (duvidas, informacoes):
 ## 7. Registrando Incidentes
 
 Use o registro de incidentes para documentar problemas que
-precisam de atencao especial.
+precisam de atenção especial.
 
 ### Quando Registrar
 
@@ -423,11 +423,11 @@ precisam de atencao especial.
 |-----------|----------|
 | Reclamacao | Cliente insatisfeito com atendimento anterior |
 | Atraso | Demora na resposta, cuidador atrasou |
-| Qualidade | Problema com servico prestado |
-| Comunicacao | Informacao errada, falha de contato |
-| Cobranca | Duvida ou problema com pagamento |
+| Qualidade | Problema com serviço prestado |
+| Comunicacao | Informação errada, falha de contato |
+| Cobrança | Duvida ou problema com pagamento |
 | Cuidador | Problema com profissional alocado |
-| Emergencia | Situacao critica de saude/seguranca |
+| Emergência | Situação critica de saude/seguranca |
 | Sugestao | Ideia de melhoria do cliente |
 
 ### Passo a Passo
@@ -439,13 +439,13 @@ precisam de atencao especial.
 **Passo 3:** Preencha os campos:
 - **Severidade**: Baixa, Media, Alta ou Critica
 - **Categoria**: Selecione a mais adequada
-- **Descricao**: Detalhe o ocorrido
+- **Descrição**: Detalhe o ocorrido
 
 **Passo 4:** Confirme o registro
 
 **Importante:**
 - Incidentes **Alta** e **Critica** notificam automaticamente a supervisao
-- **Emergencias** acionam a equipe de operacoes imediatamente
+- **Emergências** acionam a equipe de operacoes imediatamente
 
 ### Exemplo de Registro
 
@@ -460,26 +460,26 @@ solicita desconto na mensalidade.
 
 ---
 
-## 8. Escalonamento entre Niveis
+## 8. Escalonamento entre Níveis
 
 ### Quando Escalonar para N2 (Supervisor)
 
 - Cliente faz reclamacao formal
-- Solicitacao de desconto ou excecao
+- Solicitação de desconto ou excecao
 - Duvida sobre contrato ou termos
-- Situacao que voce nao sabe resolver
+- Situação que você não sabe resolver
 - Atendimento sem resposta por muito tempo
 
-### Quando Escalonar para N3 (Gestao)
+### Quando Escalonar para N3 (Gestão)
 
-- Emergencia medica ou de seguranca
+- Emergência médica ou de segurança
 - Cliente ameaca processo ou midia
 - Problema grave com cuidador
-- Decisao que impacta outros clientes
+- Decisão que impacta outros clientes
 
 ### Passo a Passo
 
-**Passo 1:** Registre nota interna explicando a situacao
+**Passo 1:** Registre nota interna explicando a situação
 
 **Passo 2:** Clique em "Escalonar"
 
@@ -509,16 +509,16 @@ O sistema escalona automaticamente quando:
 | Sempre | Evitar |
 |--------|--------|
 | Acolhedor e empático | Frio ou robotico |
-| Claro e objetivo | Termos tecnicos |
+| Claro e objetivo | Termos técnicos |
 | Respeitoso | Informal demais |
 | Paciente | Apressado |
 
 ### Estrutura das Mensagens
 
 1. **Saudacao** - Use o nome do cliente
-2. **Contexto** - Retome o assunto se necessario
-3. **Conteudo** - Informacao clara e organizada
-4. **Fechamento** - Proximos passos ou pergunta
+2. **Contexto** - Retome o assunto se necessário
+3. **Conteúdo** - Informação clara e organizada
+4. **Fechamento** - Próximos passos ou pergunta
 
 ### Emojis (com moderacao)
 
@@ -527,13 +527,13 @@ O sistema escalona automaticamente quando:
 | 💙 | Despedida, agradecimento |
 | ✓ | Listas de itens |
 | 📋 | Documentos, propostas |
-| 👤 | Referencias a pessoas |
+| 👤 | Referências a pessoas |
 | 📅 | Datas, agendamentos |
 
 ### O que NUNCA fazer
 
 ❌ Deixar cliente sem resposta por mais de 30 min (prioridade normal)
-❌ Prometer algo que nao podemos cumprir
+❌ Prometer algo que não podemos cumprir
 ❌ Discutir com o cliente
 ❌ Compartilhar dados de outros clientes
 ❌ Usar girias ou linguagem muito informal
@@ -545,33 +545,33 @@ O sistema escalona automaticamente quando:
 
 ### Operacionais
 
-**P: O que fazer se o cliente enviar mensagem fora do horario?**
-R: O sistema envia resposta automatica. Na manha seguinte, priorize os
-contatos recebidos fora do horario.
+**P: O que fazer se o cliente enviar mensagem fora do horário?**
+R: O sistema envia resposta automatica. Na manhã seguinte, priorize os
+contatos recebidos fora do horário.
 
 **P: Como saber se estou dentro do SLA?**
-R: O sistema mostra alertas quando o tempo de resposta esta proximo
+R: O sistema mostra alertas quando o tempo de resposta esta próximo
 do limite. Fique atento a conversas com indicador amarelo (risco) ou
 vermelho (violado).
 
 **P: Posso atender mais de uma conversa ao mesmo tempo?**
 R: Sim, mas garanta que o tempo de resposta seja respeitado em todas.
-Priorize por urgencia e ordem de chegada.
+Priorize por urgência e ordem de chegada.
 
-**P: O que fazer se nao souber responder uma duvida?**
+**P: O que fazer se não souber responder uma duvida?**
 R: Registre nota interna, escalone para N2 ou informe ao cliente que
 vai verificar e retorna em breve. Nunca invente uma resposta.
 
 ### Sobre o Sistema
 
 **P: O cliente ve as notas internas?**
-R: Nao. Notas internas sao visiveis apenas para a equipe.
+R: Não. Notas internas são visiveis apenas para a equipe.
 
 **P: Posso editar uma mensagem enviada?**
-R: Nao. Por isso, revise antes de enviar.
+R: Não. Por isso, revise antes de enviar.
 
 **P: O que acontece quando marco como perdido?**
-R: A conversa e encerrada e o motivo e registrado para analise.
+R: A conversa e encerrada e o motivo e registrado para análise.
 O cliente pode voltar a nos procurar futuramente.
 
 **P: Como adicionar um feriado local?**
@@ -579,9 +579,9 @@ R: Solicite a supervisao, que tem acesso para cadastrar feriados.
 
 ---
 
-## Checklist Rapido do Atendente
+## Checklist Rápido do Atendente
 
-### Inicio do Turno
+### Início do Turno
 - [ ] Verificar conversas pendentes da noite/dia anterior
 - [ ] Checar conversas com SLA em risco
 - [ ] Revisar follow-ups agendados para hoje
@@ -593,8 +593,8 @@ R: Solicite a supervisao, que tem acesso para cadastrar feriados.
 - [ ] Adicionar etiquetas relevantes
 
 ### Fim do Turno
-- [ ] Verificar se ha conversas sem resposta
-- [ ] Registrar notas de pendencias para proximo turno
+- [ ] Verificar se há conversas sem resposta
+- [ ] Registrar notas de pendencias para próximo turno
 - [ ] Confirmar follow-ups do dia seguinte
 
 ---
@@ -603,9 +603,9 @@ R: Solicite a supervisao, que tem acesso para cadastrar feriados.
 
 | Termo | Significado |
 |-------|-------------|
-| SLA | Tempo maximo para resposta/resolucao |
-| Funil | Etapas do atendimento ate conversao |
-| Triagem | Coleta de informacoes para proposta |
+| SLA | Tempo máximo para resposta/resolucao |
+| Funil | Etapas do atendimento até conversao |
+| Triagem | Coleta de informações para proposta |
 | Escalonamento | Passar para nivel superior |
 | NPS | Nota de satisfacao do cliente (1-5) |
 | Follow-up | Retorno/acompanhamento |

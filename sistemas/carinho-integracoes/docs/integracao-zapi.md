@@ -111,7 +111,7 @@ $zapi->sendLink(
     '5511999999999',
     'Confira nosso site:',
     'https://carinho.com.vc',
-    'Carinho com Voce'
+    'Carinho com Você'
 );
 ```
 

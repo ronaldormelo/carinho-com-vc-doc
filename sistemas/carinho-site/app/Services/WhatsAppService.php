@@ -31,8 +31,8 @@ class WhatsAppService
         $message = "Novo lead recebido!\n\n";
         $message .= "Nome: {$name}\n";
         $message .= "Telefone: {$phone}\n";
-        $message .= "Urgencia: {$urgency}\n\n";
-        $message .= "Responda rapidamente para nao perder o contato!";
+        $message .= "Urgência: {$urgency}\n\n";
+        $message .= "Responda rapidamente para não perder o contato!";
 
         // Envia para numero de atendimento
         $atendimentoPhone = config('branding.contact.whatsapp');
@@ -45,11 +45,11 @@ class WhatsAppService
      */
     public function sendWelcomeMessage(string $phone, string $name): array
     {
-        $message = "Ola, {$name}! 👋\n\n";
-        $message .= "Obrigado por entrar em contato com a Carinho com Voce!\n\n";
-        $message .= "Recebemos seu cadastro e um de nossos atendentes entrara em contato em breve.\n\n";
+        $message = "Olá, {$name}! 👋\n\n";
+        $message .= "Obrigado por entrar em contato com a Carinho com Você!\n\n";
+        $message .= "Recebemos seu cadastro e um de nossos atendentes entrará em contato em breve.\n\n";
         $message .= "Se precisar de atendimento urgente, responda esta mensagem.\n\n";
-        $message .= "Carinho com Voce - Cuidado que faz diferenca.";
+        $message .= "Carinho com Você - Cuidado que faz diferença.";
 
         return $this->sendTextMessage($phone, $message);
     }

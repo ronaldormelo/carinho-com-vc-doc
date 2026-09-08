@@ -79,10 +79,10 @@ class NotificationService
         string $recipientName,
         string $documentType
     ): array {
-        $message = "Ola, {$recipientName}!\n\n"
+        $message = "Olá, {$recipientName}!\n\n"
             . "Seu documento ({$documentType}) foi recebido com sucesso.\n\n"
-            . "Em breve sera processado e voce sera notificado.\n\n"
-            . "Equipe Carinho com Voce";
+            . "Em breve será processado e você será notificado.\n\n"
+            . "Equipe Carinho com Você";
 
         return $this->whatsApp->sendTextMessage($phone, $message);
     }
@@ -96,7 +96,7 @@ class NotificationService
             Mail::send('emails.contrato_pronto', [
                 'recipientName' => $recipientName,
                 'signatureUrl' => $signatureUrl,
-                'brandName' => config('branding.name', 'Carinho com Voce'),
+                'brandName' => config('branding.name', 'Carinho com Você'),
             ], function ($message) use ($email, $recipientName) {
                 $message->to($email, $recipientName)
                     ->from(config('branding.email.from', 'documentos@carinho.com.vc'), config('branding.name'))
@@ -123,7 +123,7 @@ class NotificationService
             Mail::send('emails.contrato_assinado', [
                 'documentType' => $documentType,
                 'downloadUrl' => $downloadUrl,
-                'brandName' => config('branding.name', 'Carinho com Voce'),
+                'brandName' => config('branding.name', 'Carinho com Você'),
             ], function ($message) use ($email) {
                 $message->to($email)
                     ->from(config('branding.email.from', 'documentos@carinho.com.vc'), config('branding.name'))

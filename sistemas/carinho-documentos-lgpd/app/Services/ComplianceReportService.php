@@ -40,7 +40,7 @@ class ComplianceReportService
                     'start' => $startDate->toIso8601String(),
                     'end' => $endDate->toIso8601String(),
                 ],
-                'generated_by' => config('branding.name', 'Carinho com Voce'),
+                'generated_by' => config('branding.name', 'Carinho com Você'),
             ],
             'lgpd_requests' => $this->getLgpdRequestsMetrics($startDate, $endDate),
             'consents' => $this->getConsentsMetrics($startDate, $endDate),
@@ -314,7 +314,7 @@ class ComplianceReportService
             $totalScore >= 90 => 'Excelente',
             $totalScore >= 75 => 'Bom',
             $totalScore >= 60 => 'Adequado',
-            $totalScore >= 40 => 'Atencao',
+            $totalScore >= 40 => 'Atenção',
             default => 'Critico',
         };
 
@@ -338,7 +338,7 @@ class ComplianceReportService
             $indicators[] = [
                 'type' => 'lgpd_overdue',
                 'severity' => 'critical',
-                'description' => "{$overdueRequests} solicitacao(es) LGPD vencida(s)",
+                'description' => "{$overdueRequests} solicitação(es) LGPD vencida(s)",
                 'recommendation' => 'Processar imediatamente para evitar sancoes',
             ];
         }
@@ -352,7 +352,7 @@ class ComplianceReportService
             $indicators[] = [
                 'type' => 'lgpd_near_deadline',
                 'severity' => 'high',
-                'description' => "{$nearDeadline} solicitacao(es) proxima(s) do prazo",
+                'description' => "{$nearDeadline} solicitação(es) proxima(s) do prazo",
                 'recommendation' => 'Priorizar processamento',
             ];
         }
@@ -364,8 +364,8 @@ class ComplianceReportService
             $indicators[] = [
                 'type' => 'retention_expired',
                 'severity' => 'medium',
-                'description' => "{$expiredDocs} documento(s) expirado(s) nao arquivado(s)",
-                'recommendation' => 'Executar politica de retencao',
+                'description' => "{$expiredDocs} documento(s) expirado(s) não arquivado(s)",
+                'recommendation' => 'Executar política de retencao',
             ];
         }
 
@@ -438,7 +438,7 @@ class ComplianceReportService
         if ($overdueRequests > 0) {
             $alerts[] = [
                 'type' => 'critical',
-                'message' => "{$overdueRequests} solicitacao(es) LGPD vencida(s)",
+                'message' => "{$overdueRequests} solicitação(es) LGPD vencida(s)",
             ];
         }
 
@@ -449,7 +449,7 @@ class ComplianceReportService
         if ($criticalRequests > 0) {
             $alerts[] = [
                 'type' => 'warning',
-                'message' => "{$criticalRequests} solicitacao(es) vencendo em 24h",
+                'message' => "{$criticalRequests} solicitação(es) vencendo em 24h",
             ];
         }
 

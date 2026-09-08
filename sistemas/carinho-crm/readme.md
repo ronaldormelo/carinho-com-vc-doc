@@ -217,7 +217,7 @@ Todos os sistemas do ecossistema são integrados via API REST com autenticação
 - Filas para processamento assíncrono
 - Índices otimizados no banco
 - Eager loading de relacionamentos
-- Paginação em todas as listagens
+- Páginação em todas as listagens
 
 ### Jobs Agendados
 - Verificação de contratos expirando (diário)

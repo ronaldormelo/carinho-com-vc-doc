@@ -8,9 +8,9 @@
 
 `docs/analise-praticas-mercado.md` é referência, não política de RH.
 
-## Descricao
+## Descrição
 
-Sistema de recrutamento e gestao de cuidadores. Padroniza cadastro, triagem e classificacao para garantir oferta confiavel e escalavel de profissionais qualificados para cuidado domiciliar.
+Sistema de recrutamento e gestão de cuidadores. Padroniza cadastro, triagem e classificacao para garantir oferta confiável e escalavel de profissionais qualificados para cuidado domiciliar.
 
 ## Stack Tecnica
 
@@ -20,27 +20,27 @@ Sistema de recrutamento e gestao de cuidadores. Padroniza cadastro, triagem e cl
 - **Cache e filas:** Redis
 - **Storage:** Integracao com sistema Documentos/LGPD
 
-## Limitacoes atuais (codigo vs runtime)
+## Limitacoes atuais (código vs runtime)
 
-- Formulario publico: `GET /cadastro` (200) e `POST /cadastro` (CSRF) gravam em `caregivers` via `CaregiverService`. API `POST /api/caregivers` continua exigindo token interno.
+- Formulário público: `GET /cadastro` (200) e `POST /cadastro` (CSRF) gravam em `caregivers` via `CaregiverService`. API `POST /api/caregivers` continua exigindo token interno.
 
 ## Modulos Implementados
 
 ### 1. Cadastro e Triagem Digital
-- API de cadastro (`POST /api/caregivers`) com validacao e classificacao
-- Formulario web publico em `/cadastro` (marca `#5BBFAD`, CSRF)
+- API de cadastro (`POST /api/caregivers`) com validação e classificacao
+- Formulário web público em `/cadastro` (marca `#5BBFAD`, CSRF)
 
-### 2. Gestao de Documentos
-- Upload de documentos obrigatorios (RG, CPF, comprovante de endereco)
+### 2. Gestão de Documentos
+- Upload de documentos obrigatórios (RG, CPF, comprovante de endereço)
 - Upload de documentos opcionais (certificados, cursos)
-- Validacao automatica e manual de documentos
+- Validação automatica e manual de documentos
 - Integracao com sistema Documentos/LGPD para armazenamento seguro
 
 ### 3. Classificacao e Segmentacao
 - Tipos de cuidado: Idosos, PCD, TEA, Pos-operatorio
-- Niveis de habilidade: Basico, Intermediario, Avancado
-- Regioes de atuacao (cidade e bairro)
-- Disponibilidade por dia da semana e horario
+- Níveis de habilidade: Basico, Intermediario, Avancado
+- Regioes de atuação (cidade e bairro)
+- Disponibilidade por dia da semana e horário
 
 ### 4. Contratos Digitais
 - Geracao de termo de responsabilidade
@@ -49,41 +49,41 @@ Sistema de recrutamento e gestao de cuidadores. Padroniza cadastro, triagem e cl
 - Integracao com sistema Documentos/LGPD
 
 ### 5. Ativacao/Desativacao
-- Fluxo de triagem e validacao
-- Ativacao automatica apos requisitos cumpridos
+- Fluxo de triagem e validação
+- Ativacao automatica após requisitos cumpridos
 - Desativacao e bloqueio com motivo
 
 ### 6. Banco Pesquisavel
 - Busca avancada com filtros multiplos
-- Busca rapida por telefone/nome
-- Busca por disponibilidade em horario especifico
+- Busca rápida por telefone/nome
+- Busca por disponibilidade em horário especifico
 - Cache de consultas frequentes
 
 ### 7. Canal de Comunicacao
 - Integracao com Z-API para WhatsApp
-- Notificacoes automaticas (boas-vindas, ativacao, documentos)
+- Notificações automaticas (boas-vindas, ativacao, documentos)
 - Processamento de mensagens recebidas
 - Templates de mensagem configurados
 
-### 8. Avaliacoes e Ocorrencias
-- Registro de avaliacoes pos-servico (1-5 estrelas)
+### 8. Avaliações e Ocorrencias
+- Registro de avaliações pos-servico (1-5 estrelas)
 - Calculo de media e tendencias
 - Registro de incidentes/intercorrencias
 - Alertas para cuidadores com notas baixas
 
 ### 9. Treinamentos
 - Registro de cursos e treinamentos
-- Controle de conclusao
-- Sugestao de cursos disponiveis
+- Controle de conclusão
+- Sugestao de cursos disponíveis
 
 ## Integracoes
 
 ### Externas
-- **Z-API (WhatsApp):** Envio de mensagens, documentos e notificacoes
+- **Z-API (WhatsApp):** Envio de mensagens, documentos e notificações
 
 ### Internas
-- **CRM:** Sincronizacao de dados, historico e performance
-- **Operacao:** Disponibilidade, alocacao, check-in/check-out
+- **CRM:** Sincronizacao de dados, histórico e performance
+- **Operação:** Disponibilidade, alocacao, check-in/check-out
 - **Documentos/LGPD:** Armazenamento seguro, assinatura digital
 - **Atendimento:** Comunicados e suporte
 - **Integracoes Hub:** Publicacao de eventos para automacoes
@@ -184,7 +184,7 @@ EMAIL_FROM=cuidadores@carinho.com.vc
 EMAIL_REPLY_TO=contato@carinho.com.vc
 
 # Branding
-BRAND_NAME="Carinho com Voce"
+BRAND_NAME="Carinho com Você"
 BRAND_DOMAIN=carinho.com.vc
 ```
 
@@ -204,15 +204,15 @@ BRAND_DOMAIN=carinho.com.vc
 
 ### Busca
 - `POST /api/search` - Busca avancada
-- `GET /api/search/available` - Cuidadores disponiveis
+- `GET /api/search/available` - Cuidadores disponíveis
 
 ### Webhooks
 - `POST /api/webhooks/whatsapp/z-api` - Webhook Z-API
 
 ## Filas (Redis)
 
-- `notifications` - Envio de notificacoes
-- `documents` - Validacao de documentos
+- `notifications` - Envio de notificações
+- `documents` - Validação de documentos
 - `contracts` - Processamento de contratos
 - `integrations` - Sincronizacao com sistemas
 - `messages` - Processamento de mensagens WhatsApp
@@ -255,10 +255,10 @@ docker-compose up -d
 docker-compose logs -f app
 ```
 
-## Seguranca
+## Segurança
 
 - Todas as rotas da API protegidas por token interno
-- Webhooks com validacao de assinatura
+- Webhooks com validação de assinatura
 - Documentos armazenados com criptografia
 - Logs de acesso e auditoria
 - Conformidade com LGPD

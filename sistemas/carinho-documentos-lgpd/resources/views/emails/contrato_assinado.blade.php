@@ -97,8 +97,8 @@
             </div>
             <div class="content">
                 <p class="message">
-                    Parabens! Seu documento foi assinado com sucesso.
-                    Uma copia assinada esta disponivel para download.
+                    Parabéns! Seu documento foi assinado com sucesso.
+                    Uma cópia assinada está disponível para download.
                 </p>
 
                 <div class="document-info">
@@ -111,13 +111,13 @@
                 </div>
 
                 <p class="message" style="font-size: 14px;">
-                    O link para download e valido por 24 horas. Recomendamos que baixe e guarde
-                    uma copia do documento em seus arquivos.
+                    O link para download e válido por 24 horas. Recomendamos que baixe e guarde
+                    uma cópia do documento em seus arquivos.
                 </p>
             </div>
             <div class="footer">
                 <p>
-                    Em caso de duvidas, entre em contato conosco pelo email
+                    Em caso de dúvidas, entre em contato conosco pelo email
                     <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
                 <p>&copy; {{ date('Y') }} {{ $brandName }}. Todos os direitos reservados.</p>

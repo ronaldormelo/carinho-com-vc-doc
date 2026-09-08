@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configuracoes de identidade visual da marca Carinho com Voce.
+ * Configuracoes de identidade visual da marca Carinho com Você.
  *
  * Segue os padroes definidos no arquivo "00 - Identidade da Marca.md"
  */
@@ -13,7 +13,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     // Host publico do site: apex (nao mais site.carinho.com.vc).
     'subdomain' => env('SITE_SUBDOMAIN', env('BRAND_DOMAIN', 'carinho.com.vc')),
@@ -25,13 +25,13 @@ return [
     */
 
     'purpose' => [
-        'Tornar o cuidado domiciliar simples, humano e confiavel.',
-        'Reduzir o esforco da familia para encontrar cuidadores qualificados.',
+        'Tornar o cuidado domiciliar simples, humano e confiável.',
+        'Reduzir o esforço da família para encontrar cuidadores qualificados.',
     ],
 
-    'promise' => 'Atendimento rapido, transparente e com continuidade.',
+    'promise' => 'Atendimento rápido, transparente e com continuidade.',
 
-    'value_proposition' => 'Contratacao rapida e sem complicacao de cuidadores qualificados, com atendimento humanizado e gestao digital.',
+    'value_proposition' => 'Contratação rápida e sem complicação de cuidadores qualificados, com atendimento humanizado e gestão digital.',
 
     /*
     |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ return [
         'Humana e acolhedora',
         'Profissional e segura',
         'Simples e direta',
-        'Confiavel e responsavel',
+        'Confiável e responsável',
     ],
 
     /*
@@ -53,8 +53,8 @@ return [
     */
 
     'voice' => [
-        'tone' => 'Empatico, respeitoso e objetivo.',
-        'language' => 'Linguagem simples, sem jargoes tecnicos.',
+        'tone' => 'Empático, respeitoso e objetivo.',
+        'language' => 'Linguagem simples, sem jargões técnicos.',
         'guidelines' => [
             'Evitar termos que infantilizem o idoso ou o cuidador.',
             'Respostas claras e objetivas.',
@@ -69,10 +69,10 @@ return [
     */
 
     'messages' => [
-        'hiring' => 'Contratacao rapida e sem complicacao.',
+        'hiring' => 'Contratação rápida e sem complicação.',
         'caregivers' => 'Cuidadores qualificados e avaliados.',
         'service' => 'Atendimento digital com suporte humano.',
-        'replacement' => 'Substituicao facilitada quando necessario.',
+        'replacement' => 'Substituição facilitada quando necessário.',
     ],
 
     /*
@@ -164,10 +164,10 @@ return [
     */
 
     'whatsapp_messages' => [
-        'default' => 'Ola! Vim pelo site e gostaria de saber mais sobre os servicos.',
-        'client' => 'Ola! Preciso contratar um cuidador.',
-        'caregiver' => 'Ola! Sou cuidador(a) e gostaria de me cadastrar.',
-        'urgent' => 'Ola! Preciso de um cuidador urgente!',
+        'default' => 'Olá! Vim pelo site e gostaria de saber mais sobre os serviços.',
+        'client' => 'Olá! Preciso contratar um cuidador.',
+        'caregiver' => 'Olá! Sou cuidador(a) e gostaria de me cadastrar.',
+        'urgent' => 'Olá! Preciso de um cuidador urgente!',
     ],
 
     /*
@@ -177,9 +177,9 @@ return [
     */
 
     'seo' => [
-        'title_suffix' => ' | Carinho com Voce',
-        'default_title' => 'Carinho com Voce - Cuidadores Domiciliares Qualificados',
-        'default_description' => 'Encontre cuidadores qualificados para idosos e pessoas com necessidades especiais. Contratacao rapida, segura e sem complicacao. Atendimento humanizado.',
+        'title_suffix' => ' | Carinho com Você',
+        'default_title' => 'Carinho com Você - Cuidadores Domiciliares Qualificados',
+        'default_description' => 'Encontre cuidadores qualificados para idosos e pessoas com necessidades especiais. Contratação rápida, segura e sem complicação. Atendimento humanizado.',
         'default_keywords' => 'cuidador de idosos, cuidado domiciliar, home care, cuidador profissional, acompanhante de idosos, cuidador qualificado',
     ],
 ];

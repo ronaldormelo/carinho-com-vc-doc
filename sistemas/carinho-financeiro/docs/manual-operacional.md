@@ -467,7 +467,7 @@ Serviço Concluído → Aguarda 3 dias → Entra na fila → Sexta-feira = Repas
 **Passo a passo:**
 
 1. **Acesse** Conciliação > Discrepâncias
-2. **Analise** cada item:
+2. **Análise** cada item:
    - **Fatura paga sem pagamento**: Verificar se webhook falhou
    - **Pagamento órfão**: Verificar se fatura foi deletada incorretamente
 3. **Para cada discrepância:**
@@ -491,7 +491,7 @@ Serviço Concluído → Aguarda 3 dias → Entra na fila → Sexta-feira = Repas
 1. **Acesse** Relatórios > DRE
 2. **Selecione** o período (mês, trimestre, ano)
 3. **Gere** o relatório
-4. **Analise** os resultados:
+4. **Análise** os resultados:
 
 ```
 RECEITA BRUTA
@@ -530,7 +530,7 @@ RECEITA BRUTA
 
 1. **Acesse** Relatórios > Aging
 2. **Gere** o relatório
-3. **Analise** por faixas de vencimento:
+3. **Análise** por faixas de vencimento:
 
 | Faixa | Significado | Ação Recomendada |
 |-------|-------------|------------------|
@@ -589,7 +589,7 @@ RECEITA BRUTA
 **Passo a passo:**
 
 1. **Abra** a solicitação pendente
-2. **Analise:**
+2. **Análise:**
    - O valor é justificável?
    - O motivo é válido?
    - Há histórico similar?

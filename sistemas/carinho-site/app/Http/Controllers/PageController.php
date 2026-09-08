@@ -41,7 +41,7 @@ class PageController extends Controller
         return view('pages.about', [
             'seo' => [
                 'title' => 'Quem Somos' . config('branding.seo.title_suffix'),
-                'description' => 'Conheca a Carinho com Voce. Somos especializados em conectar familias a cuidadores qualificados de forma rapida, segura e humanizada.',
+                'description' => 'Conheça a Carinho com Você. Somos especializados em conectar famílias a cuidadores qualificados de forma rápida, segura e humanizada.',
             ],
         ]);
     }
@@ -56,8 +56,8 @@ class PageController extends Controller
         return view('pages.services', [
             'serviceTypes' => $serviceTypes,
             'seo' => [
-                'title' => 'Nossos Servicos' . config('branding.seo.title_suffix'),
-                'description' => 'Oferecemos servicos de cuidadores por hora, diarios ou mensais. Encontre o modelo ideal para sua necessidade.',
+                'title' => 'Nossos Serviços' . config('branding.seo.title_suffix'),
+                'description' => 'Oferecemos serviços de cuidadores por hora, diários ou mensais. Encontre o modelo ideal para sua necessidade.',
             ],
         ]);
     }
@@ -75,7 +75,7 @@ class PageController extends Controller
             'urgencyLevels' => $urgencyLevels,
             'seo' => [
                 'title' => 'Para Clientes - Contrate um Cuidador' . config('branding.seo.title_suffix'),
-                'description' => 'Precisa de um cuidador qualificado? Contratacao rapida e sem complicacao. Resposta em ate 5 minutos!',
+                'description' => 'Precisa de um cuidador qualificado? Contratação rápida e sem complicação. Resposta em até 5 minutos!',
             ],
         ]);
     }
@@ -93,7 +93,7 @@ class PageController extends Controller
             'payoutPolicy' => $payoutPolicy,
             'seo' => [
                 'title' => 'Para Cuidadores - Trabalhe Conosco' . config('branding.seo.title_suffix'),
-                'description' => 'Seja um cuidador parceiro da Carinho com Voce. Mais oportunidades, recorrencia e suporte profissional.',
+                'description' => 'Seja um cuidador parceiro da Carinho com Você. Mais oportunidades, recorrência e suporte profissional.',
             ],
         ]);
     }
@@ -106,7 +106,7 @@ class PageController extends Controller
         return view('pages.contact', [
             'seo' => [
                 'title' => 'Contato' . config('branding.seo.title_suffix'),
-                'description' => 'Entre em contato conosco pelo WhatsApp ou preencha o formulario. Respondemos em ate 5 minutos durante o horario comercial.',
+                'description' => 'Entre em contato conosco pelo WhatsApp ou preencha o formulário. Respondemos em até 5 minutos durante o horário comercial.',
             ],
         ]);
     }
@@ -124,7 +124,7 @@ class PageController extends Controller
             'categories' => $categories,
             'seo' => [
                 'title' => 'Perguntas Frequentes' . config('branding.seo.title_suffix'),
-                'description' => 'Encontre respostas para as duvidas mais comuns sobre nossos servicos de cuidadores domiciliares.',
+                'description' => 'Encontre respostas para as dúvidas mais comuns sobre nossos serviços de cuidadores domiciliares.',
             ],
         ]);
     }
@@ -137,7 +137,7 @@ class PageController extends Controller
         return view('pages.how-it-works', [
             'seo' => [
                 'title' => 'Como Funciona' . config('branding.seo.title_suffix'),
-                'description' => 'Veja como e facil contratar um cuidador pela Carinho com Voce. Processo 100% digital em poucos minutos.',
+                'description' => 'Veja como é fácil contratar um cuidador pela Carinho com Você. Processo 100% digital em poucos minutos.',
             ],
         ]);
     }

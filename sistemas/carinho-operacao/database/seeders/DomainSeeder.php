@@ -15,7 +15,7 @@ class DomainSeeder extends Seeder
         // Tipos de servico
         DB::table('domain_service_type')->insert([
             ['id' => 1, 'code' => 'horista', 'label' => 'Horista'],
-            ['id' => 2, 'code' => 'diario', 'label' => 'Diario'],
+            ['id' => 2, 'code' => 'diario', 'label' => 'Diário'],
             ['id' => 3, 'code' => 'mensal', 'label' => 'Mensal'],
         ]);
 
@@ -53,7 +53,7 @@ class DomainSeeder extends Seeder
 
         // Tipos de checklist
         DB::table('domain_checklist_type')->insert([
-            ['id' => 1, 'code' => 'start', 'label' => 'Inicio'],
+            ['id' => 1, 'code' => 'start', 'label' => 'Início'],
             ['id' => 2, 'code' => 'end', 'label' => 'Fim'],
         ]);
 

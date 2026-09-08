@@ -83,7 +83,7 @@ class LgpdService
             $request = DataRequest::findOrFail($requestId);
 
             if ($request->request_type_id !== DomainRequestType::EXPORT) {
-                return ['ok' => false, 'error' => 'Tipo de solicitacao invalido'];
+                return ['ok' => false, 'error' => 'Tipo de solicitação inválido'];
             }
 
             $request->markAsInProgress();
@@ -144,7 +144,7 @@ class LgpdService
             $request = DataRequest::findOrFail($requestId);
 
             if ($request->request_type_id !== DomainRequestType::DELETE) {
-                return ['ok' => false, 'error' => 'Tipo de solicitacao invalido'];
+                return ['ok' => false, 'error' => 'Tipo de solicitação inválido'];
             }
 
             $request->markAsInProgress();
@@ -296,7 +296,7 @@ class LgpdService
         $request = DataRequest::with(['requestType', 'status'])->find($requestId);
 
         if (!$request) {
-            return ['ok' => false, 'error' => 'Solicitacao nao encontrada'];
+            return ['ok' => false, 'error' => 'Solicitação não encontrada'];
         }
 
         $result = $this->whatsApp->sendDataRequestNotification(
@@ -327,7 +327,7 @@ class LgpdService
         return [
             'export_info' => [
                 'generated_at' => now()->toIso8601String(),
-                'generated_by' => config('branding.name', 'Carinho com Voce'),
+                'generated_by' => config('branding.name', 'Carinho com Você'),
             ],
             'subject' => [
                 'type' => DomainOwnerType::CODES[$ownerTypeId] ?? 'unknown',

@@ -17,7 +17,7 @@ class DomainSeeder extends Seeder
             ['id' => 1, 'code' => 'contrato_cliente', 'label' => 'Contrato cliente'],
             ['id' => 2, 'code' => 'contrato_cuidador', 'label' => 'Contrato cuidador'],
             ['id' => 3, 'code' => 'termos', 'label' => 'Termos de uso'],
-            ['id' => 4, 'code' => 'privacidade', 'label' => 'Politica de privacidade'],
+            ['id' => 4, 'code' => 'privacidade', 'label' => 'Política de privacidade'],
         ]);
 
         // Tipos de proprietario
@@ -43,7 +43,7 @@ class DomainSeeder extends Seeder
 
         // Metodos de assinatura
         DB::table('domain_signature_method')->insert([
-            ['id' => 1, 'code' => 'otp', 'label' => 'Codigo OTP'],
+            ['id' => 1, 'code' => 'otp', 'label' => 'Código OTP'],
             ['id' => 2, 'code' => 'click', 'label' => 'Clique para aceitar'],
             ['id' => 3, 'code' => 'certificate', 'label' => 'Certificado digital'],
         ]);
@@ -53,21 +53,21 @@ class DomainSeeder extends Seeder
             ['id' => 1, 'code' => 'view', 'label' => 'Visualizacao'],
             ['id' => 2, 'code' => 'download', 'label' => 'Download'],
             ['id' => 3, 'code' => 'sign', 'label' => 'Assinatura'],
-            ['id' => 4, 'code' => 'delete', 'label' => 'Exclusao'],
+            ['id' => 4, 'code' => 'delete', 'label' => 'Exclusão'],
         ]);
 
         // Tipos de solicitacao LGPD
         DB::table('domain_request_type')->insert([
-            ['id' => 1, 'code' => 'export', 'label' => 'Exportacao de dados'],
-            ['id' => 2, 'code' => 'delete', 'label' => 'Exclusao de dados'],
-            ['id' => 3, 'code' => 'update', 'label' => 'Atualizacao de dados'],
+            ['id' => 1, 'code' => 'export', 'label' => 'Exportação de dados'],
+            ['id' => 2, 'code' => 'delete', 'label' => 'Exclusão de dados'],
+            ['id' => 3, 'code' => 'update', 'label' => 'Atualização de dados'],
         ]);
 
         // Status de solicitacao LGPD
         DB::table('domain_request_status')->insert([
             ['id' => 1, 'code' => 'open', 'label' => 'Aberta'],
             ['id' => 2, 'code' => 'in_progress', 'label' => 'Em andamento'],
-            ['id' => 3, 'code' => 'done', 'label' => 'Concluida'],
+            ['id' => 3, 'code' => 'done', 'label' => 'Concluída'],
             ['id' => 4, 'code' => 'rejected', 'label' => 'Rejeitada'],
         ]);
 

@@ -16,7 +16,7 @@
         .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #F4F7F9; padding: 1rem; font-family: 'Nunito', 'Inter', Arial, sans-serif; }
         .login-card { width: 100%; max-width: 400px; background: #fff; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); padding: 2rem; }
         .login-logo { text-align: center; margin-bottom: 1.5rem; }
-        .login-logo img { height: 44px; }
+        .login-logo img { height: 100px; width: auto; }
         .login-title { font-family: 'Nunito', 'Inter', Arial, sans-serif; font-size: 1.25rem; font-weight: 700; color: #1a2b32; margin-bottom: 0.25rem; }
         .login-subtitle { font-size: 0.875rem; color: #9AA5B1; margin-bottom: 1.5rem; font-family: 'Nunito', 'Inter', Arial, sans-serif; }
         .login-form .form-group { margin-bottom: 1rem; }

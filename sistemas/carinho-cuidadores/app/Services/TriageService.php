@@ -37,7 +37,7 @@ class TriageService
                 ->toArray(),
         ];
 
-        Log::info('Verificacao de elegibilidade', [
+        Log::info('Verificação de elegibilidade', [
             'caregiver_id' => $caregiver->id,
             'is_eligible' => $isEligible,
         ]);
@@ -54,10 +54,10 @@ class TriageService
         $passed = empty($missingDocs);
 
         return [
-            'name' => 'Documentos obrigatorios',
+            'name' => 'Documentos obrigatórios',
             'passed' => $passed,
             'message' => $passed
-                ? 'Todos os documentos obrigatorios estao aprovados'
+                ? 'Todos os documentos obrigatórios estão aprovados'
                 : 'Faltam documentos: ' . implode(', ', $missingDocs),
             'details' => [
                 'required' => DomainDocumentType::required(),
@@ -92,21 +92,21 @@ class TriageService
         $issues = [];
 
         if (empty($caregiver->name)) {
-            $issues[] = 'Nome nao informado';
+            $issues[] = 'Nome não informado';
         }
 
         if (empty($caregiver->phone)) {
-            $issues[] = 'Telefone nao informado';
+            $issues[] = 'Telefone não informado';
         }
 
         if (empty($caregiver->city)) {
-            $issues[] = 'Cidade nao informada';
+            $issues[] = 'Cidade não informada';
         }
 
         // Verifica experiencia minima se configurado
         $minExperience = config('cuidadores.triagem.experiencia_minima_anos', 0);
         if ($minExperience > 0 && $caregiver->experience_years < $minExperience) {
-            $issues[] = "Experiencia minima de {$minExperience} ano(s) requerida";
+            $issues[] = "Experiência mínima de {$minExperience} ano(s) requerida";
         }
 
         // Verifica se tem pelo menos uma habilidade
@@ -138,7 +138,7 @@ class TriageService
             'passed' => $hasAvailability,
             'message' => $hasAvailability
                 ? 'Disponibilidade cadastrada'
-                : 'Cuidador precisa informar disponibilidade de horarios',
+                : 'Cuidador precisa informar disponibilidade de horários',
         ];
     }
 
@@ -150,10 +150,10 @@ class TriageService
         $hasRegions = $caregiver->regions()->count() > 0;
 
         return [
-            'name' => 'Regioes de atuacao',
+            'name' => 'Regioes de atuação',
             'passed' => $hasRegions,
             'message' => $hasRegions
-                ? 'Regioes de atuacao cadastradas'
+                ? 'Regioes de atuação cadastradas'
                 : 'Cuidador precisa informar regioes onde pode atuar',
         ];
     }
@@ -199,8 +199,8 @@ class TriageService
         $readiness = $this->classifyReadiness($caregiver);
 
         $readinessLabels = [
-            'premium' => 'Premium - Pronto para servicos prioritarios',
-            'standard' => 'Padrao - Pronto para ativacao',
+            'premium' => 'Premium - Pronto para serviços prioritarios',
+            'standard' => 'Padrão - Pronto para ativacao',
             'basic' => 'Basico - Pronto com restricoes',
             'almost_ready' => 'Quase pronto - Poucos ajustes necessarios',
             'incomplete' => 'Incompleto - Varios requisitos pendentes',

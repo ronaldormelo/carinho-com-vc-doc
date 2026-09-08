@@ -89,16 +89,16 @@ class ProcessCaregiverMessage implements ShouldQueue
     {
         $status = $caregiver->status?->label ?? 'Desconhecido';
         $rating = $caregiver->average_rating;
-        $ratingText = $rating ? number_format($rating, 1) . '/5' : 'Sem avaliacoes';
+        $ratingText = $rating ? number_format($rating, 1) . '/5' : 'Sem avaliações';
 
         $message = <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
 Seu status atual: {$status}
 
-Avaliacao media: {$ratingText}
+Avaliação media: {$ratingText}
 
-Para mais informacoes, digite "ajuda".
+Para mais informações, digite "ajuda".
 MSG;
 
         $zApiClient->sendTextMessage($caregiver->phone, $message);
@@ -106,18 +106,18 @@ MSG;
 
     private function sendHelpResponse(Caregiver $caregiver, ZApiClient $zApiClient): void
     {
-        $brandName = config('branding.name', 'Carinho com Voce');
+        $brandName = config('branding.name', 'Carinho com Você');
 
         $message = <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Comandos disponiveis:
+Comandos disponíveis:
 
 - "status" - Ver seu status atual
-- "disponibilidade" - Ver seus horarios
+- "disponibilidade" - Ver seus horários
 - "ajuda" - Ver este menu
 
-Para outras questoes, envie sua mensagem que nossa equipe respondera em breve.
+Para outras questões, envie sua mensagem que nossa equipe responderá em breve.
 
 {$brandName}
 MSG;
@@ -133,7 +133,7 @@ MSG;
             ->get();
 
         if ($availability->isEmpty()) {
-            $message = "Voce ainda nao cadastrou sua disponibilidade de horarios.";
+            $message = "Você ainda não cadastrou sua disponibilidade de horários.";
         } else {
             $lines = $availability->map(fn ($a) => $a->display)->implode("\n");
             $message = "Sua disponibilidade cadastrada:\n\n{$lines}";
@@ -156,7 +156,7 @@ MSG;
             'type' => 'new_caregiver',
         ]);
 
-        Log::info('Mensagem de numero desconhecido encaminhada para atendimento', [
+        Log::info('Mensagem de número desconhecido encaminhada para atendimento', [
             'phone' => $phone,
         ]);
     }

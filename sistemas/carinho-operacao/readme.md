@@ -1,4 +1,4 @@
-# Carinho Operacao
+# Carinho Operação
 
 **Subdominio:** operacao.carinho.com.vc
 
@@ -14,9 +14,9 @@
 
 Política de **reembolso ao cliente**: [Financeiro — políticas](../carinho-financeiro/docs/politicas.md). Defaults de **horas** em `config/operacao.php` (`CANCEL_FREE_HOURS=24`, `CANCEL_REDUCED_HOURS=6`) seguem essa tabela. As taxas `CANCEL_*_FEE_PERCENT` (30%/50%) são parâmetro interno de operação, **não** o reembolso 100/50/0 que a família vê.
 
-## Descricao
+## Descrição
 
-Sistema operacional que conecta cliente e cuidador. Gerencia agenda, alocacao, execucao do servico e comunicacao de status. Este sistema e o coracao da operacao diaria, responsavel por garantir que cada atendimento aconteca de forma fluida e com qualidade.
+Sistema operacional que conecta cliente e cuidador. Gerencia agenda, alocacao, execucao do serviço e comunicacao de status. Este sistema e o coracao da operação diaria, responsável por garantir que cada atendimento aconteca de forma fluida e com qualidade.
 
 ## Stack Tecnologica
 
@@ -30,41 +30,41 @@ Sistema operacional que conecta cliente e cuidador. Gerencia agenda, alocacao, e
 
 ### 1. Agenda Compartilhada e Agendamentos
 - Criacao e gerenciamento de agendamentos por cliente e cuidador
-- Validacao de disponibilidade com intervalos minimos
-- Visualizacao de agenda por periodo
+- Validação de disponibilidade com intervalos minimos
+- Visualizacao de agenda por período
 - Cache de agenda para performance
 
 ### 2. Match Cliente x Cuidador
-- Motor de match por perfil, disponibilidade e regiao
-- Sistema de pontuacao ponderada (skills, disponibilidade, regiao, avaliacao)
-- Match automatico para scores acima do minimo configurado
-- Verificacao de compatibilidade baseada em historico
+- Motor de match por perfil, disponibilidade e região
+- Sistema de pontuacao ponderada (skills, disponibilidade, região, avaliação)
+- Match automatico para scores acima do mínimo configurado
+- Verificação de compatibilidade baseada em histórico
 
 ### 3. Check-in/Check-out e Checklists
-- Registro de check-in com validacao de localizacao
+- Registro de check-in com validação de localizacao
 - Registro de check-out com atividades realizadas
-- Checklists configurados de inicio e fim de atendimento
-- Logs de atividades durante o servico
+- Checklists configurados de início e fim de atendimento
+- Logs de atividades durante o serviço
 
-### 4. Registro de Servico
+### 4. Registro de Serviço
 - Logs de atividades realizadas
 - Notas e observacoes do cuidador
-- Historico completo por agendamento
+- Histórico completo por agendamento
 
-### 5. Notificacoes
-- Notificacao de inicio e fim de servico para cliente
+### 5. Notificações
+- Notificação de início e fim de serviço para cliente
 - Lembretes de agendamento (24h e 2h antes)
-- Notificacao de alocacao e substituicao de cuidador
-- Alertas de emergencia
+- Notificação de alocacao e substituição de cuidador
+- Alertas de emergência
 - Suporte a WhatsApp (Z-API), Email e Push
 
-### 6. Substituicao e Emergencias
+### 6. Substituição e Emergências
 - Processo automatico de busca de substituto
-- Transferencia de agendamentos futuros
-- Registro de emergencias com severidade
-- Escalonamento automatico de emergencias nao resolvidas
+- Transferência de agendamentos futuros
+- Registro de emergências com severidade
+- Escalonamento automatico de emergências não resolvidas
 
-### 7. Politicas de Cancelamento
+### 7. Políticas de Cancelamento
 - A tabela que o cliente vê (reembolso 100% / 50% / 0%) está no Financeiro e no Site.
 - Janelas de hora neste módulo: 24 h (sem taxa operacional) e 6 h (taxa reduzida vs integral).
 - `CANCEL_*_FEE_PERCENT` default 30%/50% **não** substitui o reembolso publicado.
@@ -116,35 +116,35 @@ carinho-operacao/
 
 ### Sistemas Internos
 
-| Sistema | Funcao | Base URL |
+| Sistema | Função | Base URL |
 |---------|--------|----------|
 | CRM | Dados de cliente e contrato | crm.carinho.com.vc/api |
 | Cuidadores | Disponibilidade e perfil | cuidadores.carinho.com.vc/api |
-| Atendimento | Detalhes da demanda e urgencia | atendimento.carinho.com.vc/api |
-| Financeiro | Cobranca e repasse | financeiro.carinho.com.vc/api |
+| Atendimento | Detalhes da demanda e urgência | atendimento.carinho.com.vc/api |
+| Financeiro | Cobrança e repasse | financeiro.carinho.com.vc/api |
 
 ### APIs Externas
 
-| API | Funcao | Documentacao |
+| API | Função | Documentacao |
 |-----|--------|--------------|
 | Z-API | WhatsApp Business | https://developer.z-api.io/ |
 
 ## API Endpoints
 
-### Solicitacoes de Servico
+### Solicitacoes de Serviço
 - `GET /api/service-requests` - Lista solicitacoes
 - `GET /api/service-requests/open` - Solicitacoes abertas
 - `GET /api/service-requests/urgent` - Solicitacoes urgentes
-- `POST /api/service-requests` - Cria solicitacao
+- `POST /api/service-requests` - Cria solicitação
 - `POST /api/service-requests/{id}/process` - Processa alocacao
-- `POST /api/service-requests/{id}/cancel` - Cancela solicitacao
+- `POST /api/service-requests/{id}/cancel` - Cancela solicitação
 
 ### Agendamentos
 - `GET /api/schedules` - Lista agendamentos
 - `GET /api/schedules/today` - Agendamentos de hoje
 - `POST /api/schedules` - Cria agendamentos
 - `POST /api/schedules/check-availability` - Verifica disponibilidade
-- `GET /api/schedules/{id}/cancellation-policy` - Politica de cancelamento
+- `GET /api/schedules/{id}/cancellation-policy` - Política de cancelamento
 
 ### Check-in/Check-out
 - `POST /api/checkin/schedule/{id}/in` - Realiza check-in
@@ -157,37 +157,37 @@ carinho-operacao/
 - `POST /api/assignments/service-request/{id}/assign` - Aloca cuidador
 - `POST /api/assignments/{id}/substitute` - Substitui cuidador
 
-### Emergencias
-- `GET /api/emergencies/pending` - Emergencias pendentes
-- `GET /api/emergencies/critical` - Emergencias criticas
-- `POST /api/emergencies` - Registra emergencia
-- `POST /api/emergencies/{id}/resolve` - Resolve emergencia
+### Emergências
+- `GET /api/emergencies/pending` - Emergências pendentes
+- `GET /api/emergencies/critical` - Emergências criticas
+- `POST /api/emergencies` - Registra emergência
+- `POST /api/emergencies/{id}/resolve` - Resolve emergência
 
-### Notificacoes
-- `GET /api/notifications/pending` - Notificacoes pendentes
-- `GET /api/notifications/client/{id}/history` - Historico do cliente
-- `POST /api/notifications/{id}/retry` - Reenvia notificacao
+### Notificações
+- `GET /api/notifications/pending` - Notificações pendentes
+- `GET /api/notifications/client/{id}/history` - Histórico do cliente
+- `POST /api/notifications/{id}/retry` - Reenvia notificação
 
-## Configuracoes Principais
+## Configurações Principais
 
 ### Agendamento (`config/operacao.php`)
-- Antecedencia minima: 24 horas
-- Duracao minima: 4 horas
-- Duracao maxima: 12 horas
+- Antecedência mínima: 24 horas
+- Duracao mínima: 4 horas
+- Duracao máxima: 12 horas
 - Intervalo entre atendimentos: 60 minutos
 
 ### Match
 - Peso de habilidades: 35%
 - Peso de disponibilidade: 25%
-- Peso de regiao: 20%
-- Peso de avaliacao: 20%
-- Score minimo para auto-match: 70
+- Peso de região: 20%
+- Peso de avaliação: 20%
+- Score mínimo para auto-match: 70
 
 ### Check-in
 - Tolerancia antecipada: 30 minutos
 - Tolerancia de atraso: 15 minutos
-- Validacao de localizacao: ativada
-- Distancia maxima: 500 metros
+- Validação de localizacao: ativada
+- Distancia máxima: 500 metros
 
 ### Cancelamento
 Valores de `config/operacao.php` (horas alinhadas ao Financeiro; taxas só para operação interna):
@@ -259,19 +259,19 @@ FINANCEIRO_TOKEN=token-financeiro
 
 ## Tarefas Agendadas
 
-| Tarefa | Frequencia | Descricao |
+| Tarefa | Frequência | Descrição |
 |--------|------------|-----------|
 | CheckScheduleDelays | 5 minutos | Verifica atrasos em check-ins |
-| SendScheduleReminders (24h) | Diario 08:00 | Envia lembretes 24h antes |
-| SendScheduleReminders (2h) | Horario | Envia lembretes 2h antes |
-| CheckEmergencyEscalation | 10 minutos | Escalona emergencias pendentes |
+| SendScheduleReminders (24h) | Diário 08:00 | Envia lembretes 24h antes |
+| SendScheduleReminders (2h) | Horário | Envia lembretes 2h antes |
+| CheckEmergencyEscalation | 10 minutos | Escalona emergências pendentes |
 
-## Seguranca e LGPD
+## Segurança e LGPD
 
-- Controle de acesso por papel (operacao x supervisor)
+- Controle de acesso por papel (operação x supervisor)
 - Token interno para comunicacao entre sistemas
-- Registro de auditoria de alteracoes de agenda
-- Retencao de dados operacionais conforme politica
+- Registro de auditoria de alterações de agenda
+- Retencao de dados operacionais conforme política
 - Logs de eventos operacionais
 
 ## Monitoramento
@@ -283,7 +283,7 @@ FINANCEIRO_TOKEN=token-financeiro
 
 ## Identidade Visual
 
-As cores e tipografia seguem o padrao da marca Carinho com Voce:
+As cores e tipografia seguem o padrão da marca Carinho com Você:
 
 - **Primary:** #5BBFAD (Verde Carinho)
 - **Secondary:** #F4F7F9
@@ -298,4 +298,4 @@ Veja `public/css/brand.css` para os estilos completos.
 ## Suporte
 
 - Email: operacao@carinho.com.vc
-- Emergencias: emergencia@carinho.com.vc
+- Emergências: emergencia@carinho.com.vc

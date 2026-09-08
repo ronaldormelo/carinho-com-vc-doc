@@ -114,10 +114,10 @@
                 <h1>{{ $brandName }}</h1>
             </div>
             <div class="content">
-                <p class="greeting">Ola, {{ $recipientName }}!</p>
+                <p class="greeting">Olá, {{ $recipientName }}!</p>
 
                 <p class="message">
-                    Seu contrato com a {{ $brandName }} esta pronto para assinatura digital.
+                    Seu contrato com a {{ $brandName }} está pronto para assinatura digital.
                     Clique no botao abaixo para revisar e assinar o documento.
                 </p>
 
@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="expiration">
-                    Este link e valido por 72 horas. Apos esse periodo, sera necessario solicitar um novo link.
+                    Este link e válido por 72 horas. Após esse período, será necessário solicitar um novo link.
                 </div>
 
                 <div class="info-box">
@@ -134,14 +134,14 @@
                     <ul>
                         <li>Clique no botao acima para acessar o contrato</li>
                         <li>Leia atentamente todas as clausulas</li>
-                        <li>Confirme sua identidade com o codigo enviado</li>
-                        <li>Receba uma copia assinada por email</li>
+                        <li>Confirme sua identidade com o código enviado</li>
+                        <li>Receba uma cópia assinada por email</li>
                     </ul>
                 </div>
             </div>
             <div class="footer">
                 <p>
-                    Em caso de duvidas, entre em contato conosco pelo email
+                    Em caso de dúvidas, entre em contato conosco pelo email
                     <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
                 <p>&copy; {{ date('Y') }} {{ $brandName }}. Todos os direitos reservados.</p>

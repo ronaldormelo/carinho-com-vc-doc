@@ -1,7 +1,7 @@
 {
   "name": "carinho/carinho-operacao",
   "type": "project",
-  "description": "Carinho Operacao system",
+  "description": "Carinho Operação system",
   "require": {
     "php": "^8.2",
     "ext-json": "*",

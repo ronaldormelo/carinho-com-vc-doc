@@ -172,7 +172,7 @@ class NotificationService
         // Despacha job para envio assincrono
         SendNotification::dispatch($notification, $data);
 
-        Log::info('Notificacao criada', [
+        Log::info('Notificação criada', [
             'notification_id' => $notification->id,
             'type' => $type,
             'client_id' => $clientId,
@@ -191,7 +191,7 @@ class NotificationService
             $clientData = $this->fetchClientData($notification->client_id);
 
             if (!$clientData) {
-                Log::warning('Cliente nao encontrado para notificacao', [
+                Log::warning('Cliente não encontrado para notificação', [
                     'notification_id' => $notification->id,
                     'client_id' => $notification->client_id,
                 ]);
@@ -219,7 +219,7 @@ class NotificationService
             return false;
 
         } catch (\Throwable $e) {
-            Log::error('Erro ao processar notificacao', [
+            Log::error('Erro ao processar notificação', [
                 'notification_id' => $notification->id,
                 'error' => $e->getMessage(),
             ]);

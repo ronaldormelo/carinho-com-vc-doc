@@ -22,7 +22,7 @@ return [
         ],
         'diario' => [
             'code' => 'diario',
-            'label' => 'Diario',
+            'label' => 'Diário',
             'description' => 'Turnos diurnos ou noturnos recorrentes por semana.',
             'icon' => 'sun',
             'min_hours' => 6,
@@ -52,13 +52,13 @@ return [
         'semana' => [
             'code' => 'semana',
             'label' => 'Esta semana',
-            'description' => 'Preciso de um cuidador nos proximos dias.',
+            'description' => 'Preciso de um cuidador nos próximos dias.',
             'priority' => 2,
         ],
         'sem_data' => [
             'code' => 'sem_data',
             'label' => 'Sem data definida',
-            'description' => 'Ainda estou pesquisando opcoes.',
+            'description' => 'Ainda estou pesquisando opções.',
             'priority' => 3,
         ],
     ],
@@ -73,7 +73,7 @@ return [
     'payment_policy' => [
         'type' => 'adiantado',
         'advance_hours' => 24, // Horas antes do servico
-        'description' => 'O pagamento deve ser realizado com antecedencia minima de 24 horas antes do inicio do servico.',
+        'description' => 'O pagamento deve ser realizado com antecedência mínima de 24 horas antes do início do serviço.',
         'methods' => ['pix', 'boleto', 'cartao'],
         'late_interest_daily' => 0.033, // ~1% ao mes
         'late_penalty' => 2.0, // 2% de multa
@@ -90,19 +90,19 @@ return [
         'partial_hours' => 6, // Reembolso parcial se entre 6h e 24h
         'rules' => [
             [
-                'condition' => 'Mais de 24 horas antes do servico',
+                'condition' => 'Mais de 24 horas antes do serviço',
                 'refund' => 100,
                 'description' => 'Reembolso total do valor pago.',
             ],
             [
-                'condition' => 'Entre 6 e 24 horas antes do servico',
+                'condition' => 'Entre 6 e 24 horas antes do serviço',
                 'refund' => 50,
                 'description' => 'Reembolso de 50% do valor pago.',
             ],
             [
-                'condition' => 'Menos de 6 horas antes do servico',
+                'condition' => 'Menos de 6 horas antes do serviço',
                 'refund' => 0,
-                'description' => 'Sem reembolso. O valor e retido integralmente.',
+                'description' => 'Sem reembolso. O valor é retido integralmente.',
             ],
         ],
         'admin_fee' => 5.0, // Taxa administrativa em reembolsos parciais
@@ -123,7 +123,7 @@ return [
             'rating' => 2, // Ate +2% por avaliacao alta
             'tenure' => 3, // Ate +3% por tempo de casa
         ],
-        'description' => 'O cuidador recebe entre 70% e 75% do valor do servico, podendo receber bonus por avaliacao e tempo de casa.',
+        'description' => 'O cuidador recebe entre 70% e 75% do valor do serviço, podendo receber bônus por avaliação e tempo de casa.',
     ],
 
     /*
@@ -137,7 +137,7 @@ return [
         'day' => 'friday',
         'min_value' => 50.00, // Valor minimo para repasse
         'release_days' => 3, // Dias apos conclusao do servico
-        'description' => 'Os repasses sao realizados semanalmente (sextas-feiras), com valor minimo de R$ 50,00 e liberacao 3 dias apos a conclusao do servico.',
+        'description' => 'Os repasses são realizados semanalmente (sextas-feiras), com valor mínimo de R$ 50,00 e liberação 3 dias após a conclusão do serviço.',
     ],
 
     /*
@@ -148,9 +148,9 @@ return [
 
     'emergency_policy' => [
         'channels' => [
-            'whatsapp' => 'Numero exclusivo para emergencias',
+            'whatsapp' => 'Número exclusivo para emergências',
             'email' => 'emergencia@carinho.com.vc',
-            'phone' => 'Ligacao direta para casos criticos',
+            'phone' => 'Ligação direta para casos críticos',
         ],
         'response_time' => [
             'critical' => '15 minutos',
@@ -159,30 +159,30 @@ return [
         ],
         'types' => [
             [
-                'type' => 'Emergencia medica',
-                'action' => 'Ligar 192 (SAMU) e notificar familiar responsavel.',
+                'type' => 'Emergência médica',
+                'action' => 'Ligar 192 (SAMU) e notificar familiar responsável.',
                 'severity' => 'critical',
             ],
             [
-                'type' => 'Ausencia do cuidador',
+                'type' => 'Ausência do cuidador',
                 'action' => 'Acionamento imediato de cuidador substituto.',
                 'severity' => 'high',
             ],
             [
                 'type' => 'Atraso do cuidador',
-                'action' => 'Contato com cuidador e notificacao ao cliente.',
+                'action' => 'Contato com cuidador e notificação ao cliente.',
                 'severity' => 'medium',
             ],
             [
                 'type' => 'Problema no atendimento',
-                'action' => 'Registro de ocorrencia e contato com supervisor.',
+                'action' => 'Registro de ocorrência e contato com supervisor.',
                 'severity' => 'medium',
             ],
         ],
         'escalation' => [
             'level_1' => 'Atendimento - resposta imediata',
-            'level_2' => 'Supervisor - 15 minutos sem resolucao',
-            'level_3' => 'Gerente - 30 minutos sem resolucao',
+            'level_2' => 'Supervisor - 15 minutos sem resolução',
+            'level_3' => 'Gerente - 30 minutos sem resolução',
         ],
     ],
 
@@ -209,7 +209,7 @@ return [
 
     'cities' => [
         'sao_paulo' => [
-            'name' => 'Sao Paulo',
+            'name' => 'São Paulo',
             'state' => 'SP',
             'active' => true,
             'neighborhoods' => [], // Todos os bairros

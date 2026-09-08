@@ -31,7 +31,7 @@ class ContractService
         if ($existingActive && $contractType === 'termo_responsabilidade') {
             return [
                 'success' => false,
-                'message' => 'Cuidador ja possui termo de responsabilidade ativo',
+                'message' => 'Cuidador já possui termo de responsabilidade ativo',
             ];
         }
 
@@ -142,7 +142,7 @@ class ContractService
 
         return [
             'success' => false,
-            'message' => 'Canal de envio invalido',
+            'message' => 'Canal de envio inválido',
         ];
     }
 
@@ -187,7 +187,7 @@ class ContractService
         if (empty($caregiver->email)) {
             return [
                 'success' => false,
-                'message' => 'Cuidador nao possui email cadastrado',
+                'message' => 'Cuidador não possui email cadastrado',
             ];
         }
 
@@ -198,7 +198,7 @@ class ContractService
                 'brandName' => config('branding.name'),
             ], function ($mail) use ($caregiver) {
                 $mail->to($caregiver->email, $caregiver->name)
-                    ->subject('Seu Contrato - Carinho com Voce')
+                    ->subject('Seu Contrato - Carinho com Você')
                     ->from(
                         config('integrations.email.from'),
                         config('branding.email.signature_name')
@@ -248,17 +248,17 @@ class ContractService
      */
     private function buildContractMessage(Caregiver $caregiver, string $signUrl): string
     {
-        $brandName = config('branding.name', 'Carinho com Voce');
+        $brandName = config('branding.name', 'Carinho com Você');
 
         return <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Seu termo de responsabilidade da {$brandName} esta pronto para assinatura.
+Seu termo de responsabilidade da {$brandName} está pronto para assinatura.
 
 Acesse o link abaixo para revisar e assinar:
 {$signUrl}
 
-Em caso de duvidas, estamos a disposicao.
+Em caso de dúvidas, estamos a disposição.
 
 Atenciosamente,
 Equipe {$brandName}

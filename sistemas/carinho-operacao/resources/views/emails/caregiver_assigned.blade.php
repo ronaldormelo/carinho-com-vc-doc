@@ -123,7 +123,7 @@
         </div>
 
         <div class="content">
-            <p class="greeting">Ola, {{ $clientName ?? 'Cliente' }}!</p>
+            <p class="greeting">Olá, {{ $clientName ?? 'Cliente' }}!</p>
 
             <div class="success-box">
                 <h2>{{ config('branding.messages.caregiver_assigned') }}</h2>
@@ -135,18 +135,18 @@
                 </div>
                 <div class="caregiver-name">{{ $caregiverName ?? 'Cuidador(a)' }}</div>
                 @if(isset($caregiverRating))
-                <div class="caregiver-info">Avaliacao: {{ $caregiverRating }} estrelas</div>
+                <div class="caregiver-info">Avaliação: {{ $caregiverRating }} estrelas</div>
                 @endif
             </div>
 
             <div class="info-box">
                 <div class="info-row">
-                    <span class="info-label">Tipo de servico</span>
+                    <span class="info-label">Tipo de serviço</span>
                     <span class="info-value">{{ $serviceType ?? 'N/A' }}</span>
                 </div>
                 @if(isset($startDate))
                 <div class="info-row">
-                    <span class="info-label">Data de inicio</span>
+                    <span class="info-label">Data de início</span>
                     <span class="info-value">{{ $startDate }}</span>
                 </div>
                 @endif
@@ -159,8 +159,8 @@
             </div>
 
             <p class="message">
-                Voce recebera lembretes e notificacoes sobre o andamento do servico.
-                Qualquer duvida, estamos a disposicao!
+                Você receberá lembretes e notificações sobre o andamento do serviço.
+                Qualquer duvida, estamos a disposição!
             </p>
         </div>
 

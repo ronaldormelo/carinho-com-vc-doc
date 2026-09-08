@@ -18,7 +18,7 @@ class TrainingController extends Controller
         $caregiver = Caregiver::find($caregiverId);
 
         if (!$caregiver) {
-            return $this->error('Cuidador nao encontrado', 404);
+            return $this->error('Cuidador não encontrado', 404);
         }
 
         $trainings = $caregiver->trainings()
@@ -41,7 +41,7 @@ class TrainingController extends Controller
         $caregiver = Caregiver::find($caregiverId);
 
         if (!$caregiver) {
-            return $this->error('Cuidador nao encontrado', 404);
+            return $this->error('Cuidador não encontrado', 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -72,7 +72,7 @@ class TrainingController extends Controller
             ->first();
 
         if (!$training) {
-            return $this->error('Treinamento nao encontrado', 404);
+            return $this->error('Treinamento não encontrado', 404);
         }
 
         $training->update([
@@ -92,7 +92,7 @@ class TrainingController extends Controller
             ->first();
 
         if (!$training) {
-            return $this->error('Treinamento nao encontrado', 404);
+            return $this->error('Treinamento não encontrado', 404);
         }
 
         $training->delete();
@@ -109,7 +109,7 @@ class TrainingController extends Controller
         $courses = [
             [
                 'name' => 'Cuidados Basicos com Idosos',
-                'description' => 'Fundamentos do cuidado diario',
+                'description' => 'Fundamentos do cuidado diário',
                 'duration_hours' => 8,
             ],
             [
@@ -119,7 +119,7 @@ class TrainingController extends Controller
             ],
             [
                 'name' => 'Cuidados com PCD',
-                'description' => 'Atencao especializada para pessoas com deficiencia',
+                'description' => 'Atenção especializada para pessoas com deficiência',
                 'duration_hours' => 12,
             ],
             [
@@ -134,7 +134,7 @@ class TrainingController extends Controller
             ],
             [
                 'name' => 'Comunicacao e Postura Profissional',
-                'description' => 'Relacionamento com familias e pacientes',
+                'description' => 'Relacionamento com famílias e pacientes',
                 'duration_hours' => 4,
             ],
             [

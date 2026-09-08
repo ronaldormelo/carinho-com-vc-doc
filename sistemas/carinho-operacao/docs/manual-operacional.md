@@ -154,7 +154,7 @@ O sistema **Carinho Operação** é responsável pela execução prática dos se
 |------|-------------|------------|
 | Confirmar chegada ao local | ✅ | Registro de horário |
 | Verificar condição do cliente | ✅ | Estado geral de saúde |
-| Conferir medicações | ✅ | Lista e horários |
+| Conferir médicações | ✅ | Lista e horários |
 | Anotar necessidades especiais | ✅ | Restrições, preferências |
 | Verificar segurança do ambiente | ✅ | Riscos identificados |
 
@@ -163,7 +163,7 @@ O sistema **Carinho Operação** é responsável pela execução prática dos se
 | Item | Obrigatório | Observação |
 |------|-------------|------------|
 | Atividades planejadas concluídas | ✅ | Listar não realizadas |
-| Medicações administradas | ✅ | Confirmar horários |
+| Médicações administradas | ✅ | Confirmar horários |
 | Relatar ocorrências | ✅ | Mesmo se não houver |
 | Cliente em condição estável | ✅ | Verificar sinais vitais se aplicável |
 | Notas de passagem de plantão | ✅ | Para próximo cuidador |
@@ -273,7 +273,7 @@ O sistema **Carinho Operação** é responsável pela execução prática dos se
 
 - **Emergência médica**: Cliente com sintomas graves
 - **Queda do paciente**: Cliente sofreu queda
-- **Erro de medicação**: Dosagem incorreta administrada
+- **Erro de médicação**: Dosagem incorreta administrada
 - **Mudança comportamental**: Alteração súbita de comportamento
 - **Falha de equipamento**: Equipamento médico com defeito
 - **Cuidador indisponível**: Ausência sem aviso

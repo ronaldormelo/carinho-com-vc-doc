@@ -4,8 +4,8 @@
 {{-- Page Header --}}
 <section class="section" style="background: var(--color-primary); color: white; padding: var(--spacing-12) 0;">
     <div class="container">
-        <h1 style="color: white;">Politica de Pagamento e Comissoes</h1>
-        <p style="opacity: 0.9;">Carinho com Voce</p>
+        <h1 style="color: white;">Política de Pagamento e Comissões</h1>
+        <p style="opacity: 0.9;">Carinho com Você</p>
     </div>
 </section>
 
@@ -13,13 +13,13 @@
 <section class="section">
     <div class="container">
         <div class="legal-content">
-            <p class="text-muted">Ultima atualizacao: {{ date('d/m/Y') }}</p>
+            <p class="text-muted">Última atualização: {{ date('d/m/Y') }}</p>
 
-            <h2>1. POLITICA DE PAGAMENTO</h2>
+            <h2>1. POLÍTICA DE PAGAMENTO</h2>
 
             <div class="highlight-box" style="background: #d4edda; border-color: var(--color-success);">
                 <p style="margin: 0; font-size: var(--font-size-lg);">
-                    <strong>O pagamento e sempre ADIANTADO (pre-pago).</strong>
+                    <strong>O pagamento é sempre ADIANTADO (pré-pago).</strong>
                 </p>
             </div>
 
@@ -27,28 +27,28 @@
 
             <h3>Formas de Pagamento Aceitas</h3>
             <ul>
-                <li><strong>PIX:</strong> Pagamento instantaneo, sem taxas adicionais</li>
-                <li><strong>Boleto Bancario:</strong> Prazo de compensacao de ate 2 dias uteis</li>
-                <li><strong>Cartao de Credito:</strong> Parcelamento disponivel conforme negociacao</li>
+                <li><strong>PIX:</strong> Pagamento instantâneo, sem taxas adicionais</li>
+                <li><strong>Boleto Bancário:</strong> Prazo de compensação de até 2 dias úteis</li>
+                <li><strong>Cartão de Crédito:</strong> Parcelamento disponível conforme negociação</li>
             </ul>
 
             <h3>Prazo para Pagamento</h3>
             <p>
-                O pagamento deve ser confirmado com <strong>{{ $paymentPolicy['advance_hours'] }} horas de antecedencia</strong>
-                antes do inicio do servico. Servicos nao serao iniciados sem a confirmacao do pagamento.
+                O pagamento deve ser confirmado com <strong>{{ $paymentPolicy['advance_hours'] }} horas de antecedência</strong>
+                antes do início do serviço. Serviços não serão iniciados sem a confirmação do pagamento.
             </p>
 
             <h2>2. ATRASO NO PAGAMENTO</h2>
             <p>Em caso de atraso no pagamento:</p>
             <ul>
-                <li><strong>Juros:</strong> {{ number_format($paymentPolicy['late_interest_daily'] * 100, 3) }}% ao dia (aproximadamente 1% ao mes)</li>
+                <li><strong>Juros:</strong> {{ number_format($paymentPolicy['late_interest_daily'] * 100, 3) }}% ao dia (aproximadamente 1% ao mês)</li>
                 <li><strong>Multa:</strong> {{ number_format($paymentPolicy['late_penalty'], 1) }}% sobre o valor devido</li>
             </ul>
             <p>
-                Pagamentos em atraso podem resultar na suspensao dos servicos ate a regularizacao.
+                Pagamentos em atraso podem resultar na suspensão dos serviços até a regularização.
             </p>
 
-            <h2>3. COMISSOES DOS CUIDADORES</h2>
+            <h2>3. COMISSÕES DOS CUIDADORES</h2>
             <p>
                 {{ $commission['description'] }}
             </p>
@@ -56,7 +56,7 @@
             <table class="policy-table">
                 <thead>
                     <tr>
-                        <th>Tipo de Servico</th>
+                        <th>Tipo de Serviço</th>
                         <th>Percentual do Cuidador</th>
                         <th>Percentual da Plataforma</th>
                     </tr>
@@ -68,7 +68,7 @@
                         <td>{{ 100 - $commission['horista'] }}%</td>
                     </tr>
                     <tr>
-                        <td>Diario</td>
+                        <td>Diário</td>
                         <td><strong>{{ $commission['diario'] }}%</strong></td>
                         <td>{{ 100 - $commission['diario'] }}%</td>
                     </tr>
@@ -80,75 +80,75 @@
                 </tbody>
             </table>
 
-            <h3>Bonus para Cuidadores</h3>
-            <p>Os cuidadores podem receber bonus adicionais:</p>
+            <h3>Bônus para Cuidadores</h3>
+            <p>Os cuidadores podem receber bônus adicionais:</p>
             <ul>
-                <li><strong>Bonus por avaliacao:</strong> Ate +{{ $commission['bonus']['rating'] }}% para cuidadores com avaliacoes consistentemente altas</li>
-                <li><strong>Bonus por tempo de casa:</strong> Ate +{{ $commission['bonus']['tenure'] }}% para cuidadores com mais de 1 ano de parceria</li>
+                <li><strong>Bônus por avaliação:</strong> Até +{{ $commission['bonus']['rating'] }}% para cuidadores com avaliações consistentemente altas</li>
+                <li><strong>Bônus por tempo de casa:</strong> Até +{{ $commission['bonus']['tenure'] }}% para cuidadores com mais de 1 ano de parceria</li>
             </ul>
 
-            <h2>4. POLITICA DE REPASSES</h2>
+            <h2>4. POLÍTICA DE REPASSES</h2>
             <p>{{ $payoutPolicy['description'] }}</p>
 
             <table class="policy-table">
                 <tbody>
                     <tr>
-                        <td><strong>Frequencia</strong></td>
+                        <td><strong>Frequência</strong></td>
                         <td>Semanal (todas as sextas-feiras)</td>
                     </tr>
                     <tr>
-                        <td><strong>Valor minimo</strong></td>
+                        <td><strong>Valor mínimo</strong></td>
                         <td>R$ {{ number_format($payoutPolicy['min_value'], 2, ',', '.') }}</td>
                     </tr>
                     <tr>
-                        <td><strong>Liberacao</strong></td>
-                        <td>{{ $payoutPolicy['release_days'] }} dias apos conclusao do servico</td>
+                        <td><strong>Liberação</strong></td>
+                        <td>{{ $payoutPolicy['release_days'] }} dias após conclusão do serviço</td>
                     </tr>
                     <tr>
-                        <td><strong>Metodo</strong></td>
-                        <td>Transferencia bancaria (PIX)</td>
+                        <td><strong>Método</strong></td>
+                        <td>Transferência bancaria (PIX)</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="highlight-box">
                 <p style="margin: 0;">
-                    <strong>Observacao:</strong> Se o valor acumulado nao atingir o minimo de R$ {{ number_format($payoutPolicy['min_value'], 2, ',', '.') }},
-                    o saldo sera acumulado para o proximo ciclo de repasse.
+                    <strong>Observação:</strong> Se o valor acumulado não atingir o mínimo de R$ {{ number_format($payoutPolicy['min_value'], 2, ',', '.') }},
+                    o saldo será acumulado para o próximo ciclo de repasse.
                 </p>
             </div>
 
             <h2>5. NOTAS FISCAIS</h2>
             <p>
-                A Carinho com Voce emite nota fiscal de servico (NFS-e) para todos os pagamentos realizados.
-                A nota fiscal sera enviada por e-mail em ate 5 dias uteis apos a confirmacao do pagamento.
+                A Carinho com Você emite nota fiscal de serviço (NFS-e) para todos os pagamentos realizados.
+                A nota fiscal será enviada por e-mail em até 5 dias úteis após a confirmação do pagamento.
             </p>
 
             <h2>6. REEMBOLSOS</h2>
             <p>
-                Os reembolsos seguem a <a href="{{ route('legal.cancellation') }}">Politica de Cancelamento</a>.
+                Os reembolsos seguem a <a href="{{ route('legal.cancellation') }}">Política de Cancelamento</a>.
                 Prazos para processamento de reembolso:
             </p>
             <ul>
-                <li><strong>PIX:</strong> ate 2 dias uteis</li>
-                <li><strong>Cartao de credito:</strong> ate 2 faturas</li>
-                <li><strong>Boleto:</strong> ate 5 dias uteis via transferencia</li>
+                <li><strong>PIX:</strong> até 2 dias úteis</li>
+                <li><strong>Cartão de crédito:</strong> até 2 faturas</li>
+                <li><strong>Boleto:</strong> até 5 dias úteis via transferência</li>
             </ul>
 
-            <h2>7. DISPUTAS E CONTESTACOES</h2>
+            <h2>7. DISPUTAS E CONTESTAÇÕES</h2>
             <p>
-                Em caso de divergencias sobre valores ou cobrancas:
+                Em caso de divergências sobre valores ou cobranças:
             </p>
             <ol>
                 <li>Entre em contato pelo WhatsApp ou e-mail</li>
-                <li>Informe o numero do contrato e detalhes da contestacao</li>
-                <li>Aguarde analise em ate 5 dias uteis</li>
-                <li>Receba a resolucao e eventuais ajustes</li>
+                <li>Informe o número do contrato e detalhes da contestação</li>
+                <li>Aguarde análise em até 5 dias úteis</li>
+                <li>Receba a resolução e eventuais ajustes</li>
             </ol>
 
             <h2>8. CONTATO</h2>
             <p>
-                Para questoes sobre pagamentos:
+                Para questões sobre pagamentos:
             </p>
             <p>
                 <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}<br>

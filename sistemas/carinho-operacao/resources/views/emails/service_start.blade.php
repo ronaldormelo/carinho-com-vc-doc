@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio do Atendimento - {{ config('branding.name') }}</title>
+    <title>Início do Atendimento - {{ config('branding.name') }}</title>
     <style>
         body {
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -94,7 +94,7 @@
         </div>
 
         <div class="content">
-            <p class="greeting">Ola, {{ $clientName ?? 'Cliente' }}!</p>
+            <p class="greeting">Olá, {{ $clientName ?? 'Cliente' }}!</p>
 
             <p class="message">
                 {{ config('branding.messages.service_started') }}
@@ -114,7 +114,7 @@
                     <span class="info-value">{{ $date ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Horario de inicio</span>
+                    <span class="info-label">Horário de início</span>
                     <span class="info-value">{{ $startTime ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
@@ -124,8 +124,8 @@
             </div>
 
             <p class="message">
-                Voce recebera uma notificacao quando o atendimento for finalizado.
-                Em caso de duvidas ou necessidade, entre em contato conosco.
+                Você receberá uma notificação quando o atendimento for finalizado.
+                Em caso de dúvidas ou necessidade, entre em contato conosco.
             </p>
         </div>
 

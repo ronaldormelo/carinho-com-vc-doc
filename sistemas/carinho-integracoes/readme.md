@@ -8,9 +8,9 @@
 
 `docs/analise-praticas-mercado.md` é referência, não contrato de fila.
 
-## Descricao
+## Descrição
 
-Camada de automacao e integracao do fluxo ponta a ponta. Conecta site, atendimento, CRM, operacao e financeiro para reduzir trabalho manual.
+Camada de automacao e integracao do fluxo ponta a ponta. Conecta site, atendimento, CRM, operação e financeiro para reduzir trabalho manual.
 
 ## Stack Tecnologica
 
@@ -32,7 +32,7 @@ Integracao com Z-API para capturar mensagens recebidas e registrar automaticamen
 1. Mensagem recebida via webhook do Z-API
 2. Normaliza payload da mensagem
 3. Busca ou cria lead no CRM
-4. Registra interacao no historico
+4. Registra interacao no histórico
 5. Encaminha para sistema de atendimento
 
 **Endpoint:** `POST /webhooks/whatsapp`
@@ -62,24 +62,24 @@ Ao converter lead em cliente, envia email de boas-vindas e configura integracao 
 
 ### 4. Feedback Automatico Pos-Servico
 
-Apos conclusao do servico, solicita feedback do cliente automaticamente.
+Após conclusão do serviço, solicita feedback do cliente automaticamente.
 
 **Fluxo:**
-1. Servico finalizado na operacao
+1. Serviço finalizado na operação
 2. Webhook dispara `service.completed`
 3. Job `ProcessServiceCompleted` e acionado
 4. Notifica cliente da finalizacao
-5. Apos 2h, envia solicitacao de feedback via WhatsApp e Email
+5. Após 2h, envia solicitação de feedback via WhatsApp e Email
 6. Registra feedback no CRM e sistema de cuidadores
 
 ### 5. Sincronizacao entre Sistemas
 
-Mantem dados consistentes entre CRM, Operacao e Financeiro.
+Mantem dados consistentes entre CRM, Operação e Financeiro.
 
 **Sincronizacoes:**
-- **CRM -> Operacao:** Contratos e agendamentos (horario)
-- **Operacao -> Financeiro:** Servicos executados para faturamento (diario)
-- **CRM -> Financeiro:** Setup de cobranca recorrente (2x/dia)
+- **CRM -> Operação:** Contratos e agendamentos (horário)
+- **Operação -> Financeiro:** Serviços executados para faturamento (diário)
+- **CRM -> Financeiro:** Setup de cobrança recorrente (2x/dia)
 - **Cuidadores -> CRM:** Atualizacoes de cuidadores (4h)
 
 ## Arquitetura
@@ -130,7 +130,7 @@ Mantem dados consistentes entre CRM, Operacao e Financeiro.
 4. **Mapeamento:** Transforma payload para sistema alvo
 5. **Entrega:** Envia webhook para sistemas destino
 6. **Retry:** Em caso de falha, adiciona a fila de retry
-7. **DLQ:** Apos max tentativas, move para Dead Letter Queue
+7. **DLQ:** Após max tentativas, move para Dead Letter Queue
 
 ## Integracao com Z-API (WhatsApp)
 
@@ -143,8 +143,8 @@ Mantem dados consistentes entre CRM, Operacao e Financeiro.
 - Envio de imagens e documentos
 - Envio de links com preview
 - Recepcao de webhooks de mensagens
-- Validacao de assinatura HMAC
-- Verificacao de status da instancia
+- Validação de assinatura HMAC
+- Verificação de status da instancia
 
 ### Configuracao
 
@@ -161,13 +161,13 @@ ZAPI_WEBHOOK_SECRET=seu-secret
 
 Configure no painel do Z-API:
 - **URL:** `https://integracoes.carinho.com.vc/webhooks/whatsapp`
-- **Metodo:** POST
+- **Método:** POST
 
 ## API Endpoints
 
 ### Eventos
 
-| Metodo | Endpoint | Descricao |
+| Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/api/events` | Lista eventos com filtros |
 | POST | `/api/events` | Cria novo evento |
@@ -177,7 +177,7 @@ Configure no painel do Z-API:
 
 ### Sincronizacao
 
-| Metodo | Endpoint | Descricao |
+| Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/api/sync/jobs` | Lista jobs de sync |
 | POST | `/api/sync/start` | Inicia sincronizacao |
@@ -186,7 +186,7 @@ Configure no painel do Z-API:
 
 ### Mapeamentos
 
-| Metodo | Endpoint | Descricao |
+| Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/api/mappings` | Lista mapeamentos |
 | POST | `/api/mappings` | Cria mapeamento |
@@ -196,7 +196,7 @@ Configure no painel do Z-API:
 
 ### Dead Letter Queue
 
-| Metodo | Endpoint | Descricao |
+| Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/api/dlq` | Lista items na DLQ |
 | GET | `/api/dlq/stats` | Estatisticas DLQ |
@@ -206,22 +206,22 @@ Configure no painel do Z-API:
 
 ### Webhooks Recebidos
 
-| Endpoint | Sistema | Descricao |
+| Endpoint | Sistema | Descrição |
 |----------|---------|-----------|
 | `POST /webhooks/whatsapp` | Z-API | Mensagens WhatsApp |
 | `POST /webhooks/site/lead` | Site | Novos leads |
 | `POST /webhooks/crm/client-registered` | CRM | Clientes cadastrados |
-| `POST /webhooks/operacao/service-completed` | Operacao | Servicos finalizados |
+| `POST /webhooks/operacao/service-completed` | Operação | Serviços finalizados |
 | `POST /webhooks/financeiro/payment` | Financeiro | Pagamentos |
 | `POST /webhooks/financeiro/payout` | Financeiro | Repasses |
 | `POST /webhooks/cuidadores/feedback` | Cuidadores | Feedback |
 
-## Seguranca
+## Segurança
 
 ### Autenticacao
 
 - **API:** Header `X-API-Key` obrigatorio
-- **Webhooks:** Validacao de assinatura HMAC-SHA256
+- **Webhooks:** Validação de assinatura HMAC-SHA256
 
 ### Rate Limiting
 
@@ -230,9 +230,9 @@ Configure no painel do Z-API:
 
 ### LGPD
 
-- Logs nao armazenam dados sensiveis
+- Logs não armazenam dados sensiveis
 - Payloads podem ser criptografados
-- Eventos podem ser anonimizados apos processamento
+- Eventos podem ser anonimizados após processamento
 
 ## Performance
 
@@ -241,13 +241,13 @@ Configure no painel do Z-API:
 - Processamento assincrono via filas
 - Backpressure com prioridades de fila
 - Idempotencia por `idempotency_key`
-- Cache de mapeamentos e configuracoes
+- Cache de mapeamentos e configurações
 - Indices otimizados no banco
 
 ### Filas por Prioridade
 
-1. `integrations-high` - Webhooks criticos (2-5 workers)
-2. `integrations` - Processamento padrao (3-10 workers)
+1. `integrations-high` - Webhooks críticos (2-5 workers)
+2. `integrations` - Processamento padrão (3-10 workers)
 3. `notifications` - WhatsApp/Email (2 workers)
 4. `integrations-low` - Sync batch (1 worker)
 5. `integrations-retry` - Reprocessamento (1 worker)
@@ -391,4 +391,4 @@ Acesse `/horizon` para monitorar filas (proteger em produção).
 
 ## Licenca
 
-Proprietary - Carinho com Voce
+Proprietary - Carinho com Você

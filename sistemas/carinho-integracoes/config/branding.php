@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configuracoes de identidade visual da marca Carinho com Voce.
+ * Configuracoes de identidade visual da marca Carinho com Você.
  *
  * Paleta de cores suaves que transmitem confianca e calma.
  * Tipografia sans-serif com alta legibilidade.

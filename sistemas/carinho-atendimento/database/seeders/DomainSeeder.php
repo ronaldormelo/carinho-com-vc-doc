@@ -68,7 +68,7 @@ class DomainSeeder extends Seeder
         DB::table('domain_support_level')->insert([
             ['id' => 1, 'code' => 'n1', 'label' => 'Nivel 1 - Atendimento', 'escalation_minutes' => 15],
             ['id' => 2, 'code' => 'n2', 'label' => 'Nivel 2 - Supervisao', 'escalation_minutes' => 30],
-            ['id' => 3, 'code' => 'n3', 'label' => 'Nivel 3 - Gestao', 'escalation_minutes' => 60],
+            ['id' => 3, 'code' => 'n3', 'label' => 'Nivel 3 - Gestão', 'escalation_minutes' => 60],
         ]);
 
         DB::table('domain_loss_reason')->insert([
@@ -76,20 +76,20 @@ class DomainSeeder extends Seeder
             ['id' => 2, 'code' => 'competitor', 'label' => 'Escolheu concorrente'],
             ['id' => 3, 'code' => 'no_response', 'label' => 'Sem retorno do cliente'],
             ['id' => 4, 'code' => 'no_availability', 'label' => 'Sem disponibilidade de cuidador'],
-            ['id' => 5, 'code' => 'region', 'label' => 'Regiao nao atendida'],
-            ['id' => 6, 'code' => 'requirements', 'label' => 'Requisitos nao atendidos'],
-            ['id' => 7, 'code' => 'postponed', 'label' => 'Cliente adiou a decisao'],
+            ['id' => 5, 'code' => 'region', 'label' => 'Região não atendida'],
+            ['id' => 6, 'code' => 'requirements', 'label' => 'Requisitos não atendidos'],
+            ['id' => 7, 'code' => 'postponed', 'label' => 'Cliente adiou a decisão'],
             ['id' => 8, 'code' => 'other', 'label' => 'Outro motivo'],
         ]);
 
         DB::table('domain_incident_category')->insert([
             ['id' => 1, 'code' => 'complaint', 'label' => 'Reclamacao'],
             ['id' => 2, 'code' => 'delay', 'label' => 'Atraso no atendimento'],
-            ['id' => 3, 'code' => 'quality', 'label' => 'Qualidade do servico'],
+            ['id' => 3, 'code' => 'quality', 'label' => 'Qualidade do serviço'],
             ['id' => 4, 'code' => 'communication', 'label' => 'Falha de comunicacao'],
-            ['id' => 5, 'code' => 'billing', 'label' => 'Problema de cobranca'],
+            ['id' => 5, 'code' => 'billing', 'label' => 'Problema de cobrança'],
             ['id' => 6, 'code' => 'caregiver', 'label' => 'Problema com cuidador'],
-            ['id' => 7, 'code' => 'emergency', 'label' => 'Emergencia'],
+            ['id' => 7, 'code' => 'emergency', 'label' => 'Emergência'],
             ['id' => 8, 'code' => 'suggestion', 'label' => 'Sugestao'],
             ['id' => 9, 'code' => 'other', 'label' => 'Outros'],
         ]);
@@ -117,13 +117,13 @@ class DomainSeeder extends Seeder
         DB::table('triage_checklist')->insert([
             ['item_key' => 'patient_name', 'item_label' => 'Nome do paciente', 'item_order' => 1, 'required' => 1, 'active' => 1],
             ['item_key' => 'patient_age', 'item_label' => 'Idade do paciente', 'item_order' => 2, 'required' => 1, 'active' => 1],
-            ['item_key' => 'care_type', 'item_label' => 'Tipo de cuidado necessario', 'item_order' => 3, 'required' => 1, 'active' => 1],
+            ['item_key' => 'care_type', 'item_label' => 'Tipo de cuidado necessário', 'item_order' => 3, 'required' => 1, 'active' => 1],
             ['item_key' => 'location', 'item_label' => 'Cidade/bairro do atendimento', 'item_order' => 4, 'required' => 1, 'active' => 1],
             ['item_key' => 'schedule', 'item_label' => 'Horario/turno desejado', 'item_order' => 5, 'required' => 1, 'active' => 1],
-            ['item_key' => 'start_date', 'item_label' => 'Data de inicio pretendida', 'item_order' => 6, 'required' => 1, 'active' => 1],
+            ['item_key' => 'start_date', 'item_label' => 'Data de início pretendida', 'item_order' => 6, 'required' => 1, 'active' => 1],
             ['item_key' => 'special_needs', 'item_label' => 'Necessidades especiais', 'item_order' => 7, 'required' => 0, 'active' => 1],
             ['item_key' => 'budget', 'item_label' => 'Expectativa de valor', 'item_order' => 8, 'required' => 0, 'active' => 1],
-            ['item_key' => 'decision_maker', 'item_label' => 'Quem decide a contratacao', 'item_order' => 9, 'required' => 0, 'active' => 1],
+            ['item_key' => 'decision_maker', 'item_label' => 'Quem decide a contratação', 'item_order' => 9, 'required' => 0, 'active' => 1],
             ['item_key' => 'how_found_us', 'item_label' => 'Como conheceu a Carinho', 'item_order' => 10, 'required' => 0, 'active' => 1],
         ]);
 

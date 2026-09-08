@@ -9,7 +9,6 @@
 -- repo de config e é aplicada a cada deploy por scripts/sync-mariadb-app-user.sh
 -- (este arquivo só executa com datadir vazio).
 CREATE USER IF NOT EXISTS 'carinho'@'%' IDENTIFIED BY 'carinho';
-GRANT ALL PRIVILEGES ON carinho_*.* TO 'carinho'@'%';
 FLUSH PRIVILEGES;
 
 -- Criar bancos de dados

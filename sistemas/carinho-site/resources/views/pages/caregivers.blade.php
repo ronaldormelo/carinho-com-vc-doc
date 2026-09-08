@@ -90,7 +90,7 @@
 
             <div class="card text-center" style="border: 2px solid var(--color-primary);">
                 <h3 style="color: var(--color-primary); font-size: var(--font-size-4xl); margin-bottom: var(--spacing-2);">{{ $commissions['diario'] }}%</h3>
-                <h4>Diario</h4>
+                <h4>Diário</h4>
                 <p class="text-muted">Turnos diurnos ou noturnos</p>
             </div>
 

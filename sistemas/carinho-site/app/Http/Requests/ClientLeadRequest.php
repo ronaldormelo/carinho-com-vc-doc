@@ -58,15 +58,15 @@ class ClientLeadRequest extends FormRequest
             'name.required' => 'Por favor, informe seu nome.',
             'name.min' => 'O nome deve ter pelo menos 3 caracteres.',
             'phone.required' => 'Por favor, informe seu telefone.',
-            'phone.min' => 'O telefone deve ter pelo menos 10 digitos.',
-            'email.email' => 'Por favor, informe um e-mail valido.',
+            'phone.min' => 'O telefone deve ter pelo menos 10 dígitos.',
+            'email.email' => 'Por favor, informe um e-mail válido.',
             'city.required' => 'Por favor, informe sua cidade.',
-            'urgency_id.required' => 'Por favor, selecione a urgencia.',
-            'urgency_id.in' => 'Urgencia invalida.',
-            'service_type_id.required' => 'Por favor, selecione o tipo de servico.',
-            'service_type_id.in' => 'Tipo de servico invalido.',
-            'consent.required' => 'Voce precisa concordar com os termos para continuar.',
-            'consent.accepted' => 'Voce precisa concordar com os termos para continuar.',
+            'urgency_id.required' => 'Por favor, selecione a urgência.',
+            'urgency_id.in' => 'Urgência inválida.',
+            'service_type_id.required' => 'Por favor, selecione o tipo de serviço.',
+            'service_type_id.in' => 'Tipo de serviço inválido.',
+            'consent.required' => 'Você precisa concordar com os termos para continuar.',
+            'consent.accepted' => 'Você precisa concordar com os termos para continuar.',
         ];
     }
 

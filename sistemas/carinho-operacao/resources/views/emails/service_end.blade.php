@@ -114,7 +114,7 @@
         </div>
 
         <div class="content">
-            <p class="greeting">Ola, {{ $clientName ?? 'Cliente' }}!</p>
+            <p class="greeting">Olá, {{ $clientName ?? 'Cliente' }}!</p>
 
             <p class="message">
                 {{ config('branding.messages.service_ended') }}
@@ -134,11 +134,11 @@
                     <span class="info-value">{{ $date ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Horario de inicio</span>
+                    <span class="info-label">Horário de início</span>
                     <span class="info-value">{{ $startTime ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Horario de termino</span>
+                    <span class="info-label">Horário de termino</span>
                     <span class="info-value">{{ $endTime ?? 'N/A' }}</span>
                 </div>
                 @if(isset($totalHours))
@@ -151,14 +151,14 @@
 
             <div class="feedback-section">
                 <h3>Conte-nos como foi!</h3>
-                <p>Sua opiniao e muito importante para melhorarmos nosso servico.</p>
+                <p>Sua opinião é muito importante para melhorarmos nosso serviço.</p>
                 @if(isset($feedbackUrl))
                 <a href="{{ $feedbackUrl }}" class="btn">Avaliar atendimento</a>
                 @endif
             </div>
 
             <p class="message">
-                Agradecemos pela confianca. Esperamos te ver novamente!
+                Agradecemos pela confiança. Esperamos te ver novamente!
             </p>
         </div>
 

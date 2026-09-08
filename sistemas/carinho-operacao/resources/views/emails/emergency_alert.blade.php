@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerta de Emergencia - {{ config('branding.name') }}</title>
+    <title>Alerta de Emergência - {{ config('branding.name') }}</title>
     <style>
         body {
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -146,7 +146,7 @@
 
             @if(isset($description))
             <div class="description">
-                <h3>Descricao</h3>
+                <h3>Descrição</h3>
                 <p>{{ $description }}</p>
             </div>
             @endif
@@ -154,13 +154,13 @@
             <div class="info-box">
                 @if(isset($emergencyId))
                 <div class="info-row">
-                    <span class="info-label">ID da Emergencia</span>
+                    <span class="info-label">ID da Emergência</span>
                     <span class="info-value">#{{ $emergencyId }}</span>
                 </div>
                 @endif
                 @if(isset($serviceRequestId))
                 <div class="info-row">
-                    <span class="info-label">Servico</span>
+                    <span class="info-label">Serviço</span>
                     <span class="info-value">#{{ $serviceRequestId }}</span>
                 </div>
                 @endif
@@ -179,7 +179,7 @@
             @endif
 
             <p style="font-size: 14px; color: #616E7C; text-align: center;">
-                Nossa equipe esta trabalhando para resolver esta situacao o mais rapido possivel.
+                Nossa equipe está trabalhando para resolver esta situação o mais rápido possível.
             </p>
         </div>
 
@@ -189,7 +189,7 @@
                 <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
             </p>
             <p style="margin-top: 12px; font-size: 12px;">
-                Emergencia? Ligue: <strong>{{ config('operacao.emergency.alert_phone', '0800 000 0000') }}</strong>
+                Emergência? Ligue: <strong>{{ config('operacao.emergency.alert_phone', '0800 000 0000') }}</strong>
             </p>
         </div>
     </div>

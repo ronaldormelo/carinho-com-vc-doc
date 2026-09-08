@@ -32,13 +32,13 @@ class ConversionEventSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
-                'name' => 'Inicio de Contratacao',
+                'name' => 'Início de Contratação',
                 'event_key' => 'InitiateCheckout',
                 'target_url' => 'https://carinho.com.vc/contratar',
                 'created_at' => now(),
             ],
             [
-                'name' => 'Contratacao Finalizada',
+                'name' => 'Contratação Finalizada',
                 'event_key' => 'Purchase',
                 'target_url' => 'https://carinho.com.vc/contratacao-confirmada',
                 'created_at' => now(),

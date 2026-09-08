@@ -102,7 +102,7 @@
                         <td><strong>{{ $commission['horista'] }}%</strong></td>
                     </tr>
                     <tr>
-                        <td>Diario</td>
+                        <td>Diário</td>
                         <td><strong>{{ $commission['diario'] }}%</strong></td>
                     </tr>
                     <tr>
@@ -122,7 +122,7 @@
             <table class="policy-table">
                 <tbody>
                     <tr>
-                        <td><strong>Frequencia</strong></td>
+                        <td><strong>Frequência</strong></td>
                         <td>Semanal (sextas-feiras)</td>
                     </tr>
                     <tr>
@@ -130,7 +130,7 @@
                         <td>R$ {{ number_format($payoutPolicy['min_value'], 2, ',', '.') }}</td>
                     </tr>
                     <tr>
-                        <td><strong>Liberacao</strong></td>
+                        <td><strong>Liberação</strong></td>
                         <td>{{ $payoutPolicy['release_days'] }} dias após conclusão do serviço</td>
                     </tr>
                 </tbody>
@@ -185,7 +185,7 @@
                 <li><strong>Pela plataforma:</strong> por descumprimento destes termos ou avaliações insatisfatórias</li>
             </ul>
             <p>
-                Atendimentos ja agendados devem ser concluidos ou transferidos antes do encerramento.
+                Atendimentos já agendados devem ser concluidos ou transferidos antes do encerramento.
             </p>
 
             <h2>13. CONTATO</h2>

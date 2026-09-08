@@ -1,7 +1,7 @@
 {
     "name": "carinho/carinho-site",
     "type": "project",
-    "description": "Portal institucional Carinho com Voce - Captacao de leads e informacoes sobre servicos",
+    "description": "Portal institucional Carinho com Você - Captação de leads e informações sobre serviços",
     "keywords": ["laravel", "carinho", "homecare", "cuidadores"],
     "license": "proprietary",
     "require": {

@@ -1,7 +1,7 @@
 {
   "name": "carinho/carinho-cuidadores",
   "type": "project",
-  "description": "Sistema de recrutamento e gestao de cuidadores - Carinho com Voce",
+  "description": "Sistema de recrutamento e gestão de cuidadores - Carinho com Você",
   "keywords": ["cuidadores", "carinho", "laravel", "php"],
   "license": "proprietary",
   "require": {

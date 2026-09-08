@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codigo de Verificacao</title>
+    <title>Código de Verificação</title>
     <style>
         body {
             margin: 0;
@@ -84,18 +84,18 @@
             </div>
             <div class="content">
                 <p class="message">
-                    Seu codigo de verificacao para assinatura digital e:
+                    Seu código de verificação para assinatura digital é:
                 </p>
 
                 <div class="otp-code">{{ $code }}</div>
 
                 <p class="expiration">
-                    Este codigo e valido por {{ $expirationMinutes }} minutos.
+                    Este código é válido por {{ $expirationMinutes }} minutos.
                 </p>
 
                 <div class="warning">
-                    Se voce nao solicitou este codigo, ignore este email.
-                    Nao compartilhe este codigo com ninguem.
+                    Se você não solicitou este código, ignore este email.
+                    Não compartilhe este código com ninguém.
                 </div>
             </div>
             <div class="footer">

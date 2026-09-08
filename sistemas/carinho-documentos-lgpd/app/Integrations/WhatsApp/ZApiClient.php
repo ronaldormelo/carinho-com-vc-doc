@@ -107,8 +107,8 @@ class ZApiClient
      */
     public function sendTermsLink(string $phone): array
     {
-        $message = "Ola! Aqui estao os documentos importantes da Carinho com Voce:\n\n"
-            . "Acesse os links para conhecer nossos Termos de Uso e Politica de Privacidade.";
+        $message = "Olá! Aqui estão os documentos importantes da Carinho com Você:\n\n"
+            . "Acesse os links para conhecer nossos Termos de Uso e Política de Privacidade.";
 
         return $this->request('send-link', [
             'phone' => $this->normalizePhone($phone),
@@ -123,11 +123,11 @@ class ZApiClient
      */
     private function formatContractMessage(string $recipientName): string
     {
-        return "Ola, {$recipientName}!\n\n"
-            . "Seu contrato com a Carinho com Voce esta pronto para assinatura.\n\n"
+        return "Olá, {$recipientName}!\n\n"
+            . "Seu contrato com a Carinho com Você está pronto para assinatura.\n\n"
             . "Clique no link abaixo para revisar e assinar digitalmente.\n\n"
-            . "O link e valido por 72 horas.\n\n"
-            . "Em caso de duvidas, estamos a disposicao.";
+            . "O link é válido por 72 horas.\n\n"
+            . "Em caso de dúvidas, estamos a disposição.";
     }
 
     /**
@@ -135,11 +135,11 @@ class ZApiClient
      */
     private function formatOtpMessage(string $code): string
     {
-        return "Carinho com Voce\n\n"
-            . "Seu codigo de verificacao para assinatura digital e:\n\n"
+        return "Carinho com Você\n\n"
+            . "Seu código de verificação para assinatura digital é:\n\n"
             . "*{$code}*\n\n"
-            . "Este codigo e valido por 10 minutos.\n\n"
-            . "Se voce nao solicitou este codigo, ignore esta mensagem.";
+            . "Este código é válido por 10 minutos.\n\n"
+            . "Se você não solicitou este código, ignore esta mensagem.";
     }
 
     /**
@@ -147,10 +147,10 @@ class ZApiClient
      */
     private function formatSignatureConfirmationMessage(string $documentType): string
     {
-        return "Carinho com Voce\n\n"
+        return "Carinho com Você\n\n"
             . "Seu documento ({$documentType}) foi assinado com sucesso!\n\n"
-            . "Clique no link abaixo para baixar uma copia.\n\n"
-            . "Obrigado pela confianca!";
+            . "Clique no link abaixo para baixar uma cópia.\n\n"
+            . "Obrigado pela confiança!";
     }
 
     /**
@@ -159,24 +159,24 @@ class ZApiClient
     private function formatDataRequestMessage(string $requestType, string $status): string
     {
         $typeLabels = [
-            'export' => 'exportacao de dados',
-            'delete' => 'exclusao de dados',
-            'update' => 'atualizacao de dados',
+            'export' => 'exportação de dados',
+            'delete' => 'exclusão de dados',
+            'update' => 'atualização de dados',
         ];
 
         $statusLabels = [
-            'open' => 'foi recebida e sera processada em breve',
-            'in_progress' => 'esta sendo processada',
-            'done' => 'foi concluida com sucesso',
-            'rejected' => 'nao pode ser atendida',
+            'open' => 'foi recebida e será processada em breve',
+            'in_progress' => 'está sendo processada',
+            'done' => 'foi concluída com sucesso',
+            'rejected' => 'não pode ser atendida',
         ];
 
         $type = $typeLabels[$requestType] ?? $requestType;
         $statusText = $statusLabels[$status] ?? $status;
 
-        return "Carinho com Voce\n\n"
-            . "Sua solicitacao de {$type} {$statusText}.\n\n"
-            . "Em caso de duvidas, entre em contato pelo e-mail " . config('branding.email.privacy');
+        return "Carinho com Você\n\n"
+            . "Sua solicitação de {$type} {$statusText}.\n\n"
+            . "Em caso de dúvidas, entre em contato pelo e-mail " . config('branding.email.privacy');
     }
 
     /**

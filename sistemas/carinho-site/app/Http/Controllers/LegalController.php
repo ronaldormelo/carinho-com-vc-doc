@@ -16,8 +16,8 @@ class LegalController extends Controller
     {
         return view('legal.privacy', [
             'seo' => [
-                'title' => 'Politica de Privacidade' . config('branding.seo.title_suffix'),
-                'description' => 'Saiba como a Carinho com Voce coleta, usa e protege seus dados pessoais em conformidade com a LGPD.',
+                'title' => 'Política de Privacidade' . config('branding.seo.title_suffix'),
+                'description' => 'Saiba como a Carinho com Você coleta, usa e protege seus dados pessoais em conformidade com a LGPD.',
             ],
         ]);
     }
@@ -30,7 +30,7 @@ class LegalController extends Controller
         return view('legal.terms', [
             'seo' => [
                 'title' => 'Termos de Uso' . config('branding.seo.title_suffix'),
-                'description' => 'Leia os termos e condicoes de uso dos servicos da Carinho com Voce.',
+                'description' => 'Leia os termos e condições de uso dos serviços da Carinho com Você.',
             ],
         ]);
     }
@@ -45,8 +45,8 @@ class LegalController extends Controller
         return view('legal.cancellation', [
             'policy' => $policy,
             'seo' => [
-                'title' => 'Politica de Cancelamento' . config('branding.seo.title_suffix'),
-                'description' => 'Entenda nossa politica de cancelamento, prazos e condicoes de reembolso.',
+                'title' => 'Política de Cancelamento' . config('branding.seo.title_suffix'),
+                'description' => 'Entenda nossa política de cancelamento, prazos e condições de reembolso.',
             ],
         ]);
     }
@@ -65,8 +65,8 @@ class LegalController extends Controller
             'payoutPolicy' => $payoutPolicy,
             'commission' => $commission,
             'seo' => [
-                'title' => 'Politica de Pagamento e Comissoes' . config('branding.seo.title_suffix'),
-                'description' => 'Informacoes sobre prazos de pagamento, formas aceitas e comissoes dos cuidadores.',
+                'title' => 'Política de Pagamento e Comissões' . config('branding.seo.title_suffix'),
+                'description' => 'Informações sobre prazos de pagamento, formas aceitas e comissões dos cuidadores.',
             ],
         ]);
     }
@@ -83,8 +83,8 @@ class LegalController extends Controller
             'policy' => $policy,
             'sla' => $sla,
             'seo' => [
-                'title' => 'Politica de Emergencias' . config('branding.seo.title_suffix'),
-                'description' => 'Saiba como agir em situacoes de emergencia e como a Carinho com Voce oferece suporte.',
+                'title' => 'Política de Emergências' . config('branding.seo.title_suffix'),
+                'description' => 'Saiba como agir em situações de emergência e como a Carinho com Você oferece suporte.',
             ],
         ]);
     }
@@ -102,7 +102,7 @@ class LegalController extends Controller
             'payoutPolicy' => $payoutPolicy,
             'seo' => [
                 'title' => 'Termos para Cuidadores' . config('branding.seo.title_suffix'),
-                'description' => 'Termos e condicoes para cuidadores parceiros da Carinho com Voce.',
+                'description' => 'Termos e condições para cuidadores parceiros da Carinho com Você.',
             ],
         ]);
     }

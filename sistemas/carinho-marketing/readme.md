@@ -10,26 +10,26 @@
 
 Health: `GET /up` (Laravel) e `GET /api/health`. API **sem** `/v1`. Além do calendário/campanhas/UTM, o código expõe orçamento (`/api/budget`), parcerias, indicações e ROI (`/api/reports/roi`). Landings deste módulo; o Site **não** tem `/landing-pages`.
 
-## Descricao
+## Descrição
 Sistema de presenca digital e aquisicao de leads. Organiza a comunicacao
-nas redes sociais, campanhas e landing pages, garantindo captacao
+nas redes sociais, campanhas e landing pages, garantindo captação
 consistente e rastreavel.
 
 ## Modulos Implementados
 
-### 1. Gestao de Redes Sociais
-- Cadastro e gestao de contas em redes sociais
-- Padrao de bio com UTM integrado
+### 1. Gestão de Redes Sociais
+- Cadastro e gestão de contas em redes sociais
+- Padrão de bio com UTM integrado
 - Sincronizacao de perfis com Instagram e Facebook
 - Hashtags e mensagens padronizadas da marca
 
 ### 2. Calendario Editorial
 - Criacao e agendamento de posts
-- Gestao de assets (imagens, videos, textos)
+- Gestão de assets (imagens, videos, textos)
 - Publicacao automatica em Instagram e Facebook
 - Workflow de aprovacao de conteudos
 
-### 3. Gestao de Campanhas
+### 3. Gestão de Campanhas
 - Campanhas de Meta Ads (Facebook/Instagram)
 - Campanhas de Google Ads
 - Grupos de anuncios e criativos
@@ -37,7 +37,7 @@ consistente e rastreavel.
 - Dashboard de performance
 
 ### 4. Landing Pages e UTM
-- Gestao de landing pages
+- Gestão de landing pages
 - Builder de links UTM
 - URLs para WhatsApp com rastreamento
 - Integracao com site principal
@@ -54,18 +54,18 @@ consistente e rastreavel.
 - Templates para posts e stories
 - Paleta de cores e tipografia
 - Tom de voz e mensagens-chave
-- Temas de conteudo
+- Temas de conteúdo
 
 ## Integracoes Externas
 
 ### Meta (Facebook/Instagram)
-- **Meta Marketing API** - Gestao de campanhas e anuncios
-- **Instagram Graph API** - Publicacao de conteudo e insights
-- **Facebook Pages API** - Gestao de pagina e posts
+- **Meta Marketing API** - Gestão de campanhas e anuncios
+- **Instagram Graph API** - Publicacao de conteúdo e insights
+- **Facebook Pages API** - Gestão de página e posts
 - **Conversions API** - Envio de eventos de conversao
 
 ### Google
-- **Google Ads API** - Gestao de campanhas e conversoes
+- **Google Ads API** - Gestão de campanhas e conversoes
 - **Google Analytics Data API** - Relatorios e metricas
 - **Measurement Protocol GA4** - Envio de eventos
 
@@ -76,7 +76,7 @@ consistente e rastreavel.
 - **CRM** - Envio de leads e origem
 - **Integracoes Hub** - Eventos e automacoes
 - **Site** - Landing pages e formularios
-- **Atendimento** - Notificacoes
+- **Atendimento** - Notificações
 
 ## Stack Tecnologica
 - **Linguagem:** PHP 8.2
@@ -124,8 +124,8 @@ carinho-marketing/
 ### Calendario Editorial
 - `GET /api/calendar` - Lista itens do calendario
 - `POST /api/calendar` - Cria item
-- `POST /api/calendar/{id}/schedule` - Agenda publicacao
-- `POST /api/calendar/{id}/publish` - Publica conteudo
+- `POST /api/calendar/{id}/schedule` - Agenda publicação
+- `POST /api/calendar/{id}/publish` - Pública conteúdo
 
 ### Campanhas
 - `GET /api/campaigns` - Lista campanhas
@@ -137,7 +137,7 @@ carinho-marketing/
 ### Landing Pages
 - `GET /api/landing-pages` - Lista landing pages
 - `POST /api/landing-pages` - Cria landing page
-- `POST /api/landing-pages/{id}/publish` - Publica
+- `POST /api/landing-pages/{id}/publish` - Pública
 
 ### UTM Builder
 - `POST /api/utm/build` - Gera URL com UTM
@@ -153,7 +153,7 @@ carinho-marketing/
 - `POST /api/social-accounts/{id}/sync-instagram` - Sincroniza Instagram
 
 ### Biblioteca de Marca
-- `GET /api/brand/config` - Configuracoes de branding
+- `GET /api/brand/config` - Configurações de branding
 - `GET /api/brand/colors` - Paleta de cores
 - `GET /api/brand/assets` - Lista assets
 
@@ -190,14 +190,14 @@ docker-compose exec app php artisan db:seed
 
 - `SyncCampaignMetrics` - Sincroniza metricas de campanhas
 - `SyncAllCampaignsMetrics` - Sincroniza todas as campanhas ativas
-- `PublishScheduledContent` - Publica conteudos agendados
+- `PublishScheduledContent` - Pública conteudos agendados
 - `SendConversionEvent` - Envia eventos de conversao
 - `NotifyLeadCreated` - Notifica sobre novos leads
 
-## Seguranca
+## Segurança
 - Autenticacao via token interno
 - Rate limiting por endpoint
-- Validacao de webhooks
+- Validação de webhooks
 - Secrets em variaveis de ambiente
 
 ## Monitoramento

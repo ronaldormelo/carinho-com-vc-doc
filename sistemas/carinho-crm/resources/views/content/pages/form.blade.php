@@ -64,7 +64,7 @@
     </div>
 
     <div class="form-group">
-        <label for="published_at">Data de Publicação</label>
+        <label for="published_at">Data de Públicação</label>
         <input type="datetime-local" id="published_at" name="published_at" value="{{ old('published_at', isset($page['published_at']) ? \Carbon\Carbon::parse($page['published_at'])->format('Y-m-d\TH:i') : '') }}" class="form-control">
     </div>
 

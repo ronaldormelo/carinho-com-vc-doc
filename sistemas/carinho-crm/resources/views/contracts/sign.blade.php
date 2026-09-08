@@ -63,7 +63,7 @@
         }
         
         .logo img {
-            height: 50px;
+            height: 100px;
             width: auto;
         }
         

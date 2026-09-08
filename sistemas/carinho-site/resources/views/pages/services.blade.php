@@ -27,8 +27,8 @@
     <div class="container">
         <div class="grid grid-3">
             @foreach($serviceTypes as $key => $service)
-            <div class="card" style="{{ $key === 'diario' ? 'border: 2px solid var(--color-primary);' : '' }}">
-                @if($key === 'diario')
+            <div class="card" style="{{ $key === 'diário' ? 'border: 2px solid var(--color-primary);' : '' }}">
+                @if($key === 'diário')
                 <span style="background: var(--color-primary); color: white; padding: 4px 12px; border-radius: var(--border-radius); font-size: var(--font-size-sm); display: inline-block; margin-bottom: var(--spacing-4);">Mais procurado</span>
                 @endif
 
@@ -69,7 +69,7 @@
                     <li>Substituição garantida</li>
                 </ul>
 
-                <a href="{{ route('whatsapp.cta') }}" class="btn {{ $key === 'diario' ? 'btn-primary' : 'btn-secondary' }} btn-block" target="_blank" rel="noopener">
+                <a href="{{ route('whatsapp.cta') }}" class="btn {{ $key === 'diário' ? 'btn-primary' : 'btn-secondary' }} btn-block" target="_blank" rel="noopener">
                     Solicitar orçamento
                 </a>
             </div>
@@ -86,7 +86,7 @@
         <div class="grid grid-4">
             <div class="card text-center">
                 <h4>Idosos</h4>
-                <p class="text-muted">Acompanhamento, higiene, alimentação e medicação.</p>
+                <p class="text-muted">Acompanhamento, higiene, alimentação e médicação.</p>
             </div>
 
             <div class="card text-center">

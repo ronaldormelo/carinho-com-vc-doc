@@ -6,18 +6,18 @@ return [
     | Identidade da Marca
     |--------------------------------------------------------------------------
     |
-    | Configuracoes de branding da Carinho com Voce.
+    | Configuracoes de branding da Carinho com Você.
     | Tom de voz: empatico, respeitoso e objetivo.
     | Linguagem: simples, sem jargoes tecnicos.
     |
     */
 
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'subdomain' => env('DOCUMENTOS_SUBDOMAIN', 'documentos.carinho.com.vc'),
 
     'voice' => [
-        'tone' => 'empatico, respeitoso e objetivo',
+        'tone' => 'empático, respeitoso e objetivo',
         'language' => 'simples e direta',
         'avoid' => 'termos que infantilizem o idoso ou o cuidador',
     ],
@@ -87,12 +87,12 @@ return [
     |--------------------------------------------------------------------------
     */
     'messages' => [
-        'contract_ready' => 'Seu contrato esta pronto para assinatura. Acesse o link para revisar e assinar.',
-        'contract_signed' => 'Contrato assinado com sucesso! Uma copia foi enviada para seu email.',
-        'document_uploaded' => 'Documento recebido com sucesso. Em breve sera processado.',
+        'contract_ready' => 'Seu contrato está pronto para assinatura. Acesse o link para revisar e assinar.',
+        'contract_signed' => 'Contrato assinado com sucesso! Uma cópia foi enviada para seu email.',
+        'document_uploaded' => 'Documento recebido com sucesso. Em breve será processado.',
         'consent_recorded' => 'Seu consentimento foi registrado com sucesso.',
         'consent_revoked' => 'Seu consentimento foi revogado conforme solicitado.',
-        'data_export_ready' => 'Sua exportacao de dados esta pronta para download.',
-        'data_deleted' => 'Seus dados foram excluidos conforme solicitado.',
+        'data_export_ready' => 'Sua exportação de dados está pronta para download.',
+        'data_deleted' => 'Seus dados foram excluídos conforme solicitado.',
     ],
 ];

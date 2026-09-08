@@ -76,7 +76,7 @@ class SignatureService
             return [
                 'ok' => false,
                 'is_valid' => false,
-                'error' => 'Assinatura nao encontrada',
+                'error' => 'Assinatura não encontrada',
             ];
         }
     }
@@ -114,7 +114,7 @@ class SignatureService
                 'algorithm' => 'HMAC-SHA256',
             ],
             'issuer' => [
-                'name' => config('branding.name', 'Carinho com Voce'),
+                'name' => config('branding.name', 'Carinho com Você'),
                 'domain' => config('branding.domain', 'carinho.com.vc'),
             ],
             'generated_at' => now()->toIso8601String(),

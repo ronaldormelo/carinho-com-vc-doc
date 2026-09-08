@@ -118,7 +118,7 @@
         </div>
 
         <div class="content">
-            <p class="greeting">Ola, {{ $clientName ?? 'Cliente' }}!</p>
+            <p class="greeting">Olá, {{ $clientName ?? 'Cliente' }}!</p>
 
             <div class="reminder-box">
                 <h2>Lembrete de Agendamento</h2>
@@ -131,7 +131,7 @@
                     <span class="info-value">{{ $date ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Horario</span>
+                    <span class="info-label">Horário</span>
                     <span class="info-value">{{ $startTime ?? 'N/A' }} - {{ $endTime ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
@@ -141,7 +141,7 @@
             </div>
 
             <p class="message">
-                Precisa reagendar ou cancelar? Entre em contato conosco o mais rapido possivel.
+                Precisa reagendar ou cancelar? Entre em contato conosco o mais rápido possível.
             </p>
 
             @if(isset($confirmUrl) || isset($rescheduleUrl))

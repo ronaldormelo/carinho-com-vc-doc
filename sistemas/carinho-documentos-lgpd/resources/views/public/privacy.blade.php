@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politica de Privacidade - {{ config('branding.name') }}</title>
+    <title>Política de Privacidade - {{ config('branding.name') }}</title>
     <link rel="icon" href="{{ asset(config('branding.assets.logo.favicon', '/images/favicon.ico')) }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/brand.css">
     <style>
@@ -70,9 +70,9 @@
     <header class="page-header">
         <div class="container">
             <div style="margin-bottom: var(--spacing-6);">
-                <img src="{{ asset(config('branding.assets.logo.white')) }}" alt="{{ config('branding.name') }}" style="height: 50px;" />
+                <img src="{{ asset(config('branding.assets.logo.white')) }}" alt="{{ config('branding.name') }}" style="height: 100px; width: auto;" />
             </div>
-            <h1>Politica de Privacidade</h1>
+            <h1>Política de Privacidade</h1>
             <p>{{ config('branding.name') }}</p>
         </div>
     </header>
@@ -80,11 +80,11 @@
     <main class="content-section">
         <div class="container">
             <div class="privacy-content">
-                <p class="last-updated">Ultima atualizacao: {{ date('d/m/Y') }}</p>
+                <p class="last-updated">Última atualização: {{ date('d/m/Y') }}</p>
 
                 <h2>1. INTRODUCAO</h2>
                 <p>
-                    A {{ config('branding.name') }} esta comprometida em proteger sua privacidade. Esta politica
+                    A {{ config('branding.name') }} está comprometida em proteger sua privacidade. Esta política
                     descreve como coletamos, usamos e protegemos seus dados pessoais em conformidade
                     com a Lei Geral de Protecao de Dados (LGPD - Lei no 13.709/2018).
                 </p>
@@ -93,18 +93,18 @@
                 <p>Coletamos os seguintes dados pessoais:</p>
                 <ul>
                     <li><strong>Dados de identificacao:</strong> nome, CPF, RG, data de nascimento</li>
-                    <li><strong>Dados de contato:</strong> endereco, telefone, e-mail</li>
-                    <li><strong>Dados de saude:</strong> informacoes sobre condicoes de saude do paciente (quando aplicavel)</li>
-                    <li><strong>Dados profissionais:</strong> formacao, experiencia, certificacoes (para cuidadores)</li>
+                    <li><strong>Dados de contato:</strong> endereço, telefone, e-mail</li>
+                    <li><strong>Dados de saúde:</strong> informações sobre condições de saúde do paciente (quando aplicável)</li>
+                    <li><strong>Dados profissionais:</strong> formacao, experiência, certificacoes (para cuidadores)</li>
                 </ul>
 
                 <h2>3. FINALIDADE DO TRATAMENTO</h2>
                 <p>Utilizamos seus dados para:</p>
                 <ul>
-                    <li>Prestacao dos servicos contratados</li>
-                    <li>Comunicacao sobre servicos e atualizacoes</li>
+                    <li>Prestação dos serviços contratados</li>
+                    <li>Comunicacao sobre serviços e atualizações</li>
                     <li>Cumprimento de obrigacoes legais</li>
-                    <li>Melhoria de nossos servicos</li>
+                    <li>Melhoria de nossos serviços</li>
                 </ul>
 
                 <h2>4. BASE LEGAL</h2>
@@ -119,18 +119,18 @@
                 <h2>5. COMPARTILHAMENTO DE DADOS</h2>
                 <p>Seus dados podem ser compartilhados com:</p>
                 <ul>
-                    <li>Cuidadores (para prestacao do servico)</li>
-                    <li>Prestadores de servicos de tecnologia</li>
+                    <li>Cuidadores (para prestação do serviço)</li>
+                    <li>Prestadores de serviços de tecnologia</li>
                     <li>Autoridades, quando exigido por lei</li>
                 </ul>
 
                 <h2>6. SEUS DIREITOS</h2>
                 <div class="highlight-box">
-                    <p><strong>Conforme a LGPD, voce tem direito a:</strong></p>
+                    <p><strong>Conforme a LGPD, você tem direito a:</strong></p>
                     <ul>
                         <li>Acessar seus dados pessoais</li>
                         <li>Corrigir dados incompletos ou desatualizados</li>
-                        <li>Solicitar a exclusao de seus dados</li>
+                        <li>Solicitar a exclusão de seus dados</li>
                         <li>Revogar consentimentos</li>
                         <li>Solicitar portabilidade dos dados</li>
                     </ul>
@@ -144,21 +144,21 @@
 
                 <h2>8. RETENCAO DE DADOS</h2>
                 <p>
-                    Mantemos seus dados pelo periodo necessario para cumprir as finalidades
+                    Mantemos seus dados pelo período necessário para cumprir as finalidades
                     descritas ou conforme exigido por lei.
                 </p>
 
                 <h2>9. CONTATO DO ENCARREGADO (DPO)</h2>
                 <p>
-                    Para exercer seus direitos ou esclarecer duvidas sobre privacidade:
+                    Para exercer seus direitos ou esclarecer dúvidas sobre privacidade:
                 </p>
                 <p>
                     <strong>E-mail:</strong> <a href="mailto:{{ config('branding.email.reply_to') }}">{{ config('branding.email.reply_to') }}</a>
                 </p>
 
-                <h2>10. ALTERACOES</h2>
+                <h2>10. ALTERAÇÕES</h2>
                 <p>
-                    Esta politica pode ser atualizada periodicamente. Recomendamos sua revisao regular.
+                    Esta política pode ser atualizada periodicamente. Recomendamos sua revisao regular.
                 </p>
             </div>
         </div>

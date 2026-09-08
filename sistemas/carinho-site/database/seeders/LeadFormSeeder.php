@@ -17,7 +17,7 @@ class LeadFormSeeder extends Seeder
         LeadForm::firstOrCreate(
             ['target_type_id' => DomainFormTarget::CLIENTE],
             [
-                'name' => 'Formulario de Cliente',
+                'name' => 'Formulário de Cliente',
                 'fields_json' => [
                     ['name' => 'name', 'type' => 'text', 'required' => true],
                     ['name' => 'phone', 'type' => 'tel', 'required' => true],
@@ -36,7 +36,7 @@ class LeadFormSeeder extends Seeder
         LeadForm::firstOrCreate(
             ['target_type_id' => DomainFormTarget::CUIDADOR],
             [
-                'name' => 'Formulario de Cuidador',
+                'name' => 'Formulário de Cuidador',
                 'fields_json' => [
                     ['name' => 'name', 'type' => 'text', 'required' => true],
                     ['name' => 'phone', 'type' => 'tel', 'required' => true],

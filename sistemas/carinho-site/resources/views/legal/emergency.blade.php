@@ -17,7 +17,7 @@
 
             <div class="highlight-box" style="background: #f8d7da; border-color: var(--color-danger);">
                 <p style="margin: 0; font-size: var(--font-size-lg);">
-                    <strong>Em caso de emergencia medica, ligue imediatamente para o SAMU: 192</strong>
+                    <strong>Em caso de emergência médica, ligue imediatamente para o SAMU: 192</strong>
                 </p>
             </div>
 
@@ -46,7 +46,7 @@
             </table>
 
             <h2>2. TEMPO DE RESPOSTA</h2>
-            <p>Nosso compromisso de tempo de resposta por nivel de urgencia:</p>
+            <p>Nosso compromisso de tempo de resposta por nivel de urgência:</p>
 
             <table class="policy-table">
                 <thead>
@@ -68,7 +68,7 @@
                         <td>Ausência de cuidador, atraso significativo</td>
                     </tr>
                     <tr>
-                        <td><strong>Medio</strong></td>
+                        <td><strong>Médio</strong></td>
                         <td><strong>{{ $policy['response_time']['medium'] }}</strong></td>
                         <td>Problemas no atendimento, dúvidas urgentes</td>
                     </tr>

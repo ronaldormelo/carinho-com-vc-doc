@@ -7,7 +7,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'subdomain' => env('MARKETING_SUBDOMAIN', 'marketing.carinho.com.vc'),
 
@@ -18,11 +18,11 @@ return [
     */
 
     'purpose' => [
-        'Tornar o cuidado domiciliar simples, humano e confiavel.',
-        'Reduzir o esforco da familia para encontrar cuidadores qualificados.',
+        'Tornar o cuidado domiciliar simples, humano e confiável.',
+        'Reduzir o esforço da família para encontrar cuidadores qualificados.',
     ],
 
-    'promise' => 'Atendimento rapido, transparente e com continuidade.',
+    'promise' => 'Atendimento rápido, transparente e com continuidade.',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
         'Humana e acolhedora',
         'Profissional e segura',
         'Simples e direta',
-        'Confiavel e responsavel',
+        'Confiável e responsável',
     ],
 
     /*
@@ -44,10 +44,10 @@ return [
     */
 
     'voice' => [
-        'tone' => 'empatico, respeitoso e objetivo',
+        'tone' => 'empático, respeitoso e objetivo',
         'language' => 'simples e direta',
         'guidelines' => [
-            'Linguagem simples, sem jargoes tecnicos.',
+            'Linguagem simples, sem jargões técnicos.',
             'Evitar termos que infantilizem o idoso ou o cuidador.',
         ],
     ],
@@ -59,10 +59,10 @@ return [
     */
 
     'messages' => [
-        'hiring' => 'Contratacao rapida e sem complicacao.',
+        'hiring' => 'Contratação rápida e sem complicação.',
         'caregivers' => 'Cuidadores qualificados e avaliados.',
         'service' => 'Atendimento digital com suporte humano.',
-        'replacement' => 'Substituicao facilitada quando necessario.',
+        'replacement' => 'Substituição facilitada quando necessário.',
     ],
 
     /*
@@ -160,7 +160,7 @@ return [
         'post_frequency' => '2 posts/semana',
         'themes' => [
             'prova_social' => 'Depoimentos e casos de sucesso',
-            'servicos' => 'Apresentacao dos servicos',
+            'servicos' => 'Apresentação dos serviços',
             'urgencia' => 'Disponibilidade e facilidade',
             'educativo' => 'Dicas de cuidado e bem-estar',
             'institucional' => 'Valores e equipe',

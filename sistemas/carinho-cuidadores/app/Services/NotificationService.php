@@ -23,7 +23,7 @@ class NotificationService
         $message = $this->buildMessage($type, $caregiver, $data);
 
         if (empty($message)) {
-            return ['success' => false, 'message' => 'Tipo de notificacao desconhecido'];
+            return ['success' => false, 'message' => 'Tipo de notificação desconhecido'];
         }
 
         $results = [];
@@ -48,7 +48,7 @@ class NotificationService
             'timestamp' => now()->toIso8601String(),
         ]);
 
-        Log::info('Notificacao enviada', [
+        Log::info('Notificação enviada', [
             'caregiver_id' => $caregiver->id,
             'type' => $type,
             'results' => $results,
@@ -112,7 +112,7 @@ class NotificationService
      */
     private function buildMessage(string $type, Caregiver $caregiver, array $data): ?string
     {
-        $brandName = config('branding.name', 'Carinho com Voce');
+        $brandName = config('branding.name', 'Carinho com Você');
         $messages = config('branding.messages', []);
 
         return match ($type) {
@@ -132,16 +132,16 @@ class NotificationService
     private function buildWelcomeMessage(Caregiver $caregiver, string $brandName): string
     {
         return <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Seja bem-vindo(a) a {$brandName}! Estamos felizes em te-lo(a) como parte da nossa equipe de cuidadores.
+Seja bem-vindo(a) a {$brandName}! Estamos felizes em tê-lo(a) como parte da nossa equipe de cuidadores.
 
-Proximos passos:
-1. Complete seu cadastro com todas as informacoes
-2. Envie os documentos obrigatorios
+Próximos passos:
+1. Complete seu cadastro com todas as informações
+2. Envie os documentos obrigatórios
 3. Assine o termo de responsabilidade
 
-Assim que tudo estiver pronto, voce podera receber oportunidades de servico.
+Assim que tudo estiver pronto, você poderá receber oportunidades de serviço.
 
 Qualquer duvida, estamos aqui para ajudar!
 
@@ -153,11 +153,11 @@ MSG;
     private function buildActivatedMessage(Caregiver $caregiver, string $brandName): string
     {
         return <<<MSG
-Parabens, {$caregiver->name}!
+Parabéns, {$caregiver->name}!
 
 Seu cadastro na {$brandName} foi aprovado e ativado com sucesso!
 
-A partir de agora voce esta apto(a) a receber oportunidades de servico compativeis com seu perfil e disponibilidade.
+A partir de agora você está apto(a) a receber oportunidades de serviço compatíveis com seu perfil e disponibilidade.
 
 Mantenha seus dados sempre atualizados para receber as melhores oportunidades.
 
@@ -170,16 +170,16 @@ MSG;
 
     private function buildDeactivatedMessage(Caregiver $caregiver, string $brandName, array $data): string
     {
-        $reason = $data['reason'] ?? 'Motivo nao informado';
+        $reason = $data['reason'] ?? 'Motivo não informado';
 
         return <<<MSG
-Ola, {$caregiver->name}.
+Olá, {$caregiver->name}.
 
 Informamos que seu cadastro na {$brandName} foi temporariamente desativado.
 
 Motivo: {$reason}
 
-Se desejar reativar seu cadastro ou tiver duvidas, entre em contato conosco.
+Se desejar reativar seu cadastro ou tiver dúvidas, entre em contato conosco.
 
 Atenciosamente,
 Equipe {$brandName}
@@ -188,16 +188,16 @@ MSG;
 
     private function buildBlockedMessage(Caregiver $caregiver, string $brandName, array $data): string
     {
-        $reason = $data['reason'] ?? 'Motivo nao informado';
+        $reason = $data['reason'] ?? 'Motivo não informado';
 
         return <<<MSG
-Ola, {$caregiver->name}.
+Olá, {$caregiver->name}.
 
 Informamos que seu cadastro na {$brandName} foi bloqueado.
 
 Motivo: {$reason}
 
-Para mais informacoes, entre em contato com nossa equipe.
+Para mais informações, entre em contato com nossa equipe.
 
 Atenciosamente,
 Equipe {$brandName}
@@ -207,11 +207,11 @@ MSG;
     private function buildDocumentPendingMessage(Caregiver $caregiver, string $brandName): string
     {
         return <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Recebemos seu documento e ele esta em analise.
+Recebemos seu documento e ele está em análise.
 
-Em breve voce recebera uma atualizacao sobre o status da validacao.
+Em breve você receberá uma atualização sobre o status da validação.
 
 Atenciosamente,
 Equipe {$brandName}
@@ -223,9 +223,9 @@ MSG;
         $docType = $data['doc_type'] ?? 'Documento';
 
         return <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Otima noticia! Seu documento ({$docType}) foi aprovado com sucesso.
+Otima notícia! Seu documento ({$docType}) foi aprovado com sucesso.
 
 Continue completando seu cadastro para ativar seu perfil.
 
@@ -237,16 +237,16 @@ MSG;
     private function buildDocumentRejectedMessage(Caregiver $caregiver, string $brandName, array $data): string
     {
         $docType = $data['doc_type'] ?? 'Documento';
-        $reason = $data['reason'] ?? 'Documento nao atende aos criterios minimos';
+        $reason = $data['reason'] ?? 'Documento não atende aos criterios minimos';
 
         return <<<MSG
-Ola, {$caregiver->name}.
+Olá, {$caregiver->name}.
 
 Infelizmente seu documento ({$docType}) foi recusado.
 
 Motivo: {$reason}
 
-Por favor, envie novamente um documento valido e legivel.
+Por favor, envie novamente um documento válido e legivel.
 
 Atenciosamente,
 Equipe {$brandName}
@@ -258,14 +258,14 @@ MSG;
         $signUrl = $data['sign_url'] ?? '';
 
         return <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Seu termo de responsabilidade esta pronto para assinatura.
+Seu termo de responsabilidade está pronto para assinatura.
 
 Acesse o link abaixo para revisar e assinar:
 {$signUrl}
 
-Apos a assinatura, seu cadastro podera ser ativado.
+Após a assinatura, seu cadastro poderá ser ativado.
 
 Atenciosamente,
 Equipe {$brandName}
@@ -280,13 +280,13 @@ MSG;
         $commentText = $comment ? "\nComentario: \"{$comment}\"" : '';
 
         return <<<MSG
-Ola, {$caregiver->name}!
+Olá, {$caregiver->name}!
 
-Voce recebeu uma nova avaliacao!
+Você recebeu uma nova avaliação!
 
 Nota: {$score}/5{$commentText}
 
-Continue com o otimo trabalho!
+Continue com o ótimo trabalho!
 
 Atenciosamente,
 Equipe {$brandName}
@@ -316,18 +316,18 @@ MSG;
      */
     private function getEmailSubject(string $type): string
     {
-        $brandName = config('branding.name', 'Carinho com Voce');
+        $brandName = config('branding.name', 'Carinho com Você');
 
         return match ($type) {
             'welcome' => "Bem-vindo(a) a {$brandName}!",
             'activated' => "Cadastro Ativado - {$brandName}",
             'deactivated' => "Cadastro Desativado - {$brandName}",
-            'blocked' => "Informacao Importante - {$brandName}",
+            'blocked' => "Informação Importante - {$brandName}",
             'document_approved' => "Documento Aprovado - {$brandName}",
             'document_rejected' => "Documento Recusado - {$brandName}",
             'contract_ready' => "Seu Contrato - {$brandName}",
-            'rating_received' => "Nova Avaliacao - {$brandName}",
-            default => "Notificacao - {$brandName}",
+            'rating_received' => "Nova Avaliação - {$brandName}",
+            default => "Notificação - {$brandName}",
         };
     }
 }

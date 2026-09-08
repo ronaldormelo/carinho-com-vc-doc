@@ -71,7 +71,7 @@
         "priceRange": "$$",
         "areaServed": {
             "@type": "City",
-            "name": "Sao Paulo"
+            "name": "São Paulo"
         },
         "serviceType": ["Cuidador de Idosos", "Home Care", "Cuidado Domiciliar"]
     }

@@ -72,13 +72,29 @@ fi
 
 echo "Sincronizando usuário de aplicação no MariaDB (senha não é exibida)"
 
-sql="$(
-  printf '%s\n' \
-    "CREATE USER IF NOT EXISTS '${ref_user}'@'%' IDENTIFIED BY '${ref_pass}';" \
-    "ALTER USER '${ref_user}'@'%' IDENTIFIED BY '${ref_pass}';" \
-    "GRANT ALL PRIVILEGES ON carinho_*.* TO '${ref_user}'@'%';" \
-    "FLUSH PRIVILEGES;"
-)"
+# MariaDB não aceita carinho_*.* (o * não é curinga; o parser quebra em *.*).
+databases=(
+  carinho_atendimento
+  carinho_cuidadores
+  carinho_documentos_lgpd
+  carinho_operacao
+  carinho_site
+  carinho_crm
+  carinho_marketing
+  carinho_financeiro
+  carinho_integracoes
+)
+
+sql_lines=(
+  "CREATE USER IF NOT EXISTS '${ref_user}'@'%' IDENTIFIED BY '${ref_pass}';"
+  "ALTER USER '${ref_user}'@'%' IDENTIFIED BY '${ref_pass}';"
+)
+for db in "${databases[@]}"; do
+  sql_lines+=("GRANT ALL PRIVILEGES ON ${db}.* TO '${ref_user}'@'%';")
+done
+sql_lines+=("FLUSH PRIVILEGES;")
+
+sql="$(printf '%s\n' "${sql_lines[@]}")"
 
 printf '%s\n' "$sql" | docker exec -i "$CONTAINER" mariadb -uroot
 echo "Usuário MariaDB sincronizado"

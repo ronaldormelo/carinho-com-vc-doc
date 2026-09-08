@@ -755,7 +755,7 @@ GET /api/metrics/by-care-type
 ### 10.4 Boa Prática
 
 - Consulte o dashboard **diariamente** no início do expediente
-- Analise tendências **semanalmente**
+- Análise tendências **semanalmente**
 - Faça revisão completa **mensalmente**
 
 ---

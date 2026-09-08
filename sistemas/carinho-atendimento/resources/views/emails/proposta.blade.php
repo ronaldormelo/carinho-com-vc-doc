@@ -16,13 +16,13 @@
             </tr>
             <tr>
               <td style="padding:24px;">
-                <p>Ola {{ $name ?? 'Cliente' }},</p>
-                <p>Segue sua proposta de cuidado domiciliar. Nosso time esta pronto para ajudar com rapidez e transparencia.</p>
+                <p>Olá {{ $name ?? 'Cliente' }},</p>
+                <p>Segue sua proposta de cuidado domiciliar. Nosso time está pronto para ajudar com rapidez e transparência.</p>
                 <p><strong>Resumo:</strong></p>
                 <ul style="padding-left:18px;">
-                  <li>Servico: {{ $service ?? 'Cuidado domiciliar' }}</li>
-                  <li>Regiao: {{ $city ?? 'A combinar' }}</li>
-                  <li>Inicio: {{ $start_date ?? 'A combinar' }}</li>
+                  <li>Serviço: {{ $service ?? 'Cuidado domiciliar' }}</li>
+                  <li>Região: {{ $city ?? 'A combinar' }}</li>
+                  <li>Início: {{ $start_date ?? 'A combinar' }}</li>
                 </ul>
                 <p>Se precisar ajustar algum detalhe, responda este e-mail ou chame no WhatsApp.</p>
                 <p style="margin-top:24px;">Atenciosamente,<br>{{ config('branding.email.signature_name') }}</p>

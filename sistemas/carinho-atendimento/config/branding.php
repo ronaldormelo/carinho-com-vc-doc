@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'voice' => [
-        'tone' => 'empatico, respeitoso e objetivo',
+        'tone' => 'empático, respeitoso e objetivo',
         'language' => 'simples e direta',
     ],
     'colors' => [

@@ -268,7 +268,7 @@ PATCH /api/checklists/{checklistId}/batch
 ✅ **Itens obrigatórios do checklist de início:**
 1. Confirmar chegada ao local
 2. Verificar condição do cliente
-3. Conferir medicações
+3. Conferir médicações
 4. Anotar necessidades especiais
 5. Verificar segurança do ambiente
 
@@ -304,7 +304,7 @@ PATCH /api/checklists/{checklistId}/batch
 
 ✅ **Itens obrigatórios do checklist de fim:**
 1. Atividades planejadas concluídas
-2. Medicações administradas
+2. Médicações administradas
 3. Relatar ocorrências
 4. Cliente em condição estável
 5. Notas de passagem de plantão
@@ -415,7 +415,7 @@ Registrar e resolver situações de emergência com rapidez e segurança.
 |------------|----------------|----------|
 | **Low** | 60 min | Dúvida sobre procedimento |
 | **Medium** | 30 min | Atraso significativo, mudança de comportamento |
-| **High** | 15 min | Queda sem ferimentos, erro de medicação |
+| **High** | 15 min | Queda sem ferimentos, erro de médicação |
 | **Critical** | 5 min | Emergência médica, risco à segurança |
 
 ### Passo a Passo

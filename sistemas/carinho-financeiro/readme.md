@@ -13,7 +13,7 @@
 
 Sistema de controle financeiro da plataforma Carinho com Você: cobrança, pagamentos, repasses, precificação, conciliação, caixa, contas a pagar, relatórios e aprovações.
 
-**Runtime atual:** as rotas `/api/invoices` e `/api/payments` existem, mas a tabela `invoices` **nao** e criada por `php artisan migrate` (schema em `database/schema.sql`, fora do entrypoint Docker). Sem esse SQL, listar faturas retorna 500. Politica comercial de cancelamento: [docs/politicas.md](docs/politicas.md) (24h / 6–24h / <6h).
+**Runtime atual:** as rotas `/api/invoices` e `/api/payments` existem, mas a tabela `invoices` **não** e criada por `php artisan migrate` (schema em `database/schema.sql`, fora do entrypoint Docker). Sem esse SQL, listar faturas retorna 500. Política comercial de cancelamento: [docs/politicas.md](docs/politicas.md) (24h / 6–24h / <6h).
 
 ## Stack Tecnológica
 
@@ -284,7 +284,7 @@ carinho-financeiro/
 2. Copie `.env.example` para `.env`
 3. Configure as variáveis de ambiente (Stripe, Z-API, banco)
 4. Execute `composer install`
-5. Execute `php artisan migrate` (settings + `2026_09_07_000002_create_billing_core_tables` cria `invoices` e tabelas de cobranca)
+5. Execute `php artisan migrate` (settings + `2026_09_07_000002_create_billing_core_tables` cria `invoices` e tabelas de cobrança)
 6. Execute `php artisan db:seed --class=SettingsSeeder` para criar configurações padrão
 7. Configure as filas com `php artisan horizon`
 

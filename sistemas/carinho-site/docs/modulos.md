@@ -2,7 +2,7 @@
 
 ## Visao Geral
 
-O Carinho Site e o portal institucional do ecossistema Carinho com Voce. Sua funcao principal e apresentar a proposta de valor, informar sobre os servicos e captar leads que serao encaminhados para o WhatsApp e CRM.
+O Carinho Site e o portal institucional do ecossistema Carinho com Você. Sua funcao principal e apresentar a proposta de valor, informar sobre os servicos e captar leads que serao encaminhados para o WhatsApp e CRM.
 
 ## Modulos Implementados
 

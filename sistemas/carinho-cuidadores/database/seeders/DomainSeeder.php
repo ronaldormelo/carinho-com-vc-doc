@@ -21,7 +21,7 @@ class DomainSeeder extends Seeder
         DB::table('domain_document_type')->insert([
             ['id' => 1, 'code' => 'id', 'label' => 'Documento de Identidade'],
             ['id' => 2, 'code' => 'cpf', 'label' => 'CPF'],
-            ['id' => 3, 'code' => 'address', 'label' => 'Comprovante de Endereco'],
+            ['id' => 3, 'code' => 'address', 'label' => 'Comprovante de Endereço'],
             ['id' => 4, 'code' => 'certificate', 'label' => 'Certificado de Curso'],
             ['id' => 5, 'code' => 'other', 'label' => 'Outro Documento'],
         ]);
@@ -36,7 +36,7 @@ class DomainSeeder extends Seeder
         // Tipos de cuidado
         DB::table('domain_care_type')->insert([
             ['id' => 1, 'code' => 'idoso', 'label' => 'Cuidado de Idosos'],
-            ['id' => 2, 'code' => 'pcd', 'label' => 'Pessoa com Deficiencia'],
+            ['id' => 2, 'code' => 'pcd', 'label' => 'Pessoa com Deficiência'],
             ['id' => 3, 'code' => 'tea', 'label' => 'Transtorno do Espectro Autista'],
             ['id' => 4, 'code' => 'pos_operatorio', 'label' => 'Pos-Operatorio'],
         ]);

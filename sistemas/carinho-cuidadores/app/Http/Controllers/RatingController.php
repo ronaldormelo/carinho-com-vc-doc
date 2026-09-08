@@ -23,7 +23,7 @@ class RatingController extends Controller
         $caregiver = Caregiver::find($caregiverId);
 
         if (!$caregiver) {
-            return $this->error('Cuidador nao encontrado', 404);
+            return $this->error('Cuidador não encontrado', 404);
         }
 
         $perPage = min((int) $request->get('per_page', 20), 100);
@@ -36,7 +36,7 @@ class RatingController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Avaliacoes carregadas',
+            'message' => 'Avaliações carregadas',
             'data' => $ratings->items(),
             'summary' => $summary,
             'pagination' => [
@@ -56,7 +56,7 @@ class RatingController extends Controller
         $caregiver = Caregiver::find($caregiverId);
 
         if (!$caregiver) {
-            return $this->error('Cuidador nao encontrado', 404);
+            return $this->error('Cuidador não encontrado', 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -75,7 +75,7 @@ class RatingController extends Controller
             ->first();
 
         if ($existing) {
-            return $this->error('Ja existe uma avaliacao para este servico', 422);
+            return $this->error('Já existe uma avaliação para este serviço', 422);
         }
 
         $rating = CaregiverRating::create([
@@ -89,7 +89,7 @@ class RatingController extends Controller
         // Processa impacto da avaliacao
         $this->ratingService->processRatingImpact($rating);
 
-        return $this->success($rating, 'Avaliacao registrada com sucesso', 201);
+        return $this->success($rating, 'Avaliação registrada com sucesso', 201);
     }
 
     /**
@@ -102,7 +102,7 @@ class RatingController extends Controller
             ->first();
 
         if (!$rating) {
-            return $this->error('Avaliacao nao encontrada', 404);
+            return $this->error('Avaliação não encontrada', 404);
         }
 
         return $this->success($rating);
@@ -116,12 +116,12 @@ class RatingController extends Controller
         $caregiver = Caregiver::find($caregiverId);
 
         if (!$caregiver) {
-            return $this->error('Cuidador nao encontrado', 404);
+            return $this->error('Cuidador não encontrado', 404);
         }
 
         $summary = $this->ratingService->getSummary($caregiver);
 
-        return $this->success($summary, 'Resumo de avaliacoes');
+        return $this->success($summary, 'Resumo de avaliações');
     }
 
     /**
@@ -146,6 +146,6 @@ class RatingController extends Controller
 
         $caregivers = $this->ratingService->getNeedsAttention($threshold);
 
-        return $this->success($caregivers, 'Cuidadores que precisam de atencao');
+        return $this->success($caregivers, 'Cuidadores que precisam de atenção');
     }
 }

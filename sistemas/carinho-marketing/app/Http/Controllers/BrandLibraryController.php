@@ -56,7 +56,7 @@ class BrandLibraryController extends Controller
 
             return $this->success($asset->toArray());
         } catch (\Throwable $e) {
-            return $this->notFound('Asset nao encontrado');
+            return $this->notFound('Asset não encontrado');
         }
     }
 
@@ -127,7 +127,7 @@ class BrandLibraryController extends Controller
         $logo = $this->service->getPrimaryLogo();
 
         if (!$logo) {
-            return $this->notFound('Logo principal nao encontrado');
+            return $this->notFound('Logo principal não encontrado');
         }
 
         return $this->success($logo->toArray());
@@ -150,7 +150,7 @@ class BrandLibraryController extends Controller
     {
         $config = $this->service->getBrandingConfig();
 
-        return $this->success($config, 'Configuracoes de branding');
+        return $this->success($config, 'Configurações de branding');
     }
 
     /**
@@ -210,7 +210,7 @@ class BrandLibraryController extends Controller
     {
         $bio = $this->service->getSocialBio();
 
-        return $this->success(['bio' => $bio], 'Bio padrao');
+        return $this->success(['bio' => $bio], 'Bio padrão');
     }
 
     /**
@@ -220,7 +220,7 @@ class BrandLibraryController extends Controller
     {
         $themes = $this->service->getContentThemes();
 
-        return $this->success($themes, 'Temas de conteudo');
+        return $this->success($themes, 'Temas de conteúdo');
     }
 
     /**

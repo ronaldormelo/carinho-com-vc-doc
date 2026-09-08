@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Rotas publicas do site institucional Carinho com Voce.
+| Rotas públicas do site institucional Carinho com Você.
 |
 */
 

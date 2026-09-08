@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'subdomain' => env('CUIDADORES_SUBDOMAIN', 'cuidadores.carinho.com.vc'),
     'voice' => [
-        'tone' => 'empatico, respeitoso e objetivo',
+        'tone' => 'empático, respeitoso e objetivo',
         'language' => 'simples e direta',
     ],
     'colors' => [
@@ -35,9 +35,9 @@ return [
         'cuidadores_from' => env('CUIDADORES_EMAIL_FROM', 'cuidadores@carinho.com.vc'),
     ],
     'messages' => [
-        'welcome' => 'Bem-vindo(a) a Carinho com Voce! Estamos felizes em te-lo(a) como parte da nossa equipe de cuidadores.',
-        'activation' => 'Parabens! Seu cadastro foi aprovado e voce ja pode receber oportunidades de servico.',
-        'document_pending' => 'Seus documentos estao em analise. Em breve entraremos em contato.',
+        'welcome' => 'Bem-vindo(a) a Carinho com Você! Estamos felizes em tê-lo(a) como parte da nossa equipe de cuidadores.',
+        'activation' => 'Parabéns! Seu cadastro foi aprovado e você já pode receber oportunidades de serviço.',
+        'document_pending' => 'Seus documentos estão em análise. Em breve entraremos em contato.',
         'document_approved' => 'Documento aprovado com sucesso!',
         'document_rejected' => 'Infelizmente seu documento foi recusado. Por favor, envie novamente.',
     ],

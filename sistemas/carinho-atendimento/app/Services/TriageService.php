@@ -224,16 +224,16 @@ class TriageService
     private function formatQuestion(string $key, string $label): string
     {
         $questions = [
-            'patient_name' => 'Qual o nome completo do paciente que sera cuidado?',
+            'patient_name' => 'Qual o nome completo do paciente que será cuidado?',
             'patient_age' => 'Qual a idade do paciente?',
-            'care_type' => 'Que tipo de cuidado o paciente precisa? (Companhia, higiene, medicacao, etc)',
-            'location' => 'Em qual cidade e bairro sera o atendimento?',
-            'schedule' => 'Qual o horario ou turno de preferencia? (Manha, tarde, noite, integral)',
-            'start_date' => 'Para quando precisa iniciar o servico?',
-            'special_needs' => 'O paciente possui alguma necessidade especial ou condicao de saude?',
+            'care_type' => 'Que tipo de cuidado o paciente precisa? (Companhia, higiene, médicação, etc)',
+            'location' => 'Em qual cidade e bairro será o atendimento?',
+            'schedule' => 'Qual o horário ou turno de preferência? (Manhã, tarde, noite, integral)',
+            'start_date' => 'Para quando precisa iniciar o serviço?',
+            'special_needs' => 'O paciente possui alguma necessidade especial ou condição de saúde?',
             'budget' => 'Qual sua expectativa de investimento mensal?',
-            'decision_maker' => 'Quem vai decidir sobre a contratacao?',
-            'how_found_us' => 'Como voce conheceu a Carinho?',
+            'decision_maker' => 'Quem vai decidir sobre a contratação?',
+            'how_found_us' => 'Como você conheceu a Carinho?',
         ];
 
         return $questions[$key] ?? $label;
@@ -245,13 +245,13 @@ class TriageService
             'patient_name' => 'Confirme a escrita correta do nome.',
             'patient_age' => 'Importante para definir perfil do cuidador.',
             'care_type' => 'Detalhe as atividades esperadas do cuidador.',
-            'location' => 'Verificar se atendemos a regiao.',
-            'schedule' => 'Pergunte tambem sobre finais de semana.',
-            'start_date' => 'Urgencia influencia disponibilidade.',
+            'location' => 'Verificar se atendemos a região.',
+            'schedule' => 'Pergunte também sobre finais de semana.',
+            'start_date' => 'Urgência influencia disponibilidade.',
             'special_needs' => 'Alzheimer, mobilidade reduzida, sondas, etc.',
-            'budget' => 'Nao pressione, deixe o cliente confortavel.',
-            'decision_maker' => 'Ajuda a entender o processo de decisao.',
-            'how_found_us' => 'Informacao para marketing.',
+            'budget' => 'Não pressione, deixe o cliente confortável.',
+            'decision_maker' => 'Ajuda a entender o processo de decisão.',
+            'how_found_us' => 'Informação para marketing.',
         ];
 
         return $tips[$key] ?? null;

@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'subdomain' => env('OPERACAO_SUBDOMAIN', 'operacao.carinho.com.vc'),
     'voice' => [
-        'tone' => 'empatico, respeitoso e objetivo',
+        'tone' => 'empático, respeitoso e objetivo',
         'language' => 'simples e direta',
     ],
     'colors' => [
@@ -34,11 +34,11 @@ return [
         'operacao_from' => env('OPERACAO_EMAIL_FROM', 'operacao@carinho.com.vc'),
     ],
     'messages' => [
-        'service_started' => 'O atendimento foi iniciado. O(a) cuidador(a) ja chegou e esta pronto(a) para cuidar de voce.',
+        'service_started' => 'O atendimento foi iniciado. O(a) cuidador(a) já chegou e está pronto(a) para cuidar de você.',
         'service_ended' => 'O atendimento foi finalizado com sucesso. Esperamos que tudo tenha corrido bem!',
-        'caregiver_assigned' => 'Boa noticia! Encontramos o(a) cuidador(a) ideal para voce.',
-        'caregiver_replaced' => 'Houve uma alteracao no seu atendimento. Um novo cuidador foi designado.',
-        'schedule_reminder' => 'Lembrete: Seu atendimento esta agendado para amanha.',
+        'caregiver_assigned' => 'Boa notícia! Encontramos o(a) cuidador(a) ideal para você.',
+        'caregiver_replaced' => 'Houve uma alteração no seu atendimento. Um novo cuidador foi designado.',
+        'schedule_reminder' => 'Lembrete: Seu atendimento está agendado para amanhã.',
         'emergency_alert' => 'Alerta importante sobre seu atendimento. Por favor, entre em contato.',
     ],
 ];

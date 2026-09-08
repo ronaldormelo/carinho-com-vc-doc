@@ -16,15 +16,15 @@
             </tr>
             <tr>
               <td style="padding:24px;">
-                <p>Ola {{ $name ?? 'Cliente' }},</p>
-                <p>Segue o contrato para formalizacao do atendimento. Se tiver qualquer duvida, estamos a disposicao.</p>
+                <p>Olá {{ $name ?? 'Cliente' }},</p>
+                <p>Segue o contrato para formalizacao do atendimento. Se tiver qualquer duvida, estamos a disposição.</p>
                 <p><strong>Dados do contrato:</strong></p>
                 <ul style="padding-left:18px;">
-                  <li>Servico: {{ $service ?? 'Cuidado domiciliar' }}</li>
-                  <li>Periodo: {{ $period ?? 'A combinar' }}</li>
+                  <li>Serviço: {{ $service ?? 'Cuidado domiciliar' }}</li>
+                  <li>Período: {{ $period ?? 'A combinar' }}</li>
                   <li>Valor: {{ $price ?? 'A combinar' }}</li>
                 </ul>
-                <p>Assim que recebermos sua confirmacao, seguimos com o inicio do cuidado.</p>
+                <p>Assim que recebermos sua confirmação, seguimos com o início do cuidado.</p>
                 <p style="margin-top:24px;">Atenciosamente,<br>{{ config('branding.email.signature_name') }}</p>
               </td>
             </tr>

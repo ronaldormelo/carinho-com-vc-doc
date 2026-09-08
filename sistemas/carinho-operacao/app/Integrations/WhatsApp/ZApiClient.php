@@ -37,7 +37,7 @@ class ZApiClient
     {
         $message = config('branding.messages.service_started') . "\n\n";
         $message .= "Cuidador(a): " . ($data['caregiver_name'] ?? 'N/A') . "\n";
-        $message .= "Horario: " . ($data['start_time'] ?? 'N/A');
+        $message .= "Horário: " . ($data['start_time'] ?? 'N/A');
 
         return $this->sendTextMessage($phone, $message);
     }
@@ -48,7 +48,7 @@ class ZApiClient
     public function sendServiceEndNotification(string $phone, array $data): array
     {
         $message = config('branding.messages.service_ended') . "\n\n";
-        $message .= "Horario de termino: " . ($data['end_time'] ?? 'N/A');
+        $message .= "Horário de termino: " . ($data['end_time'] ?? 'N/A');
 
         return $this->sendTextMessage($phone, $message);
     }
@@ -60,7 +60,7 @@ class ZApiClient
     {
         $message = config('branding.messages.schedule_reminder') . "\n\n";
         $message .= "Data: " . ($data['date'] ?? 'N/A') . "\n";
-        $message .= "Horario: " . ($data['start_time'] ?? 'N/A') . " - " . ($data['end_time'] ?? 'N/A') . "\n";
+        $message .= "Horário: " . ($data['start_time'] ?? 'N/A') . " - " . ($data['end_time'] ?? 'N/A') . "\n";
         $message .= "Cuidador(a): " . ($data['caregiver_name'] ?? 'N/A');
 
         return $this->sendTextMessage($phone, $message);
@@ -75,7 +75,7 @@ class ZApiClient
         $message .= "Cuidador(a): " . ($data['caregiver_name'] ?? 'N/A') . "\n";
 
         if (!empty($data['start_date'])) {
-            $message .= "Inicio: " . $data['start_date'];
+            $message .= "Início: " . $data['start_date'];
         }
 
         return $this->sendTextMessage($phone, $message);
@@ -116,9 +116,9 @@ class ZApiClient
      */
     public function sendScheduleConfirmation(string $phone, array $data): array
     {
-        $message = "Confirmacao de agendamento\n\n";
+        $message = "Confirmação de agendamento\n\n";
         $message .= "Data: " . ($data['date'] ?? 'N/A') . "\n";
-        $message .= "Horario: " . ($data['start_time'] ?? 'N/A') . " - " . ($data['end_time'] ?? 'N/A') . "\n";
+        $message .= "Horário: " . ($data['start_time'] ?? 'N/A') . " - " . ($data['end_time'] ?? 'N/A') . "\n";
         $message .= "Cuidador(a): " . ($data['caregiver_name'] ?? 'N/A') . "\n\n";
         $message .= "Por favor, confirme o agendamento:";
 

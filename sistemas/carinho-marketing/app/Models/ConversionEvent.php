@@ -146,9 +146,9 @@ HTML;
             'Lead' => 'Novo lead capturado',
             'Contact' => 'Contato realizado',
             'CompleteRegistration' => 'Cadastro completo',
-            'ViewContent' => 'Visualizacao de conteudo',
-            'InitiateCheckout' => 'Inicio de contratacao',
-            'Purchase' => 'Contratacao finalizada',
+            'ViewContent' => 'Visualizacao de conteúdo',
+            'InitiateCheckout' => 'Início de contratação',
+            'Purchase' => 'Contratação finalizada',
         ];
     }
 }

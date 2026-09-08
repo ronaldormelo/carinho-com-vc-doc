@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assinatura de Contrato - Carinho com Voce</title>
+    <title>Assinatura de Contrato - Carinho com Você</title>
     <link rel="icon" href="{{ asset(config('branding.assets.logo.favicon', '/images/favicon.ico')) }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/brand.css">
     <style>
@@ -177,7 +177,7 @@
                         <input type="checkbox" id="acceptTerms">
                         <label class="consent-text" for="acceptTerms">
                             Li e concordo com os termos do contrato acima e com a
-                            <a href="/privacidade" target="_blank">Politica de Privacidade</a>.
+                            <a href="/privacidade" target="_blank">Política de Privacidade</a>.
                         </label>
                     </div>
 
@@ -191,23 +191,23 @@
                 <!-- Step 2: OTP Verification -->
                 <div id="step2" class="step-content" style="display: none;">
                     <div class="signature-section">
-                        <h3>Verificacao de Identidade</h3>
+                        <h3>Verificação de Identidade</h3>
                         <p class="text-muted">
-                            Para garantir a seguranca da assinatura, enviaremos um codigo
-                            de verificacao para seu WhatsApp.
+                            Para garantir a segurança da assinatura, enviaremos um código
+                            de verificação para seu WhatsApp.
                         </p>
 
                         <div class="phone-input-group">
                             <input type="tel" id="phoneInput" class="form-control"
                                    placeholder="(11) 99999-9999" maxlength="15">
                             <button class="btn btn-primary" id="btnSendOtp">
-                                Enviar Codigo
+                                Enviar Código
                             </button>
                         </div>
 
                         <div id="otpSection" style="display: none;">
                             <p class="text-muted mt-4">
-                                Digite o codigo de 6 digitos enviado:
+                                Digite o código de 6 dígitos enviado:
                             </p>
                             <div class="otp-input">
                                 <input type="text" maxlength="1" class="otp-digit">
@@ -221,7 +221,7 @@
                                 Verificar e Assinar
                             </button>
                             <p class="text-muted mt-4" style="font-size: 13px;">
-                                Nao recebeu? <a href="#" id="btnResendOtp">Reenviar codigo</a>
+                                Não recebeu? <a href="#" id="btnResendOtp">Reenviar código</a>
                             </p>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                             <div class="success-icon">✓</div>
                             <h2>Contrato Assinado com Sucesso!</h2>
                             <p class="text-muted">
-                                Uma copia do contrato assinado foi enviada para seu email.
+                                Uma cópia do contrato assinado foi enviada para seu email.
                             </p>
                             <a href="#" id="downloadLink" class="btn btn-primary mt-4">
                                 Baixar Contrato
@@ -247,7 +247,7 @@
 
         <footer>
             <div class="container">
-                <p>&copy; 2026 Carinho com Voce. Todos os direitos reservados.</p>
+                <p>&copy; 2026 Carinho com Você. Todos os direitos reservados.</p>
             </div>
         </footer>
     </div>
@@ -312,7 +312,7 @@
                     document.getElementById('contractContent').innerHTML = '<p>Contrato carregado.</p>';
                 } else {
                     document.getElementById('contractContent').innerHTML =
-                        '<p class="text-danger">Erro ao carregar contrato. Token invalido ou expirado.</p>';
+                        '<p class="text-danger">Erro ao carregar contrato. Token inválido ou expirado.</p>';
                 }
             })
             .catch(err => {

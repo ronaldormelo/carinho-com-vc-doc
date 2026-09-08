@@ -72,7 +72,7 @@ class ContractService
                 // Obtem template ativo
                 $template = DocumentTemplate::getActiveByType($docTypeId);
                 if (!$template) {
-                    throw new \Exception('Template de contrato nao encontrado');
+                    throw new \Exception('Template de contrato não encontrado');
                 }
 
                 // Adiciona data de assinatura
@@ -164,11 +164,11 @@ class ContractService
             $document = $this->getBySignatureToken($signatureToken);
 
             if (!$document) {
-                return ['ok' => false, 'error' => 'Token invalido'];
+                return ['ok' => false, 'error' => 'Token inválido'];
             }
 
             if ($document->isSigned()) {
-                return ['ok' => false, 'error' => 'Contrato ja assinado'];
+                return ['ok' => false, 'error' => 'Contrato já assinado'];
             }
 
             // Gera OTP
@@ -186,12 +186,12 @@ class ContractService
             $result = $this->whatsApp->sendOtpCode($phone, $otp);
 
             if (!$result['ok']) {
-                return ['ok' => false, 'error' => 'Falha ao enviar codigo'];
+                return ['ok' => false, 'error' => 'Falha ao enviar código'];
             }
 
             return [
                 'ok' => true,
-                'message' => 'Codigo enviado',
+                'message' => 'Código enviado',
                 'expires_in_minutes' => config('documentos.signature.otp.expiration_minutes', 10),
             ];
         } catch (\Throwable $e) {
@@ -217,11 +217,11 @@ class ContractService
             $document = $this->getBySignatureToken($signatureToken);
 
             if (!$document) {
-                return ['ok' => false, 'error' => 'Token invalido'];
+                return ['ok' => false, 'error' => 'Token inválido'];
             }
 
             if ($document->isSigned()) {
-                return ['ok' => false, 'error' => 'Contrato ja assinado'];
+                return ['ok' => false, 'error' => 'Contrato já assinado'];
             }
 
             // Valida OTP
@@ -229,7 +229,7 @@ class ContractService
             $otpData = Cache::get($otpKey);
 
             if (!$otpData) {
-                return ['ok' => false, 'error' => 'Codigo expirado'];
+                return ['ok' => false, 'error' => 'Código expirado'];
             }
 
             $maxAttempts = config('documentos.signature.otp.max_attempts', 3);
@@ -243,7 +243,7 @@ class ContractService
                 $otpData['attempts']++;
                 Cache::put($otpKey, $otpData, config('documentos.signature.otp.expiration_minutes', 10) * 60);
 
-                return ['ok' => false, 'error' => 'Codigo invalido'];
+                return ['ok' => false, 'error' => 'Código inválido'];
             }
 
             // Remove OTP do cache
@@ -278,11 +278,11 @@ class ContractService
         $document = $this->getBySignatureToken($signatureToken);
 
         if (!$document) {
-            return ['ok' => false, 'error' => 'Token invalido'];
+            return ['ok' => false, 'error' => 'Token inválido'];
         }
 
         if ($document->isSigned()) {
-            return ['ok' => false, 'error' => 'Contrato ja assinado'];
+            return ['ok' => false, 'error' => 'Contrato já assinado'];
         }
 
         return $this->sign(
@@ -386,7 +386,7 @@ class ContractService
             $document = Document::find($documentId);
 
             if (!$document) {
-                return ['ok' => false, 'error' => 'Contrato nao encontrado'];
+                return ['ok' => false, 'error' => 'Contrato não encontrado'];
             }
 
             // Gera novo token se necessario

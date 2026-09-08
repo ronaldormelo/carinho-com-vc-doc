@@ -33,7 +33,7 @@ class DevLocalSeeder extends Seeder
 
         $lead = Lead::query()->orderBy('id')->first();
         if (!$lead) {
-            $this->command?->warn('Sem leads: contrato de aceite nao foi seedado.');
+            $this->command?->warn('Sem leads: contrato de aceite não foi seedado.');
             return;
         }
 

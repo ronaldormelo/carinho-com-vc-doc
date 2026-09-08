@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configuracoes de identidade visual da marca Carinho com Voce.
+ * Configuracoes de identidade visual da marca Carinho com Você.
  *
  * Segue os padroes definidos no arquivo "00 - Identidade da Marca.md"
  */
@@ -13,7 +13,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'name' => env('BRAND_NAME', 'Carinho com Voce'),
+    'name' => env('BRAND_NAME', 'Carinho com Você'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'subdomain' => env('CRM_SUBDOMAIN', 'crm.carinho.com.vc'),
 
@@ -24,11 +24,11 @@ return [
     */
 
     'purpose' => [
-        'Tornar o cuidado domiciliar simples, humano e confiavel.',
-        'Reduzir o esforco da familia para encontrar cuidadores qualificados.',
+        'Tornar o cuidado domiciliar simples, humano e confiável.',
+        'Reduzir o esforço da família para encontrar cuidadores qualificados.',
     ],
 
-    'promise' => 'Atendimento rapido, transparente e com continuidade.',
+    'promise' => 'Atendimento rápido, transparente e com continuidade.',
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
         'Humana e acolhedora',
         'Profissional e segura',
         'Simples e direta',
-        'Confiavel e responsavel',
+        'Confiável e responsável',
     ],
 
     /*
@@ -50,8 +50,8 @@ return [
     */
 
     'voice' => [
-        'tone' => 'Empatico, respeitoso e objetivo.',
-        'language' => 'Linguagem simples, sem jargoes tecnicos.',
+        'tone' => 'Empático, respeitoso e objetivo.',
+        'language' => 'Linguagem simples, sem jargões técnicos.',
         'guidelines' => [
             'Evitar termos que infantilizem o idoso ou o cuidador.',
             'Respostas claras e objetivas.',

@@ -32,9 +32,9 @@ Health: `GET /up` (Laravel), `GET /health` e `GET /health/detailed` (público). 
 
 Há `POST /lead/investidor` além de cliente e cuidador. CMS de depoimentos/FAQ: `/api/content/*` (CRM). Política de cancelamento no código (`config/site.php`) segue o Financeiro (24 h / 6 h), não a Operação. Horista no site declara mínimo 2 h; precificação/agenda usam 4 h — a família vê o texto legal do Financeiro/site; operação não agenda abaixo de 4 h.
 
-## Descricao
+## Descrição
 
-Portal institucional do projeto de home care Carinho com Voce. Apresenta a proposta de valor, explica os servicos e capta leads, direcionando o contato para o WhatsApp como canal principal.
+Portal institucional do projeto de home care Carinho com Você. Apresenta a proposta de valor, explica os serviços e capta leads, direcionando o contato para o WhatsApp como canal principal.
 
 ## Stack Tecnologica
 
@@ -47,31 +47,31 @@ Portal institucional do projeto de home care Carinho com Voce. Apresenta a propo
 
 ## Modulos Implementados
 
-### 1. Paginas Institucionais
+### 1. Páginas Institucionais
 - Home com hero, features e depoimentos
 - Quem Somos (missao, valores, diferenciais)
-- Servicos (horista, diario, mensal)
+- Serviços (horista, diário, mensal)
 - Como Funciona (passo a passo)
-- Contato (canais e horarios)
+- Contato (canais e horários)
 - FAQ (perguntas frequentes)
 
-### 2. Paginas por Publico
-- Para Clientes: formulario de solicitacao de cuidador
+### 2. Páginas por Público
+- Para Clientes: formulário de solicitação de cuidador
 - Para Cuidadores: cadastro para trabalhar na plataforma
 
 ### 3. Formularios de Cadastro
-- Formulario de lead cliente com validacao
-- Formulario de lead cuidador com validacao
+- Formulário de lead cliente com validação
+- Formulário de lead cuidador com validação
 - Integracao com reCAPTCHA v3
 - Sincronizacao automatica com CRM
 
-### 4. Paginas Legais (Politicas)
-- **Politica de Privacidade:** conformidade LGPD, direitos do titular
-- **Termos de Uso:** regras de utilizacao dos servicos
-- **Politica de Cancelamento:** prazos e reembolsos
-- **Politica de Pagamento:** pagamento adiantado, formas aceitas
-- **Politica de Emergencias:** canais, SLA, procedimentos
-- **Termos para Cuidadores:** comissoes, obrigacoes, repasses
+### 4. Páginas Legais (Políticas)
+- **Política de Privacidade:** conformidade LGPD, direitos do titular
+- **Termos de Uso:** regras de utilizacao dos serviços
+- **Política de Cancelamento:** prazos e reembolsos
+- **Política de Pagamento:** pagamento adiantado, formas aceitas
+- **Política de Emergências:** canais, SLA, procedimentos
+- **Termos para Cuidadores:** comissões, obrigacoes, repasses
 
 ### 5. SEO e Analytics
 - Meta tags otimizadas para SEO
@@ -81,7 +81,7 @@ Portal institucional do projeto de home care Carinho com Voce. Apresenta a propo
 - Rastreamento de UTM em toda a navegacao
 
 ### 6. CTA para WhatsApp
-- Botao flutuante em todas as paginas
+- Botao flutuante em todas as páginas
 - Links com mensagem pre-definida
 - Rastreamento de origem (UTM)
 
@@ -90,12 +90,12 @@ Portal institucional do projeto de home care Carinho com Voce. Apresenta a propo
 - Sincronizacao de UTM e origem
 - Retry automatico em caso de falha
 
-## Politicas Definidas
+## Políticas Definidas
 
 ### Pagamento
-- **Tipo:** Sempre ADIANTADO (pre-pago)
-- **Prazo:** 24 horas antes do servico
-- **Formas:** PIX, boleto, cartao de credito
+- **Tipo:** Sempre ADIANTADO (pré-pago)
+- **Prazo:** 24 horas antes do serviço
+- **Formas:** PIX, boleto, cartão de crédito
 - **Juros por atraso:** 0,033% ao dia
 - **Multa por atraso:** 2%
 
@@ -106,26 +106,26 @@ Portal institucional do projeto de home care Carinho com Voce. Apresenta a propo
 | Entre 6h e 24h | 50% |
 | Menos de 6h | 0% |
 
-### Comissoes do Cuidador
-| Tipo de Servico | Percentual |
+### Comissões do Cuidador
+| Tipo de Serviço | Percentual |
 |-----------------|------------|
 | Horista | 70% |
-| Diario | 72% |
+| Diário | 72% |
 | Mensal | 75% |
 
-**Bonus:** Ate +2% por avaliacao, +3% por tempo de casa
+**Bônus:** Até +2% por avaliação, +3% por tempo de casa
 
 ### Repasses
-- **Frequencia:** Semanal (sextas-feiras)
-- **Valor minimo:** R$ 50,00
-- **Liberacao:** 3 dias apos conclusao
+- **Frequência:** Semanal (sextas-feiras)
+- **Valor mínimo:** R$ 50,00
+- **Liberação:** 3 dias após conclusão
 
-### Emergencias
+### Emergências
 | Nivel | Tempo de Resposta |
 |-------|-------------------|
 | Critico | 15 minutos |
 | Alto | 30 minutos |
-| Medio | 2 horas |
+| Médio | 2 horas |
 
 ## Estrutura do Projeto
 
@@ -185,9 +185,9 @@ carinho-site/
 
 ## API Endpoints
 
-### Publicas
+### Públicas
 
-| Metodo | Rota | Descricao |
+| Método | Rota | Descrição |
 |--------|------|-----------|
 | GET | /health | Health check basico |
 | POST | /lead/cliente | Submissao de lead cliente |
@@ -197,14 +197,14 @@ carinho-site/
 
 ### API Interna (autenticada)
 
-| Metodo | Rota | Descricao |
+| Método | Rota | Descrição |
 |--------|------|-----------|
 | GET | /api/leads | Lista leads |
 | GET | /api/leads/stats | Estatisticas de leads |
 | GET | /api/leads/{id} | Detalhes do lead |
 | POST | /api/leads/{id}/mark-synced | Marca como sincronizado |
 | GET | /api/domains | Valores de dominio |
-| GET | /api/settings | Configuracoes do site |
+| GET | /api/settings | Configurações do site |
 | POST | /api/webhooks/crm | Webhook do CRM |
 | POST | /api/webhooks/cache/pages/clear | Limpa cache de páginas |
 | GET | /api/content/* | CMS (depoimentos, FAQ, páginas) — chamado pelo CRM |
@@ -213,16 +213,16 @@ carinho-site/
 
 ### Externas
 
-| API | Funcao | Documentacao |
+| API | Função | Documentacao |
 |-----|--------|--------------|
-| Z-API | WhatsApp CTA e notificacoes | https://developer.z-api.io/ |
+| Z-API | WhatsApp CTA e notificações | https://developer.z-api.io/ |
 | Google Analytics | Tracking de conversao | https://analytics.google.com/ |
 | Google Tag Manager | Gerenciamento de tags | https://tagmanager.google.com/ |
 | reCAPTCHA v3 | Protecao anti-spam | https://developers.google.com/recaptcha |
 
 ### Sistemas Internos
 
-| Sistema | Funcao |
+| Sistema | Função |
 |---------|--------|
 | CRM | Recebe leads e UTM |
 | Atendimento | Redirecionamento WhatsApp |
@@ -285,19 +285,19 @@ CARINHO_CRM_URL=https://crm.carinho.com.vc
 CARINHO_CRM_API_KEY=
 ```
 
-## Seguranca
+## Segurança
 
 - HTTPS com HSTS e TLS atualizado
 - Rate limiting em formularios (5 req/min)
 - Rate limiting na API (60 req/min)
-- Validacao reCAPTCHA v3
+- Validação reCAPTCHA v3
 - Sanitizacao de inputs
 - Protecao CSRF
 - Token interno para webhooks
 
 ## Performance
 
-- Cache de paginas no Redis
+- Cache de páginas no Redis
 - CDN para assets estaticos
 - Compressao de imagens
 - Lazy loading de imagens
@@ -305,21 +305,21 @@ CARINHO_CRM_API_KEY=
 
 ## Identidade Visual
 
-As cores e tipografia seguem o padrao da marca:
+As cores e tipografia seguem o padrão da marca:
 
 - **Primary:** #5BBFAD (Verde Carinho)
 - **Secondary:** #F4F7F9
-- **Accent:** #F5C6AA (Pessego)
+- **Accent:** #F5C6AA (Pêssego)
 - **Text:** #1F2933
 
 Veja `public/css/brand.css` e `config/branding.php` para detalhes completos.
 
 ## Jobs Agendados
 
-| Job | Frequencia | Descricao |
+| Job | Frequência | Descrição |
 |-----|------------|-----------|
 | sync-leads-to-crm | 5 minutos | Sincroniza leads pendentes |
-| clear-cache | Diario 03:00 | Limpa cache |
+| clear-cache | Diário 03:00 | Limpa cache |
 
 ## Monitoramento
 
@@ -331,9 +331,9 @@ Veja `public/css/brand.css` e `config/branding.php` para detalhes completos.
 
 1. Crie uma branch para sua feature
 2. Faca commits atomicos com mensagens claras
-3. Siga o padrao de codigo (Laravel Pint)
+3. Siga o padrão de código (Laravel Pint)
 4. Envie um Pull Request
 
 ## Licenca
 
-Proprietary - Carinho com Voce
+Proprietary - Carinho com Você

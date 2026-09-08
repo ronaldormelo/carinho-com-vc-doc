@@ -66,8 +66,8 @@
                 {{ $policy['caregiver_cancellation'] }}
             </p>
             <p>
-                Alem disso, nos comprometemos a buscar um cuidador substituto o mais rapido possivel
-                para que voce nao fique sem atendimento.
+                Além disso, nos comprometemos a buscar um cuidador substituto o mais rápido possível
+                para que você não fique sem atendimento.
             </p>
 
             <h2>5. CANCELAMENTO POR FORÇA MAIOR</h2>

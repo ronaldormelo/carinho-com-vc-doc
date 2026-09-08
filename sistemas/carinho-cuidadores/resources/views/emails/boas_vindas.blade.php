@@ -96,24 +96,24 @@
 
             <h1>Bem-vindo(a), {{ $caregiver->name }}!</h1>
 
-            <p>Estamos muito felizes em te-lo(a) como parte da nossa equipe de cuidadores.</p>
+            <p>Estamos muito felizes em tê-lo(a) como parte da nossa equipe de cuidadores.</p>
 
-            <p>A {{ $brandName }} conecta familias a cuidadores qualificados, oferecendo um servico humano, confiavel e transparente.</p>
+            <p>A {{ $brandName }} conecta famílias a cuidadores qualificados, oferecendo um serviço humano, confiável e transparente.</p>
 
             <div class="highlight">
-                <h3>Proximos passos para ativar seu cadastro:</h3>
+                <h3>Próximos passos para ativar seu cadastro:</h3>
                 <ol>
-                    <li>Complete todas as informacoes do seu perfil</li>
-                    <li>Envie os documentos obrigatorios (RG, CPF, comprovante de endereco)</li>
-                    <li>Informe sua disponibilidade de horarios</li>
+                    <li>Complete todas as informações do seu perfil</li>
+                    <li>Envie os documentos obrigatórios (RG, CPF, comprovante de endereço)</li>
+                    <li>Informe sua disponibilidade de horários</li>
                     <li>Assine o termo de responsabilidade digital</li>
                 </ol>
             </div>
 
-            <p>Assim que seu cadastro estiver completo e aprovado, voce comecara a receber oportunidades de servico compativeis com seu perfil e regiao de atuacao.</p>
+            <p>Assim que seu cadastro estiver completo e aprovado, você começará a receber oportunidades de serviço compatíveis com seu perfil e região de atuação.</p>
 
             <div class="footer">
-                <p>Qualquer duvida, estamos a disposicao.</p>
+                <p>Qualquer duvida, estamos a disposição.</p>
                 <p>Atenciosamente,<br><strong>Equipe {{ $brandName }}</strong></p>
                 <p style="margin-top: 16px; font-size: 12px;">
                     Este e-mail foi enviado para {{ $caregiver->email }}.<br>

@@ -60,10 +60,10 @@ class DocumentTemplateSeeder extends Seeder
     <p>A CONTRATADA compromete-se a:</p>
     <ul>
         <li>Selecionar cuidadores qualificados;</li>
-        <li>Verificar antecedentes e referencias;</li>
-        <li>Intermediar a contratacao do cuidador;</li>
-        <li>Fornecer suporte durante a prestacao do servico;</li>
-        <li>Realizar substituicao quando necessario.</li>
+        <li>Verificar antecedentes e referências;</li>
+        <li>Intermediar a contratação do cuidador;</li>
+        <li>Fornecer suporte durante a prestação do serviço;</li>
+        <li>Realizar substituição quando necessário.</li>
     </ul>
     
     <h2>CLÁUSULA TERCEIRA - DO PAGAMENTO</h2>
