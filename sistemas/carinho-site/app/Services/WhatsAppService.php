@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Domain\DomainServiceType;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -73,6 +74,96 @@ class WhatsAppService
         }
 
         return $url;
+    }
+
+    /**
+     * Resolve a mensagem pre-preenchida a partir de uma chave conhecida.
+     *
+     * Chaves desconhecidas ou invalidas caem na mensagem padrao, para
+     * impedir que a URL do site injete texto arbitrario no WhatsApp.
+     */
+    public function resolveCtaMessage(?string $key): string
+    {
+        $messages = config('branding.whatsapp_messages', []);
+        $default = (string) ($messages['default'] ?? 'Olá! Vim pelo site e gostaria de saber mais sobre os serviços.');
+
+        if (!is_string($key) || $key === '') {
+            return $default;
+        }
+
+        if (!preg_match('/^[a-z][a-z0-9_]*$/', $key)) {
+            return $default;
+        }
+
+        return (string) ($messages[$key] ?? $default);
+    }
+
+    /**
+     * Escolhe a chave de mensagem de acordo com a pagina atual.
+     */
+    public function messageKeyForRoute(?string $routeName): string
+    {
+        return match ($routeName) {
+            'clients' => 'quote',
+            'caregivers' => 'caregiver',
+            'contact' => 'contact',
+            'faq' => 'faq',
+            'how-it-works' => 'how_it_works',
+            'services' => 'quote',
+            'investors' => 'investor',
+            'about' => 'about',
+            default => 'default',
+        };
+    }
+
+    /**
+     * Mensagem do WhatsApp apos envio do formulario de cliente.
+     */
+    public function resolveClientLeadMessage(int|string|null $serviceTypeId): string
+    {
+        if ($serviceTypeId === null || $serviceTypeId === '') {
+            return $this->resolveCtaMessage('client');
+        }
+
+        $key = match ((int) $serviceTypeId) {
+            DomainServiceType::HORISTA => 'quote_horista',
+            DomainServiceType::DIARIO => 'quote_diario',
+            DomainServiceType::MENSAL => 'quote_mensal',
+            default => 'client',
+        };
+
+        return $this->resolveCtaMessage($key);
+    }
+
+    /**
+     * URL do CTA de header/flutuante, alinhada à pagina atual.
+     */
+    public function ctaUrlForCurrentPage(): string
+    {
+        return route('whatsapp.cta', [
+            'msg' => $this->messageKeyForRoute(request()->route()?->getName()),
+        ]);
+    }
+
+    /**
+     * Monta o redirect wa.me com a mensagem da acao e, se houver, a origem UTM.
+     */
+    public function buildCtaRedirectUrl(?string $messageKey, array $utm = []): string
+    {
+        $message = $this->resolveCtaMessage($messageKey);
+
+        if (
+            ($utm['utm_source'] ?? '') !== ''
+            || ($utm['utm_medium'] ?? '') !== ''
+            || ($utm['utm_campaign'] ?? '') !== ''
+        ) {
+            $source = $utm['utm_source'] ?? '';
+            $medium = $utm['utm_medium'] ?? '';
+            $campaign = $utm['utm_campaign'] ?? '';
+            $message .= "\n\n[Origem: {$source} / {$medium} / {$campaign}]";
+        }
+
+        return $this->generateCtaUrl($message);
     }
 
     /**

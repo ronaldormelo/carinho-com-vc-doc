@@ -35,8 +35,8 @@
                 </div>
                 <h3>WhatsApp</h3>
                 <p class="text-muted">Nosso principal canal de atendimento. Resposta em até 5 minutos!</p>
-                <p><strong><x-whatsapp-number /></strong></p>
-                <a href="{{ route('whatsapp.cta') }}" class="btn btn-whatsapp btn-block" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+                <p><strong>{{ config('branding.contact.whatsapp_display') }}</strong></p>
+                <a href="{{ route('whatsapp.cta', ['msg' => 'contact']) }}" class="btn btn-whatsapp btn-block" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
                     Falar pelo WhatsApp
                 </a>
             </div>
