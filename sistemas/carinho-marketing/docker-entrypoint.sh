@@ -7,6 +7,11 @@ if [ ! -f ".env" ] && [ -f ".env.example" ]; then
     cp .env.example .env
 fi
 
+if [ -f .env ] && [ -f quote-dotenv.sh ]; then
+    echo "Citando valores com espaço no .env (phpdotenv)..."
+    bash quote-dotenv.sh .env
+fi
+
 # Criar diretórios necessários ANTES de executar qualquer comando do artisan
 echo "Criando diretórios necessários..."
 mkdir -p storage/framework/{cache,sessions,views}

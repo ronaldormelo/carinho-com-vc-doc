@@ -5,9 +5,8 @@
 vendor/
 composer.lock
 *.log
-/bootstrap/cache/packages.php
-/bootstrap/cache/services.php
-/bootstrap/cache/config.php
+/bootstrap/cache/*.php
+!/bootstrap/cache/.gitignore
 /storage/framework/cache/*
 !/storage/framework/cache/.gitignore
 !/storage/framework/cache/data/
