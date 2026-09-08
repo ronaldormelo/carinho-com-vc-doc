@@ -19,3 +19,486 @@
 /bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
 /bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
 /bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+/bin/bash: line 1: /var/www/html/storage/logs/scheduler.log: Permission denied
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 18:55:54 Running [process-retry-queue] ............ 664.87ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:00:13 Running [process-retry-queue] ............ 535.87ms DONE
+  2026-09-07 19:00:13 Running [sync-crm-operacao] ............... 15.30ms DONE
+  2026-09-07 19:00:13 Running [cleanup-rate-limits] ............. 98.51ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:05:36 Running [process-retry-queue] ............ 412.99ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:10:59 Running [process-retry-queue] ............ 439.44ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:15:18 Running [process-retry-queue] ............ 528.62ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:20:41 Running [process-retry-queue] ............ 463.40ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:25:58 Running [process-retry-queue] .................. 1s DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:30:15 Running [process-retry-queue] ............ 609.03ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:35:34 Running [process-retry-queue] ............ 467.09ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:40:54 Running [process-retry-queue] ............ 464.58ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:45:10 Running [process-retry-queue] ............ 356.87ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:50:29 Running [process-retry-queue] ............ 461.29ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 19:55:46 Running [process-retry-queue] ............ 425.06ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:00:02 Running [process-retry-queue] ............ 566.96ms DONE
+  2026-09-07 20:00:03 Running [sync-crm-operacao] ............... 18.28ms DONE
+  2026-09-07 20:00:03 Running [sync-cuidadores-crm] ............. 22.32ms DONE
+  2026-09-07 20:00:03 Running [cleanup-rate-limits] ............ 131.19ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:05:21 Running [process-retry-queue] ............ 381.13ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:10:39 Running [process-retry-queue] ............ 409.73ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:15:57 Running [process-retry-queue] ............ 346.52ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:20:12 Running [process-retry-queue] ............ 421.74ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:25:30 Running [process-retry-queue] ............ 343.65ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:30:49 Running [process-retry-queue] ............ 569.81ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:35:04 Running [process-retry-queue] ............ 422.13ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:40:22 Running [process-retry-queue] ............ 500.72ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:45:41 Running [process-retry-queue] ............ 626.62ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 20:55:15 Running [process-retry-queue] ............ 388.65ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 21:00:34 Running [process-retry-queue] ............ 369.72ms DONE
+  2026-09-07 21:00:34 Running [sync-crm-operacao] ............... 13.09ms DONE
+  2026-09-07 21:00:34 Running [cleanup-rate-limits] ............ 129.12ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 21:05:54 Running [process-retry-queue] ............ 334.91ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 21:10:09 Running [process-retry-queue] ............ 388.42ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 21:15:28 Running [process-retry-queue] ............ 458.23ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 21:20:48 Running [process-retry-queue] ............ 358.32ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2026-09-07 21:25:03 Running [process-retry-queue] ............ 371.62ms DONE
+
+
+   INFO  No scheduled commands are ready to run.  
+

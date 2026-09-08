@@ -2,7 +2,7 @@
 
 ## Visao geral
 Sistema publico de presenca digital e captacao de leads
-(site.carinho.com.vc). Prioriza informacao clara, conversao rapida para
+(https://carinho.com.vc). Prioriza informacao clara, conversao rapida para
 WhatsApp e registro de origem para o CRM.
 
 ## Stack

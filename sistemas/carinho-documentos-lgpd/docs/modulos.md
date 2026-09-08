@@ -90,7 +90,8 @@ Gerenciamento de assinaturas digitais com validação.
 GET    /api/signatures/{id}
 GET    /api/signatures/document/{id}
 GET    /api/signatures/verify/{id}
-POST   /api/signatures/send-otp
+POST   /api/signatures/send-otp   # existe; OTP real depende de Z-API
+GET    /api/contracts/{id}/pdf    # stub HTTP 400 "Nao implementado"
 POST   /api/signatures/verify-otp
 ```
 

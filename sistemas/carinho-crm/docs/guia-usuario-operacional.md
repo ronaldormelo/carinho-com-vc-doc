@@ -2,6 +2,8 @@
 
 Manual prático para operação diária do sistema de gestão de relacionamento com clientes.
 
+> **Runtime:** as rotas HTTP de classificacao ABC, revisoes e indicacoes existem em `ClientController` e leem/gravam as tabelas `domain_client_classification`, `client_reviews` e `client_referrals`. Login local de desenvolvimento: ver README (`ChangeMeLocal!` / `CRM_ADMIN_PASSWORD`).
+
 ---
 
 ## Sumário

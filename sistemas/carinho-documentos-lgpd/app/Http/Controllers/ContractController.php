@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use App\Models\DomainSignerType;
 use App\Services\ContractService;
 use App\Services\NotificationService;
@@ -166,17 +167,37 @@ class ContractController extends Controller
      */
     public function download(int $id): mixed
     {
-        // Implementacao de download
-        return $this->error('Nao implementado');
+        return $this->htmlContractResponse($id, 'contrato-'.$id.'.html');
     }
 
     /**
-     * Gera PDF do contrato.
+     * PDF nativo nao esta no vendor. Entrega HTML para impressao/salvar.
      */
     public function pdf(int $id): mixed
     {
-        // Implementacao de geracao de PDF
-        return $this->error('Nao implementado');
+        return $this->htmlContractResponse($id, 'contrato-'.$id.'.html');
+    }
+
+    private function htmlContractResponse(int $id, string $filename): mixed
+    {
+        $document = Document::query()->with('template')->find($id);
+
+        if (!$document) {
+            return $this->error('Contrato nao encontrado', 404);
+        }
+
+        $html = $document->template
+            ? $document->template->render([
+                'data_atualizacao' => now()->format('d/m/Y'),
+                'document_id' => $document->id,
+            ])
+            : '<!DOCTYPE html><html lang="pt-BR"><body><p>Contrato #'.e($document->id).' sem template.</p></body></html>';
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+            'X-Document-Format' => 'html',
+        ]);
     }
 
     /**

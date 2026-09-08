@@ -43,9 +43,9 @@ Horário comercial padrão do atendimento: **08:00–18:00**, `America/Sao_Paulo
 
 Índice detalhado: [sistemas/readme.md](sistemas/readme.md). Padrão de documentação por módulo: [sistemas/PADRAO-DOCUMENTACAO.md](sistemas/PADRAO-DOCUMENTACAO.md).
 
-| Sistema | Subdomínio | Porta local | Papel |
-|---------|------------|-------------|--------|
-| [Site](sistemas/carinho-site/readme.md) | site.carinho.com.vc | 8084 | Presença pública, leads, páginas legais |
+| Sistema | Host | Porta local | Papel |
+|---------|------|-------------|--------|
+| [Site](sistemas/carinho-site/readme.md) | carinho.com.vc | 8084 | Presença pública, leads, páginas legais |
 | [Marketing](sistemas/carinho-marketing/readme.md) | marketing.carinho.com.vc | 8086 | Campanhas, UTM, redes, biblioteca de marca |
 | [Atendimento](sistemas/carinho-atendimento/readme.md) | atendimento.carinho.com.vc | 8080 | Inbox WhatsApp, funil, SLA |
 | [CRM](sistemas/carinho-crm/readme.md) | crm.carinho.com.vc | 8085 | Leads, clientes, pipeline, contratos |

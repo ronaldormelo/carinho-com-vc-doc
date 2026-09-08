@@ -10,7 +10,7 @@ Clientes do hub e dos módulos foram alinhados a estas rotas (set/2026). Método
 
 | Módulo | Laravel `withRouting(health:)` | Health do módulo |
 |--------|-------------------------------|------------------|
-| Site | `GET /up` | `GET /health`, `GET /health/detailed` (público). `GET /api/health` público (token interno não se aplica) |
+| Site | `GET /up` | `GET /health`, `GET /health/detailed` (público). `GET /api/health` público (token interno não se aplica). Host de produção: `https://carinho.com.vc` (local `http://127.0.0.1:8084`) |
 | Marketing | `GET /up` | `GET /api/health` |
 | Atendimento | `GET /up` | `GET /api/health` |
 | CRM | `GET /up` | `GET /health` (web) |
@@ -50,9 +50,13 @@ Rotas reais: `/invoices`, `/payments`, `/payouts`, `/pricing`, `/settings`, `/we
 
 Não existem: `/services`, `/cancellations`, `/repasses`, `/hours`.
 
+`php artisan migrate` cria `invoices` via `2026_09_07_000002_create_billing_core_tables` (antes o schema so existia em `database/schema.sql`).
+
 ## Cuidadores (`/api`, sem v1)
 
 Rotas reais: `/caregivers`, `/search`, `/webhooks/whatsapp/z-api`.
+
+UI publica `GET /cadastro` e `POST /cadastro` (CSRF) persistem via `CaregiverService`.
 
 Não existem: `/api/v1/sync/pending-updates`.
 
@@ -82,6 +86,6 @@ Sincronizações em lote do hub (`SyncService`) que dependiam de `/api/v1/sync/*
 
 - Fatura no Financeiro exige `contract_id`; serviço concluído sem contrato não gera invoice.
 - Webhook Documentos→CRM `contract-signed` exige `exists:contracts,id` **do CRM** — ID do módulo Documentos não mapeia automaticamente.
-- Várias rotas do CRM (`reviews`, `referrals`, `classification`, `needs-review`, etc.) apontam para métodos ausentes em `ClientController` (exceto `events`/`logEvent`, que existem).
-- Download/PDF de contrato em Documentos respondem “Não implementado”.
+- Download/PDF de contrato em Documentos entrega HTML (nao ha lib PDF no vendor); 404 se o contrato nao existe.
 - Health paths não unificados (`/health`, `/api/health`, `/up`).
+- Site `ContentController` (Laravel 11) nao usa `$this->middleware()`; auth e `VerifyInternalToken` em `/api/*`.

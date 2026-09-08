@@ -26,7 +26,7 @@ Escalonamento interno N1→N2→N3: **15 / 30 / 60 min** sem resposta (`domain_s
 
 | Módulo | Resposta HTTP (desenho) | Caminho quente | Gargalo | Dependências no caminho crítico |
 |--------|-------------------------|----------------|---------|----------------------------------|
-| **Site** | Página em cache Redis; formulário com rate limit 5/min | Home, lead, CTA WhatsApp | Sync CRM em job; reCAPTCHA; Z-API se notificar | CRM, Integrações, reCAPTCHA, GA/GTM |
+| **Site** | Página em cache Redis; formulário com rate limit 5/min. Público: `https://carinho.com.vc` (local `http://127.0.0.1:8084`) | Home, lead, CTA WhatsApp | Sync CRM em job; reCAPTCHA; Z-API se notificar | CRM, Integrações, reCAPTCHA, GA/GTM |
 | **Marketing** | API interna; jobs longos (métricas até 300 s, publish 120 s) | UTM, conversão, calendário | APIs Meta/Google (timeout 30 s) | Meta, Google Ads/GA, CRM, Site, Integrações |
 | **Atendimento** | Webhook persiste e enfileira (meta < 100 ms de ack) | Inbox, SLA, envio WhatsApp | Instância Z-API; workers; CRM | Z-API, CRM, Operação (emergência), Integrações |
 | **CRM** | Listas e dashboard com cache Redis | Lead, kanban, contrato | Integrações 10–15 s; Z-API 30 s | Site, Atendimento, Operação, Financeiro, Documentos, Cuidadores |

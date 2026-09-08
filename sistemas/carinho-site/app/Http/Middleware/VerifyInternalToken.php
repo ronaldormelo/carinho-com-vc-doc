@@ -20,7 +20,9 @@ class VerifyInternalToken
             return $next($request);
         }
 
-        $token = $request->bearerToken() ?? $request->header('X-Internal-Token');
+        $token = $request->bearerToken()
+            ?? $request->header('X-Internal-Token')
+            ?? $request->header('X-API-Key');
         $expectedToken = config('integrations.internal_token');
 
         if (!$expectedToken) {

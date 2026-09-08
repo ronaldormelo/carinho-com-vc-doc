@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\Log;
 /**
  * Serviço de Políticas de Cancelamento.
  *
- * Implementa as regras de cancelamento configuradas no banco de dados:
- * - Cancelamento sem custo: até 24h antes do serviço
- * - Reembolso parcial (50%): entre 12h e 24h antes
+ * Implementa as regras de cancelamento (fonte: docs/politicas.md):
+ * - Cancelamento sem custo: 24h ou mais antes do serviço
+ * - Reembolso parcial (50%): entre 6h e 24h antes
  * - Sem reembolso: menos de 6h antes
- * - Taxa administrativa: 5% para todos os cancelamentos com reembolso
+ * - Taxa administrativa: 5% nos reembolsos parciais
  * - Cancelamento pelo cuidador: reembolso total ao cliente
+ *
+ * CANCELLATION_PARTIAL_HOURS (default 12) e limite interno do trecho;
+ * o efeito para a familia e a tabela 24h / 6-24h / <6h.
  *
  * As configurações são obtidas do banco de dados via SettingService.
  */
@@ -235,7 +238,6 @@ class CancellationService
     public function getPolicyExplanation(): array
     {
         $freeHours = $this->settingService->get(Setting::KEY_CANCEL_FREE_HOURS, 24);
-        $partialHours = $this->settingService->get(Setting::KEY_CANCEL_PARTIAL_HOURS, 12);
         $partialPercent = $this->settingService->get(Setting::KEY_CANCEL_PARTIAL_PERCENT, 50);
         $noRefundHours = $this->settingService->get(Setting::KEY_CANCEL_NO_REFUND_HOURS, 6);
         $adminFee = $this->settingService->get(Setting::KEY_CANCEL_ADMIN_FEE, 5);
@@ -248,7 +250,7 @@ class CancellationService
                     'refund' => 'Reembolso total (100%)',
                 ],
                 [
-                    'period' => "Entre {$noRefundHours}h e {$partialHours}h antes",
+                    'period' => "Entre {$noRefundHours}h e {$freeHours}h antes",
                     'refund' => "Reembolso parcial ({$partialPercent}%)",
                 ],
                 [

@@ -15,7 +15,8 @@ return [
 
     'name' => env('BRAND_NAME', 'Carinho com Voce'),
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
-    'subdomain' => env('SITE_SUBDOMAIN', 'site.carinho.com.vc'),
+    // Host publico do site: apex (nao mais site.carinho.com.vc).
+    'subdomain' => env('SITE_SUBDOMAIN', env('BRAND_DOMAIN', 'carinho.com.vc')),
 
     /*
     |--------------------------------------------------------------------------

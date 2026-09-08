@@ -272,11 +272,11 @@ Jobs que falham apos todas as tentativas sao registrados para analise posterior.
 ### Health Checks
 
 ```bash
-# Basico
-curl https://site.carinho.com.vc/health
+# Basico (producao). Local: curl http://127.0.0.1:8084/health
+curl https://carinho.com.vc/health
 
 # Detalhado (inclui status das integracoes)
-curl https://site.carinho.com.vc/health/detailed
+curl https://carinho.com.vc/health/detailed
 ```
 
 ### Metricas

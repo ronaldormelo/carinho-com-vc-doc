@@ -14,6 +14,10 @@
 
 Webhooks: `/webhooks/zapi/*` e `/webhooks/internal/*` (middleware `verify.internal` registrado em `bootstrap/app.php`). Aceite digital: `GET/POST /contract/{token}/sign` e `/accept` (CSRF).
 
+### Login local (somente desenvolvimento)
+
+`php artisan db:seed --class=DevLocalSeeder` define senha do usuário `administrador@carinho.com.vc` com `CRM_ADMIN_PASSWORD` (default de exemplo: `ChangeMeLocal!`). **Inaceitável em produção.** Token de aceite de teste: `GET /contract/dev-local-sign-token/sign`.
+
 `docs/analise-praticas-tradicionais.md` é estudo, não backlog. Google Calendar, Mailchimp e Stripe **não** são oficiais neste módulo (agenda é Operação; pagamento é Financeiro).
 
 ## Descrição
@@ -260,7 +264,8 @@ ZAPI_TOKEN=
 ZAPI_CLIENT_TOKEN=
 
 # Integrações internas
-CARINHO_SITE_URL=https://site.carinho.com.vc
+# Site em producao: https://carinho.com.vc — local Docker: http://127.0.0.1:8084
+CARINHO_SITE_URL=https://carinho.com.vc
 CARINHO_SITE_API_KEY=
 
 # ... demais integrações

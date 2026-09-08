@@ -20,12 +20,15 @@ Sistema de recrutamento e gestao de cuidadores. Padroniza cadastro, triagem e cl
 - **Cache e filas:** Redis
 - **Storage:** Integracao com sistema Documentos/LGPD
 
+## Limitacoes atuais (codigo vs runtime)
+
+- Formulario publico: `GET /cadastro` (200) e `POST /cadastro` (CSRF) gravam em `caregivers` via `CaregiverService`. API `POST /api/caregivers` continua exigindo token interno.
+
 ## Modulos Implementados
 
 ### 1. Cadastro e Triagem Digital
-- Formulario de cadastro com dados pessoais, experiencia e disponibilidade
-- Validacao automatica de campos obrigatorios
-- Classificacao inicial por tipo de cuidado e regiao
+- API de cadastro (`POST /api/caregivers`) com validacao e classificacao
+- Formulario web publico em `/cadastro` (marca `#5BBFAD`, CSRF)
 
 ### 2. Gestao de Documentos
 - Upload de documentos obrigatorios (RG, CPF, comprovante de endereco)

@@ -2,7 +2,7 @@
 
 As tabelas abaixo descrevem o que os **clientes PHP deste módulo** chamam. Várias URLs **não existem** no destino. Caminhos verificados: [contratos-rotas.md](../carinho-integracoes/docs/contratos-rotas.md).
 
-Atendimento real: `/inbox`, `/emergencies` no destino Operação (este cliente ainda usa `/demandas/*`). Financeiro real: `/invoices`, `/payouts` (este cliente ainda usa `/services`, `/cancellations`, `/repasses`).
+Atendimento destino real: `/inbox` (este cliente PHP já chama `/inbox/*`, não `/demandas/*`). Financeiro destino real: `/invoices`, `/payouts`, `/webhooks/internal` (este cliente já aponta para esses paths; `/services`, `/cancellations` e `/repasses` não existem no Financeiro).
 
 ## Visao Geral
 
@@ -84,16 +84,15 @@ O sistema Carinho Operacao integra-se com outros sistemas internos e APIs extern
 - Notificar sobre alocacao e conclusao
 - Registrar ocorrencias
 
-**Endpoints Utilizados:**
+**Endpoints Utilizados (destino Atendimento, sem `/demandas`):**
 | Metodo | Endpoint | Descricao |
 |--------|----------|-----------|
-| GET | /demandas/{id} | Detalhes da demanda |
-| GET | /demandas/pendentes | Demandas pendentes |
-| GET | /demandas/{id}/history | Historico |
-| PATCH | /demandas/{id}/status | Atualiza status |
-| POST | /demandas/{id}/allocation | Notifica alocacao |
-| POST | /demandas/{id}/completion | Notifica conclusao |
-| POST | /demandas/{id}/occurrences | Registra ocorrencia |
+| GET | /inbox/{id} | Detalhes da conversa |
+| GET | /inbox?status=waiting | Conversas pendentes |
+| GET | /inbox/{id}/history | Historico |
+| PATCH | /inbox/{id}/status | Atualiza status |
+| POST | /inbox/{id}/notes | Alocacao / conclusao (nota) |
+| POST | /inbox/{id}/incident | Registra ocorrencia |
 
 **Cliente:** `App\Integrations\Atendimento\AtendimentoClient`
 
@@ -108,16 +107,12 @@ O sistema Carinho Operacao integra-se com outros sistemas internos e APIs extern
 - Solicitar repasse para cuidadores
 - Registrar horas trabalhadas
 
-**Endpoints Utilizados:**
+**Endpoints Utilizados (destino Financeiro):**
 | Metodo | Endpoint | Descricao |
 |--------|----------|-----------|
-| POST | /services | Registra servico |
-| POST | /services/{id}/complete | Finaliza servico |
-| GET | /services/{id}/status | Status financeiro |
-| POST | /cancellations | Registra cancelamento |
-| POST | /repasses | Solicita repasse |
-| POST | /hours | Registra horas |
-| POST | /events | Notifica evento |
+| POST | /webhooks/internal | Eventos `service.completed`, `hours.registered`, `payout.requested` |
+| POST | /invoices/{id}/cancel | Cancelamento quando ha `invoice_id` |
+| POST | /payouts | Solicita repasse |
 
 **Cliente:** `App\Integrations\Financeiro\FinanceiroClient`
 

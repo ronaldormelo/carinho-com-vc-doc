@@ -4,9 +4,9 @@ Nove aplicações Laravel no domínio `carinho.com.vc`. Visão de produto: [READ
 
 Banco no Docker da raiz: **MariaDB 10.11** (driver `mysql` nos apps). Redis 7 compartilhado, prefixo por sistema.
 
-| # | Sistema | Subdomínio | Porta | Objetivo | Documentação |
-|---|---------|------------|-------|----------|--------------|
-| 1 | Site | site.carinho.com.vc | 8084 | Presença e captura de leads | [readme](carinho-site/readme.md) |
+| # | Sistema | Host | Porta | Objetivo | Documentação |
+|---|---------|------|-------|----------|--------------|
+| 1 | Site | carinho.com.vc | 8084 | Presença e captura de leads | [readme](carinho-site/readme.md) |
 | 2 | Marketing | marketing.carinho.com.vc | 8086 | Campanhas, UTM, marca | [readme](carinho-marketing/readme.md) |
 | 3 | Atendimento | atendimento.carinho.com.vc | 8080 | WhatsApp, funil, SLA | [readme](carinho-atendimento/readme.md) |
 | 4 | CRM | crm.carinho.com.vc | 8085 | Leads, clientes, pipeline | [readme](carinho-crm/readme.md) |

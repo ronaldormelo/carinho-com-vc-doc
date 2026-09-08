@@ -1,6 +1,6 @@
 # Guia de Uso do Site - Carinho com Você
 
-**Módulo:** carinho-site (site.carinho.com.vc)  
+**Módulo:** carinho-site (https://carinho.com.vc)  
 **Versão:** 1.0  
 **Última atualização:** Janeiro/2026
 
@@ -45,7 +45,7 @@ Acesso ao Site → Conhecer Serviços → Preencher Formulário → Contato pelo
 
 ### Passo 1: Acessar o Site
 
-**URL:** site.carinho.com.vc
+**URL:** https://carinho.com.vc
 
 **O que você encontra na página inicial:**
 - Proposta de valor clara: "Cuidado domiciliar simples, humano e confiável"
@@ -252,7 +252,7 @@ Acesso ao Site → Conhecer Benefícios → Preencher Cadastro → Análise de P
 
 ### Passo 1: Acessar a Página de Cuidadores
 
-**URL:** site.carinho.com.vc/cuidadores
+**URL:** https://carinho.com.vc/cuidadores
 
 **O que você encontra:**
 - Informações sobre benefícios de ser parceiro

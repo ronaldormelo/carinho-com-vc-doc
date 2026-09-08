@@ -16,22 +16,9 @@ use Illuminate\Support\Facades\Cache;
  */
 class ContentController extends Controller
 {
-    /**
-     * Middleware para autenticação via API Key
-     */
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $apiKey = $request->header('X-API-Key');
-            $expectedKey = config('integrations.internal_token');
-
-            if (empty($expectedKey) || $apiKey !== $expectedKey) {
-                return response()->json(['error' => 'Unauthorized'], 401);
-            }
-
-            return $next($request);
-        });
-    }
+    // Auth: bootstrap/app.php aplica VerifyInternalToken em /api/*
+    // (Bearer, X-Internal-Token ou X-API-Key). Laravel 11 Controller
+    // nao tem $this->middleware().
 
     // =====================================================================
     // Testimonials

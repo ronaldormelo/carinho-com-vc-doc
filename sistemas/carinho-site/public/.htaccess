@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Hostname legado: site.carinho.com.vc -> apex (301), path e query preservados.
+    RewriteCond %{HTTP_HOST} ^site\.carinho\.com\.vc$ [NC]
+    RewriteRule ^ https://carinho.com.vc%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

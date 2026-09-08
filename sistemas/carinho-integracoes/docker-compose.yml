@@ -43,7 +43,8 @@ services:
       dockerfile: Dockerfile
     container_name: carinho-integracoes-horizon
     restart: unless-stopped
-    command: php artisan horizon
+    mem_limit: 256m
+    command: php artisan queue:work redis --sleep=3 --tries=3 --max-jobs=20 --memory=128
     volumes:
       - ./:/var/www/html
     environment:

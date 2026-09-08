@@ -42,7 +42,8 @@ services:
       dockerfile: Dockerfile
     container_name: carinho-marketing-worker
     restart: unless-stopped
-    command: php artisan queue:work redis --queue=marketing,metrics,sync,default --sleep=3 --tries=3 --max-time=3600
+    mem_limit: 256m
+    command: php artisan queue:work redis --queue=marketing,metrics,sync,default --sleep=3 --tries=3 --max-jobs=20 --memory=128
     volumes:
       - ./:/var/www/html
     environment:

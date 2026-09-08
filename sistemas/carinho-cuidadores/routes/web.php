@@ -1,32 +1,13 @@
 <?php
 
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes - Sistema Carinho Cuidadores
-|--------------------------------------------------------------------------
-|
-| Rotas web para formularios publicos e paginas de assinatura.
-|
-*/
+Route::get('/', [RegistrationController::class, 'form'])->name('home');
+Route::get('/cadastro', [RegistrationController::class, 'form'])->name('cadastro');
+Route::post('/cadastro', [RegistrationController::class, 'store'])->name('cadastro.store');
+Route::get('/confirmacao', [RegistrationController::class, 'confirmation'])->name('confirmacao');
 
-// Pagina inicial - Formulario de cadastro
-Route::get('/', function () {
-    return view('cadastro');
-})->name('home');
-
-// Formulario de cadastro de cuidador (publico)
-Route::get('/cadastro', function () {
-    return view('cadastro');
-})->name('cadastro');
-
-// Pagina de assinatura de contrato
 Route::get('/contratos/{id}/assinar', function ($id) {
-    return view('contrato-assinar', ['contractId' => $id]);
+    abort(404, 'Pagina de assinatura ainda nao disponivel neste modulo.');
 })->name('contrato.assinar');
-
-// Pagina de confirmacao
-Route::get('/confirmacao', function () {
-    return view('confirmacao');
-})->name('confirmacao');

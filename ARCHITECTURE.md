@@ -56,6 +56,16 @@ Família / cuidador
 
 Não há WordPress, Notion, Airtable nem Google Calendar como sistemas oficiais. O que existia em rascunhos antigos foi substituído pelos módulos acima.
 
+## Hostnames públicos
+
+O **Site** é o único módulo no **apex** `https://carinho.com.vc`. Os outros oito sistemas permanecem em subdomínio (`crm.carinho.com.vc`, `atendimento.carinho.com.vc`, `marketing.carinho.com.vc`, `cuidadores.carinho.com.vc`, `operacao.carinho.com.vc`, `financeiro.carinho.com.vc`, `documentos.carinho.com.vc`, `integracoes.carinho.com.vc`).
+
+Docker local do Site: `http://127.0.0.1:8084` (porta, não hostname de produção). `APP_URL` de produção: `https://carinho.com.vc`.
+
+**Redirect 301:** `site.carinho.com.vc` → `https://carinho.com.vc` (path e query preservados). Implementado no módulo Site (`apache-config.conf`, `public/.htaccess`, middleware `RedirectLegacySiteHost`). Este repositório **não** define o DNS, o TLS nem o reverse proxy da nuvem; o operador deve apontar o apex ao app do Site e manter o hostname legado só para o 301.
+
+Índice de hosts e portas: [README.md](README.md#sistemas) e [sistemas/readme.md](sistemas/readme.md).
+
 ## Responsabilidades (limites)
 
 | Sistema | É dono de | Não é dono de |

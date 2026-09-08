@@ -1,6 +1,26 @@
 # Carinho Site
 
-**Subdominio:** site.carinho.com.vc
+**Host de produção:** https://carinho.com.vc (apex, sem prefixo `site.`)  
+**Local (Docker):** http://127.0.0.1:8084
+
+## Hostname e redirect
+
+O site institucional roda na **raiz do domínio**. Os demais sistemas continuam em subdomínio (`crm.carinho.com.vc`, `atendimento.carinho.com.vc`, etc.).
+
+| Ambiente | URL vigente |
+|----------|-------------|
+| Produção | `https://carinho.com.vc` |
+| Docker local | `http://127.0.0.1:8084` |
+
+**Redirect 301:** `http(s)://site.carinho.com.vc/{path}` → `https://carinho.com.vc/{path}` (query string preservada).
+
+Implementado neste módulo em:
+
+- `apache-config.conf` (VirtualHost `ServerName site.carinho.com.vc`)
+- `public/.htaccess` (mod_rewrite por `HTTP_HOST`)
+- middleware `RedirectLegacySiteHost` (aplica-se mesmo atrás de proxy que entrega o Host legado no vhost padrão)
+
+Este repositório **não** contém o DNS, o certificado TLS nem o reverse proxy do provedor de nuvem. Em produção, o operador deve apontar o apex `carinho.com.vc` para este app e manter `site.carinho.com.vc` apenas o tempo necessário para o 301 (mesmo container/app ou proxy na frente). Cookie de sessão do site fica no host `carinho.com.vc`; **não** usar `SESSION_DOMAIN=.carinho.com.vc` (não compartilhar cookie com CRM/Sanctum).
 
 ## Documentação deste módulo
 
@@ -234,8 +254,8 @@ php artisan serve
 ## Variaveis de Ambiente
 
 ```env
-# App
-APP_URL=https://site.carinho.com.vc
+# App — producao (apex). Local Docker: http://127.0.0.1:8084
+APP_URL=https://carinho.com.vc
 
 # Database
 DB_DATABASE=carinho_site

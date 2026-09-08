@@ -10,7 +10,7 @@ Objetivo: operação digital com dados nos **nove sistemas Laravel** deste repos
 
 ## Captação
 
-- **carinho-site** (Laravel): páginas, formulários, CTA, SEO, GA4/GTM.
+- **carinho-site** (Laravel): páginas, formulários, CTA, SEO, GA4/GTM. Host público: `https://carinho.com.vc` (local `http://127.0.0.1:8084`).
 - **carinho-marketing**: campanhas Meta/Google, UTM, calendário, biblioteca de marca.
 
 ## Base comercial

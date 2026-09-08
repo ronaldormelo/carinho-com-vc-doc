@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
+use App\Models\ClientReferral;
 use App\Models\Domain\DomainEventType;
 use App\Services\ClientEventService;
+use App\Services\ClientReferralService;
+use App\Services\ClientReviewService;
 use App\Services\ClientService;
 use Illuminate\Http\Request;
 
@@ -15,7 +18,9 @@ class ClientController extends Controller
 {
     public function __construct(
         protected ClientService $clientService,
-        protected ClientEventService $clientEventService
+        protected ClientEventService $clientEventService,
+        protected ClientReviewService $clientReviewService,
+        protected ClientReferralService $clientReferralService
     ) {}
 
     /**
@@ -225,5 +230,192 @@ class ClientController extends Controller
             str_contains($normalized, 'service') => DomainEventType::REVIEW_COMPLETED,
             default => DomainEventType::CONTACT_PHONE,
         };
+    }
+
+    public function needsReview()
+    {
+        return $this->successResponse($this->clientReviewService->getClientsNeedingReview());
+    }
+
+    public function highPriority()
+    {
+        $clients = Client::query()->highPriority()->with(['lead', 'classification'])->paginate(15);
+
+        return ClientResource::collection($clients);
+    }
+
+    public function churnRisk()
+    {
+        return $this->successResponse($this->clientReviewService->getChurnRiskClients()->values());
+    }
+
+    public function promoters()
+    {
+        return $this->successResponse($this->clientReviewService->getPromoterClients()->values());
+    }
+
+    public function setClassification(Request $request, Client $client)
+    {
+        $validated = $request->validate([
+            'classification_id' => 'required|integer|exists:domain_client_classification,id',
+        ]);
+
+        $client->setClassificationWithReview((int) $validated['classification_id']);
+
+        return $this->successResponse(
+            new ClientResource($client->fresh(['classification', 'lead'])),
+            'Classificação atualizada'
+        );
+    }
+
+    public function setFinancialContact(Request $request, Client $client)
+    {
+        $validated = $request->validate([
+            'financial_contact_name' => 'required|string|max:255',
+            'financial_contact_phone' => 'nullable|string|max:32',
+            'financial_contact_email' => 'nullable|email|max:255',
+        ]);
+
+        $client->fill($validated)->save();
+
+        return $this->successResponse(new ClientResource($client->fresh()), 'Contato financeiro atualizado');
+    }
+
+    public function setEmergencyContact(Request $request, Client $client)
+    {
+        $validated = $request->validate([
+            'emergency_contact_name' => 'required|string|max:255',
+            'emergency_contact_phone' => 'required|string|max:32',
+        ]);
+
+        $client->fill($validated)->save();
+
+        return $this->successResponse(new ClientResource($client->fresh()), 'Contato de emergência atualizado');
+    }
+
+    public function reviews(Client $client)
+    {
+        return $this->successResponse($this->clientReviewService->getClientReviewHistory($client));
+    }
+
+    public function createReview(Request $request, Client $client)
+    {
+        $validated = $request->validate([
+            'satisfaction_score' => 'nullable|integer|min:1|max:5',
+            'service_quality_score' => 'nullable|integer|min:1|max:5',
+            'contract_renewal_intent' => 'nullable|boolean',
+            'observations' => 'nullable|string',
+            'action_items' => 'nullable|string',
+            'next_review_date' => 'nullable|date',
+            'review_date' => 'nullable|date',
+        ]);
+
+        $review = $this->clientReviewService->createReview($client, $validated);
+
+        return $this->createdResponse($review, 'Revisão registrada');
+    }
+
+    public function pendingReviews()
+    {
+        return $this->successResponse($this->clientReviewService->getClientsNeedingReview());
+    }
+
+    public function upcomingReviews(Request $request)
+    {
+        $days = (int) $request->get('days', 7);
+
+        return $this->successResponse($this->clientReviewService->getClientsWithUpcomingReview($days));
+    }
+
+    public function reviewStatistics(Request $request)
+    {
+        return $this->successResponse(
+            $this->clientReviewService->getStatistics($request->get('start_date'), $request->get('end_date'))
+        );
+    }
+
+    public function nps(Request $request)
+    {
+        return $this->successResponse(
+            $this->clientReviewService->calculateNPS($request->get('start_date'), $request->get('end_date'))
+        );
+    }
+
+    public function referrals(Client $client)
+    {
+        return $this->successResponse($this->clientReferralService->getClientReferralHistory($client->id));
+    }
+
+    public function createReferral(Request $request, Client $client)
+    {
+        $validated = $request->validate([
+            'referred_name' => 'required|string|max:255',
+            'referred_phone' => 'nullable|string|max:32',
+            'notes' => 'nullable|string',
+            'referred_lead_id' => 'nullable|integer|exists:leads,id',
+        ]);
+
+        $referral = $this->clientReferralService->createReferral($client->id, $validated);
+
+        return $this->createdResponse($referral, 'Indicação registrada');
+    }
+
+    public function completeness(Client $client)
+    {
+        return $this->successResponse([
+            'completeness' => $client->registration_completeness,
+            'pending' => $client->getRegistrationPendingItems(),
+        ]);
+    }
+
+    public function allReferrals()
+    {
+        $referrals = ClientReferral::query()->orderByDesc('id')->paginate(20);
+
+        return $this->successResponse($referrals);
+    }
+
+    public function pendingReferrals()
+    {
+        return $this->successResponse($this->clientReferralService->getPendingReferrals());
+    }
+
+    public function topReferrers()
+    {
+        return $this->successResponse($this->clientReferralService->getTopReferrers());
+    }
+
+    public function referralStatistics(Request $request)
+    {
+        return $this->successResponse(
+            $this->clientReferralService->getStatistics($request->get('start_date'), $request->get('end_date'))
+        );
+    }
+
+    public function markReferralContacted(ClientReferral $referral)
+    {
+        $referral->status = ClientReferral::STATUS_CONTACTED;
+        $referral->save();
+
+        return $this->successResponse($referral->fresh(), 'Indicação marcada como contactada');
+    }
+
+    public function markReferralConverted(Request $request, ClientReferral $referral)
+    {
+        $validated = $request->validate([
+            'client_id' => 'required|integer|exists:clients,id',
+        ]);
+
+        $client = Client::query()->findOrFail($validated['client_id']);
+        $updated = $this->clientReferralService->markAsConverted($referral, $client);
+
+        return $this->successResponse($updated, 'Indicação convertida');
+    }
+
+    public function markReferralLost(Request $request, ClientReferral $referral)
+    {
+        $updated = $this->clientReferralService->markAsLost($referral, $request->get('reason'));
+
+        return $this->successResponse($updated, 'Indicação marcada como perdida');
     }
 }

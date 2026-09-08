@@ -10,19 +10,28 @@
 
 Repositório central de documentos e conformidade LGPD. Organiza contratos, consentimentos e registros para operação segura e aderente à Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
 
+## Limitacoes atuais (codigo vs runtime)
+
+Estas rotas/promessas **existem no README antigo como "implementadas"**, mas o codigo/runtime de set/2026 nao entrega a jornada completa:
+
+- `GET /api/contracts/{id}/pdf` e `download` entregam **HTML** para imprimir/salvar (nao ha DomPDF no vendor). Sem contrato: 404.
+- `GET /api/health` em `local`/`testing` retorna **200** se o banco estiver ok; S3 ausente aparece como `storage: not_configured`. Em producao o check de S3 continua estrito (503).
+- `GET /api/public/terms|privacy` usam template seedado ou, se nao houver, o mesmo HTML de `/termos` e `/privacidade`.
+- Upload S3, OTP WhatsApp e certificado digital exigem credenciais externas; sem AWS/Z-API a API de assinatura/upload nao completa a jornada.
+
 ## Módulos Implementados
 
 ### 1. Armazenamento em Nuvem
-- Upload de documentos para AWS S3 com criptografia AES-256
-- Organização por pastas (clientes, cuidadores, contratos)
-- URLs pré-assinadas com expiração para downloads seguros
-- Versionamento de documentos
+- Cliente S3 com criptografia AES-256 **quando AWS esta configurado**
+- Organizacao por pastas (clientes, cuidadores, contratos)
+- URLs pre-assinadas com expiracao (depende de S3)
+- Versionamento de documentos (depende de S3)
 
 ### 2. Contratos
 - Contratos com clientes (contrato_cliente)
 - Contratos com cuidadores (contrato_cuidador)
-- Sistema de templates com variáveis dinâmicas
-- Assinatura digital com OTP via WhatsApp ou clique
+- Sistema de templates com variaveis dinamicas
+- Assinatura digital: fluxo OTP/clique **parcial** (rota existe; PDF do contrato nao e gerado)
 
 ### 3. Termos e Políticas
 - Termos de uso publicados

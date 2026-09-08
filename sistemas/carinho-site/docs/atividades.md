@@ -22,5 +22,5 @@ Lista de atividades para viabilizar o sistema Carinho Site.
 - Configurar analytics e tags.
 
 ## Publicacao
-- Configurar dominio/subdominio e SSL.
+- Configurar o apex `carinho.com.vc` e SSL. Hostname legado `site.carinho.com.vc` deve responder 301 para `https://carinho.com.vc` (path preservado).
 - Definir rotinas de backup e monitoramento.

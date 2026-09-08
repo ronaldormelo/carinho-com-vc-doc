@@ -222,7 +222,7 @@ Não existem `/api/v1/sync/pending-updates` neste módulo. Ver [contratos-rotas.
 
 ---
 
-### 2.8 Site (site.carinho.com.vc)
+### 2.8 Site (carinho.com.vc)
 
 | Item | Valor |
 |------|-------|

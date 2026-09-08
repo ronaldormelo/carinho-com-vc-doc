@@ -3,7 +3,7 @@
 namespace App\Services\Integrations;
 
 /**
- * Integração com Carinho Site (site.carinho.com.vc)
+ * Integração com Carinho Site (https://carinho.com.vc)
  * Recebe leads de formulários e integra UTM tracking
  */
 class CarinhoSiteService extends BaseInternalService
