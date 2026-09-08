@@ -17,11 +17,15 @@ mkdir -p bootstrap/cache
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
 
-echo "Instalando dependências do Composer..."
-# Instalar sem scripts primeiro (para evitar erro do artisan)
-# Timeout 0: unzip do laravel/framework em bind mount Windows ultrapassa os 300s padrão.
-export COMPOSER_PROCESS_TIMEOUT=0
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --no-dev
+export COMPOSER_NO_BLOCKING="${COMPOSER_NO_BLOCKING:-1}"
+export COMPOSER_NO_SECURITY_BLOCKING="${COMPOSER_NO_SECURITY_BLOCKING:-1}"
+export COMPOSER_PROCESS_TIMEOUT="${COMPOSER_PROCESS_TIMEOUT:-0}"
+if [ ! -f vendor/autoload.php ]; then
+    echo "Instalando dependências do Composer..."
+    composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --no-dev
+else
+    echo "vendor/autoload.php presente; pulando composer install"
+fi
 
 
 echo "Executando scripts do Composer..."

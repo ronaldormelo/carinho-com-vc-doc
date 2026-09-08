@@ -293,24 +293,34 @@ jobs:
               carinho-integracoes
             do
               app="$DEPLOY_PATH/sistemas/$system"
+              echo ">>> Composer (volume bind) — $system"
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" run --rm --no-deps \
+                -e COMPOSER_NO_BLOCKING=1 \
+                -e COMPOSER_NO_SECURITY_BLOCKING=1 \
+                -e COMPOSER_PROCESS_TIMEOUT=0 \
+                --entrypoint composer \
+                app install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --no-dev
               echo ">>> Recriando app com env atual — $system"
               rm -f "$app/bootstrap/cache/config.php"
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build --force-recreate --no-deps app
-              artisan_ready=0
+              apache_ready=0
               j=0
               while [ "$j" -lt 90 ]; do
-                if $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan migrate:status >/dev/null 2>&1; then
-                  artisan_ready=1
+                if $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app sh -c 'pgrep apache2 >/dev/null 2>&1'; then
+                  apache_ready=1
                   break
                 fi
                 j=$((j + 1))
                 sleep 2
               done
-              if [ "$artisan_ready" -ne 1 ]; then
-                echo "Artisan/MariaDB não ficou pronto em $system (migrate:status)."
+              if [ "$apache_ready" -ne 1 ]; then
+                echo "Apache não subiu em $system. Logs do container:"
+                $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" logs --tail 150 app || true
+                $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" ps -a || true
                 exit 1
               fi
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan config:clear
+              echo ">>> migrate --force — $system"
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan migrate --force
               extra_services="$($COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" config --services | grep -v '^app$' || true)"
               for svc in $extra_services; do
