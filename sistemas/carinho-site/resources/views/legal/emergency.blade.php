@@ -33,7 +33,7 @@
                         <td><strong>{{ ucfirst($channel) }}</strong></td>
                         <td>
                             @if($channel === 'whatsapp')
-                            {{ config('branding.contact.whatsapp_display') }} - {{ $description }}
+                            <x-whatsapp-number /> - {{ $description }}
                             @elseif($channel === 'email')
                             <a href="mailto:{{ config('branding.contact.email_emergency') }}">{{ config('branding.contact.email_emergency') }}</a>
                             @else
@@ -164,7 +164,7 @@
             <h2>9. CONTATO DE EMERGÊNCIA</h2>
             <div class="highlight-box" style="background: #f8d7da; border-color: var(--color-danger);">
                 <p style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-2);">
-                    <strong>WhatsApp Emergência:</strong> {{ config('branding.contact.whatsapp_display') }}
+                    <strong>WhatsApp Emergência:</strong> <x-whatsapp-number />
                 </p>
                 <p style="margin: 0;">
                     <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email_emergency') }}">{{ config('branding.contact.email_emergency') }}</a>

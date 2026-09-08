@@ -657,7 +657,7 @@
                 <p style="opacity: 0.8; margin-bottom: var(--spacing-4);">Ou entre em contato diretamente:</p>
                 <p style="font-size: var(--font-size-lg);">
                     <strong>E-mail:</strong> investidores@carinho.com.vc<br>
-                    <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}
+                    <strong>WhatsApp:</strong> <x-whatsapp-number class="whatsapp-number-link--inverse" />
                 </p>
             </div>
         </div>

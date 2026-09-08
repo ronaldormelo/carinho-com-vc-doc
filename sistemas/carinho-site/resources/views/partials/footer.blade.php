@@ -8,7 +8,7 @@
                 </a>
                 <p>{{ config('branding.value_proposition') }}</p>
                 <p>
-                    <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
+                    <strong>WhatsApp:</strong> <x-whatsapp-number /><br>
                     <strong>E-mail:</strong> {{ config('branding.contact.email') }}
                 </p>
                 <p style="margin-top: var(--spacing-4);">

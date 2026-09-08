@@ -151,7 +151,7 @@
                 Para questões sobre pagamentos:
             </p>
             <p>
-                <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}<br>
+                <strong>WhatsApp:</strong> <x-whatsapp-number /><br>
                 <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a>
             </p>
         </div>

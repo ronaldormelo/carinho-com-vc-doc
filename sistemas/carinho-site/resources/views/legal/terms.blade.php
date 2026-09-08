@@ -169,7 +169,7 @@
             </p>
             <p>
                 <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a><br>
-                <strong>WhatsApp:</strong> {{ config('branding.contact.whatsapp_display') }}
+                <strong>WhatsApp:</strong> <x-whatsapp-number />
             </p>
         </div>
     </div>
