@@ -16,6 +16,9 @@ services:
     volumes:
       - ./:/var/www/html
       - ./storage:/var/www/html/storage
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - php -r 'file_put_contents("/tmp/ep.sh", str_replace(chr(13), "", file_get_contents("/var/www/html/docker-entrypoint.sh")));' && exec bash /tmp/ep.sh apache2-foreground
     environment:
       APP_ENV: ${APP_ENV:-local}
       APP_DEBUG: ${APP_DEBUG:-true}
@@ -42,11 +45,14 @@ services:
     container_name: carinho-marketing-worker
     restart: unless-stopped
     mem_limit: 256m
-    command: php artisan queue:work redis --queue=marketing,metrics,sync,default --sleep=3 --tries=3 --max-jobs=20 --memory=128
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - php -r 'file_put_contents("/tmp/ep.sh", str_replace(chr(13), "", file_get_contents("/var/www/html/docker-entrypoint.sh")));' && exec bash /tmp/ep.sh php artisan queue:work redis --queue=marketing,metrics,sync,default --sleep=3 --tries=3 --memory=128 --timeout=90
     volumes:
       - ./:/var/www/html
     environment:
       APP_ENV: ${APP_ENV:-local}
+      QUEUE_CONNECTION: redis
       DB_CONNECTION: mysql
       DB_HOST: carinho-mariadb
       DB_PORT: ${DB_PORT:-3306}
@@ -68,7 +74,10 @@ services:
       dockerfile: Dockerfile
     container_name: carinho-marketing-scheduler
     restart: unless-stopped
-    command: /bin/bash -c "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"
+    mem_limit: 192m
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - php -r 'file_put_contents("/tmp/ep.sh", str_replace(chr(13), "", file_get_contents("/var/www/html/docker-entrypoint.sh")));' && exec bash /tmp/ep.sh bash -c 'while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done'
     volumes:
       - ./:/var/www/html
     environment:

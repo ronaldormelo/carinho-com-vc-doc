@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             DomainSeeder::class,
             RetentionPolicySeeder::class,
             DocumentTemplateSeeder::class,
+            DevLocalContractSeeder::class,
         ]);
     }
 }

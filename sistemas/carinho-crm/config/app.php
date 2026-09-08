@@ -123,6 +123,7 @@ return [
     */
     'aliases' => [
         'App' => Illuminate\Support\Facades\App::class,
+        'Auth' => Illuminate\Support\Facades\Auth::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
         'Config' => Illuminate\Support\Facades\Config::class,
         'DB' => Illuminate\Support\Facades\DB::class,

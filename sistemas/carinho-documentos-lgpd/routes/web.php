@@ -31,6 +31,10 @@ Route::get('/assinar/{token}', function (string $token) {
     return view('contracts.sign', ['token' => $token]);
 })->name('contract.sign');
 
+Route::get('/contratos/{id}/imprimir', [\App\Http\Controllers\ContractController::class, 'printPublic'])
+    ->whereNumber('id')
+    ->name('contract.print');
+
 // Paginas publicas de termos e politicas
 Route::get('/termos', function () {
     return view('public.terms');

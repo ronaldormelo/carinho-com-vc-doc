@@ -86,6 +86,6 @@ Sincronizações em lote do hub (`SyncService`) que dependiam de `/api/v1/sync/*
 
 - Fatura no Financeiro exige `contract_id`; serviço concluído sem contrato não gera invoice.
 - Webhook Documentos→CRM `contract-signed` exige `exists:contracts,id` **do CRM** — ID do módulo Documentos não mapeia automaticamente.
-- Download/PDF de contrato em Documentos entrega HTML (nao ha lib PDF no vendor); 404 se o contrato nao existe.
+- Download/PDF de contrato em Documentos entrega HTML imprimível (`Content-Disposition: inline`; `GET /contratos/{id}/imprimir` no local). 404 se o contrato não existe. Sem lib PDF no vendor.
 - Health paths não unificados (`/health`, `/api/health`, `/up`).
 - Site `ContentController` (Laravel 11) nao usa `$this->middleware()`; auth e `VerifyInternalToken` em `/api/*`.

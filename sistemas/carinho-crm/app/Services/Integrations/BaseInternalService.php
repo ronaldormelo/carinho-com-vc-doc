@@ -4,7 +4,6 @@ namespace App\Services\Integrations;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Client\RequestException;
 
 /**
  * Classe base para integração com sistemas internos Carinho
@@ -54,7 +53,9 @@ abstract class BaseInternalService
         ];
 
         try {
+        try {
             $response = Http::timeout($this->timeout)
+                ->connectTimeout(3)
                 ->withHeaders(array_merge($defaultHeaders, $headers))
                 ->$method($url, $data);
 
@@ -71,7 +72,7 @@ abstract class BaseInternalService
             ]);
 
             return null;
-        } catch (RequestException $e) {
+        } catch (\Throwable $e) {
             Log::channel('integrations')->error("{$this->serviceName} exceção {$endpoint}", [
                 'error' => $e->getMessage(),
             ]);

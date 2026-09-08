@@ -64,7 +64,13 @@ REDIS_PREFIX=carinho_[nome_do_sistema]:
 
 Schemas criados pelo init: `carinho_atendimento`, `carinho_cuidadores`, `carinho_documentos_lgpd`, `carinho_operacao`, `carinho_site`, `carinho_crm`, `carinho_marketing`, `carinho_financeiro`, `carinho_integracoes`.
 
-Segredos: [CATALOGO-SECRETS.md](CATALOGO-SECRETS.md). Composer: o `docker-entrypoint.sh` de cada app instala dependências na primeira subida.
+Segredos: [CATALOGO-SECRETS.md](CATALOGO-SECRETS.md). Composer: o `docker-entrypoint.sh` de cada app instala dependências **só na primeira subida** (`vendor/autoload.php` ausente). `APP_KEY` é gerada por `ensure-app-key.sh` **somente se estiver vazia** — nunca `key:generate --force`. Workers (`queue:work`) pulam `package:discover` no start. Os Compose forçam esse script do bind-mount (a layer da imagem ainda pode estar antiga até um `docker compose build`).
+
+`composer.json` de cada app tem `config.audit.block-insecure: false`. Isso é **workaround local/CI para Composer 2.10** (Laravel 11.x é EOL e o audit bloqueia o install). **Não** é política de produção: em produção o lock deve instalar sem desligar o bloqueio, ou os apps devem sair do 11.x. Preferir `COMPOSER_NO_SECURITY_BLOCKING=1` no ambiente de build quando possível.
+
+O seed `ChangeMeLocal!` (`CRM_ADMIN_PASSWORD`) vale **somente** para `DevLocalSeeder` / README de desenvolvimento (`administrador@carinho.com.vc`). **Inaceitável em produção.** Não commitar `.env`.
+
+Se o `.env` local usa `DB_USERNAME=root` e `DB_PASSWORD=` (MariaDB com root vazio neste repo), **não** declare `DB_PASSWORD: ${DB_PASSWORD:-carinho}` no Compose: o `:-` trata senha vazia como ausente, injeta `carinho` e o login quebra com `1045 using password: YES`. O CRM não sobrescreve usuário/senha no Compose — lê o `.env` montado.
 
 ## Comandos
 

@@ -178,6 +178,22 @@ class ContractController extends Controller
         return $this->htmlContractResponse($id, 'contrato-'.$id.'.html');
     }
 
+    /**
+     * HTML imprimível (família). Em produção exige token de assinatura.
+     */
+    public function printPublic(Request $request, int $id): mixed
+    {
+        if (app()->environment('production')) {
+            $token = (string) $request->query('token', '');
+            $document = $token !== '' ? $this->contractService->getBySignatureToken($token) : null;
+            if (!$document || (int) $document->id !== $id) {
+                return $this->error('Contrato nao encontrado', 404);
+            }
+        }
+
+        return $this->htmlContractResponse($id, 'contrato-'.$id.'.html');
+    }
+
     private function htmlContractResponse(int $id, string $filename): mixed
     {
         $document = Document::query()->with('template')->find($id);
@@ -186,18 +202,43 @@ class ContractController extends Controller
             return $this->error('Contrato nao encontrado', 404);
         }
 
-        $html = $document->template
+        $body = $document->template
             ? $document->template->render([
                 'data_atualizacao' => now()->format('d/m/Y'),
                 'document_id' => $document->id,
             ])
-            : '<!DOCTYPE html><html lang="pt-BR"><body><p>Contrato #'.e($document->id).' sem template.</p></body></html>';
+            : '<p>Contrato #'.e($document->id).' sem template.</p>';
+
+        $html = $this->printableHtml($body, $document->id);
 
         return response($html, 200, [
             'Content-Type' => 'text/html; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+            'Content-Disposition' => 'inline; filename="'.$filename.'"',
             'X-Document-Format' => 'html',
         ]);
+    }
+
+    private function printableHtml(string $body, int $id): string
+    {
+        if (stripos($body, '<html') !== false) {
+            return $body;
+        }
+
+        $title = 'Contrato #'.$id.' — Carinho com Você';
+
+        return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">'
+            .'<meta name="viewport" content="width=device-width, initial-scale=1">'
+            .'<title>'.e($title).'</title>'
+            .'<style>
+                body{font-family:Georgia,serif;max-width:720px;margin:2rem auto;padding:0 1.5rem;color:#1a2b32;line-height:1.5}
+                .print-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;font-family:Nunito,Arial,sans-serif}
+                .print-bar button{background:#5BBFAD;color:#fff;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;font-size:1rem}
+                @media print{.print-bar{display:none} body{margin:0;max-width:none}}
+            </style></head><body>'
+            .'<div class="print-bar"><strong>Carinho com Você</strong>'
+            .'<button type="button" onclick="window.print()">Imprimir</button></div>'
+            .$body
+            .'</body></html>';
     }
 
     /**

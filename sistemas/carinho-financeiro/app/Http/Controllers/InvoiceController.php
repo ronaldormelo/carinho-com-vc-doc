@@ -85,7 +85,11 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        $invoice->load(['status', 'items.serviceType', 'payments.method', 'payments.status', 'fiscalDocument']);
+        $with = ['status', 'items', 'payments.method', 'payments.status', 'fiscalDocument'];
+        if (\Illuminate\Support\Facades\Schema::hasColumn('invoice_items', 'service_type_id')) {
+            $with[1] = 'items.serviceType';
+        }
+        $invoice->load($with);
 
         return new InvoiceResource($invoice);
     }

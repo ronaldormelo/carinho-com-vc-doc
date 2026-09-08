@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Schema;
 
 class InvoiceItemResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class InvoiceItemResource extends JsonResource
             'qty' => (float) $this->qty,
             'unit_price' => (float) $this->unit_price,
             'amount' => (float) $this->amount,
-            'caregiver_id' => $this->caregiver_id,
+            'caregiver_id' => Schema::hasColumn('invoice_items', 'caregiver_id') ? $this->caregiver_id : null,
             'service_type' => $this->whenLoaded('serviceType', function () {
                 return $this->serviceType ? [
                     'id' => $this->serviceType->id,
@@ -25,8 +26,12 @@ class InvoiceItemResource extends JsonResource
                     'label' => $this->serviceType->label,
                 ] : null;
             }),
-            'caregiver_commission' => $this->getCaregiverCommissionAmount(),
-            'company_margin' => $this->getCompanyMarginAmount(),
+            'caregiver_commission' => Schema::hasColumn('invoice_items', 'service_type_id')
+                ? $this->getCaregiverCommissionAmount()
+                : null,
+            'company_margin' => Schema::hasColumn('invoice_items', 'service_type_id')
+                ? $this->getCompanyMarginAmount()
+                : null,
         ];
     }
 }

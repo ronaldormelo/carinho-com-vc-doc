@@ -130,36 +130,43 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function loadDashboardData() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
     try {
-        const response = await fetch('/api/v1/reports/dashboard', {
+        const response = await fetch('<?php echo e(route('dashboard.data')); ?>', {
             headers: {
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
-            }
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            credentials: 'same-origin',
+            signal: controller.signal,
         });
-        
+
         if (!response.ok) throw new Error('Erro ao carregar dados');
-        
+
         const result = await response.json();
-        const data = result.data;
-        
-        // Update stats
+        const data = result.data || {};
+
         document.getElementById('stat-leads-today').textContent = data.leads?.today || 0;
         document.getElementById('stat-pipeline').textContent = data.leads?.in_pipeline || 0;
         document.getElementById('stat-conversion').textContent = (data.leads?.conversion_rate || 0) + '%';
         document.getElementById('stat-contracts').textContent = data.contracts?.active || 0;
-        
-        // Update recent leads table
+
         updateRecentLeadsTable(data.recent_leads || []);
-        
-        // Update tasks
         updateTasks(data.tasks || {});
-        
-        // Update expiring contracts
         updateExpiringContracts(data.expiring_contracts || []);
-        
     } catch (error) {
         console.error('Erro ao carregar dashboard:', error);
+        document.getElementById('stat-leads-today').textContent = '0';
+        document.getElementById('stat-pipeline').textContent = '0';
+        document.getElementById('stat-conversion').textContent = '0%';
+        document.getElementById('stat-contracts').textContent = '0';
+        updateRecentLeadsTable([]);
+        updateTasks({});
+        updateExpiringContracts([]);
+    } finally {
+        clearTimeout(timer);
     }
 }
 

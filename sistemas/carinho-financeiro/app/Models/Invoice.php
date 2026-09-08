@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Schema;
+use Spatie\Activitylog\ActivityLogStatus;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -267,5 +270,30 @@ class Invoice extends Model
             ->logOnly(['status_id', 'total_amount', 'due_date'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
+    }
+
+    protected function shouldLogEvent(string $eventName): bool
+    {
+        if (! Schema::hasTable('activity_log')) {
+            return false;
+        }
+
+        $logStatus = app(ActivityLogStatus::class);
+
+        if (! $this->enableLoggingModelsEvents || $logStatus->disabled()) {
+            return false;
+        }
+
+        if (! in_array($eventName, ['created', 'updated'])) {
+            return true;
+        }
+
+        if ($this->isRestoring()) {
+            return false;
+        }
+
+        $this->activitylogOptions ??= $this->getActivitylogOptions();
+
+        return (bool) count(Arr::except($this->getDirty(), $this->activitylogOptions->dontLogIfAttributesChangedOnly));
     }
 }

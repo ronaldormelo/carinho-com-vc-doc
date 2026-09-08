@@ -116,6 +116,8 @@ jobs:
           php scripts/assert-production-package-discovery.php
           php scripts/assert-dotenv-no-unquoted-whitespace.php
           php scripts/assert-brand-whatsapp.php
+          php scripts/assert-financeiro-bank-account-fk-order.php
+          php scripts/assert-app-key-before-artisan.php
 
   deploy:
     name: deploy
@@ -245,12 +247,15 @@ jobs:
               cp -f "$src" "$dest"
               bash "$DEPLOY_PATH/scripts/quote-dotenv-unquoted-whitespace.sh" "$dest"
               new_key="$(grep -E '^APP_KEY=' "$dest" | tail -n1 | cut -d= -f2- | tr -d '\r')"
-              if [ -z "$new_key" ] && [ -n "$old_key" ]; then
+              new_key_trim="$(printf '%s' "$new_key" | tr -d '"' | tr -d "'" | tr -d ' ')"
+              old_key_trim="$(printf '%s' "$old_key" | tr -d '"' | tr -d "'" | tr -d ' ')"
+              if [ -z "$new_key_trim" ] && [ -n "$old_key_trim" ]; then
                 sed -i "s#^APP_KEY=.*#APP_KEY=${old_key}#" "$dest"
                 echo "Atualizado $system a partir de $(basename "$src") (APP_KEY existente preservada)"
               else
                 echo "Atualizado $system a partir de $(basename "$src")"
               fi
+              bash "$DEPLOY_PATH/scripts/ensure-app-key.sh" "$dest"
             done
 
             echo ">>> Subindo containers na VPS"

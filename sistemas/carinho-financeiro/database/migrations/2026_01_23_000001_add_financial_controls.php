@@ -19,182 +19,153 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Aplicação parcial anterior (errno 150 em bank_accounts) deixou
-        // domain_* e cash_transactions sem registrar a migration.
-        if (Schema::hasTable('domain_transaction_type') || Schema::hasTable('cash_transactions')) {
-            return;
+        if (!Schema::hasTable('domain_transaction_type')) {
+            Schema::create('domain_transaction_type', function (Blueprint $table) {
+                $table->tinyInteger('id', true, true)->primary();
+                $table->string('code', 32)->unique();
+                $table->string('label', 64);
+            });
+
+            DB::table('domain_transaction_type')->insert([
+                ['id' => 1, 'code' => 'receipt', 'label' => 'Recebimento'],
+                ['id' => 2, 'code' => 'payment', 'label' => 'Pagamento'],
+                ['id' => 3, 'code' => 'transfer', 'label' => 'Transferência'],
+                ['id' => 4, 'code' => 'adjustment', 'label' => 'Ajuste'],
+                ['id' => 5, 'code' => 'fee', 'label' => 'Taxa'],
+                ['id' => 6, 'code' => 'refund', 'label' => 'Reembolso'],
+            ]);
         }
 
-        // Tabela de domínio: Tipos de transação
-        Schema::create('domain_transaction_type', function (Blueprint $table) {
-            $table->tinyInteger('id', true, true)->primary();
-            $table->string('code', 32)->unique();
-            $table->string('label', 64);
-        });
+        if (!Schema::hasTable('domain_financial_category')) {
+            Schema::create('domain_financial_category', function (Blueprint $table) {
+                $table->tinyInteger('id', true, true)->primary();
+                $table->string('code', 32)->unique();
+                $table->string('label', 64);
+                $table->enum('type', ['revenue', 'expense', 'both'])->default('both');
+            });
 
-        DB::table('domain_transaction_type')->insert([
-            ['id' => 1, 'code' => 'receipt', 'label' => 'Recebimento'],
-            ['id' => 2, 'code' => 'payment', 'label' => 'Pagamento'],
-            ['id' => 3, 'code' => 'transfer', 'label' => 'Transferência'],
-            ['id' => 4, 'code' => 'adjustment', 'label' => 'Ajuste'],
-            ['id' => 5, 'code' => 'fee', 'label' => 'Taxa'],
-            ['id' => 6, 'code' => 'refund', 'label' => 'Reembolso'],
-        ]);
+            DB::table('domain_financial_category')->insert([
+                ['id' => 1, 'code' => 'service_revenue', 'label' => 'Receita de Serviços', 'type' => 'revenue'],
+                ['id' => 2, 'code' => 'cancellation_fee', 'label' => 'Taxa de Cancelamento', 'type' => 'revenue'],
+                ['id' => 3, 'code' => 'late_fee', 'label' => 'Juros e Multas', 'type' => 'revenue'],
+                ['id' => 4, 'code' => 'other_revenue', 'label' => 'Outras Receitas', 'type' => 'revenue'],
+                ['id' => 10, 'code' => 'caregiver_payout', 'label' => 'Repasse Cuidadores', 'type' => 'expense'],
+                ['id' => 11, 'code' => 'gateway_fee', 'label' => 'Taxa Gateway', 'type' => 'expense'],
+                ['id' => 12, 'code' => 'transfer_fee', 'label' => 'Taxa Transferência', 'type' => 'expense'],
+                ['id' => 13, 'code' => 'refund_expense', 'label' => 'Reembolso Cliente', 'type' => 'expense'],
+                ['id' => 14, 'code' => 'operational', 'label' => 'Despesa Operacional', 'type' => 'expense'],
+                ['id' => 15, 'code' => 'administrative', 'label' => 'Despesa Administrativa', 'type' => 'expense'],
+                ['id' => 16, 'code' => 'tax', 'label' => 'Impostos e Tributos', 'type' => 'expense'],
+                ['id' => 17, 'code' => 'other_expense', 'label' => 'Outras Despesas', 'type' => 'expense'],
+            ]);
+        }
 
-        // Tabela de domínio: Categorias financeiras
-        Schema::create('domain_financial_category', function (Blueprint $table) {
-            $table->tinyInteger('id', true, true)->primary();
-            $table->string('code', 32)->unique();
-            $table->string('label', 64);
-            $table->enum('type', ['revenue', 'expense', 'both'])->default('both');
-        });
+        if (!Schema::hasTable('domain_approval_status')) {
+            Schema::create('domain_approval_status', function (Blueprint $table) {
+                $table->tinyInteger('id', true, true)->primary();
+                $table->string('code', 32)->unique();
+                $table->string('label', 64);
+            });
 
-        DB::table('domain_financial_category')->insert([
-            // Receitas
-            ['id' => 1, 'code' => 'service_revenue', 'label' => 'Receita de Serviços', 'type' => 'revenue'],
-            ['id' => 2, 'code' => 'cancellation_fee', 'label' => 'Taxa de Cancelamento', 'type' => 'revenue'],
-            ['id' => 3, 'code' => 'late_fee', 'label' => 'Juros e Multas', 'type' => 'revenue'],
-            ['id' => 4, 'code' => 'other_revenue', 'label' => 'Outras Receitas', 'type' => 'revenue'],
-            // Despesas
-            ['id' => 10, 'code' => 'caregiver_payout', 'label' => 'Repasse Cuidadores', 'type' => 'expense'],
-            ['id' => 11, 'code' => 'gateway_fee', 'label' => 'Taxa Gateway', 'type' => 'expense'],
-            ['id' => 12, 'code' => 'transfer_fee', 'label' => 'Taxa Transferência', 'type' => 'expense'],
-            ['id' => 13, 'code' => 'refund_expense', 'label' => 'Reembolso Cliente', 'type' => 'expense'],
-            ['id' => 14, 'code' => 'operational', 'label' => 'Despesa Operacional', 'type' => 'expense'],
-            ['id' => 15, 'code' => 'administrative', 'label' => 'Despesa Administrativa', 'type' => 'expense'],
-            ['id' => 16, 'code' => 'tax', 'label' => 'Impostos e Tributos', 'type' => 'expense'],
-            ['id' => 17, 'code' => 'other_expense', 'label' => 'Outras Despesas', 'type' => 'expense'],
-        ]);
+            DB::table('domain_approval_status')->insert([
+                ['id' => 1, 'code' => 'pending', 'label' => 'Pendente'],
+                ['id' => 2, 'code' => 'approved', 'label' => 'Aprovado'],
+                ['id' => 3, 'code' => 'rejected', 'label' => 'Rejeitado'],
+                ['id' => 4, 'code' => 'auto_approved', 'label' => 'Aprovado Automático'],
+            ]);
+        }
 
-        // Tabela de domínio: Status de aprovação
-        Schema::create('domain_approval_status', function (Blueprint $table) {
-            $table->tinyInteger('id', true, true)->primary();
-            $table->string('code', 32)->unique();
-            $table->string('label', 64);
-        });
+        if (!Schema::hasTable('domain_payable_status')) {
+            Schema::create('domain_payable_status', function (Blueprint $table) {
+                $table->tinyInteger('id', true, true)->primary();
+                $table->string('code', 32)->unique();
+                $table->string('label', 64);
+            });
 
-        DB::table('domain_approval_status')->insert([
-            ['id' => 1, 'code' => 'pending', 'label' => 'Pendente'],
-            ['id' => 2, 'code' => 'approved', 'label' => 'Aprovado'],
-            ['id' => 3, 'code' => 'rejected', 'label' => 'Rejeitado'],
-            ['id' => 4, 'code' => 'auto_approved', 'label' => 'Aprovado Automático'],
-        ]);
+            DB::table('domain_payable_status')->insert([
+                ['id' => 1, 'code' => 'open', 'label' => 'Em Aberto'],
+                ['id' => 2, 'code' => 'scheduled', 'label' => 'Agendado'],
+                ['id' => 3, 'code' => 'paid', 'label' => 'Pago'],
+                ['id' => 4, 'code' => 'canceled', 'label' => 'Cancelado'],
+            ]);
+        }
 
-        // Tabela de domínio: Status de contas a pagar
-        Schema::create('domain_payable_status', function (Blueprint $table) {
-            $table->tinyInteger('id', true, true)->primary();
-            $table->string('code', 32)->unique();
-            $table->string('label', 64);
-        });
+        // bank_accounts só existe em 2026_09_07_000002; a FK entra em 000003.
+        if (!Schema::hasTable('cash_transactions')) {
+            Schema::create('cash_transactions', function (Blueprint $table) {
+                $table->id();
+                $table->date('transaction_date');
+                $table->date('competence_date')->nullable()->comment('Data de competência contábil');
+                $table->unsignedTinyInteger('type_id');
+                $table->unsignedTinyInteger('category_id');
+                $table->string('description', 255);
+                $table->decimal('amount', 12, 2);
+                $table->enum('direction', ['in', 'out'])->comment('in=entrada, out=saída');
+                $table->string('reference_type', 64)->nullable()->comment('invoice, payment, payout, payable');
+                $table->unsignedBigInteger('reference_id')->nullable();
+                $table->unsignedBigInteger('bank_account_id')->nullable();
+                $table->string('external_reference', 128)->nullable()->comment('ID externo (Stripe, etc)');
+                $table->text('notes')->nullable();
+                $table->string('created_by', 128)->nullable();
+                $table->timestamps();
 
-        DB::table('domain_payable_status')->insert([
-            ['id' => 1, 'code' => 'open', 'label' => 'Em Aberto'],
-            ['id' => 2, 'code' => 'scheduled', 'label' => 'Agendado'],
-            ['id' => 3, 'code' => 'paid', 'label' => 'Pago'],
-            ['id' => 4, 'code' => 'canceled', 'label' => 'Cancelado'],
-        ]);
+                $table->foreign('type_id')
+                    ->references('id')
+                    ->on('domain_transaction_type');
 
-        // Tabela de transações financeiras (fluxo de caixa detalhado)
-        Schema::create('cash_transactions', function (Blueprint $table) {
-            $table->id();
-            $table->date('transaction_date');
-            $table->date('competence_date')->nullable()->comment('Data de competência contábil');
-            $table->tinyInteger('type_id', false, true);
-            $table->tinyInteger('category_id', false, true);
-            $table->string('description', 255);
-            $table->decimal('amount', 12, 2);
-            $table->enum('direction', ['in', 'out'])->comment('in=entrada, out=saída');
-            
-            // Referências polimórficas
-            $table->string('reference_type', 64)->nullable()->comment('invoice, payment, payout, payable');
-            $table->bigInteger('reference_id', false, true)->nullable();
-            
-            // Controle
-            $table->bigInteger('bank_account_id', false, true)->nullable();
-            $table->string('external_reference', 128)->nullable()->comment('ID externo (Stripe, etc)');
-            $table->text('notes')->nullable();
-            $table->string('created_by', 128)->nullable();
-            
-            $table->timestamps();
+                $table->foreign('category_id')
+                    ->references('id')
+                    ->on('domain_financial_category');
 
-            $table->foreign('type_id')
-                ->references('id')
-                ->on('domain_transaction_type');
-            
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('domain_financial_category');
-            
-            $table->foreign('bank_account_id')
-                ->references('id')
-                ->on('bank_accounts');
+                $table->index(['transaction_date', 'direction']);
+                $table->index(['competence_date', 'category_id']);
+                $table->index(['reference_type', 'reference_id']);
+            });
+        }
 
-            // Índices para consultas frequentes
-            $table->index(['transaction_date', 'direction']);
-            $table->index(['competence_date', 'category_id']);
-            $table->index(['reference_type', 'reference_id']);
-        });
+        if (!Schema::hasTable('payables')) {
+            Schema::create('payables', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedTinyInteger('status_id');
+                $table->unsignedTinyInteger('category_id');
+                $table->string('supplier_name', 255);
+                $table->string('supplier_document', 20)->nullable()->comment('CPF/CNPJ');
+                $table->string('description', 255);
+                $table->decimal('amount', 12, 2);
+                $table->decimal('discount_amount', 12, 2)->default(0);
+                $table->decimal('interest_amount', 12, 2)->default(0);
+                $table->decimal('paid_amount', 12, 2)->nullable();
+                $table->date('issue_date');
+                $table->date('due_date');
+                $table->date('competence_date')->nullable();
+                $table->datetime('paid_at')->nullable();
+                $table->unsignedBigInteger('bank_account_id')->nullable();
+                $table->string('payment_method', 32)->nullable();
+                $table->string('document_number', 64)->nullable()->comment('Nº nota/documento');
+                $table->string('barcode', 128)->nullable()->comment('Código de barras boleto');
+                $table->text('notes')->nullable();
+                $table->string('reference_type', 64)->nullable();
+                $table->unsignedBigInteger('reference_id')->nullable();
+                $table->string('created_by', 128)->nullable();
+                $table->string('paid_by', 128)->nullable();
+                $table->timestamps();
+                $table->softDeletes();
 
-        // Tabela de contas a pagar (payables)
-        Schema::create('payables', function (Blueprint $table) {
-            $table->id();
-            $table->tinyInteger('status_id', false, true);
-            $table->tinyInteger('category_id', false, true);
-            
-            // Fornecedor/Beneficiário
-            $table->string('supplier_name', 255);
-            $table->string('supplier_document', 20)->nullable()->comment('CPF/CNPJ');
-            
-            // Valores
-            $table->string('description', 255);
-            $table->decimal('amount', 12, 2);
-            $table->decimal('discount_amount', 12, 2)->default(0);
-            $table->decimal('interest_amount', 12, 2)->default(0);
-            $table->decimal('paid_amount', 12, 2)->nullable();
-            
-            // Datas
-            $table->date('issue_date');
-            $table->date('due_date');
-            $table->date('competence_date')->nullable();
-            $table->datetime('paid_at')->nullable();
-            
-            // Controle
-            $table->bigInteger('bank_account_id', false, true)->nullable();
-            $table->string('payment_method', 32)->nullable();
-            $table->string('document_number', 64)->nullable()->comment('Nº nota/documento');
-            $table->string('barcode', 128)->nullable()->comment('Código de barras boleto');
-            $table->text('notes')->nullable();
-            
-            // Referência
-            $table->string('reference_type', 64)->nullable();
-            $table->bigInteger('reference_id', false, true)->nullable();
-            
-            // Auditoria
-            $table->string('created_by', 128)->nullable();
-            $table->string('paid_by', 128)->nullable();
-            
-            $table->timestamps();
-            $table->softDeletes();
+                $table->foreign('status_id')
+                    ->references('id')
+                    ->on('domain_payable_status');
 
-            $table->foreign('status_id')
-                ->references('id')
-                ->on('domain_payable_status');
-            
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('domain_financial_category');
-            
-            $table->foreign('bank_account_id')
-                ->references('id')
-                ->on('bank_accounts');
+                $table->foreign('category_id')
+                    ->references('id')
+                    ->on('domain_financial_category');
 
-            // Índices
-            $table->index(['status_id', 'due_date']);
-            $table->index(['competence_date', 'category_id']);
-        });
+                $table->index(['status_id', 'due_date']);
+                $table->index(['competence_date', 'category_id']);
+            });
+        }
 
-        // Tabela de provisões (PCLD - Provisão para Créditos de Liquidação Duvidosa)
-        Schema::create('provisions', function (Blueprint $table) {
+        if (!Schema::hasTable('provisions')) {
+            Schema::create('provisions', function (Blueprint $table) {
             $table->id();
             $table->string('period', 7)->comment('Formato: YYYY-MM');
             $table->string('type', 32)->comment('pcld, other');
@@ -217,9 +188,10 @@ return new class extends Migration
 
             $table->unique(['period', 'type']);
         });
+        }
 
-        // Tabela de aprovações (workflow de aprovação)
-        Schema::create('approvals', function (Blueprint $table) {
+        if (!Schema::hasTable('approvals')) {
+            Schema::create('approvals', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status_id', false, true);
             
@@ -254,36 +226,39 @@ return new class extends Migration
             $table->index(['status_id', 'operation_type']);
             $table->index(['requested_by', 'status_id']);
         });
+        }
 
-        // Adicionar campos extras à tabela invoices
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->string('cost_center', 64)->nullable()->after('external_reference')
-                ->comment('Centro de custo para análise gerencial');
-            $table->tinyInteger('approval_status_id', false, true)->nullable()->after('cost_center');
-            $table->bigInteger('approval_id', false, true)->nullable()->after('approval_status_id');
-            
-            $table->foreign('approval_status_id')
-                ->references('id')
-                ->on('domain_approval_status');
-            
-            $table->foreign('approval_id')
-                ->references('id')
-                ->on('approvals');
-        });
+        if (Schema::hasTable('invoices') && !Schema::hasColumn('invoices', 'cost_center')) {
+            Schema::table('invoices', function (Blueprint $table) {
+                $table->string('cost_center', 64)->nullable()->after('external_reference')
+                    ->comment('Centro de custo para análise gerencial');
+                $table->unsignedTinyInteger('approval_status_id')->nullable()->after('cost_center');
+                $table->unsignedBigInteger('approval_id')->nullable()->after('approval_status_id');
 
-        // Adicionar campos extras à tabela payouts
-        Schema::table('payouts', function (Blueprint $table) {
-            $table->tinyInteger('approval_status_id', false, true)->nullable()->after('total_amount');
-            $table->bigInteger('approval_id', false, true)->nullable()->after('approval_status_id');
-            
-            $table->foreign('approval_status_id')
-                ->references('id')
-                ->on('domain_approval_status');
-            
-            $table->foreign('approval_id')
-                ->references('id')
-                ->on('approvals');
-        });
+                $table->foreign('approval_status_id')
+                    ->references('id')
+                    ->on('domain_approval_status');
+
+                $table->foreign('approval_id')
+                    ->references('id')
+                    ->on('approvals');
+            });
+        }
+
+        if (Schema::hasTable('payouts') && !Schema::hasColumn('payouts', 'approval_status_id')) {
+            Schema::table('payouts', function (Blueprint $table) {
+                $table->unsignedTinyInteger('approval_status_id')->nullable()->after('total_amount');
+                $table->unsignedBigInteger('approval_id')->nullable()->after('approval_status_id');
+
+                $table->foreign('approval_status_id')
+                    ->references('id')
+                    ->on('domain_approval_status');
+
+                $table->foreign('approval_id')
+                    ->references('id')
+                    ->on('approvals');
+            });
+        }
 
         // Adicionar campos à tabela de configurações
         $this->seedApprovalSettings();
@@ -294,17 +269,21 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('payouts', function (Blueprint $table) {
-            $table->dropForeign(['approval_status_id']);
-            $table->dropForeign(['approval_id']);
-            $table->dropColumn(['approval_status_id', 'approval_id']);
-        });
+        if (Schema::hasTable('payouts') && Schema::hasColumn('payouts', 'approval_status_id')) {
+            Schema::table('payouts', function (Blueprint $table) {
+                $table->dropForeign(['approval_status_id']);
+                $table->dropForeign(['approval_id']);
+                $table->dropColumn(['approval_status_id', 'approval_id']);
+            });
+        }
 
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->dropForeign(['approval_status_id']);
-            $table->dropForeign(['approval_id']);
-            $table->dropColumn(['cost_center', 'approval_status_id', 'approval_id']);
-        });
+        if (Schema::hasTable('invoices') && Schema::hasColumn('invoices', 'cost_center')) {
+            Schema::table('invoices', function (Blueprint $table) {
+                $table->dropForeign(['approval_status_id']);
+                $table->dropForeign(['approval_id']);
+                $table->dropColumn(['cost_center', 'approval_status_id', 'approval_id']);
+            });
+        }
 
         Schema::dropIfExists('approvals');
         Schema::dropIfExists('provisions');
@@ -322,6 +301,11 @@ return new class extends Migration
     protected function seedApprovalSettings(): void
     {
         // Criar categoria de aprovação se não existir
+        $existing = DB::table('setting_categories')->where('code', 'approval')->first();
+        if ($existing) {
+            return;
+        }
+
         $approvalCategoryId = DB::table('setting_categories')->insertGetId([
             'code' => 'approval',
             'name' => 'Aprovações',

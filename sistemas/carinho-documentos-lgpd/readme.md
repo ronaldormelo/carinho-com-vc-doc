@@ -14,7 +14,7 @@ Repositório central de documentos e conformidade LGPD. Organiza contratos, cons
 
 Estas rotas/promessas **existem no README antigo como "implementadas"**, mas o codigo/runtime de set/2026 não entrega a jornada completa:
 
-- `GET /api/contracts/{id}/pdf` e `download` entregam **HTML** para imprimir/salvar (não há DomPDF no vendor). Sem contrato: 404.
+- `GET /api/contracts/{id}/pdf` e `download` entregam **HTML inline** para imprimir/salvar (não há DomPDF no vendor). Sem contrato: 404. Local: `GET /contratos/{id}/imprimir` (seed `DevLocalContractSeeder`).
 - `GET /api/health` em `local`/`testing` retorna **200** se o banco estiver ok; S3 ausente aparece como `storage: not_configured`. Em producao o check de S3 continua estrito (503).
 - `GET /api/public/terms|privacy` usam template seedado ou, se não houver, o mesmo HTML de `/termos` e `/privacidade`.
 - Upload S3, OTP WhatsApp e certificado digital exigem credenciais externas; sem AWS/Z-API a API de assinatura/upload não completa a jornada.

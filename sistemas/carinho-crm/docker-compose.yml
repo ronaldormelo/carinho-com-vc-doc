@@ -11,6 +11,9 @@ services:
       - "${APP_PORT:-8085}:80"
     volumes:
       - ./:/var/www/html
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - php -r 'file_put_contents("/tmp/ep.sh", str_replace(chr(13), "", file_get_contents("/var/www/html/docker-entrypoint.sh")));' && exec bash /tmp/ep.sh apache2-foreground
     environment:
       APP_ENV: ${APP_ENV:-local}
       APP_DEBUG: ${APP_DEBUG:-true}
@@ -18,15 +21,17 @@ services:
       DB_CONNECTION: mysql
       DB_HOST: carinho-mariadb
       DB_PORT: ${DB_PORT:-3306}
-      DB_DATABASE: ${DB_DATABASE:-carinho_crm}
-      DB_USERNAME: ${DB_USERNAME:-carinho}
-      DB_PASSWORD: ${DB_PASSWORD:-carinho}
+      DB_DATABASE: carinho_crm
+      # Credenciais vêm do .env montado. Não usar ${DB_PASSWORD:-carinho}:
+      # senha local vazia no root vira "carinho" via `:-` e o login dá 1045.
       REDIS_HOST: carinho-redis
       REDIS_PORT: ${REDIS_PORT:-6379}
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
       REDIS_DB: ${REDIS_DB:-0}
       REDIS_PREFIX: ${REDIS_PREFIX:-carinho_crm:}
       CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
     networks:
       - carinho-network
 

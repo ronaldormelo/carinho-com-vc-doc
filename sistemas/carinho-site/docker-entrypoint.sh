@@ -9,7 +9,8 @@ fi
 
 if [ -f .env ] && [ -f quote-dotenv.sh ]; then
     echo "Citando valores com espaço no .env (phpdotenv)..."
-    bash quote-dotenv.sh .env
+    tr -d '\r' < quote-dotenv.sh > /tmp/quote-dotenv.sh
+    bash /tmp/quote-dotenv.sh .env
 fi
 
 # Criar diretórios necessários ANTES de executar qualquer comando do artisan
@@ -38,19 +39,32 @@ fi
 echo "Limpando cache de packages (evita providers de --dev como Collision)..."
 rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php
 
+if [ -f .env ]; then
+    if [ -z "${APP_KEY:-}" ]; then
+        unset APP_KEY || true
+    fi
+    if [ -f ensure-app-key.sh ]; then
+        tr -d '\r' < ensure-app-key.sh > /tmp/ensure-app-key.sh
+        bash /tmp/ensure-app-key.sh .env
+    fi
+    APP_KEY="$(grep -E '^APP_KEY=' .env | tail -n1 | cut -d= -f2- | tr -d '\r' | tr -d '"' | tr -d "'" | tr -d ' ')"
+    if [ -n "$APP_KEY" ]; then
+        export APP_KEY
+    fi
+fi
+
+# Fila/scheduler: não rediscover a cada start (OOM 137). APP_KEY só se vazia (ensure-app-key.sh).
+case " $* " in
+  *"queue:work"*|*"schedule:run"*|*"horizon"*)
+    if [ -f vendor/autoload.php ]; then
+      echo "Worker/scheduler: pulando package:discover"
+      exec "$@"
+    fi
+    ;;
+esac
+
 echo "Executando scripts do Composer..."
 php artisan package:discover --ansi
-
-current_key="${APP_KEY:-}"
-if [ -z "$current_key" ] && [ -f .env ]; then
-    current_key="$(grep -E '^APP_KEY=' .env | tail -n1 | cut -d= -f2- | tr -d '\r' | tr -d '"' | tr -d "'")"
-fi
-if [ -z "$current_key" ]; then
-    echo "Gerando chave de aplicação (APP_KEY)..."
-    php artisan key:generate --force --ansi
-else
-    echo "APP_KEY já definida; não regenerar."
-fi
 
 # Executar comando original
 exec "$@"

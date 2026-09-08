@@ -110,6 +110,10 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard.index');
     })->name('dashboard');
 
+    Route::get('/dashboard/data', function (\App\Services\ReportService $reports) {
+        return response()->json(['data' => $reports->getDashboardData()]);
+    })->name('dashboard.data');
+
     Route::get('/leads', function () {
         return view('leads.index');
     })->name('leads');

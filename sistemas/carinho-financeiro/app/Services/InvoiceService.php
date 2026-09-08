@@ -102,16 +102,21 @@ class InvoiceService
             $data['unit_price'] = $pricing['unit_price'];
         }
 
-        $item = InvoiceItem::create([
+        $payload = [
             'invoice_id' => $invoice->id,
-            'service_id' => $data['service_id'] ?? null,
             'service_date' => $data['service_date'] ?? now(),
             'description' => $data['description'],
             'qty' => $data['qty'] ?? 1,
-            'unit_price' => $data['unit_price'],
-            'caregiver_id' => $data['caregiver_id'] ?? null,
-            'service_type_id' => $data['service_type_id'] ?? null,
-        ]);
+            'unit_price' => $data['unit_price'] ?? 0,
+        ];
+
+        foreach (['service_id', 'caregiver_id', 'service_type_id'] as $optional) {
+            if (\Illuminate\Support\Facades\Schema::hasColumn('invoice_items', $optional)) {
+                $payload[$optional] = $data[$optional] ?? null;
+            }
+        }
+
+        $item = InvoiceItem::create($payload);
 
         // Recalcula total da fatura
         $invoice->recalculateTotal();

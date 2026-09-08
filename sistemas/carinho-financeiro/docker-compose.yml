@@ -15,6 +15,9 @@ services:
       - "${APP_PORT:-8087}:80"
     volumes:
       - ./:/var/www/html
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - php -r 'file_put_contents("/tmp/ep.sh", str_replace(chr(13), "", file_get_contents("/var/www/html/docker-entrypoint.sh")));' && exec bash /tmp/ep.sh apache2-foreground
     environment:
       APP_ENV: ${APP_ENV:-local}
       APP_DEBUG: ${APP_DEBUG:-true}

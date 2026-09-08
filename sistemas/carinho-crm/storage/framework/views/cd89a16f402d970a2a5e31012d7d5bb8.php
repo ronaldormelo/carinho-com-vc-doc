@@ -63,7 +63,7 @@
         }
         
         .logo img {
-            height: 50px;
+            height: 100px;
             width: auto;
         }
         
@@ -199,6 +199,12 @@
         }
         
         .hidden { display: none; }
+
+        @media print {
+            body { background: white; display: block; padding: 0; }
+            .btn, .checkbox-group, #sign-btn { display: none !important; }
+            .card { box-shadow: none; }
+        }
     </style>
 </head>
 <body>
@@ -266,6 +272,9 @@
                 
                 <button type="button" class="btn btn-primary" id="sign-btn" disabled onclick="signContract()">
                     Assinar Digitalmente
+                </button>
+                <button type="button" class="btn" id="print-btn" onclick="window.print()" style="margin-top:0.75rem;background:#fff;color:var(--color-primary-700);border:1px solid var(--color-primary-500);">
+                    Imprimir contrato
                 </button>
             </div>
             

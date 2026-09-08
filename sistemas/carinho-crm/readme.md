@@ -16,7 +16,7 @@ Webhooks: `/webhooks/zapi/*` e `/webhooks/internal/*` (middleware `verify.intern
 
 ### Login local (somente desenvolvimento)
 
-`php artisan db:seed --class=DevLocalSeeder` define senha do usuário `administrador@carinho.com.vc` com `CRM_ADMIN_PASSWORD` (default de exemplo: `ChangeMeLocal!`). **Inaceitável em produção.** Token de aceite de teste: `GET /contract/dev-local-sign-token/sign`.
+`php artisan db:seed --class=DevLocalSeeder` define senha do usuário `administrador@carinho.com.vc` com `CRM_ADMIN_PASSWORD` (default de exemplo: `ChangeMeLocal!`). **Inaceitável em produção.** Token de aceite de teste: `GET /contract/dev-local-sign-token/sign` (imprimir no próprio HTML). Após login, o dashboard usa `GET /dashboard/data` na sessão web — não depende de token Sanctum. O `docker-compose` do CRM não injeta `DB_USERNAME`/`DB_PASSWORD` (o `.env` montado manda, inclusive root vazio local).
 
 `docs/analise-praticas-tradicionais.md` é estudo, não backlog. Google Calendar, Mailchimp e Stripe **não** são oficiais neste módulo (agenda é Operação; pagamento é Financeiro).
 

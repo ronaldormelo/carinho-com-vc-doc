@@ -26,25 +26,52 @@ class ReportService
      */
     public function getDashboardData(): array
     {
+        $emptyStats = [
+            'total' => 0,
+            'in_pipeline' => 0,
+            'converted' => 0,
+            'lost' => 0,
+            'conversion_rate' => 0,
+            'today' => 0,
+        ];
+
         return [
-            'leads' => $this->leadService->getStatistics(),
-            'deals' => $this->dealService->getStatistics(now()->startOfMonth(), now()),
-            'contracts' => $this->contractService->getStatistics(now()->startOfMonth(), now()),
-            'tasks' => $this->taskService->getStatistics(),
-            'recent_leads' => Lead::with(['status', 'urgency'])
+            'leads' => $this->safeStats(fn () => $this->leadService->getStatistics(), $emptyStats),
+            'deals' => $this->safeStats(fn () => $this->dealService->getStatistics(now()->startOfMonth(), now()), []),
+            'contracts' => $this->safeStats(fn () => $this->contractService->getStatistics(now()->startOfMonth(), now()), ['active' => 0]),
+            'tasks' => $this->safeStats(fn () => $this->taskService->getStatistics(), [
+                'total_open' => 0,
+                'total_overdue' => 0,
+                'due_today' => 0,
+                'unassigned' => 0,
+            ]),
+            'recent_leads' => $this->safeStats(fn () => Lead::with(['status', 'urgency'])
                 ->latest()
                 ->limit(5)
-                ->get(),
-            'urgent_leads' => Lead::with(['status', 'urgency'])
+                ->get(), collect()),
+            'urgent_leads' => $this->safeStats(fn () => Lead::with(['status', 'urgency'])
                 ->urgent()
                 ->inPipeline()
                 ->limit(5)
-                ->get(),
-            'expiring_contracts' => Contract::with(['client.lead'])
+                ->get(), collect()),
+            'expiring_contracts' => $this->safeStats(fn () => Contract::with(['client.lead'])
                 ->expiringIn(30)
                 ->limit(5)
-                ->get(),
+                ->get(), collect()),
         ];
+    }
+
+    private function safeStats(callable $callback, mixed $fallback): mixed
+    {
+        try {
+            return $callback();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Dashboard metric skipped', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return $fallback;
+        }
     }
 
     /**
