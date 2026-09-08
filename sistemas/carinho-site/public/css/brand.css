@@ -134,7 +134,8 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
-a.mailto-link {
+a.mailto-link,
+a.emergency-tel-link {
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }

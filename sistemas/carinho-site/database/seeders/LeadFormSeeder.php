@@ -9,7 +9,8 @@ use Illuminate\Database\Seeder;
 class LeadFormSeeder extends Seeder
 {
     /**
-     * Seed lead forms.
+     * Garante os formulários públicos (cliente e cuidador).
+     * Idempotente (firstOrCreate). O deploy da VPS chama esta classe após migrate.
      */
     public function run(): void
     {

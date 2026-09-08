@@ -244,7 +244,8 @@ php artisan key:generate
 # Execute migrations
 php artisan migrate
 
-# Popule dados iniciais
+# Popule dados iniciais (local). Em produção o CI/CD roda
+# `php artisan db:seed --class=LeadFormSeeder --force` após migrate.
 php artisan db:seed
 
 # Inicie o servidor
