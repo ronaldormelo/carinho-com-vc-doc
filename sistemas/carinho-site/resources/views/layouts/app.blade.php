@@ -53,9 +53,10 @@
     })(window,document,'script','dataLayer','{{ config('integrations.analytics.gtm_id') }}');</script>
     @endif
 
-    {{-- reCAPTCHA --}}
+    {{-- reCAPTCHA (data-cfasync: Cloudflare Rocket Loader quebra grecaptcha.execute) --}}
     @if(config('integrations.recaptcha.enabled') && config('integrations.recaptcha.site_key'))
-    <script src="https://www.google.com/recaptcha/api.js?render={{ config('integrations.recaptcha.site_key') }}"></script>
+    <meta name="recaptcha-site-key" content="{{ config('integrations.recaptcha.site_key') }}">
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('integrations.recaptcha.site_key') }}" data-cfasync="false"></script>
     @endif
 
     {{-- Schema.org JSON-LD --}}
@@ -99,6 +100,29 @@
     @include('partials.whatsapp-float')
 
     {{-- Scripts --}}
+    @if(config('integrations.recaptcha.enabled') && config('integrations.recaptcha.site_key'))
+    <script data-cfasync="false">
+    window.carinhoGetRecaptchaToken = async function (action) {
+        const siteKey = document.querySelector('meta[name="recaptcha-site-key"]')?.content;
+        if (!siteKey) {
+            return '';
+        }
+        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.ready !== 'function') {
+            throw new Error('recaptcha_unavailable');
+        }
+        await new Promise(function (resolve, reject) {
+            const timeout = setTimeout(function () {
+                reject(new Error('recaptcha_timeout'));
+            }, 8000);
+            grecaptcha.ready(function () {
+                clearTimeout(timeout);
+                resolve();
+            });
+        });
+        return await grecaptcha.execute(siteKey, { action: action });
+    };
+    </script>
+    @endif
     @stack('scripts')
 </body>
 </html>

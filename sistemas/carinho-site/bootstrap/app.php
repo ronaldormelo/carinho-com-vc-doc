@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->prepend(\App\Http\Middleware\RedirectLegacySiteHost::class);
 
+        // Cloudflare / reverse proxy: IP real do visitante (rate limit e reCAPTCHA remoteip).
+        $middleware->trustProxies(at: '*');
+
         $middleware->web(append: [
             \App\Http\Middleware\TrackUtm::class,
         ]);

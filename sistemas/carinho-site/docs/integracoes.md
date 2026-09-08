@@ -99,11 +99,12 @@ $valid = $recaptcha->verify($token, $ip);
 #### No Frontend
 
 ```javascript
-// Token e obtido automaticamente ao submeter formulario
-grecaptcha.execute('SITE_KEY', {action: 'submit_lead'})
-    .then(token => {
+// Token e obtido apos grecaptcha.ready (obrigatorio no v3; ver layout do site)
+grecaptcha.ready(function () {
+    grecaptcha.execute('SITE_KEY', {action: 'submit_lead'}).then(function (token) {
         document.getElementById('recaptcha_token').value = token;
     });
+});
 ```
 
 ## Integracoes Internas

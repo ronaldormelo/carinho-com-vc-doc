@@ -252,7 +252,7 @@ document.getElementById('caregiverLeadForm').addEventListener('submit', async fu
 
     try {
         @if(config('integrations.recaptcha.enabled') && config('integrations.recaptcha.site_key'))
-        const token = await grecaptcha.execute('{{ config('integrations.recaptcha.site_key') }}', {action: 'submit_caregiver'});
+        const token = await window.carinhoGetRecaptchaToken('submit_caregiver');
         document.getElementById('recaptcha_token_caregiver').value = token;
         @endif
 
@@ -277,7 +277,11 @@ document.getElementById('caregiverLeadForm').addEventListener('submit', async fu
             messageDiv.style.display = 'block';
         }
     } catch (error) {
-        messageDiv.innerHTML = '<div class="card" style="background: #f8d7da; border-color: #f5c6cb; color: #721c24;">Erro ao enviar. Por favor, tente novamente.</div>';
+        const recaptchaFailed = error && String(error.message || '').indexOf('recaptcha_') === 0;
+        const msg = recaptchaFailed
+            ? 'Validação de segurança falhou. Por favor, recarregue a página e tente novamente.'
+            : 'Erro ao enviar. Por favor, tente novamente.';
+        messageDiv.innerHTML = '<div class="card" style="background: #f8d7da; border-color: #f5c6cb; color: #721c24;">' + msg + '</div>';
         messageDiv.style.display = 'block';
     }
 
