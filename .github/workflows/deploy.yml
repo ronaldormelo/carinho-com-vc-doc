@@ -301,7 +301,9 @@ jobs:
                 --entrypoint composer \
                 app install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --no-dev
               echo ">>> Recriando app com env atual — $system"
-              rm -f "$app/bootstrap/cache/config.php"
+              rm -f "$app/bootstrap/cache/config.php" \
+                    "$app/bootstrap/cache/packages.php" \
+                    "$app/bootstrap/cache/services.php"
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build --force-recreate --no-deps app
               apache_ready=0
               j=0

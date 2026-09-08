@@ -30,6 +30,9 @@ else
 fi
 
 
+echo "Limpando cache de packages (evita providers de --dev como Collision)..."
+rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php
+
 echo "Executando scripts do Composer..."
 php artisan package:discover --ansi
 
