@@ -53,11 +53,11 @@ class WhatsAppCtaTest extends TestCase
     {
         $html = $this->get(route('services'))->assertOk()->getContent();
 
-        $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'quote_horista']), $html);
-        $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'quote_diario']), $html);
-        $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'quote_mensal']), $html);
-        $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'quote']), $html);
-        $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'hire']), $html);
+        $this->assertStringContainsString('whatsapp?msg=quote_horista', $html);
+        $this->assertStringContainsString('whatsapp?msg=quote_diario', $html);
+        $this->assertStringContainsString('whatsapp?msg=quote_mensal', $html);
+        $this->assertMatchesRegularExpression('/whatsapp\?msg=quote["\']/', $html);
+        $this->assertStringContainsString('whatsapp?msg=hire', $html);
         $this->assertStringContainsString('Solicitar orçamento diário', $html);
         $this->assertStringContainsString('Solicitar orçamento por hora', $html);
         $this->assertStringContainsString('Solicitar orçamento mensal', $html);
@@ -72,6 +72,17 @@ class WhatsAppCtaTest extends TestCase
         $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'how_it_works']), $how);
 
         $clients = $this->get(route('clients'))->assertOk()->getContent();
-        $this->assertStringContainsString(route('whatsapp.cta', ['msg' => 'quote']), $clients);
+        $this->assertMatchesRegularExpression('/whatsapp\?msg=quote["\']/', $clients);
+        $this->assertStringContainsString('whatsapp?msg=quote', $clients);
+    }
+
+    public function test_header_and_float_on_contact_page_use_contact_message(): void
+    {
+        $html = $this->get(route('contact'))->assertOk()->getContent();
+        $this->assertGreaterThanOrEqual(
+            3,
+            substr_count($html, 'whatsapp?msg=contact'),
+            'Botão da página, header e flutuante devem usar a mensagem de contato'
+        );
     }
 }

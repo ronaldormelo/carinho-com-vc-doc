@@ -1,5 +1,5 @@
 {{-- WhatsApp Floating Button --}}
-<a href="{{ $whatsappCtaUrl ?? route('whatsapp.cta') }}"
+<a href="{{ app(\App\Services\WhatsAppService::class)->ctaUrlForCurrentPage() }}"
    class="whatsapp-float"
    target="_blank"
    rel="noopener"

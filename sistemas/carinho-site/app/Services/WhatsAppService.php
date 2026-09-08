@@ -136,6 +136,16 @@ class WhatsAppService
     }
 
     /**
+     * URL do CTA de header/flutuante, alinhada à pagina atual.
+     */
+    public function ctaUrlForCurrentPage(): string
+    {
+        return route('whatsapp.cta', [
+            'msg' => $this->messageKeyForRoute(request()->route()?->getName()),
+        ]);
+    }
+
+    /**
      * Monta o redirect wa.me com a mensagem da acao e, se houver, a origem UTM.
      */
     public function buildCtaRedirectUrl(?string $messageKey, array $utm = []): string
