@@ -21,33 +21,34 @@ class CrmClient
      */
     public function getClient(int $clientId): array
     {
-        return $this->request("clients/{$clientId}", [], 'GET');
+        return $this->request("v1/clients/{$clientId}", [], 'GET');
     }
 
-    /**
-     * Sincroniza solicitacao de servico com o CRM.
-     */
     public function syncServiceRequest(array $payload): array
     {
-        return $this->request('service-requests', [
-            'source' => 'operacao',
-            'service_request_id' => $payload['service_request_id'] ?? null,
+        return $this->requestHost('webhooks/internal/operacao/service-started', [
             'client_id' => $payload['client_id'] ?? null,
-            'service_type' => $payload['service_type'] ?? null,
-            'status' => $payload['status'] ?? null,
-            'created_at' => $payload['created_at'] ?? now()->toIso8601String(),
+            'service_date' => isset($payload['created_at'])
+                ? substr((string) $payload['created_at'], 0, 10)
+                : now()->toDateString(),
+            'caregiver_name' => $payload['caregiver_name'] ?? null,
         ]);
     }
 
-    /**
-     * Atualiza status da solicitacao no CRM.
-     */
     public function updateServiceRequestStatus(int $serviceRequestId, int $statusId): array
     {
-        return $this->request("service-requests/{$serviceRequestId}/status", [
-            'status' => $statusId,
-            'updated_at' => now()->toIso8601String(),
-        ], 'PATCH');
+        Log::info('CRM não expõe status de service-request; evento ignorado', [
+            'service_request_id' => $serviceRequestId,
+            'status_id' => $statusId,
+        ]);
+
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => 'CRM não possui resource de service-request',
+            'not_implemented' => true,
+        ];
     }
 
     /**
@@ -55,7 +56,7 @@ class CrmClient
      */
     public function getEmergencyContacts(int $clientId): array
     {
-        return $this->request("clients/{$clientId}/emergency-contacts", [], 'GET');
+        return $this->request("v1/clients/{$clientId}", [], 'GET');
     }
 
     /**
@@ -63,7 +64,19 @@ class CrmClient
      */
     public function logEvent(string $eventType, array $data): array
     {
-        return $this->request('events', [
+        $clientId = $data['client_id'] ?? null;
+
+        if (!$clientId) {
+            return [
+                'status' => 501,
+                'ok' => false,
+                'body' => null,
+                'error' => 'client_id obrigatório para registrar evento no CRM',
+                'not_implemented' => true,
+            ];
+        }
+
+        return $this->request("v1/clients/{$clientId}/events", [
             'source' => 'operacao',
             'event_type' => $eventType,
             'data' => $data,
@@ -76,7 +89,7 @@ class CrmClient
      */
     public function getClientPreferences(int $clientId): array
     {
-        return $this->request("clients/{$clientId}/preferences", [], 'GET');
+        return $this->request("v1/clients/{$clientId}", [], 'GET');
     }
 
     /**
@@ -84,32 +97,43 @@ class CrmClient
      */
     public function registerFeedback(array $payload): array
     {
-        return $this->request('feedback', [
-            'source' => 'operacao',
-            'client_id' => $payload['client_id'] ?? null,
-            'service_request_id' => $payload['service_request_id'] ?? null,
-            'caregiver_id' => $payload['caregiver_id'] ?? null,
-            'rating' => $payload['rating'] ?? null,
-            'comment' => $payload['comment'] ?? null,
-            'created_at' => now()->toIso8601String(),
-        ]);
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => 'CRM não possui endpoint de feedback',
+            'not_implemented' => true,
+        ];
     }
 
     /**
      * Realiza requisicao para a API.
      */
+    private function requestHost(string $path, array $payload = [], string $method = 'POST'): array
+    {
+        $baseUrl = rtrim((string) config('integrations.crm.base_url'), '/');
+        $host = preg_replace('#/api$#', '', $baseUrl);
+
+        return $this->send("{$host}/{$path}", $payload, $method, $path);
+    }
+
     private function request(string $path, array $payload = [], string $method = 'POST'): array
     {
+        return $this->send($this->endpoint($path), $payload, $method, $path);
+    }
+
+    private function send(string $url, array $payload, string $method, string $path): array
+    {
         try {
-            $request = Http::withHeaders($this->headers())
+            $http = Http::withHeaders($this->headers())
                 ->timeout((int) config('integrations.crm.timeout', 8));
 
             $response = match ($method) {
-                'GET' => $request->get($this->endpoint($path)),
-                'PATCH' => $request->patch($this->endpoint($path), $payload),
-                'PUT' => $request->put($this->endpoint($path), $payload),
-                'DELETE' => $request->delete($this->endpoint($path)),
-                default => $request->post($this->endpoint($path), $payload),
+                'GET' => $http->get($url, $payload),
+                'PATCH' => $http->patch($url, $payload),
+                'PUT' => $http->put($url, $payload),
+                'DELETE' => $http->delete($url),
+                default => $http->post($url, $payload),
             };
 
             $result = [
@@ -164,10 +188,13 @@ class CrmClient
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
             'X-Source' => 'carinho-operacao',
+            'X-Service-Origin' => 'operacao',
         ];
 
         if ($token) {
             $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-Internal-Token'] = $token;
+            $headers['X-API-Key'] = $token;
         }
 
         return $headers;

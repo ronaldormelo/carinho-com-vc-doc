@@ -7,7 +7,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Configurações de identidade visual baseadas no documento
-    | "00 - Identidade da Marca.txt"
+    | "00 - Identidade da Marca.md"
     |
     */
 

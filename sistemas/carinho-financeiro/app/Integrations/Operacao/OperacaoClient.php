@@ -31,11 +31,10 @@ class OperacaoClient
      */
     public function getClientServices(int $clientId, string $startDate, string $endDate): array
     {
-        $response = $this->request('GET', '/services', [
+        $response = $this->request('GET', '/schedules', [
             'client_id' => $clientId,
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'status' => 'completed',
         ]);
 
         if ($response['success']) {
@@ -50,11 +49,10 @@ class OperacaoClient
      */
     public function getCaregiverServices(int $caregiverId, string $startDate, string $endDate): array
     {
-        $response = $this->request('GET', '/services', [
+        $response = $this->request('GET', '/schedules', [
             'caregiver_id' => $caregiverId,
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'status' => 'completed',
         ]);
 
         if ($response['success']) {
@@ -69,7 +67,7 @@ class OperacaoClient
      */
     public function getService(int $serviceId): ?array
     {
-        $response = $this->request('GET', "/services/{$serviceId}");
+        $response = $this->request('GET', "/service-requests/{$serviceId}");
 
         if ($response['success']) {
             return $response['data'];
@@ -95,20 +93,17 @@ class OperacaoClient
      */
     public function markServicesAsInvoiced(array $serviceIds, int $invoiceId): bool
     {
-        $response = $this->request('POST', '/services/mark-invoiced', [
-            'service_ids' => $serviceIds,
+        Log::info('Operação não expõe mark-invoiced; ignorado', [
             'invoice_id' => $invoiceId,
+            'count' => count($serviceIds),
         ]);
 
-        return $response['success'];
+        return false;
     }
 
-    /**
-     * Obtém serviços pendentes de faturamento.
-     */
     public function getPendingInvoicingServices(int $clientId): array
     {
-        $response = $this->request('GET', '/services/pending-invoicing', [
+        $response = $this->request('GET', '/schedules', [
             'client_id' => $clientId,
         ]);
 
@@ -132,6 +127,7 @@ class OperacaoClient
         try {
             $request = Http::withHeaders([
                 'Authorization' => "Bearer {$this->token}",
+                'X-Internal-Token' => $this->token,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])->timeout($this->timeout);

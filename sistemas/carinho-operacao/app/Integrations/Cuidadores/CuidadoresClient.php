@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Log;
 /**
  * Cliente para integracao com o sistema de Cuidadores.
  *
- * Endpoints principais:
- * - GET /caregivers/available - Busca cuidadores disponiveis
- * - GET /caregivers/{id} - Obtem dados do cuidador
+ * Endpoints reais:
+ * - GET /search/available - Busca cuidadores disponíveis
+ * - GET /caregivers/{id} - Obtém dados do cuidador
  * - GET /caregivers/{id}/availability - Consulta disponibilidade
- * - POST /caregivers/{id}/assignments - Notifica alocacao
+ * - POST /caregivers/{id}/assignments - Notifica alocação
  */
 class CuidadoresClient
 {
@@ -31,7 +31,7 @@ class CuidadoresClient
             'max_radius_km' => $filters['max_radius_km'] ?? null,
         ]);
 
-        return $this->request("caregivers/available?{$queryParams}", [], 'GET');
+        return $this->request('search/available?' . $queryParams, [], 'GET');
     }
 
     /**
@@ -108,7 +108,7 @@ class CuidadoresClient
      */
     public function getCaregiverRating(int $caregiverId): array
     {
-        return $this->request("caregivers/{$caregiverId}/rating", [], 'GET');
+        return $this->request("caregivers/{$caregiverId}/ratings-summary", [], 'GET');
     }
 
     /**
@@ -116,8 +116,9 @@ class CuidadoresClient
      */
     public function logEvent(int $caregiverId, string $eventType, array $data): array
     {
-        return $this->request("caregivers/{$caregiverId}/events", [
+        return $this->requestHost('webhooks/operacao', [
             'source' => 'operacao',
+            'caregiver_id' => $caregiverId,
             'event_type' => $eventType,
             'data' => $data,
             'timestamp' => now()->toIso8601String(),
@@ -127,18 +128,31 @@ class CuidadoresClient
     /**
      * Realiza requisicao para a API.
      */
+    private function requestHost(string $path, array $payload = [], string $method = 'POST'): array
+    {
+        $baseUrl = rtrim((string) config('integrations.cuidadores.base_url'), '/');
+        $host = preg_replace('#/api$#', '', $baseUrl);
+
+        return $this->send("{$host}/{$path}", $payload, $method, $path);
+    }
+
     private function request(string $path, array $payload = [], string $method = 'POST'): array
+    {
+        return $this->send($this->endpoint($path), $payload, $method, $path);
+    }
+
+    private function send(string $url, array $payload, string $method, string $path): array
     {
         try {
             $request = Http::withHeaders($this->headers())
                 ->timeout((int) config('integrations.cuidadores.timeout', 8));
 
             $response = match ($method) {
-                'GET' => $request->get($this->endpoint($path)),
-                'PATCH' => $request->patch($this->endpoint($path), $payload),
-                'PUT' => $request->put($this->endpoint($path), $payload),
-                'DELETE' => $request->delete($this->endpoint($path)),
-                default => $request->post($this->endpoint($path), $payload),
+                'GET' => $request->get($url, $payload),
+                'PATCH' => $request->patch($url, $payload),
+                'PUT' => $request->put($url, $payload),
+                'DELETE' => $request->delete($url),
+                default => $request->post($url, $payload),
             };
 
             $result = [
@@ -197,6 +211,7 @@ class CuidadoresClient
 
         if ($token) {
             $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-Internal-Token'] = $token;
         }
 
         return $headers;

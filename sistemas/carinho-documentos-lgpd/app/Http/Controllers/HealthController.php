@@ -19,7 +19,11 @@ class HealthController extends Controller
             'storage' => $this->checkStorage(),
         ];
 
-        $healthy = !in_array(false, array_column($checks, 'ok'));
+        $dbOk = $checks['database']['ok'] === true;
+        $strict = app()->environment('production');
+        $healthy = $strict
+            ? !in_array(false, array_column($checks, 'ok'), true)
+            : $dbOk;
 
         return response()->json([
             'ok' => $healthy,
@@ -79,9 +83,12 @@ class HealthController extends Controller
                 && !empty(config('integrations.aws.secret'))
                 && !empty(config('integrations.aws.bucket'));
 
+            $local = !app()->environment('production');
+
             return [
-                'ok' => $configured,
-                'message' => $configured ? 'Configured' : 'Not configured',
+                'ok' => $configured || $local,
+                'status' => $configured ? 'configured' : 'not_configured',
+                'message' => $configured ? 'Configured' : 'not_configured',
             ];
         } catch (\Throwable $e) {
             return ['ok' => false, 'message' => $e->getMessage()];

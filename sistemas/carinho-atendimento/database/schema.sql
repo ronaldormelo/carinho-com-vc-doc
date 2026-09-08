@@ -1,3 +1,20 @@
+-- =============================================================================
+-- Carinho Atendimento - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations:
+--   2026_01_20_000001_create_atendimento_schema
+--   2026_01_23_000001_add_atendimento_improvements
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_channel (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -562,3 +579,5 @@ CREATE TABLE sessions (
   KEY sessions_user_id_index (user_id),
   KEY sessions_last_activity_index (last_activity)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+SET FOREIGN_KEY_CHECKS = 1;

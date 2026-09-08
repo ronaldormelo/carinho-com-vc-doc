@@ -1,5 +1,7 @@
 # Análise do Módulo Carinho Marketing - Práticas de Mercado
 
+> Referência de mercado (janeiro/2026). Não substitui README, NFRs nem a identidade da marca.
+
 **Data da Análise:** Janeiro/2026
 **Versão:** 1.0
 

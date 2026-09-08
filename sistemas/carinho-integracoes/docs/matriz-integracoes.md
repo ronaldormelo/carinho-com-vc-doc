@@ -92,9 +92,9 @@ Este documento consolida todas as integrações ativas do módulo `carinho-integ
 
 | Método | Endpoint | Descrição | Frequência |
 |--------|----------|-----------|------------|
-| POST | `/api/v1/schedules` | Criar agenda | Horário (sync) |
-| GET | `/api/v1/services/completed` | Serviços finalizados | Diário (sync) |
-| PUT | `/api/v1/services/{id}/billed` | Marcar faturado | Diário (sync) |
+| POST | `/api/schedules` | Criar agenda | Horário (sync) — **rota real da Operação é `/api/schedules` (sem v1)** |
+| GET | `/api/schedules/today` | Agenda do dia | Evento |
+| PUT | *(não há `/api/v1/services/{id}/billed`)* | Marcar faturado | Usar fluxo de faturas no Financeiro |
 
 #### Eventos Recebidos
 
@@ -158,8 +158,10 @@ Este documento consolida todas as integrações ativas do módulo `carinho-integ
 
 | Método | Endpoint | Descrição | Frequência |
 |--------|----------|-----------|------------|
-| GET | `/api/v1/sync/pending-updates` | Atualizações pendentes | 4h (sync) |
-| POST | `/api/v1/sync/confirm/{id}` | Confirmar sync | 4h (sync) |
+| GET | `/api/caregivers` | Lista / filtros | Evento |
+| POST | `/api/search` | Busca | Evento |
+
+Não existem `/api/v1/sync/pending-updates` neste módulo. Ver [contratos-rotas.md](contratos-rotas.md).
 
 #### Eventos Enviados
 
@@ -208,8 +210,8 @@ Este documento consolida todas as integrações ativas do módulo `carinho-integ
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/api/v1/campaigns/find-by-utm` | Buscar campanha por UTM |
-| POST | `/api/v1/campaigns/{id}/leads` | Atribuir lead a campanha |
+| GET | `/api/campaigns` | Campanhas (sem `/v1`) |
+| POST | `/api/conversions/lead` | Conversão de lead |
 
 #### Eventos Enviados
 
@@ -220,7 +222,7 @@ Este documento consolida todas as integrações ativas do módulo `carinho-integ
 
 ---
 
-### 2.8 Site (site.carinho.com.vc)
+### 2.8 Site (carinho.com.vc)
 
 | Item | Valor |
 |------|-------|

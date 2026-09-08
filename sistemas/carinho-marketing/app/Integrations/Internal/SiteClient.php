@@ -5,9 +5,7 @@ namespace App\Integrations\Internal;
 use App\Integrations\BaseClient;
 
 /**
- * Cliente para integracao com site principal.
- *
- * Responsavel por gerenciar landing pages e formularios no site.
+ * Landings ficam no próprio Marketing. No Site só há cache/CMS.
  */
 class SiteClient extends BaseClient
 {
@@ -19,76 +17,56 @@ class SiteClient extends BaseClient
         $this->cachePrefix = 'site';
     }
 
-    /**
-     * Publica landing page no site.
-     */
     public function publishLandingPage(array $pageData): array
     {
-        return $this->post('/landing-pages', $pageData);
+        return $this->notOnSite('POST /landing-pages');
     }
 
-    /**
-     * Atualiza landing page.
-     */
     public function updateLandingPage(string $slug, array $pageData): array
     {
-        return $this->put("/landing-pages/{$slug}", $pageData);
+        return $this->notOnSite("PUT /landing-pages/{$slug}");
     }
 
-    /**
-     * Remove landing page.
-     */
     public function unpublishLandingPage(string $slug): array
     {
-        return $this->delete("/landing-pages/{$slug}");
+        return $this->notOnSite("DELETE /landing-pages/{$slug}");
     }
 
-    /**
-     * Obtem estatisticas de landing page.
-     */
     public function getLandingPageStats(string $slug, string $startDate, string $endDate): array
     {
-        return $this->get("/landing-pages/{$slug}/stats", [
-            'start_date' => $startDate,
-            'end_date' => $endDate,
-        ]);
+        return $this->notOnSite("GET /landing-pages/{$slug}/stats");
     }
 
-    /**
-     * Registra submissao de formulario.
-     */
     public function registerFormSubmission(string $formId, array $data): array
     {
-        return $this->post("/forms/{$formId}/submissions", $data);
+        return $this->notOnSite("POST /forms/{$formId}/submissions");
     }
 
-    /**
-     * Obtem submissoes de formulario.
-     */
     public function getFormSubmissions(string $formId, ?int $limit = 50): array
     {
-        return $this->get("/forms/{$formId}/submissions", ['limit' => $limit]);
+        return $this->notOnSite("GET /forms/{$formId}/submissions");
     }
 
-    /**
-     * Atualiza pixel de conversao no site.
-     */
     public function updateConversionPixel(string $pageSlug, array $pixelData): array
     {
-        return $this->put("/landing-pages/{$pageSlug}/pixel", $pixelData);
+        return $this->notOnSite("PUT /landing-pages/{$pageSlug}/pixel");
     }
 
-    /**
-     * Invalida cache de pagina.
-     */
     public function invalidatePageCache(string $slug): array
     {
-        return $this->post("/cache/invalidate", ['slug' => $slug]);
+        return $this->post('/webhooks/cache/pages/clear', ['slug' => $slug]);
     }
 
-    /**
-     * Retorna headers padrao.
-     */
+    private function notOnSite(string $capability): array
+    {
+        return [
+            'success' => false,
+            'status' => 501,
+            'data' => null,
+            'error' => "Site não expõe {$capability}. Landings pertencem ao Marketing.",
+        ];
+    }
+
     protected function getDefaultHeaders(): array
     {
         return [

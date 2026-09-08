@@ -86,6 +86,10 @@ class WebhookController extends Controller
                 $this->handleCaregiverBankUpdated($payload);
                 break;
 
+            case 'service.cancelled':
+                Log::info('Cancelamento operacional recebido', $payload);
+                break;
+
             default:
                 Log::debug('Evento não tratado', ['event' => $event]);
         }

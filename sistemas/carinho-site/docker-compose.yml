@@ -1,11 +1,4 @@
-version: "3.9"
-
-# =============================================================================
-# Carinho Site - Docker Compose
-# =============================================================================
-# MariaDB compartilhado: Use o docker-compose.mysql.yml na raiz do projeto
-# Execute: docker-compose -f ../docker-compose.mysql.yml up -d (na raiz)
-# =============================================================================
+# MariaDB compartilhado: docker compose up -d na raiz (arquivo docker-compose.yml)
 
 services:
   app:
@@ -15,13 +8,14 @@ services:
     container_name: carinho-site-app
     restart: unless-stopped
     ports:
+      # Local: http://127.0.0.1:8084 — producao: https://carinho.com.vc (apex, nao site.)
       - "${APP_PORT:-8084}:80"
     volumes:
       - ./:/var/www/html
     environment:
       APP_ENV: ${APP_ENV:-local}
       APP_DEBUG: ${APP_DEBUG:-true}
-      APP_URL: ${APP_URL:-http://localhost:${APP_PORT:-8084}}
+      APP_URL: ${APP_URL:-http://127.0.0.1:${APP_PORT:-8084}}
       DB_CONNECTION: mysql
       DB_HOST: ${DB_HOST:-carinho-mariadb}
       DB_PORT: ${DB_PORT:-3306}

@@ -86,8 +86,8 @@ class ProcessServiceCompleted implements ShouldQueue
             'duration_hours' => $this->serviceData['duration_hours'] ?? 0,
         ]);
 
-        // 5. Cria fatura no financeiro (se nao for recorrente)
-        if (!($this->serviceData['is_recurring'] ?? false)) {
+        // 5. Cria fatura no financeiro apenas com contrato (InvoiceRequest exige contract_id)
+        if (!($this->serviceData['is_recurring'] ?? false) && !empty($this->serviceData['contract_id'])) {
             $priceResult = $financeiro->calculatePrice([
                 'service_type' => $this->serviceData['service_type'],
                 'hours' => $this->serviceData['duration_hours'],
@@ -99,12 +99,17 @@ class ProcessServiceCompleted implements ShouldQueue
             if ($priceResult['ok']) {
                 $financeiro->createInvoice([
                     'client_id' => $this->serviceData['client_id'],
-                    'operacao_service_id' => $this->serviceData['id'],
+                    'contract_id' => $this->serviceData['contract_id'],
+                    'external_reference' => (string) $this->serviceData['id'],
                     'amount' => $priceResult['body']['total'] ?? 0,
                     'description' => "Serviço de cuidador - {$this->serviceData['service_type']}",
                     'due_date' => now()->addDays(3)->format('Y-m-d'),
                 ]);
             }
+        } elseif (!($this->serviceData['is_recurring'] ?? false)) {
+            Log::info('Fatura não criada: destino exige contract_id', [
+                'service_id' => $this->serviceData['id'],
+            ]);
         }
 
         // 6. Atualiza estatisticas do cuidador

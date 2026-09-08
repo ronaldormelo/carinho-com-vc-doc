@@ -2,6 +2,12 @@
 
 **Subdominio:** cuidadores.carinho.com.vc
 
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Módulos](docs/modulos.md) · [Integrações](docs/integracoes.md) · [NFRs](docs/nao-funcionais.md) · [Manual](docs/manual-operacional.md)
+
+`docs/analise-praticas-mercado.md` é referência, não política de RH.
+
 ## Descricao
 
 Sistema de recrutamento e gestao de cuidadores. Padroniza cadastro, triagem e classificacao para garantir oferta confiavel e escalavel de profissionais qualificados para cuidado domiciliar.
@@ -10,16 +16,19 @@ Sistema de recrutamento e gestao de cuidadores. Padroniza cadastro, triagem e cl
 
 - **Linguagem:** PHP 8.2+
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0+
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`, schema `carinho_cuidadores`)
 - **Cache e filas:** Redis
 - **Storage:** Integracao com sistema Documentos/LGPD
+
+## Limitacoes atuais (codigo vs runtime)
+
+- Formulario publico: `GET /cadastro` (200) e `POST /cadastro` (CSRF) gravam em `caregivers` via `CaregiverService`. API `POST /api/caregivers` continua exigindo token interno.
 
 ## Modulos Implementados
 
 ### 1. Cadastro e Triagem Digital
-- Formulario de cadastro com dados pessoais, experiencia e disponibilidade
-- Validacao automatica de campos obrigatorios
-- Classificacao inicial por tipo de cuidado e regiao
+- API de cadastro (`POST /api/caregivers`) com validacao e classificacao
+- Formulario web publico em `/cadastro` (marca `#5BBFAD`, CSRF)
 
 ### 2. Gestao de Documentos
 - Upload de documentos obrigatorios (RG, CPF, comprovante de endereco)
@@ -226,6 +235,15 @@ php artisan serve
 # Processar filas
 php artisan queue:work --queue=notifications,documents,contracts,integrations,messages
 ```
+
+## Health
+
+- Laravel: `GET /up`
+- Módulo: `GET /api/health`
+
+Workers: `php artisan queue:work --queue=notifications,documents,contracts,integrations,messages` (Horizon **não** está neste `composer.json`).
+
+Cancelamento comercial **não** pertence a este módulo (não use `CANCEL_FREE_HOURS` aqui).
 
 ## Docker
 

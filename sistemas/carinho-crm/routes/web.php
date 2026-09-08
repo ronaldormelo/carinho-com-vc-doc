@@ -1,5 +1,9 @@
 <?php
 
+use App\Events\ContractSigned;
+use App\Services\ContractService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +20,36 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
+// Rotas de autenticação (guest)
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+
+    Route::post('/login', function (\Illuminate\Http\Request $request) {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('dashboard'));
+        }
+
+        return back()->withErrors([
+            'email' => __('As credenciais informadas não conferem.'),
+        ])->onlyInput('email');
+    });
+});
+
+Route::post('/logout', function (\Illuminate\Http\Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout')->middleware('auth');
+
 // Health check
 Route::get('/health', function () {
     return response()->json([
@@ -25,15 +59,49 @@ Route::get('/health', function () {
     ]);
 })->name('health');
 
-// Aceite digital de contrato (público)
-Route::get('/contract/{token}/sign', function ($token) {
-    // Renderiza página de aceite digital
-    return view('contracts.sign', ['token' => $token]);
+Route::get('/contract/{token}/sign', function (string $token, ContractService $contracts) {
+    $contract = $contracts->validateSignatureToken($token);
+
+    if (!$contract) {
+        abort(404, 'Link de assinatura inválido ou expirado.');
+    }
+
+    $contract->load(['client.lead', 'proposal.serviceType']);
+
+    return view('contracts.sign', [
+        'token' => $token,
+        'contract' => $contract,
+    ]);
 })->name('contract.sign');
 
-Route::post('/contract/{token}/accept', function ($token) {
-    // Processa aceite digital
-    // Implementação depende do ContractService
+Route::post('/contract/{token}/accept', function (string $token, Request $request, ContractService $contracts) {
+    $contract = $contracts->validateSignatureToken($token);
+
+    if (!$contract) {
+        return response()->json([
+            'ok' => false,
+            'message' => 'Link de assinatura inválido ou expirado.',
+        ], 404);
+    }
+
+    try {
+        $signed = $contracts->signContract(
+            $contract,
+            (string) $request->ip(),
+            (string) $request->userAgent()
+        );
+        event(new ContractSigned($signed));
+    } catch (\InvalidArgumentException $e) {
+        return response()->json([
+            'ok' => false,
+            'message' => $e->getMessage(),
+        ], 422);
+    }
+
+    return response()->json([
+        'ok' => true,
+        'contract_id' => $signed->id,
+    ]);
 })->name('contract.accept');
 
 // Rotas autenticadas

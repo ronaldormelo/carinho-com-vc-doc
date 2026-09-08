@@ -17,13 +17,48 @@ class LeadService
     ) {}
 
     /**
-     * Cria um novo lead
+     * Localiza lead pelo telefone (campo criptografado — varredura limitada).
      */
+    public function findByPhone(string $phone): ?Lead
+    {
+        $normalized = preg_replace('/\D+/', '', $phone) ?: $phone;
+
+        foreach (Lead::query()->orderByDesc('id')->limit(2000)->cursor() as $lead) {
+            $stored = preg_replace('/\D+/', '', (string) $lead->phone) ?: (string) $lead->phone;
+
+            if ($stored === $normalized) {
+                return $lead;
+            }
+        }
+
+        return null;
+    }
+
+    public function findByEmail(string $email): ?Lead
+    {
+        $normalized = strtolower(trim($email));
+
+        if ($normalized === '') {
+            return null;
+        }
+
+        foreach (Lead::query()->orderByDesc('id')->limit(2000)->cursor() as $lead) {
+            if (strtolower(trim((string) $lead->email)) === $normalized) {
+                return $lead;
+            }
+        }
+
+        return null;
+    }
+
     public function createLead(array $data): Lead
     {
         return DB::transaction(function () use ($data) {
             // Define status inicial como "new"
             $data['status_id'] = $data['status_id'] ?? DomainLeadStatus::NEW;
+
+            $allowed = array_flip((new Lead())->getFillable());
+            $data = array_intersect_key($data, $allowed);
 
             $lead = Lead::create($data);
 
@@ -111,7 +146,7 @@ class LeadService
      */
     public function search(string $term, int $limit = 20): Collection
     {
-        return Lead::with(['status', 'urgency', 'serviceType'])
+        $results = Lead::with(['status', 'urgency', 'serviceType'])
             ->where(function ($query) use ($term) {
                 $query->where('name', 'LIKE', "%{$term}%")
                       ->orWhere('city', 'LIKE', "%{$term}%")
@@ -120,6 +155,23 @@ class LeadService
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
+
+        $digits = preg_replace('/\D+/', '', $term) ?: '';
+        if (strlen($digits) >= 8) {
+            $byPhone = $this->findByPhone($term);
+            if ($byPhone && !$results->contains('id', $byPhone->id)) {
+                $results->prepend($byPhone->load(['status', 'urgency', 'serviceType']));
+            }
+        }
+
+        if (str_contains($term, '@')) {
+            $byEmail = $this->findByEmail($term);
+            if ($byEmail && !$results->contains('id', $byEmail->id)) {
+                $results->prepend($byEmail->load(['status', 'urgency', 'serviceType']));
+            }
+        }
+
+        return $results->take($limit)->values();
     }
 
     /**

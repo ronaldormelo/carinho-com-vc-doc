@@ -1,6 +1,36 @@
 # Carinho Site
 
-**Subdominio:** site.carinho.com.vc
+**Host de produção:** https://carinho.com.vc (apex, sem prefixo `site.`)  
+**Local (Docker):** http://127.0.0.1:8084
+
+## Hostname e redirect
+
+O site institucional roda na **raiz do domínio**. Os demais sistemas continuam em subdomínio (`crm.carinho.com.vc`, `atendimento.carinho.com.vc`, etc.).
+
+| Ambiente | URL vigente |
+|----------|-------------|
+| Produção | `https://carinho.com.vc` |
+| Docker local | `http://127.0.0.1:8084` |
+
+**Redirect 301:** `http(s)://site.carinho.com.vc/{path}` → `https://carinho.com.vc/{path}` (query string preservada).
+
+Implementado neste módulo em:
+
+- `apache-config.conf` (VirtualHost `ServerName site.carinho.com.vc`)
+- `public/.htaccess` (mod_rewrite por `HTTP_HOST`)
+- middleware `RedirectLegacySiteHost` (aplica-se mesmo atrás de proxy que entrega o Host legado no vhost padrão)
+
+Este repositório **não** contém o DNS, o certificado TLS nem o reverse proxy do provedor de nuvem. Em produção, o operador deve apontar o apex `carinho.com.vc` para este app e manter `site.carinho.com.vc` apenas o tempo necessário para o 301 (mesmo container/app ou proxy na frente). Cookie de sessão do site fica no host `carinho.com.vc`; **não** usar `SESSION_DOMAIN=.carinho.com.vc` (não compartilhar cookie com CRM/Sanctum).
+
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Módulos](docs/modulos.md) · [Integrações](docs/integracoes.md) · [NFRs](docs/nao-funcionais.md) · [Guia do visitante](docs/guia-usuario-site.md) · [Atividades](docs/atividades.md)
+
+`docs/analise-revisao-modulo.md` é revisão pontual (jan/2026), não contrato.
+
+Health: `GET /up` (Laravel), `GET /health` e `GET /health/detailed` (público). `GET /api/health` também é público. API interna (`/api/leads`, `/api/content/*`) exige token, salvo health.
+
+Há `POST /lead/investidor` além de cliente e cuidador. CMS de depoimentos/FAQ: `/api/content/*` (CRM). Política de cancelamento no código (`config/site.php`) segue o Financeiro (24 h / 6 h), não a Operação. Horista no site declara mínimo 2 h; precificação/agenda usam 4 h — a família vê o texto legal do Financeiro/site; operação não agenda abaixo de 4 h.
 
 ## Descricao
 
@@ -10,7 +40,7 @@ Portal institucional do projeto de home care Carinho com Voce. Apresenta a propo
 
 - **Linguagem:** PHP 8.2+
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`, schema `carinho_site`)
 - **Cache e filas:** Redis
 - **Storage de midias:** S3 compativel
 - **CDN para ativos estaticos**
@@ -162,6 +192,8 @@ carinho-site/
 | GET | /health | Health check basico |
 | POST | /lead/cliente | Submissao de lead cliente |
 | POST | /lead/cuidador | Submissao de lead cuidador |
+| POST | /lead/investidor | Submissão de lead investidor |
+| GET | /whatsapp | Redirect CTA com UTM da sessão |
 
 ### API Interna (autenticada)
 
@@ -174,7 +206,8 @@ carinho-site/
 | GET | /api/domains | Valores de dominio |
 | GET | /api/settings | Configuracoes do site |
 | POST | /api/webhooks/crm | Webhook do CRM |
-| POST | /api/webhooks/cache/pages/clear | Limpa cache |
+| POST | /api/webhooks/cache/pages/clear | Limpa cache de páginas |
+| GET | /api/content/* | CMS (depoimentos, FAQ, páginas) — chamado pelo CRM |
 
 ## Integracoes
 
@@ -199,11 +232,7 @@ carinho-site/
 ## Instalacao
 
 ```bash
-# Clone o repositorio
-git clone [repo-url]
-cd carinho-site
-
-# Instale dependencias
+cd sistemas/carinho-site
 composer install
 
 # Configure ambiente
@@ -225,8 +254,8 @@ php artisan serve
 ## Variaveis de Ambiente
 
 ```env
-# App
-APP_URL=https://site.carinho.com.vc
+# App — producao (apex). Local Docker: http://127.0.0.1:8084
+APP_URL=https://carinho.com.vc
 
 # Database
 DB_DATABASE=carinho_site

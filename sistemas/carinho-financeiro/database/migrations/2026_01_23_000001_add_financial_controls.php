@@ -19,6 +19,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Aplicação parcial anterior (errno 150 em bank_accounts) deixou
+        // domain_* e cash_transactions sem registrar a migration.
+        if (Schema::hasTable('domain_transaction_type') || Schema::hasTable('cash_transactions')) {
+            return;
+        }
+
         // Tabela de domínio: Tipos de transação
         Schema::create('domain_transaction_type', function (Blueprint $table) {
             $table->tinyInteger('id', true, true)->primary();

@@ -73,11 +73,11 @@ return [
     |--------------------------------------------------------------------------
     */
     'cancellation' => [
-        // Prazo para cancelamento sem custo (em horas antes do servico)
-        'free_cancellation_hours' => env('CANCEL_FREE_HOURS', 48),
+        // Janelas alinhadas a sistemas/carinho-financeiro/docs/politicas.md (24 h / 6 h).
+        // O valor que a família recebe (reembolso 100/50/0) é do Financeiro, não destas taxas.
+        'free_cancellation_hours' => env('CANCEL_FREE_HOURS', 24),
 
-        // Prazo para cancelamento com taxa reduzida (em horas)
-        'reduced_fee_hours' => env('CANCEL_REDUCED_HOURS', 24),
+        'reduced_fee_hours' => env('CANCEL_REDUCED_HOURS', 6),
 
         // Percentual de taxa reduzida
         'reduced_fee_percent' => env('CANCEL_REDUCED_FEE_PERCENT', 30),

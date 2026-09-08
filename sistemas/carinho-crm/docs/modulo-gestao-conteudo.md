@@ -117,8 +117,9 @@ INTERNAL_API_TOKEN=seu-token-seguro-aqui
 
 **No `carinho-crm/.env`:**
 ```env
-CARINHO_SITE_URL=https://site.carinho.com.vc
+CARINHO_SITE_URL=https://carinho.com.vc
 CARINHO_SITE_API_KEY=seu-token-seguro-aqui  # Mesmo valor do INTERNAL_API_TOKEN
+# Local Docker do Site: CARINHO_SITE_URL=http://127.0.0.1:8084
 ```
 
 ### 2. Service Provider

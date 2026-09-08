@@ -39,41 +39,7 @@ class SyncService
         try {
             $job->start();
 
-            // Busca clientes com servicos agendados pendentes de sincronizacao
-            // Este endpoint retornaria clientes que precisam ter agendamentos criados
-            $response = $this->crm->get('/api/v1/sync/pending-schedules');
-
-            if (!$response['ok']) {
-                throw new \Exception('Failed to fetch pending schedules from CRM');
-            }
-
-            $items = $response['body']['data'] ?? [];
-            $synced = 0;
-
-            foreach ($items as $item) {
-                $result = $this->operacao->createSchedule([
-                    'client_id' => $item['client_id'],
-                    'crm_contract_id' => $item['contract_id'],
-                    'service_type' => $item['service_type'],
-                    'start_date' => $item['start_date'],
-                    'end_date' => $item['end_date'],
-                    'preferences' => $item['preferences'] ?? [],
-                ]);
-
-                if ($result['ok']) {
-                    // Confirma sincronizacao no CRM
-                    $this->crm->post("/api/v1/sync/confirm/{$item['id']}", [
-                        'operacao_schedule_id' => $result['body']['id'],
-                    ]);
-
-                    $synced++;
-                }
-            }
-
-            Log::info('CRM to Operacao sync completed', [
-                'total' => count($items),
-                'synced' => $synced,
-            ]);
+            Log::info('CRM não expõe /api/v1/sync/pending-schedules; sync CRM→Operação não implementada no destino.');
 
             $job->complete();
         } catch (\Throwable $e) {
@@ -99,47 +65,7 @@ class SyncService
         try {
             $job->start();
 
-            // Busca servicos finalizados pendentes de faturamento
-            $startDate = now()->subDays(7)->format('Y-m-d');
-            $endDate = now()->format('Y-m-d');
-
-            $response = $this->operacao->getCompletedServices($startDate, $endDate);
-
-            if (!$response['ok']) {
-                throw new \Exception('Failed to fetch completed services');
-            }
-
-            $services = $response['body']['data'] ?? [];
-            $synced = 0;
-
-            foreach ($services as $service) {
-                // Verifica se ja foi faturado
-                if ($service['billed'] ?? false) {
-                    continue;
-                }
-
-                // Cria fatura no financeiro
-                $invoiceResult = $this->financeiro->createInvoice([
-                    'client_id' => $service['client_id'],
-                    'operacao_service_id' => $service['id'],
-                    'items' => $this->buildInvoiceItems($service),
-                    'due_date' => now()->addDays(3)->format('Y-m-d'),
-                ]);
-
-                if ($invoiceResult['ok']) {
-                    // Marca servico como faturado na operacao
-                    $this->operacao->put("/api/v1/services/{$service['id']}/billed", [
-                        'invoice_id' => $invoiceResult['body']['id'],
-                    ]);
-
-                    $synced++;
-                }
-            }
-
-            Log::info('Operacao to Financeiro sync completed', [
-                'total' => count($services),
-                'synced' => $synced,
-            ]);
+            Log::info('Operação não expõe serviços concluídos não faturados; InvoiceRequest exige contract_id. Sync Operação→Financeiro não implementada.');
 
             $job->complete();
         } catch (\Throwable $e) {
@@ -165,40 +91,7 @@ class SyncService
         try {
             $job->start();
 
-            // Busca contratos assinados pendentes de configuracao financeira
-            $response = $this->crm->get('/api/v1/sync/pending-billing-setup');
-
-            if (!$response['ok']) {
-                throw new \Exception('Failed to fetch pending billing setup');
-            }
-
-            $contracts = $response['body']['data'] ?? [];
-            $synced = 0;
-
-            foreach ($contracts as $contract) {
-                // Configura cliente no financeiro
-                $result = $this->financeiro->post('/api/billing/setup', [
-                    'crm_client_id' => $contract['client_id'],
-                    'crm_contract_id' => $contract['id'],
-                    'billing_type' => $contract['billing_type'],
-                    'amount' => $contract['value'],
-                    'payment_method' => $contract['payment_method'],
-                ]);
-
-                if ($result['ok']) {
-                    // Confirma setup no CRM
-                    $this->crm->post("/api/v1/contracts/{$contract['id']}/billing-setup", [
-                        'financeiro_id' => $result['body']['id'],
-                    ]);
-
-                    $synced++;
-                }
-            }
-
-            Log::info('CRM to Financeiro sync completed', [
-                'total' => count($contracts),
-                'synced' => $synced,
-            ]);
+            Log::info('CRM não expõe /api/v1/sync/pending-billing-setup; sync CRM→Financeiro não implementada no destino.');
 
             $job->complete();
         } catch (\Throwable $e) {
@@ -224,34 +117,7 @@ class SyncService
         try {
             $job->start();
 
-            // Busca cuidadores com atualizacoes pendentes
-            $response = $this->cuidadores->get('/api/v1/sync/pending-updates');
-
-            if (!$response['ok']) {
-                throw new \Exception('Failed to fetch caregiver updates');
-            }
-
-            $updates = $response['body']['data'] ?? [];
-            $synced = 0;
-
-            foreach ($updates as $update) {
-                $result = $this->crm->dispatchEvent('caregiver.updated', [
-                    'caregiver_id' => $update['caregiver_id'],
-                    'changes' => $update['changes'],
-                    'timestamp' => $update['updated_at'],
-                ]);
-
-                if ($result['ok']) {
-                    // Confirma sincronizacao
-                    $this->cuidadores->post("/api/v1/sync/confirm/{$update['id']}");
-                    $synced++;
-                }
-            }
-
-            Log::info('Cuidadores to CRM sync completed', [
-                'total' => count($updates),
-                'synced' => $synced,
-            ]);
+            Log::info('Cuidadores não expõe /api/v1/sync/pending-updates; sync Cuidadores→CRM não implementada no destino.');
 
             $job->complete();
         } catch (\Throwable $e) {
@@ -278,36 +144,6 @@ class SyncService
         $results['cuidadores_crm'] = $this->syncCuidadoresToCrm();
 
         return $results;
-    }
-
-    /**
-     * Monta itens da fatura baseado no servico.
-     */
-    private function buildInvoiceItems(array $service): array
-    {
-        $items = [];
-
-        // Item principal
-        $items[] = [
-            'description' => "Serviço de cuidador - {$service['service_type']}",
-            'hours' => $service['hours'] ?? 0,
-            'unit_price' => $service['hourly_rate'] ?? 0,
-            'total' => $service['total'] ?? 0,
-        ];
-
-        // Adicionais
-        if (!empty($service['extras'])) {
-            foreach ($service['extras'] as $extra) {
-                $items[] = [
-                    'description' => $extra['description'],
-                    'hours' => 0,
-                    'unit_price' => $extra['value'],
-                    'total' => $extra['value'],
-                ];
-            }
-        }
-
-        return $items;
     }
 
     /**

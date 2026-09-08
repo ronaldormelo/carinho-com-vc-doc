@@ -25,10 +25,9 @@ class IntegracoesClient extends BaseClient
     public function dispatchEvent(string $eventType, array $eventData): array
     {
         return $this->post('/events', [
-            'type' => $eventType,
-            'source' => 'marketing',
-            'data' => $eventData,
-            'timestamp' => now()->toIso8601String(),
+            'event_type' => $eventType,
+            'source_system' => 'marketing',
+            'payload' => $eventData,
         ]);
     }
 
@@ -82,7 +81,7 @@ class IntegracoesClient extends BaseClient
      */
     public function requestMetricsSync(string $platform, ?string $startDate = null, ?string $endDate = null): array
     {
-        return $this->post('/sync/request', [
+        return $this->post('/sync/start', [
             'type' => 'metrics',
             'platform' => $platform,
             'start_date' => $startDate ?? now()->subDays(7)->toDateString(),
@@ -95,11 +94,12 @@ class IntegracoesClient extends BaseClient
      */
     public function sendNotification(string $channel, string $type, array $data): array
     {
-        return $this->post('/notifications', [
-            'channel' => $channel,
-            'type' => $type,
-            'data' => $data,
-        ]);
+        return [
+            'success' => false,
+            'status' => 501,
+            'data' => null,
+            'error' => 'Hub não expõe POST /notifications',
+        ];
     }
 
     /**
@@ -107,11 +107,12 @@ class IntegracoesClient extends BaseClient
      */
     public function sendWhatsAppMessage(string $phone, string $message, ?string $mediaUrl = null): array
     {
-        return $this->post('/whatsapp/send', [
-            'phone' => $phone,
-            'message' => $message,
-            'media_url' => $mediaUrl,
-        ]);
+        return [
+            'success' => false,
+            'status' => 501,
+            'data' => null,
+            'error' => 'Hub não expõe POST /whatsapp/send; use o cliente Z-API do módulo',
+        ];
     }
 
     /**
@@ -122,8 +123,10 @@ class IntegracoesClient extends BaseClient
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
+            'X-API-Key' => config('integrations.integracoes.token'),
             'Authorization' => 'Bearer ' . config('integrations.integracoes.token'),
             'X-Internal-Token' => config('integrations.internal.token'),
+            'X-API-Key' => config('integrations.integracoes.token'),
         ];
     }
 }

@@ -2,6 +2,12 @@
 
 **Subdominio:** integracoes.carinho.com.vc
 
+## Documentação deste módulo
+
+[Arquitetura](docs/arquitetura.md) · [Matriz](docs/matriz-integracoes.md) · [Contratos de rota](docs/contratos-rotas.md) · [Z-API](docs/integracao-zapi.md) · [NFRs](docs/nao-funcionais.md) · [Runbook](docs/runbook-operacional.md) · [Guia](docs/guia-usuario-operacional.md)
+
+`docs/analise-praticas-mercado.md` é referência, não contrato de fila.
+
 ## Descricao
 
 Camada de automacao e integracao do fluxo ponta a ponta. Conecta site, atendimento, CRM, operacao e financeiro para reduzir trabalho manual.
@@ -10,11 +16,11 @@ Camada de automacao e integracao do fluxo ponta a ponta. Conecta site, atendimen
 
 - **Linguagem:** PHP 8.2+
 - **Framework:** Laravel 11
-- **Banco de dados:** MySQL 8.0
+- **Banco de dados:** MariaDB 10.11 compartilhado (driver `mysql`)
 - **Cache e Filas:** Redis
-- **Workers:** Laravel Horizon / Supervisor
-- **Autenticacao:** API Key
-- **Webhooks:** Spatie Laravel Webhook
+- **Workers:** Laravel Horizon / Supervisor (config `config/horizon.php` neste módulo)
+- **Autenticacao:** API Key (`X-API-Key`)
+- **Webhooks:** `spatie/laravel-webhook-client` e `spatie/laravel-webhook-server` no composer; validação HMAC no middleware do módulo
 
 ## Modulos Essenciais
 
@@ -249,11 +255,7 @@ Configure no painel do Z-API:
 ## Instalacao
 
 ```bash
-# Clone o repositorio
-git clone [repo-url]
-cd carinho-integracoes
-
-# Instale dependencias
+cd sistemas/carinho-integracoes
 composer install
 
 # Configure ambiente
@@ -366,13 +368,12 @@ CARINHO_FINANCEIRO_API_KEY=
 
 ### Health Checks
 
-- `GET /health` - Check basico
-- `GET /health/detailed` - Check com dependencias
-- `GET /status` - Status completo do sistema
+- `GET /health` - Check básico (público)
+- `GET /health/detailed` - Check com dependências (público)
+- `GET /status` - Status completo (`X-API-Key`)
+- `GET /dashboard`, `/alerts`, `POST /circuit-breakers/{service}/reset` — operador, com API key
 
-### Horizon Dashboard
-
-Acesse `/horizon` para monitorar filas em tempo real.
+Acesse `/horizon` para monitorar filas (proteger em produção).
 
 ### Alertas Recomendados
 

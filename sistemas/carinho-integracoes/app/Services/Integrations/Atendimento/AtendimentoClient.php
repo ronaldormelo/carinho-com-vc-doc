@@ -5,159 +5,90 @@ namespace App\Services\Integrations\Atendimento;
 use App\Services\Integrations\BaseClient;
 
 /**
- * Cliente para integracao com o sistema de Atendimento (atendimento.carinho.com.vc).
- *
- * Responsavel por:
- * - Sincronizacao de conversas
- * - Status de atendimento
- * - Filas e distribuicao
+ * Cliente do Atendimento. Rotas reais: /api/inbox, /api/conversations/{id}/messages, /api/metrics/*.
  */
 class AtendimentoClient extends BaseClient
 {
     protected string $configKey = 'atendimento';
 
-    /*
-    |--------------------------------------------------------------------------
-    | Conversas
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Cria nova conversa.
-     */
     public function createConversation(array $data): array
     {
-        return $this->post('/api/v1/conversations', $data);
+        return $this->post('/api/inbox', [
+            'phone' => $data['phone'] ?? null,
+            'senderName' => $data['name'] ?? '',
+            'body' => $data['initial_message'] ?? $data['body'] ?? '',
+        ]);
     }
 
-    /**
-     * Busca conversa por telefone.
-     */
     public function findConversationByPhone(string $phone): array
     {
-        return $this->get('/api/v1/conversations', ['phone' => $phone]);
+        return $this->get('/api/inbox', ['phone' => $phone]);
     }
 
-    /**
-     * Atualiza status da conversa.
-     */
     public function updateConversationStatus(int $conversationId, string $status): array
     {
-        return $this->put("/api/v1/conversations/{$conversationId}/status", [
+        return $this->patch("/api/inbox/{$conversationId}/status", [
             'status' => $status,
         ]);
     }
 
-    /**
-     * Adiciona mensagem a conversa.
-     */
     public function addMessage(int $conversationId, array $data): array
     {
-        return $this->post("/api/v1/conversations/{$conversationId}/messages", $data);
+        return $this->post("/api/conversations/{$conversationId}/messages", [
+            'body' => $data['body'] ?? $data['content'] ?? '',
+            'direction' => $data['direction'] ?? 'outbound',
+            'media_url' => $data['media_url'] ?? null,
+        ]);
     }
 
-    /**
-     * Busca historico de mensagens.
-     */
     public function getMessages(int $conversationId): array
     {
-        return $this->get("/api/v1/conversations/{$conversationId}/messages");
+        return $this->get("/api/inbox/{$conversationId}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Filas
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca posicao na fila.
-     */
     public function getQueuePosition(int $conversationId): array
     {
-        return $this->get("/api/v1/conversations/{$conversationId}/queue");
+        return $this->unsupported("fila da conversa {$conversationId}");
     }
 
-    /**
-     * Lista conversas em espera.
-     */
     public function getWaitingConversations(): array
     {
-        return $this->get('/api/v1/conversations', ['status' => 'waiting']);
+        return $this->get('/api/inbox', ['status' => 'waiting']);
     }
 
-    /**
-     * Atribui conversa a atendente.
-     */
     public function assignToAgent(int $conversationId, int $agentId): array
     {
-        return $this->post("/api/v1/conversations/{$conversationId}/assign", [
+        return $this->patch("/api/inbox/{$conversationId}/status", [
+            'status' => 'in_progress',
+            'assigned_to' => $agentId,
             'agent_id' => $agentId,
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Etiquetas
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Adiciona etiqueta a conversa.
-     */
     public function addTag(int $conversationId, string $tag): array
     {
-        return $this->post("/api/v1/conversations/{$conversationId}/tags", [
-            'tag' => $tag,
+        return $this->post("/api/inbox/{$conversationId}/tags", [
+            'tags' => [$tag],
         ]);
     }
 
-    /**
-     * Remove etiqueta da conversa.
-     */
     public function removeTag(int $conversationId, string $tag): array
     {
-        return $this->delete("/api/v1/conversations/{$conversationId}/tags/{$tag}");
+        return $this->unsupported("remover tag {$tag} da conversa {$conversationId}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Metricas
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca metricas de atendimento.
-     */
     public function getMetrics(): array
     {
-        return $this->get('/api/v1/metrics');
+        return $this->get('/api/metrics/dashboard');
     }
 
-    /**
-     * Busca tempo medio de resposta.
-     */
     public function getAverageResponseTime(): array
     {
-        return $this->getCached('/api/v1/metrics/response-time');
+        return $this->get('/api/metrics/sla');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Webhooks
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Dispara evento para Atendimento.
-     */
     public function dispatchEvent(string $eventType, array $payload): array
     {
-        return $this->post('/api/v1/webhooks/events', [
-            'event_type' => $eventType,
-            'payload' => $payload,
-            'source' => 'integracoes',
-            'timestamp' => now()->toIso8601String(),
-        ]);
+        return $this->unsupported("webhook de eventos ({$eventType})");
     }
 }

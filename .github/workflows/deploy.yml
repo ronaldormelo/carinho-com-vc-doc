@@ -1,0 +1,235 @@
+# CI/CD — merge na main
+#
+# Secrets do repositório (Settings → Secrets and variables → Actions):
+#   SSH_USER                       usuário SSH da VPS (obrigatório)
+#   SSH_PRIVATE_KEY_CARINHO_VPS    chave privada SSH da VPS (obrigatório)
+#   SSH_PASSPHRASE                 senha da chave, se houver
+#   SSH_PORT                       porta SSH (opcional; padrão 22)
+#   SSH_FINGERPRINT                SHA256 do host (opcional; reduz risco de MITM)
+#
+# Variáveis do repositório (opcionais):
+#   DEPLOY_ENV          ambiente dos .env (production | testing). Padrão: production
+#   SSH_HOST            override do IP (opcional; padrão 212.85.23.26)
+#
+# Caminhos na VPS:
+#   /opt/carinho/carinho-com-vc-doc          clone deste repositório
+#   /opt/carinho/carinho-com-vc-doc-config   clone do repo de .env
+#
+# Layout em carinho-com-vc-doc-config:
+#   <sistema>/.env.<DEPLOY_ENV>
+# O arquivo é copiado para carinho-com-vc-doc/sistemas/<sistema>/.env
+
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: production-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PHP_VERSION: "8.2"
+  DEPLOY_PATH: /opt/carinho/carinho-com-vc-doc
+  ENV_REPO_PATH: /opt/carinho/carinho-com-vc-doc-config
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: true
+      matrix:
+        system:
+          - carinho-site
+          - carinho-marketing
+          - carinho-atendimento
+          - carinho-crm
+          - carinho-cuidadores
+          - carinho-operacao
+          - carinho-financeiro
+          - carinho-documentos-lgpd
+          - carinho-integracoes
+    defaults:
+      run:
+        working-directory: sistemas/${{ matrix.system }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, pdo_mysql, redis, zip, intl, gd, exif, xml, curl, bcmath
+          coverage: none
+          tools: composer
+
+      - name: Composer cache dir
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.system }}-${{ hashFiles(format('sistemas/{0}/composer.json', matrix.system)) }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.system }}-
+
+      - name: Composer install
+        run: |
+          mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+          if [ ! -f .env ] && [ -f .env.example ]; then
+            cp .env.example .env
+          fi
+          composer install \
+            --no-interaction \
+            --prefer-dist \
+            --no-progress \
+            --optimize-autoloader \
+            --no-scripts
+
+  deploy:
+    name: deploy
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Conferir variáveis de deploy
+        env:
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV || 'production' }}
+          HAS_SSH_USER: ${{ secrets.SSH_USER != '' }}
+          HAS_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY_CARINHO_VPS != '' }}
+        run: |
+          missing=0
+          if [ "$HAS_SSH_USER" != "true" ]; then
+            echo "Defina o secret SSH_USER."
+            missing=1
+          fi
+          if [ "$HAS_SSH_KEY" != "true" ]; then
+            echo "Defina o secret SSH_PRIVATE_KEY_CARINHO_VPS."
+            missing=1
+          fi
+          if [ "$DEPLOY_ENV" != "production" ] && [ "$DEPLOY_ENV" != "testing" ]; then
+            echo "DEPLOY_ENV deve ser production ou testing."
+            missing=1
+          fi
+          if [ $missing -ne 0 ]; then
+            exit 1
+          fi
+          echo "DEPLOY_PATH=$DEPLOY_PATH"
+          echo "ENV_REPO_PATH=$ENV_REPO_PATH"
+          echo "DEPLOY_ENV=$DEPLOY_ENV"
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          DEPLOY_PATH: /opt/carinho/carinho-com-vc-doc
+          ENV_REPO_PATH: /opt/carinho/carinho-com-vc-doc-config
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV || 'production' }}
+        with:
+          host: ${{ vars.SSH_HOST || '212.85.23.26' }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_CARINHO_VPS }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          fingerprint: ${{ secrets.SSH_FINGERPRINT }}
+          command_timeout: 30m
+          envs: DEPLOY_PATH,ENV_REPO_PATH,DEPLOY_ENV
+          script: |
+            set -e
+            . /etc/profile 2>/dev/null || true
+            . "$HOME/.profile" 2>/dev/null || true
+            export PATH="$HOME/bin:$HOME/.config/composer/vendor/bin:/usr/local/bin:/usr/bin:$PATH"
+            echo ">>> Atualizando código em $DEPLOY_PATH"
+            if [ ! -d "$DEPLOY_PATH/.git" ]; then
+              echo "Não há repositório Git em $DEPLOY_PATH. Clone o projeto nesse caminho antes do primeiro deploy."
+              exit 1
+            fi
+            git -C "$DEPLOY_PATH" fetch origin
+            git -C "$DEPLOY_PATH" checkout main
+            git -C "$DEPLOY_PATH" pull --ff-only origin main
+
+            echo ">>> Atualizando .env em $ENV_REPO_PATH"
+            if [ ! -d "$ENV_REPO_PATH/.git" ]; then
+              echo "Não há repositório Git em $ENV_REPO_PATH. Clone a pasta de .env nesse caminho antes do primeiro deploy."
+              exit 1
+            fi
+            git -C "$ENV_REPO_PATH" fetch origin
+            git -C "$ENV_REPO_PATH" pull --ff-only
+
+            echo ">>> Sobrescrevendo .env de cada sistema (DEPLOY_ENV=${DEPLOY_ENV:-production})"
+            DEPLOY_ENV="${DEPLOY_ENV:-production}"
+            case "$DEPLOY_ENV" in
+              production|testing) ;;
+              *)
+                echo "DEPLOY_ENV inválido: $DEPLOY_ENV"
+                exit 1
+                ;;
+            esac
+            for system in \
+              carinho-site \
+              carinho-marketing \
+              carinho-atendimento \
+              carinho-crm \
+              carinho-cuidadores \
+              carinho-operacao \
+              carinho-financeiro \
+              carinho-documentos-lgpd \
+              carinho-integracoes
+            do
+              dest="$DEPLOY_PATH/sistemas/$system/.env"
+              if [ -f "$ENV_REPO_PATH/$system/.env.$DEPLOY_ENV" ]; then
+                src="$ENV_REPO_PATH/$system/.env.$DEPLOY_ENV"
+              elif [ -f "$ENV_REPO_PATH/$system/.env" ]; then
+                src="$ENV_REPO_PATH/$system/.env"
+              elif [ -f "$ENV_REPO_PATH/$system.env" ]; then
+                src="$ENV_REPO_PATH/$system.env"
+              else
+                echo "Arquivo .env.$DEPLOY_ENV não encontrado para $system em $ENV_REPO_PATH"
+                exit 1
+              fi
+              mkdir -p "$DEPLOY_PATH/sistemas/$system"
+              cp -f "$src" "$dest"
+              echo "Atualizado $system a partir de $(basename "$src")"
+            done
+
+            echo ">>> Instalando dependências de produção (vendor não versionado)"
+            if ! command -v composer >/dev/null 2>&1; then
+              echo "composer não está no PATH da VPS; o stage build já validou as dependências."
+              echo "Instale as dependências no runtime (PHP local ou Docker) após este pull."
+              exit 0
+            fi
+            for system in \
+              carinho-site \
+              carinho-marketing \
+              carinho-atendimento \
+              carinho-crm \
+              carinho-cuidadores \
+              carinho-operacao \
+              carinho-financeiro \
+              carinho-documentos-lgpd \
+              carinho-integracoes
+            do
+              app="$DEPLOY_PATH/sistemas/$system"
+              echo "composer install — $system"
+              composer install \
+                --working-dir="$app" \
+                --no-dev \
+                --no-interaction \
+                --prefer-dist \
+                --optimize-autoloader \
+                --no-scripts
+              if [ -f "$app/artisan" ]; then
+                php "$app/artisan" package:discover --ansi || true
+                php "$app/artisan" config:clear || true
+              fi
+            done
+            echo ">>> Deploy concluído"

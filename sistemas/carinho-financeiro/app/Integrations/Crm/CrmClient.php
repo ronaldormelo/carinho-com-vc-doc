@@ -31,7 +31,7 @@ class CrmClient
      */
     public function getContract(int $contractId): ?array
     {
-        $response = $this->request('GET', "/contracts/{$contractId}");
+        $response = $this->request('GET', "/v1/contracts/{$contractId}");
 
         if ($response['success']) {
             return $response['data'];
@@ -45,7 +45,7 @@ class CrmClient
      */
     public function getClient(int $clientId): ?array
     {
-        $response = $this->request('GET', "/clients/{$clientId}");
+        $response = $this->request('GET', "/v1/clients/{$clientId}");
 
         if ($response['success']) {
             return $response['data'];
@@ -75,52 +75,31 @@ class CrmClient
     /**
      * Notifica CRM sobre fatura criada.
      */
-    public function notifyInvoiceCreated(int $contractId, int $invoiceId, float $amount): bool
+    public function notifyInvoiceCreated(int $clientId, int $invoiceId, float $amount): bool
     {
-        $response = $this->request('POST', '/webhooks/internal', [
-            'event' => 'invoice.created',
-            'payload' => [
-                'contract_id' => $contractId,
-                'invoice_id' => $invoiceId,
-                'amount' => $amount,
-                'timestamp' => now()->toIso8601String(),
-            ],
-        ]);
-
-        return $response['success'];
+        return $this->notifyPaymentWebhook('pending', $amount, $clientId, $invoiceId);
     }
 
-    /**
-     * Notifica CRM sobre pagamento confirmado.
-     */
-    public function notifyPaymentConfirmed(int $contractId, int $invoiceId, float $amount): bool
+    public function notifyPaymentConfirmed(int $clientId, int $invoiceId, float $amount): bool
     {
-        $response = $this->request('POST', '/webhooks/internal', [
-            'event' => 'payment.confirmed',
-            'payload' => [
-                'contract_id' => $contractId,
-                'invoice_id' => $invoiceId,
-                'amount' => $amount,
-                'timestamp' => now()->toIso8601String(),
-            ],
-        ]);
-
-        return $response['success'];
+        return $this->notifyPaymentWebhook('paid', $amount, $clientId, $invoiceId);
     }
 
-    /**
-     * Notifica CRM sobre fatura vencida.
-     */
-    public function notifyInvoiceOverdue(int $contractId, int $invoiceId, float $amount): bool
+    public function notifyInvoiceOverdue(int $clientId, int $invoiceId, float $amount): bool
     {
-        $response = $this->request('POST', '/webhooks/internal', [
-            'event' => 'invoice.overdue',
-            'payload' => [
-                'contract_id' => $contractId,
-                'invoice_id' => $invoiceId,
-                'amount' => $amount,
-                'timestamp' => now()->toIso8601String(),
-            ],
+        return $this->notifyPaymentWebhook('overdue', $amount, $clientId, $invoiceId);
+    }
+
+    private function notifyPaymentWebhook(string $status, float $amount, int $clientId, int $invoiceId): bool
+    {
+        $host = preg_replace('#/api$#', '', rtrim($this->baseUrl, '/'));
+
+        $response = $this->requestAbsolute('POST', "{$host}/webhooks/internal/financeiro/payment", [
+            'client_id' => $clientId,
+            'payment_status' => $status,
+            'amount' => $amount,
+            'reference_date' => now()->toDateString(),
+            'invoice_id' => $invoiceId,
         ]);
 
         return $response['success'];
@@ -136,14 +115,29 @@ class CrmClient
             return ['success' => false, 'error' => 'CRM não configurado'];
         }
 
+        return $this->execute($method, $this->baseUrl . $endpoint, $data, $endpoint);
+    }
+
+    private function requestAbsolute(string $method, string $url, array $data = []): array
+    {
+        if (empty($this->token)) {
+            return ['success' => false, 'error' => 'CRM não configurado'];
+        }
+
+        return $this->execute($method, $url, $data, $url);
+    }
+
+    private function execute(string $method, string $url, array $data, string $endpoint): array
+    {
         try {
             $request = Http::withHeaders([
                 'Authorization' => "Bearer {$this->token}",
+                'X-Internal-Token' => $this->token,
+                'X-API-Key' => $this->token,
+                'X-Service-Origin' => 'financeiro',
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])->timeout($this->timeout);
-
-            $url = $this->baseUrl . $endpoint;
 
             $response = match (strtoupper($method)) {
                 'GET' => $request->get($url, $data),
@@ -169,7 +163,6 @@ class CrmClient
                 'success' => false,
                 'error' => $response->json('message') ?? 'Request failed',
             ];
-
         } catch (\Exception $e) {
             Log::error('CRM request error', [
                 'endpoint' => $endpoint,

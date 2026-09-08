@@ -112,8 +112,10 @@ grecaptcha.execute('SITE_KEY', {action: 'submit_lead'})
 
 #### Endpoint Base
 ```
-https://crm.carinho.com.vc/api/v1
+https://crm.carinho.com.vc
 ```
+
+Ingestão sem Sanctum (formulário): `POST /api/v1/public/leads`. API autenticada: `/api/v1/leads` (Sanctum). Este módulo envia Bearer de `CARINHO_CRM_API_KEY` para `/api/v1/leads` — conferir se a chave é token Sanctum. Detalhe: [contratos-rotas.md](../carinho-integracoes/docs/contratos-rotas.md).
 
 #### Funcionalidades
 
@@ -163,7 +165,7 @@ $crm->registerLeadSource($leadId, [
 
 #### Endpoint Base
 ```
-https://integracoes.carinho.com.vc/api/v1
+https://integracoes.carinho.com.vc/api
 ```
 
 #### Configuracao
@@ -182,7 +184,7 @@ O hub e utilizado para:
 
 #### Endpoint Base
 ```
-https://marketing.carinho.com.vc/api/v1
+https://marketing.carinho.com.vc/api
 ```
 
 #### Configuracao
@@ -270,11 +272,11 @@ Jobs que falham apos todas as tentativas sao registrados para analise posterior.
 ### Health Checks
 
 ```bash
-# Basico
-curl https://site.carinho.com.vc/health
+# Basico (producao). Local: curl http://127.0.0.1:8084/health
+curl https://carinho.com.vc/health
 
 # Detalhado (inclui status das integracoes)
-curl https://site.carinho.com.vc/health/detailed
+curl https://carinho.com.vc/health/detailed
 ```
 
 ### Metricas

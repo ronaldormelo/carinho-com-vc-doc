@@ -5,61 +5,35 @@ namespace App\Services\Integrations\Documentos;
 use App\Services\Integrations\BaseClient;
 
 /**
- * Cliente para integracao com o sistema de Documentos e LGPD (documentos.carinho.com.vc).
- *
- * Responsavel por:
- * - Gerenciamento de contratos digitais
- * - Consentimentos LGPD
- * - Armazenamento seguro de documentos
+ * Cliente de Documentos/LGPD. Rotas reais: /api/documents, /api/contracts, /api/consents (sem /v1).
  */
 class DocumentosClient extends BaseClient
 {
     protected string $configKey = 'documentos';
 
-    /*
-    |--------------------------------------------------------------------------
-    | Contratos
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Cria contrato digital.
-     */
     public function createContract(array $data): array
     {
-        return $this->post('/api/v1/contracts', $data);
+        return $this->post('/api/contracts', $data);
     }
 
-    /**
-     * Busca contrato por ID.
-     */
     public function getContract(int $contractId): array
     {
-        return $this->get("/api/v1/contracts/{$contractId}");
+        return $this->get("/api/contracts/{$contractId}");
     }
 
-    /**
-     * Gera link para assinatura digital.
-     */
     public function generateSignatureLink(int $contractId): array
     {
-        return $this->post("/api/v1/contracts/{$contractId}/signature-link");
+        return $this->get("/api/contracts/{$contractId}/signature-url");
     }
 
-    /**
-     * Verifica status de assinatura.
-     */
     public function checkSignatureStatus(int $contractId): array
     {
-        return $this->get("/api/v1/contracts/{$contractId}/signature-status");
+        return $this->get("/api/contracts/{$contractId}/status");
     }
 
-    /**
-     * Registra assinatura.
-     */
     public function recordSignature(int $contractId, array $data): array
     {
-        return $this->post("/api/v1/contracts/{$contractId}/sign", [
+        return $this->post("/api/contracts/{$contractId}/sign", [
             'ip_address' => $data['ip_address'],
             'user_agent' => $data['user_agent'],
             'signature_hash' => $data['signature_hash'] ?? null,
@@ -67,20 +41,11 @@ class DocumentosClient extends BaseClient
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Consentimentos LGPD
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Registra consentimento.
-     */
     public function registerConsent(array $data): array
     {
-        return $this->post('/api/v1/consents', [
+        return $this->post('/api/consents', [
             'subject_id' => $data['subject_id'],
-            'subject_type' => $data['subject_type'], // client, caregiver
+            'subject_type' => $data['subject_type'],
             'purpose' => $data['purpose'],
             'legal_basis' => $data['legal_basis'],
             'granted' => $data['granted'],
@@ -89,133 +54,67 @@ class DocumentosClient extends BaseClient
         ]);
     }
 
-    /**
-     * Revoga consentimento.
-     */
     public function revokeConsent(int $consentId): array
     {
-        return $this->post("/api/v1/consents/{$consentId}/revoke");
+        return $this->delete("/api/consents/{$consentId}");
     }
 
-    /**
-     * Busca consentimentos de um sujeito.
-     */
     public function getSubjectConsents(int $subjectId, string $subjectType): array
     {
-        return $this->get('/api/v1/consents', [
-            'subject_id' => $subjectId,
-            'subject_type' => $subjectType,
-        ]);
+        return $this->get("/api/consents/subject/{$subjectType}/{$subjectId}");
     }
 
-    /**
-     * Verifica se possui consentimento valido.
-     */
     public function hasValidConsent(int $subjectId, string $subjectType, string $purpose): array
     {
-        return $this->get('/api/v1/consents/check', [
-            'subject_id' => $subjectId,
-            'subject_type' => $subjectType,
-            'purpose' => $purpose,
-        ]);
+        return $this->get("/api/consents/check/{$subjectType}/{$subjectId}/{$purpose}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Documentos
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Faz upload de documento.
-     */
     public function uploadDocument(array $data): array
     {
-        return $this->post('/api/v1/documents', $data);
+        return $this->post('/api/documents', $data);
     }
 
-    /**
-     * Busca documento por ID.
-     */
     public function getDocument(int $documentId): array
     {
-        return $this->get("/api/v1/documents/{$documentId}");
+        return $this->get("/api/documents/{$documentId}");
     }
 
-    /**
-     * Gera URL temporaria para download.
-     */
     public function getTemporaryUrl(int $documentId, int $expiresInMinutes = 15): array
     {
-        return $this->post("/api/v1/documents/{$documentId}/temporary-url", [
+        return $this->get("/api/documents/{$documentId}/signed-url", [
             'expires_in' => $expiresInMinutes,
         ]);
     }
 
-    /**
-     * Lista documentos de um sujeito.
-     */
     public function getSubjectDocuments(int $subjectId, string $subjectType): array
     {
-        return $this->get('/api/v1/documents', [
-            'subject_id' => $subjectId,
-            'subject_type' => $subjectType,
-        ]);
+        return $this->get("/api/documents/owner/{$subjectType}/{$subjectId}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Direitos do Titular (LGPD)
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Solicita exportacao de dados (portabilidade).
-     */
     public function requestDataExport(int $subjectId, string $subjectType): array
     {
-        return $this->post('/api/v1/data-requests/export', [
+        return $this->post('/api/data-requests/export', [
             'subject_id' => $subjectId,
             'subject_type' => $subjectType,
         ]);
     }
 
-    /**
-     * Solicita exclusao de dados.
-     */
     public function requestDataDeletion(int $subjectId, string $subjectType, string $reason): array
     {
-        return $this->post('/api/v1/data-requests/deletion', [
+        return $this->post('/api/data-requests/delete', [
             'subject_id' => $subjectId,
             'subject_type' => $subjectType,
             'reason' => $reason,
         ]);
     }
 
-    /**
-     * Busca status de solicitacao.
-     */
     public function getDataRequestStatus(int $requestId): array
     {
-        return $this->get("/api/v1/data-requests/{$requestId}");
+        return $this->get("/api/data-requests/{$requestId}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Webhooks
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Dispara evento para Documentos.
-     */
     public function dispatchEvent(string $eventType, array $payload): array
     {
-        return $this->post('/api/v1/webhooks/events', [
-            'event_type' => $eventType,
-            'payload' => $payload,
-            'source' => 'integracoes',
-            'timestamp' => now()->toIso8601String(),
-        ]);
+        return $this->unsupported("webhook de eventos documentos ({$eventType})");
     }
 }

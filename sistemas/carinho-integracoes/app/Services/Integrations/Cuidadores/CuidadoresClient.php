@@ -5,239 +5,122 @@ namespace App\Services\Integrations\Cuidadores;
 use App\Services\Integrations\BaseClient;
 
 /**
- * Cliente para integracao com o sistema de Cuidadores (cuidadores.carinho.com.vc).
- *
- * Responsavel por:
- * - Consulta de disponibilidade
- * - Dados cadastrais de cuidadores
- * - Avaliacoes e ratings
- * - Notificacoes para cuidadores
+ * Cliente de Cuidadores. Rotas reais: /api/caregivers, /api/search (sem /v1).
  */
 class CuidadoresClient extends BaseClient
 {
     protected string $configKey = 'cuidadores';
 
-    /*
-    |--------------------------------------------------------------------------
-    | Cuidadores
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca cuidador por ID.
-     */
     public function getCaregiver(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}");
+        return $this->get("/api/caregivers/{$caregiverId}");
     }
 
-    /**
-     * Lista cuidadores com filtros.
-     */
     public function listCaregivers(array $filters = []): array
     {
-        return $this->get('/api/v1/caregivers', $filters);
+        return $this->get('/api/caregivers', $filters);
     }
 
-    /**
-     * Busca cuidadores disponiveis.
-     */
     public function findAvailable(array $criteria): array
     {
-        return $this->post('/api/v1/caregivers/search', $criteria);
+        return $this->post('/api/search', $criteria);
     }
 
-    /**
-     * Atualiza dados do cuidador.
-     */
     public function updateCaregiver(int $caregiverId, array $data): array
     {
-        return $this->put("/api/v1/caregivers/{$caregiverId}", $data);
+        return $this->put("/api/caregivers/{$caregiverId}", $data);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Disponibilidade
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca disponibilidade do cuidador.
-     */
     public function getAvailability(int $caregiverId, string $startDate, string $endDate): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/availability", [
+        return $this->get("/api/caregivers/{$caregiverId}/availability", [
             'start_date' => $startDate,
             'end_date' => $endDate,
         ]);
     }
 
-    /**
-     * Atualiza disponibilidade.
-     */
     public function updateAvailability(int $caregiverId, array $slots): array
     {
-        return $this->put("/api/v1/caregivers/{$caregiverId}/availability", [
+        return $this->put("/api/caregivers/{$caregiverId}/availability/sync", [
             'slots' => $slots,
         ]);
     }
 
-    /**
-     * Bloqueia horario (alocacao).
-     */
     public function blockSlot(int $caregiverId, array $data): array
     {
-        return $this->post("/api/v1/caregivers/{$caregiverId}/availability/block", $data);
+        return $this->post("/api/caregivers/{$caregiverId}/availability", $data);
     }
 
-    /**
-     * Libera horario bloqueado.
-     */
     public function releaseSlot(int $caregiverId, int $slotId): array
     {
-        return $this->delete("/api/v1/caregivers/{$caregiverId}/availability/{$slotId}");
+        return $this->delete("/api/caregivers/{$caregiverId}/availability/{$slotId}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Avaliacoes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Registra avaliacao do cuidador.
-     */
     public function registerRating(int $caregiverId, array $data): array
     {
-        return $this->post("/api/v1/caregivers/{$caregiverId}/ratings", [
-            'service_id' => $data['service_id'],
-            'client_id' => $data['client_id'],
-            'rating' => $data['rating'],
+        return $this->post("/api/caregivers/{$caregiverId}/ratings", [
+            'service_id' => $data['service_id'] ?? null,
+            'client_id' => $data['client_id'] ?? null,
+            'rating' => $data['rating'] ?? null,
             'comment' => $data['comment'] ?? '',
             'categories' => $data['categories'] ?? [],
         ]);
     }
 
-    /**
-     * Busca avaliacoes do cuidador.
-     */
     public function getRatings(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/ratings");
+        return $this->get("/api/caregivers/{$caregiverId}/ratings");
     }
 
-    /**
-     * Busca media de avaliacao.
-     */
     public function getAverageRating(int $caregiverId): array
     {
-        return $this->getCached("/api/v1/caregivers/{$caregiverId}/ratings/average");
+        return $this->get("/api/caregivers/{$caregiverId}/ratings-summary");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Contratos e Documentos
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca contratos do cuidador.
-     */
     public function getContracts(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/contracts");
+        return $this->get("/api/caregivers/{$caregiverId}/contracts");
     }
 
-    /**
-     * Busca documentos do cuidador.
-     */
     public function getDocuments(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/documents");
+        return $this->get("/api/caregivers/{$caregiverId}/documents");
     }
 
-    /**
-     * Verifica se documentacao esta completa e valida.
-     */
     public function isDocumentationValid(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/documents/status");
+        return $this->get("/api/caregivers/{$caregiverId}/eligibility");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Habilidades e Regioes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca habilidades do cuidador.
-     */
     public function getSkills(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/skills");
+        return $this->get("/api/caregivers/{$caregiverId}/skills");
     }
 
-    /**
-     * Busca regioes de atuacao.
-     */
     public function getRegions(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/regions");
+        return $this->get("/api/caregivers/{$caregiverId}/regions");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Notificacoes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Envia notificacao para cuidador.
-     */
     public function sendNotification(int $caregiverId, array $data): array
     {
-        return $this->post("/api/v1/caregivers/{$caregiverId}/notifications", $data);
+        return $this->unsupported("notificação ao cuidador {$caregiverId}");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Incidentes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Registra incidente do cuidador.
-     */
     public function registerIncident(int $caregiverId, array $data): array
     {
-        return $this->post("/api/v1/caregivers/{$caregiverId}/incidents", $data);
+        return $this->post("/api/caregivers/{$caregiverId}/incidents", $data);
     }
 
-    /**
-     * Lista incidentes do cuidador.
-     */
     public function getIncidents(int $caregiverId): array
     {
-        return $this->get("/api/v1/caregivers/{$caregiverId}/incidents");
+        return $this->get("/api/caregivers/{$caregiverId}/incidents");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Webhooks
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Dispara evento para sistema de Cuidadores.
-     */
     public function dispatchEvent(string $eventType, array $payload): array
     {
-        return $this->post('/api/v1/webhooks/events', [
-            'event_type' => $eventType,
-            'payload' => $payload,
-            'source' => 'integracoes',
-            'timestamp' => now()->toIso8601String(),
-        ]);
+        return $this->post('/api/webhooks/operacao', array_merge($payload, [
+            'event' => $eventType,
+        ]));
     }
 }

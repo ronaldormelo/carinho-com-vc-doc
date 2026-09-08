@@ -18,7 +18,8 @@ return [
         'danger' => '#E53E3E',
     ],
     'typography' => [
-        'font_family' => 'Arial, "Helvetica Neue", Helvetica, sans-serif',
+        'font_family' => 'Inter, "Nunito", Arial, sans-serif',
+        'font_family_headings' => '"Nunito", Inter, Arial, sans-serif',
     ],
     'assets' => [
         'logo' => [

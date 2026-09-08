@@ -2,13 +2,13 @@
 
 ## Visao geral
 Sistema publico de presenca digital e captacao de leads
-(site.carinho.com.vc). Prioriza informacao clara, conversao rapida para
+(https://carinho.com.vc). Prioriza informacao clara, conversao rapida para
 WhatsApp e registro de origem para o CRM.
 
 ## Stack
 - Linguagem: PHP
 - Framework: Laravel
-- Banco de dados: MySQL
+- Banco de dados: MariaDB 10.11 compartilhado (driver `mysql`)
 - Cache e filas: Redis
 - Storage de midias: objeto (S3 compativel)
 - CDN para ativos estaticos

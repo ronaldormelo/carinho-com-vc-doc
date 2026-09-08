@@ -20,13 +20,12 @@ class AtendimentoClient
      */
     public function logNotification(array $payload): array
     {
-        return $this->request('notifications', [
-            'source' => 'carinho-cuidadores',
-            'caregiver_id' => $payload['caregiver_id'] ?? null,
-            'type' => $payload['type'] ?? null,
-            'channels' => $payload['channels'] ?? [],
-            'timestamp' => $payload['timestamp'] ?? now()->toIso8601String(),
-        ]);
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => 'Atendimento não expõe POST /notifications',
+        ];
     }
 
     /**
@@ -34,12 +33,12 @@ class AtendimentoClient
      */
     public function sendMessage(string $phone, string $message, array $options = []): array
     {
-        return $this->request('messages', [
-            'phone' => $phone,
-            'message' => $message,
-            'source' => 'carinho-cuidadores',
-            'options' => $options,
-        ]);
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => 'Atendimento não expõe POST /messages genérico',
+        ];
     }
 
     /**
@@ -49,7 +48,7 @@ class AtendimentoClient
     {
         $normalizedPhone = preg_replace('/\D+/', '', $phone);
 
-        return $this->request("conversations?phone={$normalizedPhone}&source=cuidadores", [], 'GET');
+        return $this->request("inbox?phone={$normalizedPhone}", [], 'GET');
     }
 
     /**
@@ -57,12 +56,10 @@ class AtendimentoClient
      */
     public function createConversation(array $payload): array
     {
-        return $this->request('conversations', [
+        return $this->request('inbox', [
             'phone' => $payload['phone'] ?? null,
-            'name' => $payload['name'] ?? null,
-            'source' => 'carinho-cuidadores',
-            'type' => 'caregiver',
-            'caregiver_id' => $payload['caregiver_id'] ?? null,
+            'senderName' => $payload['name'] ?? null,
+            'body' => $payload['message'] ?? '',
         ]);
     }
 
@@ -71,12 +68,12 @@ class AtendimentoClient
      */
     public function sendBroadcast(array $phones, string $message, array $options = []): array
     {
-        return $this->request('broadcasts', [
-            'phones' => $phones,
-            'message' => $message,
-            'source' => 'carinho-cuidadores',
-            'options' => $options,
-        ]);
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => 'Atendimento não expõe POST /broadcasts',
+        ];
     }
 
     /**
@@ -84,12 +81,12 @@ class AtendimentoClient
      */
     public function requestServiceRating(array $payload): array
     {
-        return $this->request('rating-requests', [
-            'service_id' => $payload['service_id'] ?? null,
-            'caregiver_id' => $payload['caregiver_id'] ?? null,
-            'client_phone' => $payload['client_phone'] ?? null,
-            'source' => 'carinho-cuidadores',
-        ]);
+        return [
+            'status' => 501,
+            'ok' => false,
+            'body' => null,
+            'error' => 'Atendimento não expõe POST /rating-requests',
+        ];
     }
 
     /**
@@ -165,6 +162,7 @@ class AtendimentoClient
 
         if ($token) {
             $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-Internal-Token'] = $token;
         }
 
         return $headers;

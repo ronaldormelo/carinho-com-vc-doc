@@ -1,6 +1,8 @@
 # Análise do Módulo Carinho Operação
 ## Avaliação sob Ótica de Eficiência Operacional
 
+> Referência (janeiro/2026). SLA e cancelamento vigentes: NFRs deste módulo e políticas do Financeiro.
+
 **Data da Análise:** Janeiro 2026  
 **Módulo:** carinho-operacao  
 **Subdomínio:** operacao.carinho.com.vc

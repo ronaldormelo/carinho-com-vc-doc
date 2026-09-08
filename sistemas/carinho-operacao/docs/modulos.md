@@ -208,11 +208,13 @@ O score total e calculado com pesos configurados:
 
 ### Regras
 
-| Antecedencia | Tipo | Taxa |
-|--------------|------|------|
-| 48+ horas | Gratuito | 0% |
-| 24-48 horas | Reduzido | 30% |
-| < 24 horas | Integral | 50% |
+| Antecedencia | Tipo operacional | Taxa interna |
+|--------------|------------------|--------------|
+| ≥ 24 horas | Sem taxa operacional | 0% |
+| 6–24 horas | Reduzida | 30% |
+| < 6 horas | Integral | 50% |
+
+Reembolso que a família recebe (100/50/0) está em `carinho-financeiro/docs/politicas.md`, não nesta tabela.
 
 ### Limite Mensal
 - Maximo de 3 cancelamentos por cliente por mes

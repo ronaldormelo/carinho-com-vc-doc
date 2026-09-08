@@ -35,7 +35,10 @@ class InternalWebhookController extends Controller
      */
     public function siteNewLead(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: site new lead', $request->all());
+        Log::channel('integrations')->info('Webhook: site new lead', [
+            'source' => $request->input('source'),
+            'city' => $request->input('city'),
+        ]);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -66,7 +69,10 @@ class InternalWebhookController extends Controller
      */
     public function atendimentoStatus(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: atendimento status', $request->all());
+        Log::channel('integrations')->info('Webhook: atendimento status', [
+            'lead_id' => $request->input('lead_id'),
+            'status_id' => $request->input('status_id'),
+        ]);
 
         $request->validate([
             'lead_id' => 'required|exists:leads,id',
@@ -97,7 +103,10 @@ class InternalWebhookController extends Controller
      */
     public function atendimentoInteraction(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: atendimento interaction', $request->all());
+        Log::channel('integrations')->info('Webhook: atendimento interaction', [
+            'lead_id' => $request->input('lead_id'),
+            'channel_id' => $request->input('channel_id'),
+        ]);
 
         $request->validate([
             'lead_id' => 'required|exists:leads,id',
@@ -116,7 +125,9 @@ class InternalWebhookController extends Controller
      */
     public function operacaoServiceStarted(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: operacao service started', $request->all());
+        Log::channel('integrations')->info('Webhook: operacao service started', [
+            'client_id' => $request->input('client_id'),
+        ]);
 
         $request->validate([
             'client_id' => 'required|exists:clients,id',
@@ -143,7 +154,9 @@ class InternalWebhookController extends Controller
      */
     public function operacaoServiceCompleted(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: operacao service completed', $request->all());
+        Log::channel('integrations')->info('Webhook: operacao service completed', [
+            'client_id' => $request->input('client_id'),
+        ]);
 
         $request->validate([
             'client_id' => 'required|exists:clients,id',
@@ -170,7 +183,10 @@ class InternalWebhookController extends Controller
      */
     public function financeiroPayment(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: financeiro payment', $request->all());
+        Log::channel('integrations')->info('Webhook: financeiro payment', [
+            'client_id' => $request->input('client_id'),
+            'payment_status' => $request->input('payment_status'),
+        ]);
 
         $request->validate([
             'client_id' => 'required|exists:clients,id',
@@ -205,7 +221,10 @@ class InternalWebhookController extends Controller
      */
     public function marketingUtm(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: marketing utm', $request->all());
+        Log::channel('integrations')->info('Webhook: marketing utm', [
+            'lead_id' => $request->input('lead_id'),
+            'utm_id' => $request->input('utm_id'),
+        ]);
 
         $request->validate([
             'lead_id' => 'required|exists:leads,id',
@@ -224,7 +243,9 @@ class InternalWebhookController extends Controller
      */
     public function documentosContractSigned(Request $request)
     {
-        Log::channel('integrations')->info('Webhook: documentos contract signed', $request->all());
+        Log::channel('integrations')->info('Webhook: documentos contract signed', [
+            'contract_id' => $request->input('contract_id'),
+        ]);
 
         $request->validate([
             'contract_id' => 'required|exists:contracts,id',

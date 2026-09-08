@@ -21,9 +21,4 @@ class DomainCareType extends Model
     {
         return static::where('code', $code)->first();
     }
-
-    public static function all(): \Illuminate\Database\Eloquent\Collection
-    {
-        return parent::all();
-    }
 }

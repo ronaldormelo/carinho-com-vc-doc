@@ -71,9 +71,41 @@ class InboxController extends Controller
             $query->where('conversations.support_level_id', $levelId);
         }
 
+        if ($request->filled('phone')) {
+            $phone = preg_replace('/\D+/', '', (string) $request->input('phone'));
+            $query->whereRaw(
+                "REPLACE(REPLACE(REPLACE(REPLACE(contacts.phone, '+', ''), '-', ''), ' ', ''), '(', '') LIKE ?",
+                ['%' . $phone . '%']
+            );
+        }
+
         $conversations = $query->orderByDesc('conversations.updated_at')->paginate(25);
 
         return response()->json($conversations);
+    }
+
+    /**
+     * Abre ou continua conversa (mesmo fluxo do webhook Z-API).
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'phone' => ['required', 'string', 'max:32'],
+            'senderName' => ['nullable', 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'body' => ['nullable', 'string'],
+            'initial_message' => ['nullable', 'string'],
+        ]);
+
+        $inbox = app(\App\Services\InboxService::class);
+
+        $result = $inbox->handleInboundMessage([
+            'phone' => $validated['phone'],
+            'senderName' => $validated['senderName'] ?? $validated['name'] ?? '',
+            'body' => $validated['body'] ?? $validated['initial_message'] ?? '',
+        ]);
+
+        return response()->json($result, 201);
     }
 
     public function show(int $conversation): JsonResponse

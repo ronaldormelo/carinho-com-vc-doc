@@ -1,233 +1,92 @@
-# Docker - Carinho com Você
+# Docker — Carinho com Você
 
-## Estrutura de Containers
+MariaDB e Redis **compartilhados** na raiz; um container de aplicação (e o Redis prefixado) por sistema.
 
-Este projeto utiliza uma arquitetura de containers onde:
+Arquivo da raiz: **`docker-compose.yml`** (não existe `docker-compose.mysql.yml`).
 
-- **MariaDB Compartilhado**: Um único container MariaDB é compartilhado por todos os sistemas
-- **Redis por Sistema**: Cada sistema tem seu próprio container Redis (ou pode usar o compartilhado)
-- **App por Sistema**: Cada sistema tem seu próprio container de aplicação
+## 1. Infra compartilhada
 
-## Inicialização
-
-### 1. Iniciar MariaDB Compartilhado
-
-Primeiro, inicie o container MariaDB compartilhado na raiz do projeto:
+Na raiz do repositório:
 
 ```bash
-cd /caminho/para/carinho-com-vc-doc
-docker-compose -f docker-compose.mysql.yml up -d
+docker compose up -d
 ```
 
-Isso criará:
-- Container `carinho-mariadb` na porta 3306
-- Container `carinho-redis` (opcional, compartilhado) na porta 6379
-- Network `carinho-network` para comunicação entre containers
+Sobe:
 
-### 2. Iniciar Sistemas Individuais
+- `carinho-mariadb` (MariaDB 10.11) — porta `3306`
+- `carinho-redis` (Redis 7) — porta `6379`
+- rede `carinho-network`
 
-Para cada sistema, navegue até sua pasta e inicie os containers:
+Na **primeira** criação do datadir, o entrypoint executa `mysql/init/init.sql` (montado em `/docker-entrypoint-initdb.d`). Isso cria os schemas `carinho_*` e o usuário de desenvolvimento definido nesse script.
+
+O datadir padrão do Compose é o bind mount `/var/lib/mariadb-data` no host. Apagar o volume nomeado `carinho-mariadb-data` **não** apaga esse bind. Root vazio (`MARIADB_ALLOW_EMPTY_ROOT_PASSWORD`) vale só para máquina local — [SECURITY.md](SECURITY.md).
+
+## 2. Cada sistema
 
 ```bash
-# Carinho Atendimento
 cd sistemas/carinho-atendimento
-docker-compose up -d
-
-# Carinho Cuidadores
-cd sistemas/carinho-cuidadores
-docker-compose up -d
-
-# Carinho Documentos LGPD
-cd sistemas/carinho-documentos-lgpd
-docker-compose up -d
-
-# Carinho Operação
-cd sistemas/carinho-operacao
-docker-compose up -d
-
-# Carinho Site
-cd sistemas/carinho-site
-docker-compose up -d
-
-# Carinho CRM
-cd sistemas/carinho-crm
-docker-compose up -d
-
-# Carinho Marketing
-cd sistemas/carinho-marketing
-docker-compose up -d
-
-# Carinho Financeiro
-cd sistemas/carinho-financeiro
-docker-compose up -d
-
-# Carinho Integrações
-cd sistemas/carinho-integracoes
-docker-compose up -d
+docker compose up -d
 ```
 
-## Portas Padrão
+Repita para: `carinho-cuidadores`, `carinho-documentos-lgpd`, `carinho-operacao`, `carinho-site`, `carinho-crm`, `carinho-marketing`, `carinho-financeiro`, `carinho-integracoes`.
 
-| Sistema | App Port | Redis Prefix |
-|---------|----------|-------------|
-| Atendimento | 8080 | carinho_atendimento: |
-| Cuidadores | 8081 | carinho_cuidadores: |
-| Documentos | 8082 | carinho_documentos_lgpd: |
-| Operação | 8083 | carinho_operacao: |
-| Site | 8084 | carinho_site: |
-| CRM | 8085 | carinho_crm: |
-| Marketing | 8086 | carinho_marketing: |
-| Financeiro | 8087 | carinho_financeiro: |
-| Integrações | 8088 | carinho_integracoes: |
-| MariaDB (compartilhado) | 3306 | - |
-| Redis (compartilhado) | 6379 | - |
+O app precisa da rede `carinho-network` (já referenciada nos Compose dos módulos) e de `DB_HOST=carinho-mariadb`.
 
-## Configuração de Banco de Dados
+## Portas
 
-### Variáveis de Ambiente
+| Sistema | Porta do app | Prefixo Redis |
+|---------|--------------|---------------|
+| Atendimento | 8080 | `carinho_atendimento:` |
+| Cuidadores | 8081 | `carinho_cuidadores:` |
+| Documentos | 8082 | `carinho_documentos_lgpd:` |
+| Operação | 8083 | `carinho_operacao:` |
+| Site | 8084 | `carinho_site:` |
+| CRM | 8085 | `carinho_crm:` |
+| Marketing | 8086 | `carinho_marketing:` |
+| Financeiro | 8087 | `carinho_financeiro:` |
+| Integrações | 8088 | `carinho_integracoes:` |
+| MariaDB | 3306 | — |
+| Redis | 6379 | — |
 
-Cada sistema deve ter as seguintes variáveis no `.env`:
+## `.env` do app
 
 ```env
 DB_HOST=carinho-mariadb
 DB_PORT=3306
-DB_DATABASE=carinho_[nome_sistema]
-DB_USERNAME=root
-DB_PASSWORD=carinho
+DB_DATABASE=carinho_[nome_do_schema]
+DB_CONNECTION=mysql
 
 REDIS_HOST=carinho-redis
 REDIS_PORT=6379
-REDIS_PREFIX=carinho_[nome_sistema]:
+REDIS_PREFIX=carinho_[nome_do_sistema]:
 ```
 
-### Criar Bancos de Dados
+Schemas criados pelo init: `carinho_atendimento`, `carinho_cuidadores`, `carinho_documentos_lgpd`, `carinho_operacao`, `carinho_site`, `carinho_crm`, `carinho_marketing`, `carinho_financeiro`, `carinho_integracoes`.
 
-Os bancos de dados são criados automaticamente pelo script de inicialização em `mysql/init/init.sql` quando o container MariaDB é iniciado pela primeira vez.
+Segredos: [CATALOGO-SECRETS.md](CATALOGO-SECRETS.md). Composer: o `docker-entrypoint.sh` de cada app instala dependências na primeira subida.
 
-Se precisar criar manualmente:
-
-```bash
-# Conectar ao MariaDB
-docker exec -it carinho-mariadb mariadb -uroot -proot
-
-# Criar bancos de dados
-CREATE DATABASE carinho_atendimento;
-CREATE DATABASE carinho_cuidadores;
-CREATE DATABASE carinho_documentos_lgpd;
-CREATE DATABASE carinho_operacao;
-CREATE DATABASE carinho_site;
-CREATE DATABASE carinho_crm;
-CREATE DATABASE carinho_marketing;
-CREATE DATABASE carinho_financeiro;
-CREATE DATABASE carinho_integracoes;
-
-# Criar usuário (se ainda não existir)
-CREATE USER IF NOT EXISTS 'carinho'@'%' IDENTIFIED BY 'carinho';
-GRANT ALL PRIVILEGES ON carinho_*.* TO 'carinho'@'%';
-FLUSH PRIVILEGES;
-```
-
-Ou use um script de inicialização SQL em `mysql/init/init.sql`.
-
-## Network
-
-Todos os containers usam a network `carinho-network` para comunicação:
-
-- Os containers de aplicação se conectam ao MariaDB via hostname `carinho-mariadb`
-- Os containers podem se comunicar entre si usando os nomes dos containers
-
-## Comandos Úteis
-
-### Ver logs
-```bash
-docker-compose logs -f app
-```
-
-### Parar todos os containers
-```bash
-# Parar sistemas individuais
-cd sistemas/[sistema]
-docker-compose down
-
-# Parar MariaDB compartilhado
-docker-compose -f docker-compose.mysql.yml down
-```
-
-### Rebuild containers
-```bash
-docker-compose build --no-cache
-docker-compose up -d
-```
-
-**Nota:** Os containers instalam automaticamente as dependências do Composer na primeira inicialização através do script `docker-entrypoint.sh`. Se precisar reinstalar as dependências, você pode:
+## Comandos
 
 ```bash
-# Entrar no container
+docker compose logs -f app          # dentro da pasta do sistema
+docker compose down                 # para o sistema
+# na raiz:
+docker compose down                 # para MariaDB e Redis
+
 docker exec -it carinho-[sistema]-app bash
-
-# Reinstalar dependências
-composer install
-```
-
-### Acessar container
-```bash
-docker exec -it carinho-[sistema]-app bash
-```
-
-### Verificar conexão com MariaDB
-```bash
 docker exec -it carinho-[sistema]-app php artisan migrate:status
-```
-
-### Instalar dependências do Composer
-
-As dependências são instaladas automaticamente na primeira inicialização do container. Se precisar reinstalar:
-
-```bash
-# Opção 1: Dentro do container
 docker exec -it carinho-[sistema]-app composer install
-
-# Opção 2: Rebuild do container
-docker-compose build --no-cache
-docker-compose up -d
 ```
 
-## Troubleshooting
+Rebuild: `docker compose build --no-cache && docker compose up -d` na pasta do sistema.
 
-### Container não consegue conectar ao MariaDB
+## Problemas frequentes
 
-1. Verifique se o MariaDB compartilhado está rodando:
-   ```bash
-   docker ps | grep carinho-mariadb
-   ```
+**App não conecta no banco.** `docker ps` deve mostrar `carinho-mariadb`; `docker network ls` deve mostrar `carinho-network`; o serviço do app deve declarar essa network externa.
 
-2. Verifique se a network está criada:
-   ```bash
-   docker network ls | grep carinho-network
-   ```
+**Init SQL não rodou.** Scripts em `/docker-entrypoint-initdb.d` só executam com datadir **vazio**. Se o bind `/var/lib/mariadb-data` já existia, crie os schemas à mão a partir de `mysql/init/init.sql`.
 
-3. Verifique se o container está na mesma network `carinho-network`
+**Porta ocupada.** Altere `APP_PORT` no `.env` do módulo.
 
-### Porta já em uso
-
-Altere a porta no `.env` ou no `docker-compose.yml`:
-```yaml
-ports:
-  - "8089:80"  # Altere 8089 para uma porta livre
-```
-
-### Redis não conecta
-
-Todos os sistemas usam o Redis compartilhado (`carinho-redis`). Cada sistema tem um prefixo único para evitar conflito de chaves:
-
-- `carinho_atendimento:`
-- `carinho_cuidadores:`
-- `carinho_documentos_lgpd:`
-- `carinho_operacao:`
-- `carinho_site:`
-- `carinho_crm:`
-- `carinho_marketing:`
-- `carinho_financeiro:`
-- `carinho_integracoes:`
-
-O prefixo é configurado automaticamente via variável de ambiente `REDIS_PREFIX` no docker-compose.yml de cada sistema.
+**Redis.** Um Redis compartilhado; o prefixo `REDIS_PREFIX` evita colisão de chaves entre apps.

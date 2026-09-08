@@ -1,6 +1,8 @@
 # Análise do Módulo Carinho Cuidadores
 ## Revisão sob Ótica de Práticas Consolidadas de Mercado
 
+> Referência (janeiro/2026). Não substitui NFRs nem o pipeline em [04](../../../04%20-%20Gestão%20de%20Cuidadores.md).
+
 Data: Janeiro/2026
 
 ---

@@ -1,3 +1,20 @@
+-- =============================================================================
+-- Carinho Operação - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations:
+--   2026_01_22_000001_create_operacao_schema
+--   2026_01_24_000001_add_operational_audit_trail
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_service_type (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -353,3 +370,5 @@ CREATE INDEX idx_sla_metrics_date
 
 CREATE INDEX idx_sla_alerts_acknowledged
   ON sla_alerts (is_acknowledged, severity);
+
+SET FOREIGN_KEY_CHECKS = 1;

@@ -52,10 +52,12 @@ Valor Final = Valor Original + (Valor × Juros × Dias) + (Valor × Multa)
 | Parâmetro | Valor | Variável |
 |-----------|-------|----------|
 | Cancelamento gratuito até | 24h antes | `CANCELLATION_FREE_HOURS` |
-| Reembolso parcial até | 12h antes | `CANCELLATION_PARTIAL_HOURS` |
+| Limite interno do trecho parcial | 12h antes | `CANCELLATION_PARTIAL_HOURS` |
 | Percentual do reembolso parcial | 50% | `CANCELLATION_PARTIAL_PERCENT` |
 | Sem reembolso se menos de | 6h antes | `CANCELLATION_NO_REFUND_HOURS` |
 | Taxa administrativa | 5% | `CANCELLATION_ADMIN_FEE` |
+
+Com os defaults (24 / 12 / 6), o efeito para a família é a tabela acima: ≥24 h reembolso total; entre 6 h e 24 h parcial (o código aplica 50% também no intervalo 12–24 h); <6 h sem reembolso. A Operação usa as mesmas janelas de hora; taxas operacionais dela não alteram esta tabela.
 
 ### Taxa Administrativa
 

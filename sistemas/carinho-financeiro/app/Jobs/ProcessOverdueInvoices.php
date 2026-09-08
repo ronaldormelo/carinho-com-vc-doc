@@ -44,7 +44,7 @@ class ProcessOverdueInvoices implements ShouldQueue
 
                         // Notifica CRM
                         $crmClient->notifyInvoiceOverdue(
-                            $invoice->contract_id,
+                            $invoice->client_id,
                             $invoice->id,
                             $invoice->total_with_fees
                         );

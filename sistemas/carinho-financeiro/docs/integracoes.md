@@ -17,10 +17,11 @@ O Stripe é utilizado como gateway de pagamento principal, suportando:
 ### Configuração
 
 ```env
+# Exemplos — nunca commitar chave real (sk_live_ / sk_test_ de conta)
 STRIPE_ENABLED=true
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_PUBLISHABLE_KEY=pk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_SECRET_KEY=sk_test_exemplo
+STRIPE_PUBLISHABLE_KEY=pk_test_exemplo
+STRIPE_WEBHOOK_SECRET=whsec_exemplo
 STRIPE_CURRENCY=brl
 ```
 

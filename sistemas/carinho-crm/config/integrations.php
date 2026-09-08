@@ -34,7 +34,7 @@ return [
         // Carinho Site
         'site' => [
             'enabled' => env('CARINHO_SITE_ENABLED', true),
-            'base_url' => env('CARINHO_SITE_URL', 'https://site.carinho.com.vc'),
+            'base_url' => env('CARINHO_SITE_URL', 'https://carinho.com.vc'),
             'api_key' => env('CARINHO_SITE_API_KEY'),
             'timeout' => 10,
         ],

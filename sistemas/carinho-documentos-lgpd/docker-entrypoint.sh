@@ -19,7 +19,9 @@ chmod -R 775 storage bootstrap/cache || true
 
 echo "Instalando dependências do Composer..."
 # Instalar sem scripts primeiro (para evitar erro do artisan)
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+# Timeout 0: unzip do laravel/framework em bind mount Windows ultrapassa os 300s padrão.
+export COMPOSER_PROCESS_TIMEOUT=0
+composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --no-dev
 
 
 echo "Executando scripts do Composer..."

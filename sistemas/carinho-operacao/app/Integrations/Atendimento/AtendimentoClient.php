@@ -6,93 +6,71 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Cliente para integracao com o sistema de Atendimento.
- *
- * Endpoints principais:
- * - GET /demandas/{id} - Obtem detalhes da demanda
- * - POST /demandas/{id}/status - Atualiza status
- * - GET /demandas/pendentes - Lista demandas pendentes
+ * Cliente do Atendimento. Destino real: /inbox, não /demandas.
  */
 class AtendimentoClient
 {
-    /**
-     * Obtem detalhes de uma demanda.
-     */
     public function getDemanda(int $demandaId): array
     {
-        return $this->request("demandas/{$demandaId}", [], 'GET');
+        return $this->request("inbox/{$demandaId}", [], 'GET');
     }
 
-    /**
-     * Lista demandas pendentes.
-     */
     public function getDemandasPendentes(): array
     {
-        return $this->request('demandas/pendentes', [], 'GET');
+        return $this->request('inbox', ['status' => 'waiting'], 'GET');
     }
 
-    /**
-     * Atualiza status da demanda.
-     */
     public function updateDemandaStatus(int $demandaId, string $status, ?string $notes = null): array
     {
-        return $this->request("demandas/{$demandaId}/status", [
+        $result = $this->request("inbox/{$demandaId}/status", [
             'status' => $status,
-            'notes' => $notes,
-            'updated_by' => 'operacao',
-            'updated_at' => now()->toIso8601String(),
         ], 'PATCH');
+
+        if ($notes) {
+            $this->request("inbox/{$demandaId}/notes", ['note' => $notes]);
+        }
+
+        return $result;
     }
 
-    /**
-     * Notifica atendimento sobre alocacao.
-     */
     public function notifyAllocation(int $demandaId, array $data): array
     {
-        return $this->request("demandas/{$demandaId}/allocation", [
-            'service_request_id' => $data['service_request_id'] ?? null,
-            'assignment_id' => $data['assignment_id'] ?? null,
-            'caregiver_id' => $data['caregiver_id'] ?? null,
-            'allocated_at' => now()->toIso8601String(),
-        ]);
+        $note = sprintf(
+            'Alocação: serviço %s, assignment %s, cuidador %s',
+            $data['service_request_id'] ?? '-',
+            $data['assignment_id'] ?? '-',
+            $data['caregiver_id'] ?? '-'
+        );
+
+        return $this->request("inbox/{$demandaId}/notes", ['note' => $note]);
     }
 
-    /**
-     * Notifica conclusao do servico.
-     */
     public function notifyCompletion(int $demandaId, array $data): array
     {
-        return $this->request("demandas/{$demandaId}/completion", [
-            'service_request_id' => $data['service_request_id'] ?? null,
-            'completed_at' => $data['completed_at'] ?? now()->toIso8601String(),
-            'summary' => $data['summary'] ?? null,
-        ]);
+        $note = sprintf(
+            'Conclusão: serviço %s em %s. %s',
+            $data['service_request_id'] ?? '-',
+            $data['completed_at'] ?? now()->toIso8601String(),
+            $data['summary'] ?? ''
+        );
+
+        return $this->request("inbox/{$demandaId}/notes", ['note' => $note]);
     }
 
-    /**
-     * Obtem historico da demanda.
-     */
     public function getDemandaHistory(int $demandaId): array
     {
-        return $this->request("demandas/{$demandaId}/history", [], 'GET');
+        return $this->request("inbox/{$demandaId}/history", [], 'GET');
     }
 
-    /**
-     * Registra ocorrencia na demanda.
-     */
     public function registerOccurrence(int $demandaId, array $data): array
     {
-        return $this->request("demandas/{$demandaId}/occurrences", [
-            'source' => 'operacao',
-            'type' => $data['type'] ?? null,
-            'description' => $data['description'] ?? null,
-            'occurred_at' => $data['occurred_at'] ?? now()->toIso8601String(),
+        return $this->request("inbox/{$demandaId}/incident", [
+            'severity' => $data['severity'] ?? $data['type'] ?? 'medium',
+            'category' => $data['type'] ?? 'operacao',
+            'notes' => $data['description'] ?? null,
         ]);
     }
 
-    /**
-     * Realiza requisicao para a API.
-     */
     private function request(string $path, array $payload = [], string $method = 'POST'): array
     {
         try {
@@ -100,7 +78,7 @@ class AtendimentoClient
                 ->timeout((int) config('integrations.atendimento.timeout', 8));
 
             $response = match ($method) {
-                'GET' => $request->get($this->endpoint($path)),
+                'GET' => $request->get($this->endpoint($path), $payload),
                 'PATCH' => $request->patch($this->endpoint($path), $payload),
                 'PUT' => $request->put($this->endpoint($path), $payload),
                 'DELETE' => $request->delete($this->endpoint($path)),
@@ -138,9 +116,6 @@ class AtendimentoClient
         }
     }
 
-    /**
-     * Monta URL do endpoint.
-     */
     private function endpoint(string $path): string
     {
         $baseUrl = rtrim((string) config('integrations.atendimento.base_url'), '/');
@@ -148,9 +123,6 @@ class AtendimentoClient
         return "{$baseUrl}/{$path}";
     }
 
-    /**
-     * Retorna headers da requisicao.
-     */
     private function headers(): array
     {
         $token = config('integrations.atendimento.token');
@@ -163,6 +135,7 @@ class AtendimentoClient
 
         if ($token) {
             $headers['Authorization'] = "Bearer {$token}";
+            $headers['X-Internal-Token'] = $token;
         }
 
         return $headers;

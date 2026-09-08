@@ -32,7 +32,7 @@ class RateLimit extends Model
     /**
      * Incrementa contador para cliente.
      */
-    public static function increment(int $clientId): self
+    public static function incrementForClient(int $clientId): self
     {
         $windowStart = now()->startOfMinute();
 

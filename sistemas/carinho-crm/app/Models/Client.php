@@ -337,6 +337,7 @@ class Client extends Model
         $this->classification_id = $classificationId;
         $this->review_frequency_id = DomainReviewFrequency::getRecommendedForClassification($classificationId);
         $this->scheduleNextReview();
+        $this->save();
     }
 
     // ==========================================

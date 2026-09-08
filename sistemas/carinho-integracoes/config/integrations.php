@@ -43,7 +43,7 @@ return [
     */
 
     'site' => [
-        'url' => env('CARINHO_SITE_URL', 'https://site.carinho.com.vc'),
+        'url' => env('CARINHO_SITE_URL', 'https://carinho.com.vc'),
         'api_key' => env('CARINHO_SITE_API_KEY'),
         'timeout' => 10,
     ],

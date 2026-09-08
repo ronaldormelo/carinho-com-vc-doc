@@ -1,3 +1,20 @@
+-- =============================================================================
+-- Carinho Financeiro - Schema SQL consolidado
+-- =============================================================================
+-- Consolida todas as estruturas das migrations para a aplicação funcionar.
+--
+-- Migrations:
+--   2026_01_22_000001_create_settings_table
+--   2026_01_23_000001_add_financial_controls
+-- =============================================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- -----------------------------------------------------------------------------
+-- Domain tables
+-- -----------------------------------------------------------------------------
+
 CREATE TABLE domain_payment_method (
   id TINYINT UNSIGNED PRIMARY KEY,
   code VARCHAR(32) NOT NULL UNIQUE,
@@ -480,3 +497,5 @@ CREATE INDEX idx_payments_status_paid
 
 CREATE INDEX idx_payouts_caregiver_status
   ON payouts (caregiver_id, status_id);
+
+SET FOREIGN_KEY_CHECKS = 1;

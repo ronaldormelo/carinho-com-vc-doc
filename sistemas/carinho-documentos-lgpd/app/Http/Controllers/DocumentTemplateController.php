@@ -182,17 +182,20 @@ class DocumentTemplateController extends Controller
     {
         $template = DocumentTemplate::getActiveByType(DomainDocType::TERMOS);
 
-        if (!$template) {
-            return $this->notFound('Termos nao encontrados');
+        if ($template) {
+            return $this->success([
+                'version' => $template->version,
+                'content' => $template->render([
+                    'data_atualizacao' => now()->format('d/m/Y'),
+                ]),
+                'source' => 'template',
+            ]);
         }
 
-        $rendered = $template->render([
-            'data_atualizacao' => now()->format('d/m/Y'),
-        ]);
-
         return $this->success([
-            'version' => $template->version,
-            'content' => $rendered,
+            'version' => 'html-local',
+            'content' => view('public.terms')->render(),
+            'source' => 'web',
         ]);
     }
 
@@ -203,17 +206,20 @@ class DocumentTemplateController extends Controller
     {
         $template = DocumentTemplate::getActiveByType(DomainDocType::PRIVACIDADE);
 
-        if (!$template) {
-            return $this->notFound('Politica de privacidade nao encontrada');
+        if ($template) {
+            return $this->success([
+                'version' => $template->version,
+                'content' => $template->render([
+                    'data_atualizacao' => now()->format('d/m/Y'),
+                ]),
+                'source' => 'template',
+            ]);
         }
 
-        $rendered = $template->render([
-            'data_atualizacao' => now()->format('d/m/Y'),
-        ]);
-
         return $this->success([
-            'version' => $template->version,
-            'content' => $rendered,
+            'version' => 'html-local',
+            'content' => view('public.privacy')->render(),
+            'source' => 'web',
         ]);
     }
 }

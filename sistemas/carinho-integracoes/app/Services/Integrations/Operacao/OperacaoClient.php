@@ -5,51 +5,27 @@ namespace App\Services\Integrations\Operacao;
 use App\Services\Integrations\BaseClient;
 
 /**
- * Cliente para integracao com o sistema de Operacao (operacao.carinho.com.vc).
- *
- * Responsavel por:
- * - Gerenciamento de agenda e agendamentos
- * - Alocacao de cuidadores
- * - Check-in/out de servicos
- * - Notificacoes de inicio/fim
+ * Cliente da Operação. Rotas reais: /api/schedules, /api/checkin/..., /api/assignments/..., /api/service-requests.
  */
 class OperacaoClient extends BaseClient
 {
     protected string $configKey = 'operacao';
 
-    /*
-    |--------------------------------------------------------------------------
-    | Agendamentos
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Cria novo agendamento.
-     */
     public function createSchedule(array $data): array
     {
-        return $this->post('/api/v1/schedules', $data);
+        return $this->post('/api/schedules', $data);
     }
 
-    /**
-     * Atualiza agendamento existente.
-     */
     public function updateSchedule(int $scheduleId, array $data): array
     {
-        return $this->put("/api/v1/schedules/{$scheduleId}", $data);
+        return $this->unsupported("PUT agenda {$scheduleId}");
     }
 
-    /**
-     * Busca agendamento por ID.
-     */
     public function getSchedule(int $scheduleId): array
     {
-        return $this->get("/api/v1/schedules/{$scheduleId}");
+        return $this->get("/api/schedules/{$scheduleId}");
     }
 
-    /**
-     * Lista agendamentos do cliente.
-     */
     public function getClientSchedules(int $clientId, ?string $status = null): array
     {
         $query = ['client_id' => $clientId];
@@ -58,51 +34,33 @@ class OperacaoClient extends BaseClient
             $query['status'] = $status;
         }
 
-        return $this->get('/api/v1/schedules', $query);
+        return $this->get('/api/schedules', $query);
     }
 
-    /**
-     * Cancela agendamento.
-     */
     public function cancelSchedule(int $scheduleId, string $reason): array
     {
-        return $this->post("/api/v1/schedules/{$scheduleId}/cancel", [
+        return $this->post("/api/schedules/{$scheduleId}/cancel", [
             'reason' => $reason,
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Servicos
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca servico por ID.
-     */
     public function getService(int $serviceId): array
     {
-        return $this->get("/api/v1/services/{$serviceId}");
+        return $this->get("/api/service-requests/{$serviceId}");
     }
 
-    /**
-     * Registra check-in do cuidador.
-     */
     public function checkIn(int $serviceId, array $data): array
     {
-        return $this->post("/api/v1/services/{$serviceId}/check-in", [
+        return $this->post("/api/checkin/schedule/{$serviceId}/in", [
             'latitude' => $data['latitude'] ?? null,
             'longitude' => $data['longitude'] ?? null,
             'timestamp' => $data['timestamp'] ?? now()->toIso8601String(),
         ]);
     }
 
-    /**
-     * Registra check-out do cuidador.
-     */
     public function checkOut(int $serviceId, array $data): array
     {
-        return $this->post("/api/v1/services/{$serviceId}/check-out", [
+        return $this->post("/api/checkin/schedule/{$serviceId}/out", [
             'latitude' => $data['latitude'] ?? null,
             'longitude' => $data['longitude'] ?? null,
             'notes' => $data['notes'] ?? '',
@@ -110,125 +68,74 @@ class OperacaoClient extends BaseClient
         ]);
     }
 
-    /**
-     * Lista servicos do dia.
-     */
     public function getTodayServices(): array
     {
-        return $this->get('/api/v1/services/today');
+        return $this->get('/api/schedules/today');
     }
 
-    /**
-     * Lista servicos pendentes.
-     */
     public function getPendingServices(): array
     {
-        return $this->get('/api/v1/services', ['status' => 'pending']);
+        return $this->get('/api/service-requests/open');
     }
 
-    /**
-     * Lista servicos finalizados (para calculo de pagamento).
-     */
     public function getCompletedServices(string $startDate, string $endDate): array
     {
-        return $this->get('/api/v1/services', [
-            'status' => 'completed',
+        return $this->get('/api/schedules', [
             'start_date' => $startDate,
             'end_date' => $endDate,
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Alocacao de Cuidadores
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Busca cuidadores disponiveis para um horario.
-     */
     public function findAvailableCaregivers(array $criteria): array
     {
-        return $this->post('/api/v1/allocation/search', $criteria);
+        $serviceRequestId = $criteria['service_request_id'] ?? $criteria['id'] ?? null;
+
+        if (!$serviceRequestId) {
+            return $this->unsupported('busca de alocação sem service_request_id');
+        }
+
+        return $this->get("/api/assignments/service-request/{$serviceRequestId}/candidates", $criteria);
     }
 
-    /**
-     * Aloca cuidador para agendamento.
-     */
-    public function allocateCaregiver(int $scheduleId, int $caregiverId): array
+    public function allocateCaregiver(int $serviceRequestId, int $caregiverId): array
     {
-        return $this->post("/api/v1/schedules/{$scheduleId}/allocate", [
+        return $this->post("/api/assignments/service-request/{$serviceRequestId}/assign", [
             'caregiver_id' => $caregiverId,
         ]);
     }
 
-    /**
-     * Realoca cuidador (substituicao).
-     */
-    public function reallocateCaregiver(int $scheduleId, int $newCaregiverId, string $reason): array
+    public function reallocateCaregiver(int $assignmentId, int $newCaregiverId, string $reason): array
     {
-        return $this->post("/api/v1/schedules/{$scheduleId}/reallocate", [
+        return $this->post("/api/assignments/{$assignmentId}/substitute", [
             'caregiver_id' => $newCaregiverId,
             'reason' => $reason,
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Incidentes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Registra incidente durante servico.
-     */
     public function reportIncident(int $serviceId, array $data): array
     {
-        return $this->post("/api/v1/services/{$serviceId}/incidents", $data);
-    }
-
-    /**
-     * Lista incidentes de um servico.
-     */
-    public function getServiceIncidents(int $serviceId): array
-    {
-        return $this->get("/api/v1/services/{$serviceId}/incidents");
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Feedback
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Registra feedback do cliente.
-     */
-    public function registerFeedback(int $serviceId, array $data): array
-    {
-        return $this->post("/api/v1/services/{$serviceId}/feedback", [
-            'rating' => $data['rating'],
-            'comment' => $data['comment'] ?? '',
-            'would_recommend' => $data['would_recommend'] ?? true,
+        return $this->post('/api/emergencies', [
+            'service_request_id' => $data['service_request_id'] ?? $serviceId,
+            'severity_id' => $data['severity_id'] ?? 2,
+            'description' => $data['description'] ?? $data['notes'] ?? 'Incidente operacional',
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Webhooks
-    |--------------------------------------------------------------------------
-    */
+    public function getServiceIncidents(int $serviceId): array
+    {
+        return $this->get('/api/emergencies', ['service_request_id' => $serviceId]);
+    }
 
-    /**
-     * Dispara evento para Operacao.
-     */
+    public function registerFeedback(int $serviceId, array $data): array
+    {
+        return $this->unsupported("feedback do serviço {$serviceId}");
+    }
+
     public function dispatchEvent(string $eventType, array $payload): array
     {
-        return $this->post('/api/v1/webhooks/events', [
-            'event_type' => $eventType,
-            'payload' => $payload,
-            'source' => 'integracoes',
-            'timestamp' => now()->toIso8601String(),
+        return $this->post('/api/webhooks/atendimento', [
+            'event' => $eventType,
+            'data' => $payload,
         ]);
     }
 }

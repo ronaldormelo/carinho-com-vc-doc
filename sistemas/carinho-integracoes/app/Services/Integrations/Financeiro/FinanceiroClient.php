@@ -273,11 +273,9 @@ class FinanceiroClient extends BaseClient
      */
     public function dispatchEvent(string $eventType, array $payload): array
     {
-        return $this->post('/api/webhooks/events', [
-            'event_type' => $eventType,
+        return $this->post('/webhooks/internal', [
+            'event' => $eventType,
             'payload' => $payload,
-            'source' => 'integracoes',
-            'timestamp' => now()->toIso8601String(),
         ]);
     }
 }

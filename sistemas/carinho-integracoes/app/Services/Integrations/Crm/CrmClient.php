@@ -28,7 +28,7 @@ class CrmClient extends BaseClient
      */
     public function createLead(array $data): array
     {
-        return $this->post('/api/v1/leads', $data);
+        return $this->post('/api/v1/public/leads', $data);
     }
 
     /**
@@ -52,7 +52,7 @@ class CrmClient extends BaseClient
      */
     public function findLeadByPhone(string $phone): array
     {
-        return $this->get('/api/v1/leads', ['phone' => $phone]);
+        return $this->get('/api/v1/leads/search', ['q' => $phone]);
     }
 
     /**
@@ -60,7 +60,7 @@ class CrmClient extends BaseClient
      */
     public function findLeadByEmail(string $email): array
     {
-        return $this->get('/api/v1/leads', ['email' => $email]);
+        return $this->get('/api/v1/leads/search', ['q' => $email]);
     }
 
     /**
@@ -138,11 +138,24 @@ class CrmClient extends BaseClient
      */
     public function registerInteraction(int $leadId, array $data): array
     {
-        return $this->post("/api/v1/leads/{$leadId}/interactions", [
-            'channel' => $data['channel'] ?? 'whatsapp',
-            'direction' => $data['direction'] ?? 'inbound',
-            'content' => $data['content'] ?? '',
-            'metadata' => $data['metadata'] ?? [],
+        $channel = strtolower((string) ($data['channel'] ?? 'whatsapp'));
+        $channelId = match ($channel) {
+            'whatsapp' => 1,
+            'email' => 2,
+            'phone', 'telefone' => 3,
+            default => 1,
+        };
+
+        $summary = trim((string) ($data['content'] ?? $data['summary'] ?? ''));
+        if ($summary === '') {
+            $summary = 'Interação registrada';
+        }
+
+        return $this->post('/webhooks/internal/atendimento/interaction', [
+            'lead_id' => $leadId,
+            'channel_id' => $data['channel_id'] ?? $channelId,
+            'summary' => $summary,
+            'occurred_at' => $data['occurred_at'] ?? now()->toIso8601String(),
         ]);
     }
 
@@ -151,7 +164,7 @@ class CrmClient extends BaseClient
      */
     public function getInteractions(int $leadId): array
     {
-        return $this->get("/api/v1/leads/{$leadId}/interactions");
+        return $this->get('/api/v1/interactions', ['lead_id' => $leadId]);
     }
 
     /*
@@ -257,11 +270,57 @@ class CrmClient extends BaseClient
      */
     public function dispatchEvent(string $eventType, array $payload): array
     {
-        return $this->post('/api/v1/webhooks/events', [
-            'event_type' => $eventType,
-            'payload' => $payload,
-            'source' => 'integracoes',
-            'timestamp' => now()->toIso8601String(),
-        ]);
+        $path = match ($eventType) {
+            'service.started', 'service.scheduled' => '/webhooks/internal/operacao/service-started',
+            'service.completed' => '/webhooks/internal/operacao/service-completed',
+            'payment.received', 'payment.failed', 'invoice.created' => '/webhooks/internal/financeiro/payment',
+            'lead.created' => '/webhooks/internal/site/lead',
+            'contract.signed' => '/webhooks/internal/documentos/contract-signed',
+            default => null,
+        };
+
+        if ($path === null) {
+            return $this->unsupported("evento CRM {$eventType}");
+        }
+
+        return $this->post($path, $this->mapDispatchPayload($eventType, $payload));
+    }
+
+    private function mapDispatchPayload(string $eventType, array $payload): array
+    {
+        return match ($eventType) {
+            'service.started', 'service.scheduled' => [
+                'client_id' => $payload['client_id'] ?? null,
+                'service_date' => $this->eventDate($payload),
+                'caregiver_name' => $payload['caregiver_name'] ?? null,
+            ],
+            'service.completed' => [
+                'client_id' => $payload['client_id'] ?? null,
+                'service_date' => $this->eventDate($payload),
+                'notes' => $payload['notes'] ?? null,
+            ],
+            'payment.received', 'payment.failed', 'invoice.created' => [
+                'client_id' => $payload['client_id'] ?? null,
+                'payment_status' => $payload['payment_status'] ?? match ($eventType) {
+                    'payment.received' => 'paid',
+                    'invoice.created' => 'pending',
+                    default => 'pending',
+                },
+                'amount' => $payload['amount'] ?? 0,
+                'reference_date' => $this->eventDate($payload),
+            ],
+            default => $payload,
+        };
+    }
+
+    private function eventDate(array $payload): string
+    {
+        $raw = $payload['service_date']
+            ?? $payload['reference_date']
+            ?? $payload['completed_at']
+            ?? $payload['timestamp']
+            ?? now()->toDateString();
+
+        return substr((string) $raw, 0, 10);
     }
 }
