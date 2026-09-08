@@ -23,9 +23,10 @@
 #
 # Depois do pull, a VPS:
 #   copia os .env do repo de config
-#   sincroniza a senha do usuário MariaDB (init.sql não roda de novo)
+#   cria schemas (DB_DATABASE de cada .env) e aplica a senha do usuário MariaDB
 #   docker compose up -d --remove-orphans na raiz (MariaDB, Redis, rede)
-#   docker compose up -d --build --force-recreate --remove-orphans em cada sistema
+#   sobe só o serviço app, espera o banco/artisan, migrate --force
+#   recria worker/horizon/scheduler depois das migrations
 #   (up -d sozinho não recria container já existente nem aplica env novo)
 
 name: CI/CD
@@ -261,7 +262,8 @@ jobs:
             mariadb_ready=0
             i=0
             while [ "$i" -lt 30 ]; do
-              if docker exec carinho-mariadb mariadb-admin ping --silent >/dev/null 2>&1; then
+              if docker exec carinho-mariadb mariadb-admin ping --silent >/dev/null 2>&1 \
+                && docker exec carinho-mariadb mariadb -uroot -e 'SELECT 1' >/dev/null 2>&1; then
                 echo "MariaDB pronto"
                 mariadb_ready=1
                 break
@@ -274,7 +276,7 @@ jobs:
               exit 1
             fi
 
-            echo ">>> Aplicando senha DB_PASSWORD no usuário MariaDB"
+            echo ">>> Garantindo schemas e senha DB_PASSWORD no MariaDB"
             bash "$DEPLOY_PATH/scripts/sync-mariadb-app-user.sh" "$DEPLOY_PATH"
 
             export COMPOSER_NO_BLOCKING=1
@@ -291,9 +293,29 @@ jobs:
               carinho-integracoes
             do
               app="$DEPLOY_PATH/sistemas/$system"
-              echo ">>> Recriando containers com env atual — $system"
+              echo ">>> Recriando app com env atual — $system"
               rm -f "$app/bootstrap/cache/config.php"
-              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build --force-recreate --remove-orphans
-              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan config:clear || true
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build --force-recreate --no-deps app
+              artisan_ready=0
+              j=0
+              while [ "$j" -lt 90 ]; do
+                if $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan migrate:status >/dev/null 2>&1; then
+                  artisan_ready=1
+                  break
+                fi
+                j=$((j + 1))
+                sleep 2
+              done
+              if [ "$artisan_ready" -ne 1 ]; then
+                echo "Artisan/MariaDB não ficou pronto em $system (migrate:status)."
+                exit 1
+              fi
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan config:clear
+              $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan migrate --force
+              extra_services="$($COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" config --services | grep -v '^app$' || true)"
+              for svc in $extra_services; do
+                echo ">>> Recriando $svc com env atual — $system"
+                $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" up -d --build --force-recreate --no-deps "$svc"
+              done
             done
             echo ">>> Deploy concluído"
