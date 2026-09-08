@@ -118,6 +118,8 @@ jobs:
           php scripts/assert-brand-whatsapp.php
           php scripts/assert-financeiro-bank-account-fk-order.php
           php scripts/assert-app-key-before-artisan.php
+          php scripts/assert-runtime-storage-not-tracked.php
+          php scripts/assert-deploy-resets-dirty-tree.php
 
   deploy:
     name: deploy
@@ -197,8 +199,11 @@ jobs:
               exit 1
             fi
             git -C "$DEPLOY_PATH" fetch origin
+            # Views/sessões/cache do Laravel no bind-mount sujam o working tree.
+            # pull --ff-only aborta; o clone de deploy deve coincidir com origin/main.
+            git -C "$DEPLOY_PATH" reset --hard HEAD
             git -C "$DEPLOY_PATH" checkout main
-            git -C "$DEPLOY_PATH" pull --ff-only origin main
+            git -C "$DEPLOY_PATH" reset --hard origin/main
 
             echo ">>> Atualizando .env em $ENV_REPO_PATH"
             if [ ! -d "$ENV_REPO_PATH/.git" ]; then
@@ -206,7 +211,9 @@ jobs:
               exit 1
             fi
             git -C "$ENV_REPO_PATH" fetch origin
-            git -C "$ENV_REPO_PATH" pull --ff-only
+            git -C "$ENV_REPO_PATH" reset --hard HEAD
+            git -C "$ENV_REPO_PATH" checkout main
+            git -C "$ENV_REPO_PATH" reset --hard origin/main
 
             echo ">>> Sobrescrevendo .env de cada sistema (DEPLOY_ENV=${DEPLOY_ENV:-production})"
             DEPLOY_ENV="${DEPLOY_ENV:-production}"
