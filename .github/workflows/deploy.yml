@@ -117,6 +117,7 @@ jobs:
           php scripts/assert-production-package-discovery.php
           php scripts/assert-dotenv-no-unquoted-whitespace.php
           php scripts/assert-brand-whatsapp.php
+          php scripts/assert-site-google-analytics.php
           php scripts/assert-financeiro-bank-account-fk-order.php
           php scripts/assert-financeiro-settings-seed.php
           php scripts/assert-app-key-before-artisan.php

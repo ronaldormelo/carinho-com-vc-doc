@@ -43,7 +43,7 @@ return [
 
     'analytics' => [
         'enabled' => env('ANALYTICS_ENABLED', true),
-        'ga4_id' => env('GA4_MEASUREMENT_ID'),
+        'ga4_id' => env('GA4_MEASUREMENT_ID') ?: 'G-WLV8231QBM',
         'gtm_id' => env('GTM_CONTAINER_ID'),
     ],
 

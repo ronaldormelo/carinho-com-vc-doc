@@ -50,17 +50,14 @@ $connected = $whatsapp->isConnected();
 
 ```env
 ANALYTICS_ENABLED=true
-GA4_MEASUREMENT_ID=G-XXXXXXXXXX
+GA4_MEASUREMENT_ID=G-WLV8231QBM
 ```
 
 #### Implementacao
 
-O GA4 e carregado via Google Tag Manager no layout principal. Eventos sao disparados automaticamente para:
+O GA4 e carregado via `gtag.js` no layout principal (`layouts/app.blade.php`), nas paginas institucionais e legais. O Measurement ID padrao e `G-WLV8231QBM`. Eventos de page view sao disparados automaticamente; conversoes adicionais podem ser enviadas com `gtag('event', ...)`.
 
-- Page views
-- Cliques em CTAs
-- Submissao de formularios
-- Conversoes
+Para desligar o tracking, defina `ANALYTICS_ENABLED=false`.
 
 ### 3. Google Tag Manager
 
