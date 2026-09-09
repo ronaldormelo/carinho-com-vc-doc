@@ -19,7 +19,7 @@ Lista de atividades para viabilizar o sistema Carinho Site.
 ## SEO e analytics
 - Configurar SEO local (meta tags, schema, paginas por cidade).
 - Conectar Google Meu Negocio.
-- Configurar analytics e tags.
+- Configurar analytics e tags. (GA4 `G-WLV8231QBM` via gtag.js no layout do site.)
 
 ## Publicacao
 - Configurar o apex `carinho.com.vc` e SSL. Hostname legado `site.carinho.com.vc` deve responder 301 para `https://carinho.com.vc` (path preservado).
