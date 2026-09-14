@@ -13,7 +13,7 @@ class WhatsAppCtaTest extends TestCase
         $response->assertRedirect();
         $location = urldecode((string) $response->headers->get('Location'));
 
-        $this->assertStringContainsString('https://wa.me/5589999771471', $location);
+        $this->assertStringContainsString('https://wa.me/5561995125883', $location);
         $this->assertStringContainsString(
             'Gostaria de solicitar um orçamento para a diária de um cuidador.',
             $location

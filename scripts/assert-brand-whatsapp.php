@@ -1,15 +1,18 @@
 <?php
 
 /**
- * WhatsApp da marca: (89) 99977-1471 / 5589999771471
+ * WhatsApp da marca: (61) 99512-5883 / 5561995125883
  *
  * O número visível no site deve ser um link direto (componente x-whatsapp-number
  * apontando para a rota whatsapp.cta → wa.me). JSON-LD telephone não é UI.
  */
 $root = dirname(__DIR__);
 $failed = false;
-$e164 = '5589999771471';
-$display = '(89) 99977-1471';
+$e164 = '5561995125883';
+$display = '(61) 99512-5883';
+$legacyE164 = '5589999771471';
+$legacyDisplay = '(89) 99977-1471';
+$legacyDigits = '89999771471';
 
 function fail(string $message) : void
 {
@@ -30,12 +33,36 @@ function assertContains(string $file, string $needle) : void
     }
 }
 
+function assertNotContains(string $file, string $needle) : void
+{
+    $contents = file_get_contents($file);
+    if ($contents === false) {
+        fail($file . ': não foi possível ler o arquivo');
+        return;
+    }
+    if (str_contains($contents, $needle)) {
+        fail($file . ': ainda contém número antigo ' . $needle);
+    }
+}
+
 $branding = $root . '/sistemas/carinho-site/config/branding.php';
 $example = $root . '/sistemas/carinho-site/.env.example';
 assertContains($branding, "env('BRAND_WHATSAPP', '{$e164}')");
 assertContains($branding, "env('BRAND_WHATSAPP_DISPLAY', '{$display}')");
 assertContains($example, 'BRAND_WHATSAPP=' . $e164);
 assertContains($example, 'BRAND_WHATSAPP_DISPLAY="' . $display . '"');
+
+$marketingBranding = $root . '/sistemas/carinho-marketing/config/branding.php';
+$marketingExample = $root . '/sistemas/carinho-marketing/.env.example';
+assertContains($marketingBranding, "env('BRAND_WHATSAPP', '{$e164}')");
+assertContains($marketingBranding, "env('BRAND_WHATSAPP_DISPLAY', '{$display}')");
+assertContains($marketingExample, 'BRAND_WHATSAPP=' . $e164);
+assertContains($marketingExample, 'BRAND_WHATSAPP_DISPLAY="' . $display . '"');
+
+$financeiroBranding = $root . '/sistemas/carinho-financeiro/config/branding.php';
+$financeiroExample = $root . '/sistemas/carinho-financeiro/.env.example';
+assertContains($financeiroBranding, "env('COMPANY_PHONE', '{$e164}')");
+assertContains($financeiroExample, 'COMPANY_PHONE=' . $e164);
 
 $configRoot = dirname($root) . '/carinho-com-vc-doc-config/carinho-site';
 foreach (['.env.production', '.env.testing'] as $envFile) {
@@ -122,6 +149,59 @@ foreach ($iterator as $file) {
     }
 
     fail($rel . ': o número visível do WhatsApp deve usar <x-whatsapp-number />');
+}
+
+$scanRoots = [
+    $root . '/sistemas',
+    $root . '/scripts',
+];
+$legacyNeedles = [$legacyE164, $legacyDisplay, $legacyDigits];
+$skipDirs = ['vendor', 'node_modules', 'storage', '.git'];
+
+foreach ($scanRoots as $scanRoot) {
+    if (!is_dir($scanRoot)) {
+        continue;
+    }
+
+    $scan = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($scanRoot, FilesystemIterator::SKIP_DOTS)
+    );
+
+    foreach ($scan as $file) {
+        if (!$file->isFile()) {
+            continue;
+        }
+
+        $path = $file->getPathname();
+        $rel = str_replace($root . '/', '', $path);
+        if ($rel === 'scripts/assert-brand-whatsapp.php') {
+            continue;
+        }
+
+        foreach ($skipDirs as $skip) {
+            if (str_contains($path, DIRECTORY_SEPARATOR . $skip . DIRECTORY_SEPARATOR)) {
+                continue 2;
+            }
+        }
+
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (!in_array($ext, ['php', 'md', 'example', 'env', 'json', 'yml', 'yaml', 'blade.php', 'txt', 'css', 'js'], true)
+            && !str_ends_with($file->getFilename(), '.blade.php')
+            && !str_ends_with($file->getFilename(), '.env.example')) {
+            continue;
+        }
+
+        $contents = file_get_contents($path);
+        if ($contents === false) {
+            continue;
+        }
+
+        foreach ($legacyNeedles as $needle) {
+            if (str_contains($contents, $needle)) {
+                fail(str_replace($root . '/', '', $path) . ': ainda contém número antigo ' . $needle);
+            }
+        }
+    }
 }
 
 if ($failed) {

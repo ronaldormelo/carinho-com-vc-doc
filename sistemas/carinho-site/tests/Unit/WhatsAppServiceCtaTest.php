@@ -87,7 +87,7 @@ class WhatsAppServiceCtaTest extends TestCase
     {
         $url = $this->whatsApp->buildCtaRedirectUrl('quote_diario');
 
-        $this->assertStringStartsWith('https://wa.me/5589999771471?text=', $url);
+        $this->assertStringStartsWith('https://wa.me/5561995125883?text=', $url);
         $this->assertStringContainsString(
             urlencode('Gostaria de solicitar um orçamento para a diária de um cuidador.'),
             $url

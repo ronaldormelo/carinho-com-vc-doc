@@ -134,12 +134,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Contact / WhatsApp oficial
+    |--------------------------------------------------------------------------
+    */
+
+    'phone' => env('BRAND_WHATSAPP', '5561995125883'),
+    'whatsapp' => env('BRAND_WHATSAPP', '5561995125883'),
+    'whatsapp_display' => env('BRAND_WHATSAPP_DISPLAY', '(61) 99512-5883'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Social Media Bio Standard
     |--------------------------------------------------------------------------
     */
 
     'social' => [
-        'bio_template' => "Cuidado domiciliar profissional \nContratacao rapida e confiavel \nWhatsApp: (XX) XXXXX-XXXX \ncarinho.com.vc",
+        'bio_template' => "Cuidado domiciliar profissional \nContratacao rapida e confiavel \nWhatsApp: (61) 99512-5883 \ncarinho.com.vc",
         'hashtags' => [
             '#CarinhoComVoce',
             '#CuidadoDomiciliar',
