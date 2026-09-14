@@ -17,7 +17,7 @@
 
             <div class="highlight-box" style="background: #f8d7da; border-color: var(--color-danger);">
                 <p style="margin: 0; font-size: var(--font-size-lg);">
-                    <strong>Em caso de emergência médica, ligue imediatamente para o SAMU: 192</strong>
+                    <strong>Em caso de emergência médica, ligue imediatamente para o SAMU: <x-emergency-tel number="192" /></strong>
                 </p>
             </div>
 
@@ -33,9 +33,9 @@
                         <td><strong>{{ ucfirst($channel) }}</strong></td>
                         <td>
                             @if($channel === 'whatsapp')
-                            <x-whatsapp-number /> - {{ $description }}
+                            <x-whatsapp-number msg="urgent" /> - {{ $description }}
                             @elseif($channel === 'email')
-                            <a href="mailto:{{ config('branding.contact.email_emergency') }}">{{ config('branding.contact.email_emergency') }}</a>
+                            <x-mailto :address="config('branding.contact.email_emergency')" />
                             @else
                             {{ $description }}
                             @endif
@@ -80,14 +80,14 @@
             @foreach($policy['types'] as $type)
             <div class="card mb-4" style="{{ $type['severity'] === 'critical' ? 'border-left: 4px solid var(--color-danger);' : ($type['severity'] === 'high' ? 'border-left: 4px solid var(--color-warning);' : '') }}">
                 <h4 style="margin-top: 0;">{{ $type['type'] }}</h4>
-                <p class="text-muted" style="margin-bottom: 0;"><strong>Ação:</strong> {{ $type['action'] }}</p>
+                <p class="text-muted" style="margin-bottom: 0;"><strong>Ação:</strong> {!! \App\Support\EmergencyTelLink::linkify($type['action']) !!}</p>
             </div>
             @endforeach
 
             <h2>4. PROCEDIMENTOS EM EMERGÊNCIA MÉDICA</h2>
             <p>Em caso de emergência médica durante o atendimento:</p>
             <ol>
-                <li><strong>Ligue imediatamente para o SAMU: 192</strong></li>
+                <li><strong>Ligue imediatamente para o SAMU: <x-emergency-tel number="192" /></strong></li>
                 <li>Não tente mover o paciente, exceto se houver risco iminente</li>
                 <li>Siga as instruções do atendente do SAMU</li>
                 <li>Após estabilizar, notifique o familiar responsável</li>
@@ -164,10 +164,10 @@
             <h2>9. CONTATO DE EMERGÊNCIA</h2>
             <div class="highlight-box" style="background: #f8d7da; border-color: var(--color-danger);">
                 <p style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-2);">
-                    <strong>WhatsApp Emergência:</strong> <x-whatsapp-number />
+                    <strong>WhatsApp Emergência:</strong> <x-whatsapp-number msg="urgent" />
                 </p>
                 <p style="margin: 0;">
-                    <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email_emergency') }}">{{ config('branding.contact.email_emergency') }}</a>
+                    <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email_emergency')" />
                 </p>
             </div>
 
@@ -176,19 +176,19 @@
                 <tbody>
                     <tr>
                         <td><strong>SAMU</strong></td>
-                        <td>192</td>
+                        <td><x-emergency-tel number="192" /></td>
                     </tr>
                     <tr>
                         <td><strong>Bombeiros</strong></td>
-                        <td>193</td>
+                        <td><x-emergency-tel number="193" /></td>
                     </tr>
                     <tr>
                         <td><strong>Polícia</strong></td>
-                        <td>190</td>
+                        <td><x-emergency-tel number="190" /></td>
                     </tr>
                     <tr>
                         <td><strong>CVV (apoio emocional)</strong></td>
-                        <td>188</td>
+                        <td><x-emergency-tel number="188" /></td>
                     </tr>
                 </tbody>
             </table>

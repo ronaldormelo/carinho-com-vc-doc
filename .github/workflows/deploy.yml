@@ -26,6 +26,7 @@
 #   cria schemas (DB_DATABASE de cada .env) e aplica a senha do usuário MariaDB
 #   docker compose up -d --remove-orphans na raiz (MariaDB, Redis, rede)
 #   sobe só o serviço app, espera o banco/artisan, migrate --force
+#   no Site: db:seed --class=LeadFormSeeder --force (formulários públicos)
 #   recria worker/horizon/scheduler depois das migrations
 #   (up -d sozinho não recria container já existente nem aplica env novo)
 
@@ -116,12 +117,14 @@ jobs:
           php scripts/assert-production-package-discovery.php
           php scripts/assert-dotenv-no-unquoted-whitespace.php
           php scripts/assert-brand-whatsapp.php
+          php scripts/assert-site-google-analytics.php
           php scripts/assert-financeiro-bank-account-fk-order.php
           php scripts/assert-financeiro-settings-seed.php
           php scripts/assert-app-key-before-artisan.php
           php scripts/assert-runtime-storage-not-tracked.php
           php scripts/assert-deploy-resets-dirty-tree.php
           php scripts/assert-session-driver-not-bare-database.php
+          php scripts/assert-deploy-site-lead-form-seed.php
 
   deploy:
     name: deploy
@@ -351,6 +354,10 @@ jobs:
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan config:clear
               echo ">>> migrate --force — $system"
               $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan migrate --force
+              if [ "$system" = "carinho-site" ]; then
+                echo ">>> seed LeadFormSeeder (idempotente) — $system"
+                $COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" exec -T app php artisan db:seed --class=LeadFormSeeder --force
+              fi
               extra_services="$($COMPOSE --project-directory "$app" -f "$app/docker-compose.yml" config --services | grep -v '^app$' || true)"
               for svc in $extra_services; do
                 echo ">>> Recriando $svc com env atual — $system"

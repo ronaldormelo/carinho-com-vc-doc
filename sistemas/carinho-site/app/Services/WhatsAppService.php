@@ -56,24 +56,32 @@ class WhatsAppService
     }
 
     /**
-     * Gera URL do WhatsApp para CTA.
+     * Gera URL do WhatsApp (wa.me) com mensagem pre-preenchida.
+     *
+     * Sempre inclui `text=` (UTF-8 via urlencode). Texto vazio cai na mensagem padrao.
      */
     public function generateCtaUrl(string $message = '', array $utm = []): string
     {
         $phone = config('branding.contact.whatsapp');
-        $url = "https://wa.me/{$phone}";
-
-        if ($message) {
-            $url .= "?text=" . urlencode($message);
+        if ($message === '') {
+            $message = $this->resolveCtaMessage('default');
         }
 
-        // Adiciona UTM se configurado para tracking
+        $url = 'https://wa.me/' . $phone . '?text=' . urlencode($message);
+
         if (!empty($utm)) {
-            $utmString = http_build_query($utm);
-            $url .= ($message ? '&' : '?') . $utmString;
+            $url .= '&' . http_build_query($utm);
         }
 
         return $url;
+    }
+
+    /**
+     * URL wa.me com mensagem de conversa. Use texto ja resolvido (nao chave).
+     */
+    public function whatsappUrl(?string $message = null, array $utm = []): string
+    {
+        return $this->generateCtaUrl((string) ($message ?? ''), $utm);
     }
 
     /**
@@ -85,7 +93,7 @@ class WhatsAppService
     public function resolveCtaMessage(?string $key): string
     {
         $messages = config('branding.whatsapp_messages', []);
-        $default = (string) ($messages['default'] ?? 'Olá! Vim pelo site e gostaria de saber mais sobre os serviços.');
+        $default = (string) ($messages['default'] ?? 'Olá! Seja bem-vindo(a) à Carinho com Você. Preciso de cuidado domiciliar e gostaria de conversar.');
 
         if (!is_string($key) || $key === '') {
             return $default;
@@ -112,6 +120,12 @@ class WhatsAppService
             'services' => 'quote',
             'investors' => 'investor',
             'about' => 'about',
+            'legal.privacy' => 'legal_privacy',
+            'legal.terms' => 'legal_terms',
+            'legal.cancellation' => 'legal_cancellation',
+            'legal.payment' => 'legal_payment',
+            'legal.emergency' => 'urgent',
+            'legal.caregiver-terms' => 'legal_caregiver_terms',
             default => 'default',
         };
     }

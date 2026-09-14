@@ -85,4 +85,62 @@ class WhatsAppCtaTest extends TestCase
             'Botão da página, header e flutuante devem usar a mensagem de contato'
         );
     }
+
+    public function test_caregivers_page_does_not_reuse_family_hiring_copy(): void
+    {
+        $html = $this->get(route('caregivers'))->assertOk()->getContent();
+
+        $this->assertStringContainsString('whatsapp?msg=caregiver', $html);
+        $this->assertStringContainsString('whatsapp?msg=contact', $html);
+        $this->assertDoesNotMatchRegularExpression('/whatsapp\?msg=quote["\']/', $html);
+        $this->assertStringNotContainsString('whatsapp?msg=hire', $html);
+        $this->assertStringNotContainsString('whatsapp?msg=need_caregiver', $html);
+    }
+
+    public function test_investors_and_emergency_use_context_keys(): void
+    {
+        $investors = $this->get(route('investors'))->assertOk()->getContent();
+        $this->assertStringContainsString('whatsapp?msg=investor', $investors);
+        $this->assertStringContainsString('whatsapp?msg=contact', $investors);
+
+        $emergency = $this->get(route('legal.emergency'))->assertOk()->getContent();
+        $this->assertStringContainsString('whatsapp?msg=urgent', $emergency);
+        $this->assertStringContainsString('whatsapp?msg=contact', $emergency);
+        $this->assertStringNotContainsString('whatsapp?msg=quote', $emergency);
+    }
+
+    public function test_legal_pages_wire_policy_specific_keys(): void
+    {
+        $terms = $this->get(route('legal.terms'))->assertOk()->getContent();
+        $this->assertStringContainsString('whatsapp?msg=legal_terms', $terms);
+
+        $cancellation = $this->get(route('legal.cancellation'))->assertOk()->getContent();
+        $this->assertStringContainsString('whatsapp?msg=legal_cancellation', $cancellation);
+
+        $payment = $this->get(route('legal.payment'))->assertOk()->getContent();
+        $this->assertStringContainsString('whatsapp?msg=legal_payment', $payment);
+
+        $caregiverTerms = $this->get(route('legal.caregiver-terms'))->assertOk()->getContent();
+        $this->assertStringContainsString('whatsapp?msg=legal_caregiver_terms', $caregiverTerms);
+        $this->assertStringNotContainsString('whatsapp?msg=caregiver"', $caregiverTerms);
+    }
+
+    public function test_cta_redirects_encode_contextual_utf8_text(): void
+    {
+        $cases = [
+            'default' => 'cuidado domiciliar',
+            'quote' => 'familiar',
+            'caregiver' => 'Sou cuidador',
+            'investor' => 'parceria ou investimento',
+            'urgent' => 'ajuda imediata',
+            'contact' => 'entrar em contato',
+            'legal_privacy' => 'Política de Privacidade',
+        ];
+
+        foreach ($cases as $key => $snippet) {
+            $location = urldecode((string) $this->get(route('whatsapp.cta', ['msg' => $key]))->headers->get('Location'));
+            $this->assertStringContainsString('https://wa.me/5589999771471?text=', $location);
+            $this->assertStringContainsString($snippet, $location);
+        }
+    }
 }

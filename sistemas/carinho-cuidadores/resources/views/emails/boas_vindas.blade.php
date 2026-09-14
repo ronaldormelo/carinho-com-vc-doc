@@ -116,7 +116,9 @@
                 <p>Qualquer duvida, estamos a disposição.</p>
                 <p>Atenciosamente,<br><strong>Equipe {{ $brandName }}</strong></p>
                 <p style="margin-top: 16px; font-size: 12px;">
-                    Este e-mail foi enviado para {{ $caregiver->email }}.<br>
+                    @if($caregiver->email)
+                    Este e-mail foi enviado para <a href="mailto:{{ $caregiver->email }}">{{ $caregiver->email }}</a>.<br>
+                    @endif
                     {{ $brandName }} - carinho.com.vc
                 </p>
             </div>

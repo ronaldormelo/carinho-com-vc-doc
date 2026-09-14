@@ -656,8 +656,8 @@
             <div style="margin-top: var(--spacing-8);">
                 <p style="opacity: 0.8; margin-bottom: var(--spacing-4);">Ou entre em contato diretamente:</p>
                 <p style="font-size: var(--font-size-lg);">
-                    <strong>E-mail:</strong> investidores@carinho.com.vc<br>
-                    <strong>WhatsApp:</strong> <x-whatsapp-number class="whatsapp-number-link--inverse" />
+                    <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email_investors')" /><br>
+                    <strong>WhatsApp:</strong> <x-whatsapp-number msg="investor" />
                 </p>
             </div>
         </div>
@@ -690,7 +690,7 @@ document.getElementById('investorContactForm').addEventListener('submit', async 
 
     try {
         @if(config('integrations.recaptcha.enabled') && config('integrations.recaptcha.site_key'))
-        const token = await grecaptcha.execute('{{ config('integrations.recaptcha.site_key') }}', {action: 'submit_investor'});
+        const token = await window.carinhoGetRecaptchaToken('submit_investor');
         document.getElementById('recaptcha_token_investor').value = token;
         @endif
 
@@ -715,7 +715,11 @@ document.getElementById('investorContactForm').addEventListener('submit', async 
             messageDiv.style.display = 'block';
         }
     } catch (error) {
-        messageDiv.innerHTML = '<div class="card" style="background: #f8d7da; border-color: #f5c6cb; color: #721c24;" role="alert">Erro ao enviar. Por favor, tente novamente ou entre em contato por e-mail.</div>';
+        const recaptchaFailed = error && String(error.message || '').indexOf('recaptcha_') === 0;
+        const msg = recaptchaFailed
+            ? 'Validação de segurança falhou. Por favor, recarregue a página e tente novamente.'
+            : 'Erro ao enviar. Por favor, tente novamente ou entre em contato por e-mail.';
+        messageDiv.innerHTML = '<div class="card" style="background: #f8d7da; border-color: #f5c6cb; color: #721c24;" role="alert">' + msg + '</div>';
         messageDiv.style.display = 'block';
     }
 

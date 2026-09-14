@@ -82,6 +82,7 @@ docker compose down                 # para MariaDB e Redis
 
 docker exec -it carinho-[sistema]-app bash
 docker exec -it carinho-[sistema]-app php artisan migrate:status
+docker exec -it carinho-site-app php artisan db:seed --class=LeadFormSeeder --force
 docker exec -it carinho-[sistema]-app composer install
 ```
 

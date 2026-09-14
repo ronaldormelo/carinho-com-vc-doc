@@ -151,8 +151,8 @@
                 Para questões sobre pagamentos:
             </p>
             <p>
-                <strong>WhatsApp:</strong> <x-whatsapp-number /><br>
-                <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a>
+                <strong>WhatsApp:</strong> <x-whatsapp-number msg="legal_payment" /><br>
+                <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" />
             </p>
         </div>
     </div>

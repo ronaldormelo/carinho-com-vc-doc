@@ -19,7 +19,8 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="APP_KEY" value="base64:2fl+Ktvkfl+Fuz4Qp/Ej30lCtzptdqGe4hq2/gM5M2M="/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="APP_KEY" value="base64:2fl+KTVYFLWLC6H4dUjs7B3qH7ZfYq/tS0c0mN0pQ1E="/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_STORE" value="array"/>
@@ -30,5 +31,10 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="RECAPTCHA_ENABLED" value="false"/>
         <env name="ZAPI_ENABLED" value="false"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="RECAPTCHA_SITE_KEY" value=""/>
+        <env name="RECAPTCHA_SECRET_KEY" value=""/>
+        <env name="RECAPTCHA_MIN_SCORE" value="0.5"/>
+        <env name="RECAPTCHA_TIMEOUT" value="5"/>
     </php>
 </phpunit>

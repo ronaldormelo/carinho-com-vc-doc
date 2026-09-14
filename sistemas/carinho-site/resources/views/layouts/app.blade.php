@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    {{-- Google tag (gtag.js) — GA4 --}}
+    @if(config('integrations.analytics.enabled') && config('integrations.analytics.ga4_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('integrations.analytics.ga4_id') }}" data-cfasync="false"></script>
+    <script data-cfasync="false">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '{{ config('integrations.analytics.ga4_id') }}');
+    </script>
+    @endif
+
     {{-- SEO Meta Tags --}}
     <title>{{ $seo['title'] ?? config('branding.seo.default_title') }}</title>
     <meta name="description" content="{{ $seo['description'] ?? config('branding.seo.default_description') }}">
@@ -53,9 +65,10 @@
     })(window,document,'script','dataLayer','{{ config('integrations.analytics.gtm_id') }}');</script>
     @endif
 
-    {{-- reCAPTCHA --}}
+    {{-- reCAPTCHA (data-cfasync: Cloudflare Rocket Loader quebra grecaptcha.execute) --}}
     @if(config('integrations.recaptcha.enabled') && config('integrations.recaptcha.site_key'))
-    <script src="https://www.google.com/recaptcha/api.js?render={{ config('integrations.recaptcha.site_key') }}"></script>
+    <meta name="recaptcha-site-key" content="{{ config('integrations.recaptcha.site_key') }}">
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('integrations.recaptcha.site_key') }}" data-cfasync="false"></script>
     @endif
 
     {{-- Schema.org JSON-LD --}}
@@ -99,6 +112,29 @@
     @include('partials.whatsapp-float')
 
     {{-- Scripts --}}
+    @if(config('integrations.recaptcha.enabled') && config('integrations.recaptcha.site_key'))
+    <script data-cfasync="false">
+    window.carinhoGetRecaptchaToken = async function (action) {
+        const siteKey = document.querySelector('meta[name="recaptcha-site-key"]')?.content;
+        if (!siteKey) {
+            return '';
+        }
+        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.ready !== 'function') {
+            throw new Error('recaptcha_unavailable');
+        }
+        await new Promise(function (resolve, reject) {
+            const timeout = setTimeout(function () {
+                reject(new Error('recaptcha_timeout'));
+            }, 8000);
+            grecaptcha.ready(function () {
+                clearTimeout(timeout);
+                resolve();
+            });
+        });
+        return await grecaptcha.execute(siteKey, { action: action });
+    };
+    </script>
+    @endif
     @stack('scripts')
 </body>
 </html>

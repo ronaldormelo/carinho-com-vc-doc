@@ -181,7 +181,7 @@ HTML;
     <p>Reservamo-nos o direito de modificar estes Termos a qualquer momento. As alterações entrarão em vigor após publicação.</p>
     
     <h2>8. CONTATO</h2>
-    <p>Em caso de dúvidas, entre em contato: contato@carinho.com.vc</p>
+    <p>Em caso de dúvidas, entre em contato: <a href="mailto:contato@carinho.com.vc">contato@carinho.com.vc</a></p>
     
     <p class="footer">© Carinho com Você - Todos os direitos reservados</p>
 </div>
@@ -251,7 +251,7 @@ HTML;
     
     <h2>9. CONTATO DO ENCARREGADO (DPO)</h2>
     <p>Para exercer seus direitos ou esclarecer dúvidas sobre privacidade:</p>
-    <p>E-mail: privacidade@carinho.com.vc</p>
+    <p>E-mail: <a href="mailto:privacidade@carinho.com.vc">privacidade@carinho.com.vc</a></p>
     
     <h2>10. ALTERAÇÕES</h2>
     <p>Esta política pode ser atualizada periodicamente. Recomendamos sua revisão regular.</p>

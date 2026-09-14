@@ -1,5 +1,7 @@
+@props(['msg' => 'contact'])
+
 <a
-    href="{{ route('whatsapp.cta') }}"
+    href="{{ route('whatsapp.cta', ['msg' => $msg]) }}"
     target="_blank"
     rel="noopener"
     {{ $attributes->class('whatsapp-number-link') }}

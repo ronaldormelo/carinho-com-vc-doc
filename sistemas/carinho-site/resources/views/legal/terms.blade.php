@@ -168,8 +168,8 @@
                 Em caso de dúvidas sobre estes Termos:
             </p>
             <p>
-                <strong>E-mail:</strong> <a href="mailto:{{ config('branding.contact.email') }}">{{ config('branding.contact.email') }}</a><br>
-                <strong>WhatsApp:</strong> <x-whatsapp-number />
+                <strong>E-mail:</strong> <x-mailto :address="config('branding.contact.email')" /><br>
+                <strong>WhatsApp:</strong> <x-whatsapp-number msg="legal_terms" />
             </p>
         </div>
     </div>

@@ -30,19 +30,8 @@ class LeadFormController extends Controller
      */
     public function submitClientLead(ClientLeadRequest $request): JsonResponse
     {
-        // Valida reCAPTCHA
-        if (config('integrations.recaptcha.enabled')) {
-            $recaptchaValid = $this->recaptcha->verify(
-                $request->input('recaptcha_token'),
-                $request->ip()
-            );
-
-            if (!$recaptchaValid) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validacao de seguranca falhou. Por favor, tente novamente.',
-                ], 422);
-            }
+        if ($rejected = $this->recaptchaRejection($request)) {
+            return $rejected;
         }
 
         // Encontra ou cria UTM
@@ -101,19 +90,8 @@ class LeadFormController extends Controller
      */
     public function submitCaregiverLead(CaregiverLeadRequest $request): JsonResponse
     {
-        // Valida reCAPTCHA
-        if (config('integrations.recaptcha.enabled')) {
-            $recaptchaValid = $this->recaptcha->verify(
-                $request->input('recaptcha_token'),
-                $request->ip()
-            );
-
-            if (!$recaptchaValid) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validacao de seguranca falhou. Por favor, tente novamente.',
-                ], 422);
-            }
+        if ($rejected = $this->recaptchaRejection($request)) {
+            return $rejected;
         }
 
         // Encontra ou cria UTM
@@ -169,6 +147,28 @@ class LeadFormController extends Controller
     }
 
     /**
+     * Recusa o envio quando o reCAPTCHA estiver configurado e a verificacao falhar.
+     */
+    private function recaptchaRejection(Request $request): ?JsonResponse
+    {
+        if (!$this->recaptcha->isConfigured()) {
+            return null;
+        }
+
+        $token = $request->input('recaptcha_token');
+        $token = is_string($token) ? $token : null;
+
+        if ($this->recaptcha->verify($token, $request->ip())) {
+            return null;
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Validação de segurança falhou. Por favor, tente novamente.',
+        ], 422);
+    }
+
+    /**
      * Gera URL do WhatsApp para cliente.
      */
     private function generateWhatsAppUrl(FormSubmission $submission): string
@@ -221,19 +221,8 @@ class LeadFormController extends Controller
             'consent.required' => 'Você precisa concordar com os termos para continuar.',
         ]);
 
-        // Valida reCAPTCHA
-        if (config('integrations.recaptcha.enabled')) {
-            $recaptchaValid = $this->recaptcha->verify(
-                $request->input('recaptcha_token'),
-                $request->ip()
-            );
-
-            if (!$recaptchaValid) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validação de segurança falhou. Por favor, tente novamente.',
-                ], 422);
-            }
+        if ($rejected = $this->recaptchaRejection($request)) {
+            return $rejected;
         }
 
         // Encontra ou cria UTM
