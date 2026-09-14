@@ -180,6 +180,9 @@ foreach ($scanRoots as $scanRoot) {
         if ($rel === 'scripts/assert-brand-whatsapp.php') {
             continue;
         }
+        if ($file->getFilename() === '.env') {
+            continue;
+        }
 
         foreach ($skipDirs as $skip) {
             if (str_contains($path, DIRECTORY_SEPARATOR . $skip . DIRECTORY_SEPARATOR)) {

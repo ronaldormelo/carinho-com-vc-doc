@@ -139,7 +139,10 @@ class WhatsAppCtaTest extends TestCase
 
         foreach ($cases as $key => $snippet) {
             $location = urldecode((string) $this->get(route('whatsapp.cta', ['msg' => $key]))->headers->get('Location'));
-            $this->assertStringContainsString('https://wa.me/5589999771471?text=', $location);
+            $this->assertStringContainsString(
+                'https://wa.me/'.config('branding.contact.whatsapp').'?text=',
+                $location
+            );
             $this->assertStringContainsString($snippet, $location);
         }
     }

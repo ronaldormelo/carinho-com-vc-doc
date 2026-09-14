@@ -118,7 +118,10 @@ class WhatsAppServiceCtaTest extends TestCase
     {
         $url = $this->whatsApp->whatsappUrl(null);
 
-        $this->assertStringStartsWith('https://wa.me/5589999771471?text=', $url);
+        $this->assertStringStartsWith(
+            'https://wa.me/'.config('branding.contact.whatsapp').'?text=',
+            $url
+        );
         $this->assertStringContainsString(
             urlencode(config('branding.whatsapp_messages.default')),
             $url
