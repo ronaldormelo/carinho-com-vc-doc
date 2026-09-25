@@ -21,7 +21,8 @@
                 Se você não concordar com qualquer parte destes termos, não utilize nossos serviços.
             </p>
             <p>
-                Estes termos constituem um acordo juridicamente vinculativo entre você e a Carinho com Você.
+                Estes termos constituem um acordo juridicamente vinculativo entre você e a Carinho com Você,
+                inscrita no CNPJ sob o nº {{ config('branding.contact.cnpj') }}.
             </p>
 
             <h2>2. DESCRIÇÃO DOS SERVIÇOS</h2>

@@ -19,6 +19,7 @@
         <p class="text-light" style="font-size: var(--font-size-xl); max-width: 600px;">
             Estamos aqui para ajudar. Entre em contato pelo canal de sua preferência.
         </p>
+        <p class="text-light">CNPJ {{ config('branding.contact.cnpj') }}</p>
     </div>
 </section>
 

@@ -242,7 +242,7 @@ O módulo está apto para operação, desde que os pontos críticos de credibili
 | # | Ação | Responsável | Prazo | Status |
 |---|------|-------------|-------|--------|
 | 1 | Corrigir acentuação em todas as páginas | Dev | Imediato | 🔄 Em andamento |
-| 2 | Atualizar CNPJ no footer | Comercial | Imediato | ⏳ Pendente dados |
+| 2 | Atualizar CNPJ no footer | Comercial | Imediato | ✅ 69.279.245/0001-04 |
 | 3 | Adicionar telefone fixo de contato | Comercial | Imediato | ⏳ Pendente dados |
 | 4 | Implementar breadcrumbs | Dev | 1 semana | 🔄 Em andamento |
 | 5 | Adicionar Schema.org FAQ | Dev | 1 semana | 🔄 Em andamento |

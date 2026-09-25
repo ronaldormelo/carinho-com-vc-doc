@@ -108,7 +108,7 @@ return [
     */
     'company' => [
         'name' => env('COMPANY_NAME', 'Carinho com Você Ltda'),
-        'cnpj' => env('COMPANY_CNPJ'),
+        'cnpj' => env('COMPANY_CNPJ') ?: '69.279.245/0001-04',
         'address' => env('COMPANY_ADDRESS'),
         'phone' => env('COMPANY_PHONE', '5561995125883'),
         'email' => env('COMPANY_EMAIL', 'financeiro@carinho.com.vc'),

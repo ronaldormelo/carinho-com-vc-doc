@@ -1,7 +1,8 @@
 # Identidade da marca
 
 **Nome:** Carinho com Você  
-**Domínio:** carinho.com.vc
+**Domínio:** carinho.com.vc  
+**CNPJ:** 69.279.245/0001-04
 
 A paleta e a tipografia abaixo são as **implementadas** em `config/branding.php` e `public/css/brand.css` dos sistemas. Não usar hex antigos de rascunho.
 

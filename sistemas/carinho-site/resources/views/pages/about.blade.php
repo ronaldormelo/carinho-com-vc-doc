@@ -19,6 +19,7 @@
         <p class="text-light" style="font-size: var(--font-size-xl); max-width: 600px;">
             Somos a Carinho com Você, uma empresa dedicada a tornar o cuidado domiciliar simples, humano e confiável.
         </p>
+        <p class="text-light">CNPJ {{ config('branding.contact.cnpj') }}</p>
     </div>
 </section>
 

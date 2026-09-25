@@ -21,6 +21,9 @@
                 descreve como coletamos, usamos e protegemos seus dados pessoais em conformidade
                 com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).
             </p>
+            <p>
+                O controlador dos dados pessoais é a Carinho com Você, CNPJ {{ config('branding.contact.cnpj') }}.
+            </p>
 
             <h2>2. DADOS COLETADOS</h2>
             <p>Coletamos os seguintes dados pessoais:</p>

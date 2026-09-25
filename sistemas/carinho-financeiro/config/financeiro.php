@@ -193,7 +193,7 @@ return [
         'auto_issue' => env('FISCAL_AUTO_ISSUE', true),
 
         // CNPJ da empresa
-        'cnpj' => env('COMPANY_CNPJ'),
+        'cnpj' => env('COMPANY_CNPJ') ?: '69.279.245/0001-04',
 
         // Razão social
         'company_name' => env('COMPANY_NAME', 'Carinho com Você Ltda'),

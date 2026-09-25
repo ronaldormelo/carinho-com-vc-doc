@@ -107,7 +107,7 @@
         </div>
 
         <div class="parties">
-            <p><strong>CONTRATANTE:</strong> {{ $brandName }}, pessoa jurídica de direito privado, com sede em [endereço], inscrita no CNPJ sob o nº [CNPJ].</p>
+            <p><strong>CONTRATANTE:</strong> {{ $brandName }}, pessoa jurídica de direito privado, com sede em [endereço], inscrita no CNPJ sob o nº {{ config('branding.cnpj') }}.</p>
             <p><strong>CUIDADOR(A):</strong> {{ $caregiver->name }}, portador(a) do CPF nº [CPF], residente em {{ $caregiver->city }}, telefone {{ $caregiver->phone }}.</p>
         </div>
 
