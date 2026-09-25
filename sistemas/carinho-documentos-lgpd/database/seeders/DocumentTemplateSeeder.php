@@ -51,7 +51,7 @@ class DocumentTemplateSeeder extends Seeder
     
     <p><strong>CONTRATANTE:</strong> {{cliente_nome}}, inscrito no CPF sob o nº {{cliente_cpf}}, residente em {{cliente_endereco}}.</p>
     
-    <p><strong>CONTRATADA:</strong> CARINHO COM VOCÊ SERVIÇOS DE CUIDADO DOMICILIAR LTDA, inscrita no CNPJ sob o nº XX.XXX.XXX/0001-XX, com sede em São Paulo/SP.</p>
+    <p><strong>CONTRATADA:</strong> CARINHO COM VOCÊ SERVIÇOS DE CUIDADO DOMICILIAR LTDA, inscrita no CNPJ sob o nº 69.279.245/0001-04, com sede em São Paulo/SP.</p>
     
     <h2>CLÁUSULA PRIMEIRA - DO OBJETO</h2>
     <p>O presente contrato tem por objeto a prestação de serviços de intermediação de cuidadores domiciliares pela CONTRATADA ao CONTRATANTE, conforme condições estabelecidas neste instrumento.</p>
@@ -105,7 +105,7 @@ HTML;
 <div class="contract">
     <h1>CONTRATO DE PRESTAÇÃO DE SERVIÇOS - CUIDADOR</h1>
     
-    <p><strong>CONTRATANTE:</strong> CARINHO COM VOCÊ SERVIÇOS DE CUIDADO DOMICILIAR LTDA, inscrita no CNPJ sob o nº XX.XXX.XXX/0001-XX.</p>
+    <p><strong>CONTRATANTE:</strong> CARINHO COM VOCÊ SERVIÇOS DE CUIDADO DOMICILIAR LTDA, inscrita no CNPJ sob o nº 69.279.245/0001-04.</p>
     
     <p><strong>PRESTADOR:</strong> {{cuidador_nome}}, inscrito no CPF sob o nº {{cuidador_cpf}}, residente em {{cuidador_endereco}}.</p>
     

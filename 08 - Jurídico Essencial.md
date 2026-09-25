@@ -4,6 +4,8 @@ Objetivo: risco legal mínimo para operar. Contratos e evidências: [carinho-doc
 
 ## Empresa
 
+**CNPJ:** 69.279.245/0001-04.
+
 CNPJ e CNAE corretos; contratos padronizados.
 
 ## Contratos e termos

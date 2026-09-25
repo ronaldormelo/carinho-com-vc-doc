@@ -81,6 +81,7 @@
         "url": "{{ config('app.url') }}",
         "telephone": "{{ config('branding.contact.whatsapp_display') }}",
         "email": "{{ config('branding.contact.email') }}",
+        "taxID": "{{ config('branding.contact.cnpj') }}",
         "priceRange": "$$",
         "areaServed": {
             "@type": "City",

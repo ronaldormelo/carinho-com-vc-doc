@@ -2,6 +2,7 @@
 
 return [
     'name' => env('BRAND_NAME', 'Carinho com Você'),
+    'cnpj' => env('BRAND_CNPJ') ?: '69.279.245/0001-04',
     'domain' => env('BRAND_DOMAIN', 'carinho.com.vc'),
     'subdomain' => env('CUIDADORES_SUBDOMAIN', 'cuidadores.carinho.com.vc'),
     'voice' => [

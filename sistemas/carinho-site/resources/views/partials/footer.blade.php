@@ -69,6 +69,9 @@
         <div class="footer-bottom">
             <p>&copy; {{ date('Y') }} {{ config('branding.name') }}. Todos os direitos reservados.</p>
             <p style="margin-top: var(--spacing-2);">
+                CNPJ {{ config('branding.contact.cnpj') }}
+            </p>
+            <p style="margin-top: var(--spacing-2);">
                 {{ config('branding.domain') }}
             </p>
         </div>

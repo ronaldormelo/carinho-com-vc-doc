@@ -144,6 +144,7 @@ return [
         'email_privacy' => env('BRAND_EMAIL_PRIVACY', 'privacidade@carinho.com.vc'),
         'email_emergency' => env('BRAND_EMAIL_EMERGENCY', 'emergencia@carinho.com.vc'),
         'email_investors' => env('BRAND_EMAIL_INVESTORS', 'investidores@carinho.com.vc'),
+        'cnpj' => env('BRAND_CNPJ') ?: '69.279.245/0001-04',
     ],
 
     /*
